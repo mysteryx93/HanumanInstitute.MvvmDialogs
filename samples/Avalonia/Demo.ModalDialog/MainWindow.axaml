@@ -1,0 +1,36 @@
+<Window
+    x:Class="Demo.ModalDialog.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.ModalDialog"
+    mc:Ignorable="d"
+    md:DialogServiceViews.IsRegistered="True"
+    WindowStartupLocation="CenterScreen"
+    Title="Demo - Modal Dialog"
+    Width="300"
+    Height="200"
+    DataContext="{x:Static local:App.MainWindow}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ListBox Items="{Binding Texts}" />
+
+        <StackPanel Grid.Row="1">
+            <Button
+                Command="{Binding ImplicitShowDialogCommand}">
+                <TextBlock Text="Add text using the dialog type locator..." />
+            </Button>
+            <Button
+                Command="{Binding ExplicitShowDialogCommand}">
+                <TextBlock Text="Add text by specifying dialog type..." />
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

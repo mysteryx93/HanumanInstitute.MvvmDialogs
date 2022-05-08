@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <LangVersion>default</LangVersion>
+    <!--
+      Lets have the .NET Framework version listed first, otherwise we will get build warnings in Visual Studio.
+      See https://github.com/dotnet/project-system/issues/1162 for more information.
+     -->
+    <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../../StrongName.snk</AssemblyOriginatorKeyFile>
+    <Nullable>enable</Nullable>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
+    <AssemblyName>HanumanInstitute.MvvmDialogs</AssemblyName>
+    <RootNamespace>HanumanInstitute.MvvmDialogs</RootNamespace>
+    <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
+    <Authors>Etienne Charland</Authors>
+    <Company>Hanuman Institute</Company>
+    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+  </ItemGroup>
+
+
+  <!--<ItemGroup>
+    <InternalsVisibleTo Include="MvvmDialogs.Tests" PublicKey="a6493f7449d95f27" />
+  </ItemGroup>-->
+
+  <ItemGroup>
+    <None Include="..\..\StrongName.snk">
+      <Link>StrongName.snk</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

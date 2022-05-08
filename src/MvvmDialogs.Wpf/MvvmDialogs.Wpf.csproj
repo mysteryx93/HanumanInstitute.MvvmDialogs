@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+    <PackageVersion>9.0.0</PackageVersion>
+    <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
+    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
+    <Company>HanumanInstitute</Company>
+    <Authors>Etienne Charland</Authors>
+    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
+    <PackageProjectUrl></PackageProjectUrl>
+    <AssemblyVersion></AssemblyVersion>
+    <PackageId>HanumanInstitute.MvvmDialogs.Wpf</PackageId>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\StrongName.snk">
+      <Link>StrongName.snk</Link>
+    </None>
+  </ItemGroup>
+
+</Project>

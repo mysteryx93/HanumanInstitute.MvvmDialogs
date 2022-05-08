@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>default</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia</AssemblyName>
+    <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia</RootNamespace>
+    <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
+    <Authors>Etienne Charland</Authors>
+    <Company>Hanuman Institute</Company>
+    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageProjectUrl></PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\StrongName.snk">
+      <Link>StrongName.snk</Link>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.13" />
+    <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>

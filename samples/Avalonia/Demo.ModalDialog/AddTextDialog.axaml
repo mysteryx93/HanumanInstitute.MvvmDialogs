@@ -1,0 +1,31 @@
+﻿<Window
+    x:Class="Demo.ModalDialog.AddTextDialog"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Demo.ModalDialog"
+    mc:Ignorable="d"
+    Title="Add Text"
+    WindowStartupLocation="CenterOwner"
+    SizeToContent="WidthAndHeight"
+    CanResize="False"
+    d:DataContext="{x:Static local:App.AddTextDialog}">
+
+    <StackPanel>
+        <TextBox Text="{Binding Text}" />
+            <!-- UpdateSourceTrigger=PropertyChanged -->
+
+        <StackPanel
+            Orientation="Horizontal"
+            HorizontalAlignment="Right">
+            <Button
+                Content="OK"
+                Command="{Binding OkCommand}"
+                IsDefault="True" />
+            <Button
+                Content="Cancel" Command="{Binding Cancel}"
+                IsCancel="True" />
+        </StackPanel>
+    </StackPanel>
+</Window>
