@@ -20,7 +20,7 @@ UI Frameworks currently supported:
 
 UI Frameworks that can easily be added through community efforts:
 - UWP (Universal Windows Platform)
-- WinUI 3 (promising MacOS support but won't support Linux)
+- WinUI 3 (promising Android/iOS support but won't support Linux)
 - Blazor (full app in web browser)
 
 ## Table of contents

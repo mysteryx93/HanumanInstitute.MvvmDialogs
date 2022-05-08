@@ -8,44 +8,43 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.SaveFileDialog
+namespace Demo.SaveFileDialog;
+
+public class MainWindowViewModel : ObservableObject
 {
-    public class MainWindowViewModel : ObservableObject
+    private readonly IDialogService dialogService;
+
+    private string? path;
+
+    public MainWindowViewModel(IDialogService dialogService)
     {
-        private readonly IDialogService dialogService;
+        this.dialogService = dialogService;
 
-        private string? path;
+        SaveFileCommand = new AsyncRelayCommand(SaveFileAsync);
+    }
 
-        public MainWindowViewModel(IDialogService dialogService)
+    public string? Path
+    {
+        get => path;
+        private set => SetProperty(ref path, value);
+    }
+
+    public ICommand SaveFileCommand { get; }
+
+    private async Task SaveFileAsync()
+    {
+        var settings = new SaveFileDialogSettings
         {
-            this.dialogService = dialogService;
-
-            SaveFileCommand = new AsyncRelayCommand(SaveFileAsync);
-        }
-
-        public string? Path
-        {
-            get => path;
-            private set => SetProperty(ref path, value);
-        }
-
-        public ICommand SaveFileCommand { get; }
-
-        private async Task SaveFileAsync()
-        {
-            var settings = new SaveFileDialogSettings
+            Title = "This is the title",
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+            Filters = new List<FileFilter>()
             {
-                Title = "This is the title",
-                InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-                Filters = new List<FileFilter>()
-                {
-                    new FileFilter("Text Documents", "txt"),
-                    new FileFilter("All Files", "*")
-                }
-            };
+                new FileFilter("Text Documents", "txt"),
+                new FileFilter("All Files", "*")
+            }
+        };
 
-            var result = await dialogService.ShowSaveFileDialogAsync(this, settings);
-            Path = result;
-        }
+        var result = await dialogService.ShowSaveFileDialogAsync(this, settings);
+        Path = result;
     }
 }

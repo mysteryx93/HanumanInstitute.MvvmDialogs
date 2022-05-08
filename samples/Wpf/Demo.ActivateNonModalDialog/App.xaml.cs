@@ -4,17 +4,16 @@ using Microsoft.Extensions.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.ActivateNonModalDialog
+namespace Demo.ActivateNonModalDialog;
+
+public partial class App
 {
-    public partial class App
+    protected override void OnStartup(StartupEventArgs e)
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            Ioc.Default.ConfigureServices(
-                new ServiceCollection()
-                    .AddSingleton<IDialogService, DialogService>()
-                    .AddTransient<MainWindowViewModel>()
-                    .BuildServiceProvider());
-        }
+        Ioc.Default.ConfigureServices(
+            new ServiceCollection()
+                .AddSingleton<IDialogService, DialogService>()
+                .AddTransient<MainWindowViewModel>()
+                .BuildServiceProvider());
     }
 }

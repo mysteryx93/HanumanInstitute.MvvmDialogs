@@ -7,7 +7,7 @@
     <LangVersion>default</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-    <PackageVersion>9.0.0</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <Company>HanumanInstitute</Company>
