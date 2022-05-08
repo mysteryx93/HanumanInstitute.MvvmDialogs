@@ -7,7 +7,7 @@
 </h1>
 
 <h4 align="center">Library simplifying the concept of opening dialogs from a view model when using MVVM</h4>
-<h6 align="center">Cross-platform solution derived from [FantasticFiasco/mvvm-dialogs](https://github.com/FantasticFiasco/mvvm-dialogs)</h6>
+<h6 align="center">Cross-platform solution derived from <a href="https://github.com/FantasticFiasco/mvvm-dialogs">FantasticFiasco/mvvm-dialogs</a></h6>
 
 <p align="center">
     <a href="https://www.nuget.org/packages/MvvmDialogs/"><img src="https://img.shields.io/nuget/v/MvvmDialogs.svg"></a>
