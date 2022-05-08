@@ -9,14 +9,13 @@
 <h4 align="center">Library simplifying the concept of opening dialogs from a view model when using MVVM</h4>
 <h6 align="center">Cross-platform solution derived from <a href="https://github.com/FantasticFiasco/mvvm-dialogs">FantasticFiasco/mvvm-dialogs</a></h6>
 
-<p align="center">
-    <a href="https://www.nuget.org/packages/MvvmDialogs/"><img src="https://img.shields.io/nuget/v/MvvmDialogs.svg"></a>
-    <a href="https://www.nuget.org/packages/MvvmDialogs/"><img src="https://img.shields.io/nuget/dt/MvvmDialogs.svg"></a>
+<p>
+
 </p>
 
 UI Frameworks currently supported:
-- WPF (Windows Presentation Foundation)
-- [Avalonia](https://avaloniaui.net/) (mature cross-platform UI framework with WPF-like syntax)
+- WPF <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Wpf/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Wpf.svg"></a> (Windows Presentation Foundation)
+- [Avalonia](https://avaloniaui.net/) <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Avalonia/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Avalonia.svg"></a> (mature cross-platform UI framework with WPF-like syntax)
 
 UI Frameworks that can easily be added through community efforts:
 - UWP (Universal Windows Platform)
@@ -284,11 +283,13 @@ public static class Extensions
 
 [Sample here](samples/Wpf/Demo.CustomMessageBox/)
 
+You could create a class library providing a new set of `IDialogService` methods.
+
 ## Unit Testing
 
-To unit-test your project, mock IDialogManager ([defined here](src/MvvmDialogs/DialogTypeLocators/IDialogManager.cs)). All UI interactions pass through DialogManager.
+To unit-test your project, mock [IDialogManager](src/MvvmDialogs/DialogTypeLocators/IDialogManager.cs). All UI interactions pass through `DialogManager`.
 
-Pass your mock when creating your DialogService.
+Pass your mock when creating your `DialogService`.
 
 ```c#
 // Using Moq
@@ -322,3 +323,7 @@ Here are the differences:
 
 Implementation could easily be added for UWP, WinUI and Blazor.
 I will leave this task to someone who is going to use it with such framework.
+
+Contributions are also welcomed to add unit tests and automated builds.
+
+Todo: Avalonia Open/Save dialogs need to display validation messages based on settings.
