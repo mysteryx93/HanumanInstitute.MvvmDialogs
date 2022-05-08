@@ -208,7 +208,7 @@ You can declare a custom naming convention by creating a class inheriting `IDial
 Type Locate(INotifyPropertyChanged viewModel)
 ```
 
-Alternatively, you can simply create a class inheriting `NamingConventionDialogTypeLocator` that simply provides the list of paths to look at.
+Alternatively, you can simply create a class inheriting `NamingConventionDialogTypeLocator` that simply provides a list of paths to look at.
 ```c#
 IList<string> LocateViewNames(string viewModelName)
 ```
@@ -222,7 +222,9 @@ new DialogService(dialogTypeLocator: new MyCustomDialogTypeLocator())
 
 This part is the most different from the FantasticFiasco version and will require some work to port.
 
-First, create a custom FrameworkDialogFactory like this. Note that you can create entirely new methods by adding new settings types. In this case we replace the standard message box method.
+First, create a custom FrameworkDialogFactory like this. Note that you can create entirely new methods by adding new settings types.
+
+Note: Since the dialog class selection is based on the settings type, you cannot have two different framework dialog classes using the same settings class. However, you can create a base settings class and various derived setting types, even if the derived type adds nothing.
 
 ```c#
 public class CustomFrameworkDialogFactory : FrameworkDialogFactory
@@ -252,7 +254,7 @@ For new methods, you can customize the return type, but to override standard met
 Task<T> ShowDialogAsync(WindowWrapper owner)
 ```
 
-Finally, if you're creating a new method, you must create a new extension method
+Finally, if you're creating a new method, you must create a new extension method on `IDialogService`
 
 ```c#
 namespace HanumanInstitute.MvvmDialogs;
@@ -267,8 +269,8 @@ public static class Extensions
         return ShowTaskMessageBoxAsync(service, ownerViewModel, settings);
     }
 
-    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel,
-        TaskMessageBoxSettings? settings = null)
+    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(this IDialogService service,
+        INotifyPropertyChanged ownerViewModel, TaskMessageBoxSettings? settings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
@@ -280,11 +282,11 @@ public static class Extensions
 }
 ```
 
-[Sample here](blob/master/samples/Wpf/Demo.CustomMessageBox/)
+[Sample here](samples/Wpf/Demo.CustomMessageBox/)
 
 ## Unit Testing
 
-To unit-test your project, mock IDialogManager ([defined here](blob/master/src/MvvmDialogs/DialogTypeLocators/IDialogManager.cs)). All UI interactions pass through DialogManager.
+To unit-test your project, mock IDialogManager ([defined here](src/MvvmDialogs/DialogTypeLocators/IDialogManager.cs)). All UI interactions pass through DialogManager.
 
 Pass your mock when creating your DialogService.
 
