@@ -29,11 +29,11 @@ UI Frameworks that can easily be added through community efforts:
 - [Generic Usage](#generic-usage)
 - [WPF Usage](#wpf-usage)
 - [Avalonia Usage](#avalonia-usage)
-- [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel-icloseable-iactivable)
+- [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel--icloseable--iactivable)
 - [Custom Windows](#custom-windows)
 - [Custom Framework Dialogs](#custom-framework-dialogs)
 - [Unit Testing](#unit-testing)
-- [Differences from FantasticFiasco/mvvm-dialogs](#differences-from-fantasticfiasco-mvvm-dialogs)
+- [Differences from FantasticFiasco/mvvm-dialogs](#differences-from-fantasticfiascomvvm-dialogs)
 - [Contributions Are Welcomed](#contributions-are-welcomed)
 ---
 
