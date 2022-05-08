@@ -1,31 +1,79 @@
 ﻿using System;
-using System.Windows;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBox;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Ookii.Dialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.CustomMessageBox;
 
-public class CustomMessageBox : IMessageBox
+public class CustomMessageBox : FrameworkDialogBase<TaskMessageBoxSettings, TaskDialogButton>, IFrameworkDialogSync<TaskDialogButton>
 {
-    private readonly MessageBoxSettings settings;
+    private readonly TaskMessageBoxSettings settings;
     private readonly TaskDialog messageBox;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CustomMessageBox"/> class.
     /// </summary>
     /// <param name="settings">The settings for the folder browser dialog.</param>
-    public CustomMessageBox(MessageBoxSettings settings)
+    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
+    public CustomMessageBox(TaskMessageBoxSettings settings, AppDialogSettings appSettings) : base(settings, appSettings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
         messageBox = new TaskDialog
         {
-            Content = settings.MessageBoxText
+            Content = settings.Text,
+            WindowTitle = GetTitle(),
+            MainIcon = GetIcon()
+        };
+        foreach (var item in GetButtons())
+        {
+            messageBox.Buttons.Add(item);
+        }
+    }
+
+    private string GetTitle() =>
+        string.IsNullOrEmpty(settings.Title) ? " " : settings.Title;
+
+    private IEnumerable<TaskDialogButton> GetButtons() =>
+        settings.Button switch
+        {
+            MessageBoxButton.OkCancel => new [] { NewButton(ButtonType.Ok), NewButton(ButtonType.Cancel)},
+            MessageBoxButton.YesNo => new[] { NewButton(ButtonType.Yes), NewButton(ButtonType.No) },
+            MessageBoxButton.YesNoCancel => new[] { NewButton(ButtonType.Yes), NewButton(ButtonType.No), NewButton(ButtonType.Cancel) },
+            _ => new[] { NewButton(ButtonType.Ok) }
         };
 
-        SetUpTitle();
-        SetUpButtons();
-        SetUpIcon();
+    private TaskDialogButton NewButton(ButtonType type) => new TaskDialogButton(type);
+
+    private TaskDialogIcon GetIcon() =>
+        settings.Icon switch
+        {
+            MessageBoxImage.Error => TaskDialogIcon.Error,
+            MessageBoxImage.Information => TaskDialogIcon.Information,
+            MessageBoxImage.Warning => TaskDialogIcon.Warning,
+            _ => TaskDialogIcon.Custom
+        };
+
+    /// <summary>
+    /// Opens a message box with specified owner.
+    /// </summary>
+    /// <param name="owner">
+    /// Handle to the window that owns the dialog.
+    /// </param>
+    /// <returns>
+    /// A bool? value that specifies which message box button is
+    /// clicked by the user.
+    /// </returns>
+    public override async Task<TaskDialogButton> ShowDialogAsync(WindowWrapper owner)
+    {
+        if (owner == null) throw new ArgumentNullException(nameof(owner));
+
+        var result = await owner.Ref.RunUiAsync(() => messageBox.ShowDialog(owner.Ref));
+        return result;
     }
 
     /// <summary>
@@ -35,90 +83,14 @@ public class CustomMessageBox : IMessageBox
     /// Handle to the window that owns the dialog.
     /// </param>
     /// <returns>
-    /// A <see cref="MessageBoxResult"/> value that specifies which message box button is
+    /// A bool? value that specifies which message box button is
     /// clicked by the user.
     /// </returns>
-    public MessageBoxResult Show(Window owner)
+    public override TaskDialogButton ShowDialog(WindowWrapper owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = messageBox.ShowDialog(owner);
-        return ToMessageBoxResult(result);
-    }
-
-    private void SetUpTitle()
-    {
-        messageBox.WindowTitle = string.IsNullOrEmpty(settings.Caption) ?
-            " " :
-            settings.Caption;
-    }
-
-    private void SetUpButtons()
-    {
-        switch (settings.Button)
-        {
-            case MessageBoxButton.OKCancel:
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Ok));
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Cancel));
-                break;
-
-            case MessageBoxButton.YesNo:
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Yes));
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.No));
-                break;
-
-            case MessageBoxButton.YesNoCancel:
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Yes));
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.No));
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Cancel));
-                break;
-
-            default:
-                messageBox.Buttons.Add(new TaskDialogButton(ButtonType.Ok));
-                break;
-        }
-    }
-
-    private void SetUpIcon()
-    {
-        switch (settings.Icon)
-        {
-            case MessageBoxImage.Error:
-                messageBox.MainIcon = TaskDialogIcon.Error;
-                break;
-
-            case MessageBoxImage.Information:
-                messageBox.MainIcon = TaskDialogIcon.Information;
-                break;
-
-            case MessageBoxImage.Warning:
-                messageBox.MainIcon = TaskDialogIcon.Warning;
-                break;
-
-            default:
-                messageBox.MainIcon = TaskDialogIcon.Custom;
-                break;
-        }
-    }
-
-    private static MessageBoxResult ToMessageBoxResult(TaskDialogButton button)
-    {
-        switch (button.ButtonType)
-        {
-            case ButtonType.Cancel:
-                return MessageBoxResult.Cancel;
-
-            case ButtonType.No:
-                return MessageBoxResult.No;
-
-            case ButtonType.Ok:
-                return MessageBoxResult.OK;
-
-            case ButtonType.Yes:
-                return MessageBoxResult.Yes;
-
-            default:
-                return MessageBoxResult.None;
-        }
+        var result = messageBox.ShowDialog(owner.Ref);
+        return result;
     }
 }

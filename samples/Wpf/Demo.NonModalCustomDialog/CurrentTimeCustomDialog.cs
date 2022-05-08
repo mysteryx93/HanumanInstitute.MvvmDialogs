@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.NonModalCustomDialog;
 
-public class CurrentTimeCustomDialog : IWindow
+public class CurrentTimeCustomDialog : IWindow, IWindowSync
 {
     private readonly CurrentTimeDialog dialog = new();
 
@@ -26,6 +27,8 @@ public class CurrentTimeCustomDialog : IWindow
     }
 
     Task<bool?> IWindow.ShowDialogAsync() => dialog.RunUiAsync(() => dialog.ShowDialog());
+
+    public bool? ShowDialog() => dialog.ShowDialog();
 
     void IWindow.Show() => dialog.Show();
 

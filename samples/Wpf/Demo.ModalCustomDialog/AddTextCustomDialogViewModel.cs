@@ -1,12 +1,14 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.ModalCustomDialog;
 
-public class AddTextCustomDialogViewModel : ObservableObject, IModalDialogViewModel
+public class AddTextCustomDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
+    public event EventHandler? RequestClose;
     private string? text;
     private bool? dialogResult;
 
@@ -33,6 +35,7 @@ public class AddTextCustomDialogViewModel : ObservableObject, IModalDialogViewMo
     {
         if (!string.IsNullOrEmpty(Text))
         {
+            RequestClose?.Invoke(this, EventArgs.Empty);
             DialogResult = true;
         }
     }

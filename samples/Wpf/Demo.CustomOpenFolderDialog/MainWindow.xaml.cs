@@ -1,4 +1,4 @@
-﻿namespace Demo.CustomFolderBrowserDialog;
+﻿namespace Demo.CustomOpenFolderDialog;
 
 public partial class MainWindow
 {

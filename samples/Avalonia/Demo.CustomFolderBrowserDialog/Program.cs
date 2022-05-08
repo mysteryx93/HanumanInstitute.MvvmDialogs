@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.ReactiveUI;
 
-namespace Demo.CustomFolderBrowserDialog;
+namespace Demo.CustomOpenFolderDialog;
 
 class Program
 {

@@ -2,8 +2,9 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.CustomFolderBrowserDialog;
+namespace Demo.CustomOpenFolderDialog;
 
 public partial class App
 {
@@ -11,7 +12,7 @@ public partial class App
     {
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddSingleton<IDialogService>(_ => new DialogService(frameworkDialogFactory: new CustomFrameworkDialogFactory()))
+                .AddSingleton<IDialogService>(_ => new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory())))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
     }

@@ -6,7 +6,7 @@ namespace Demo.CustomDialogTypeLocator;
 
 // This class is used as an example in the wiki. For more information see
 // https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs/wiki/Custom-dialog-type-locators.
-public class MyCustomDialogTypeLocator : IDialogTypeLocator
+public class MyCustomDialogTypeLocator : IDialogTypeLocator //, NamingConventionDialogTypeLocator
 {
     public Type Locate(INotifyPropertyChanged viewModel)
     {

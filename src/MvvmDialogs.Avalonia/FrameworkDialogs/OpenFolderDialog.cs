@@ -28,7 +28,7 @@ internal class OpenFolderDialog : FrameworkDialogBase<OpenFolderDialogSettings, 
         new()
         {
             Title = Settings.Title,
-            Directory = Settings.InitialPath
+            Directory = Settings.InitialDirectory
 
             // d.ShowNewFolderButton = Settings.ShowNewFolderButton;
         };

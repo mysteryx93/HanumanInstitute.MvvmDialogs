@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.CustomFolderBrowserDialog.Views;
+namespace Demo.CustomOpenFolderDialog.Views;
 
 public partial class MainWindow : Window
 {

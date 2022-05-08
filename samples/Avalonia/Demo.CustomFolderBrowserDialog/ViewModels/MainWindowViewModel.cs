@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Demo.CustomFolderBrowserDialog.ViewModels;
+namespace Demo.CustomOpenFolderDialog.ViewModels;
 
 public class MainWindowViewModel : ViewModelBase
 {

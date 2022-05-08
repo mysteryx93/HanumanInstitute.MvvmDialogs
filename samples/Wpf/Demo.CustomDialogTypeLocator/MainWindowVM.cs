@@ -4,17 +4,13 @@ using Demo.CustomDialogTypeLocator.ComponentA;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.CustomDialogTypeLocator;
 
 public class MainWindowVM : ObservableObject
 {
     private readonly IDialogService dialogService;
-
-    public MainWindowVM()
-        : this(new DialogService(dialogTypeLocator: new MyCustomDialogTypeLocator()))
-    {
-    }
 
     public MainWindowVM(IDialogService dialogService)
     {

@@ -11,15 +11,12 @@
     WindowStartupLocation="CenterScreen"
     Title="Demo - Custom Dialog Type Locator"
     Width="300"
-    Height="200">
+    Height="200"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MainWindow}">
 
     <Window.Resources>
         <ResourceDictionary Source="ApplicationResources.xaml" />
     </Window.Resources>
-
-    <Window.DataContext>
-        <local:MainWindowVM />
-    </Window.DataContext>
 
     <Grid>
         <Button Command="{Binding ShowDialogCommand}" Content="Open dialog" />

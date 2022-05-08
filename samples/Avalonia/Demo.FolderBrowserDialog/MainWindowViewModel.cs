@@ -32,7 +32,7 @@ public class MainWindowViewModel : ViewModelBase
         var settings = new OpenFolderDialogSettings
         {
             Title = "This is a title",
-            InitialPath = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
         };
 
         var result = await dialogService.ShowOpenFolderDialogAsync(this, settings).ConfigureAwait(true);

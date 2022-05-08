@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Demo.CustomFolderBrowserDialog.ViewModels;
+using Demo.CustomOpenFolderDialog.ViewModels;
 
-namespace Demo.CustomFolderBrowserDialog;
+namespace Demo.CustomOpenFolderDialog;
 
 public class ViewLocator : IDataTemplate
 {

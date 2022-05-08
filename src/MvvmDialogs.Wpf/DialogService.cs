@@ -40,7 +40,7 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
         IDialogManager? dialogManager = null,
         IDialogTypeLocator? dialogTypeLocator = null)
         : base(settings ?? new AppDialogSettings(),
-            dialogManager ?? new DialogManager(new ReflectionDialogFactory(), new FrameworkDialogFactory()),
+            dialogManager ?? new DialogManager(new FrameworkDialogFactory(), new ReflectionDialogFactory()),
             dialogTypeLocator ?? new NamingConventionDialogTypeLocator())
     {
     }

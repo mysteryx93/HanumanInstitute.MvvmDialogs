@@ -1,9 +1,11 @@
 using System;
-using System.Windows;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Ookii.Dialogs.Wpf;
 
 namespace Demo.CustomMessageBox;
 
@@ -12,16 +14,16 @@ public class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
 
     private string? confirmation;
-    
+
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
 
-        ShowMessageBoxWithMessageCommand = new RelayCommand(ShowMessageBoxWithMessage);
-        ShowMessageBoxWithCaptionCommand = new RelayCommand(ShowMessageBoxWithCaption);
-        ShowMessageBoxWithButtonCommand = new RelayCommand(ShowMessageBoxWithButton);
-        ShowMessageBoxWithIconCommand = new RelayCommand(ShowMessageBoxWithIcon);
-        ShowMessageBoxWithDefaultResultCommand = new RelayCommand(ShowMessageBoxWithDefaultResult);
+        ShowMessageBoxWithMessageCommand = new AsyncRelayCommand(ShowMessageBoxWithMessageAsync);
+        ShowMessageBoxWithCaptionCommand = new AsyncRelayCommand(ShowMessageBoxWithCaptionAsync);
+        ShowMessageBoxWithButtonCommand = new AsyncRelayCommand(ShowMessageBoxWithButtonAsync);
+        ShowMessageBoxWithIconCommand = new AsyncRelayCommand(ShowMessageBoxWithIconAsync);
+        ShowMessageBoxWithDefaultResultCommand = new AsyncRelayCommand(ShowMessageBoxWithDefaultResultAsync);
     }
 
     public ICommand ShowMessageBoxWithMessageCommand { get; }
@@ -40,18 +42,18 @@ public class MainWindowViewModel : ObservableObject
         private set => SetProperty(ref confirmation, value);
     }
 
-    private void ShowMessageBoxWithMessage()
+    private async Task ShowMessageBoxWithMessageAsync()
     {
-        MessageBoxResult result = dialogService.ShowMessageBox(
+        var result = await dialogService.ShowTaskMessageBoxAsync(
             this,
             "This is the text.");
 
         UpdateResult(result);
     }
 
-    private void ShowMessageBoxWithCaption()
+    private async Task ShowMessageBoxWithCaptionAsync()
     {
-        MessageBoxResult result = dialogService.ShowMessageBox(
+        var result = await dialogService.ShowTaskMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption");
@@ -59,56 +61,44 @@ public class MainWindowViewModel : ObservableObject
         UpdateResult(result);
     }
 
-    private void ShowMessageBoxWithButton()
+    private async Task ShowMessageBoxWithButtonAsync()
     {
-        MessageBoxResult result = dialogService.ShowMessageBox(
+        var result = await dialogService.ShowTaskMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",
-            MessageBoxButton.OKCancel);
+            MessageBoxButton.OkCancel);
 
         UpdateResult(result);
     }
 
-    private void ShowMessageBoxWithIcon()
+    private async Task ShowMessageBoxWithIconAsync()
     {
-        MessageBoxResult result = dialogService.ShowMessageBox(
+        var result = await dialogService.ShowTaskMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",
-            MessageBoxButton.OKCancel,
+            MessageBoxButton.OkCancel,
             MessageBoxImage.Information);
 
         UpdateResult(result);
     }
 
-    private void ShowMessageBoxWithDefaultResult()
+    private async Task ShowMessageBoxWithDefaultResultAsync()
     {
-        MessageBoxResult result = dialogService.ShowMessageBox(
+        var result = await dialogService.ShowTaskMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",
-            MessageBoxButton.OKCancel,
+            MessageBoxButton.OkCancel,
             MessageBoxImage.Information,
-            MessageBoxResult.Cancel);
+            false);
 
         UpdateResult(result);
     }
 
-    private void UpdateResult(MessageBoxResult result)
+    private void UpdateResult(TaskDialogButton result)
     {
-        switch (result)
-        {
-            case MessageBoxResult.OK:
-                Confirmation = "We got confirmation to continue!";
-                break;
-
-            case MessageBoxResult.Cancel:
-                Confirmation = string.Empty;
-                break;
-
-            default:
-                throw new NotSupportedException($"{confirmation} is not supported.");
-        }
+        Confirmation = result.ButtonType.ToString();
     }
 }

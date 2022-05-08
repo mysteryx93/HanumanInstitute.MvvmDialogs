@@ -1,44 +1,39 @@
-﻿using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.ModalCustomDialog;
 
-public class AddTextCustomDialog : IWindow
+public class AddTextCustomDialog : IWindow, IWindowSync
 {
-    private readonly AddTextDialog dialog;
+    private readonly AddTextDialog dialog = new();
 
-    public AddTextCustomDialog()
+    event EventHandler IWindow.Closed
     {
-        dialog = new AddTextDialog();
+        add => dialog.Closed += value;
+        remove => dialog.Closed -= value;
     }
 
-    object IWindow.DataContext
+    object? IWindow.DataContext
     {
         get => dialog.DataContext;
         set => dialog.DataContext = value;
     }
 
-    bool? IWindow.DialogResult
+    public IWindow? Owner
     {
-        get => dialog.DialogResult;
-        set => dialog.DialogResult = value;
+        get => dialog.Owner.AsWrapper();
+        set => dialog.Owner = value.AsWrapper()?.Ref;
     }
 
-    ContentControl IWindow.Owner
-    {
-        get => dialog.Owner;
-        set => dialog.Owner = (Window)value;
-    }
+    Task<bool?> IWindow.ShowDialogAsync() => dialog.RunUiAsync(() => dialog.ShowDialog());
 
-    Task<bool?> IWindow.ShowDialogAsync()
-    {
-        return dialog.ShowDialog();
-    }
+    public bool? ShowDialog() => dialog.ShowDialog();
 
-    void IWindow.Show()
-    {
-        dialog.Show();
-    }
+    void IWindow.Show() => dialog.Show();
+
+    public void Activate() => dialog.Activate();
+
+    public void Close() => dialog.Close();
 }

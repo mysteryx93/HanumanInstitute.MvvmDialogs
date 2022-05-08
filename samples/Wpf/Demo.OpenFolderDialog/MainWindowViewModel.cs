@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,7 +19,7 @@ public class MainWindowViewModel : ObservableObject
     {
         this.dialogService = dialogService;
 
-        OpenFolderCommand = new RelayCommand(OpenFolder);
+        OpenFolderCommand = new AsyncRelayCommand(OpenFolderAsync);
     }
 
     public string? Path
@@ -29,15 +30,15 @@ public class MainWindowViewModel : ObservableObject
 
     public ICommand OpenFolderCommand { get; }
 
-    private void OpenFolder()
+    private async Task OpenFolderAsync()
     {
         var settings = new OpenFolderDialogSettings
         {
             Title = "This is a description",
-            InitialPath = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        var result = dialogService.ShowOpenFolderDialog(this, settings);
+        var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
         Path = result;
     }
 }

@@ -12,7 +12,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
     public class DialogManager : DialogManagerBase, IDialogManagerSync
     {
         /// <inheritdoc />
-        public DialogManager(IDialogFactory? dialogFactory, IFrameworkDialogFactory? frameworkDialogFactory) :
+        public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null, IDialogFactory? dialogFactory = null) :
             base(dialogFactory ?? new ReflectionDialogFactory(), frameworkDialogFactory ?? new FrameworkDialogFactory())
         {
         }

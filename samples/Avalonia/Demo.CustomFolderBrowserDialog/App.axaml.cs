@@ -2,10 +2,10 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Demo.CustomFolderBrowserDialog.ViewModels;
-using Demo.CustomFolderBrowserDialog.Views;
+using Demo.CustomOpenFolderDialog.ViewModels;
+using Demo.CustomOpenFolderDialog.Views;
 
-namespace Demo.CustomFolderBrowserDialog;
+namespace Demo.CustomOpenFolderDialog;
 
 public class App : Application
 {

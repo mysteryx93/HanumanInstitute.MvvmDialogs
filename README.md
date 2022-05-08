@@ -32,6 +32,7 @@ UI Frameworks that can easily be added through community efforts:
 - [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel-icloseable-iactivable)
 - [Custom Windows](#custom-windows)
 - [Custom Framework Dialogs](#custom-framework-dialogs)
+- [Unit Testing](#unit-testing)
 - [Differences from FantasticFiasco/mvvm-dialogs](#differences-from-fantasticfiasco-mvvm-dialogs)
 - [Contributions Are Welcomed](#contributions-are-welcomed)
 ---
@@ -195,11 +196,105 @@ In your ViewModel, implement `IActivable` to add `RequestActivate` event which w
 ## Custom Windows
 
 To display custom dialogs that are not of type `Window` or `ContentDialog`,
-your dialog class must implement `IWindow`. The usage will the same as a standard `Window`.
+your dialog class must implement [IWindow](blob/master/src/MvvmDialogs/IWindow.cs)
+([sample](blob/master/samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
+The usage will the same as a standard `Window`.
+
+## Custom Naming Conventions
+
+You can declare a custom naming convention by creating a class inheriting `IDialogTypeLocator` just like in the FantasticFiasco version.
+
+```c#
+Type Locate(INotifyPropertyChanged viewModel)
+```
+
+Alternatively, you can simply create a class inheriting `NamingConventionDialogTypeLocator` that simply provides the list of paths to look at.
+```c#
+IList<string> LocateViewNames(string viewModelName)
+```
+
+You then pass the custom DialogTypeLocator in the constructor of DialogService.
+```c#
+new DialogService(dialogTypeLocator: new MyCustomDialogTypeLocator())
+```
 
 ## Custom Framework Dialogs
 
-MVVM Dialogs is by default opening the standard Windows message box or the open file dialog when asked to. This can however be changed by providing your own implementation of `IFrameworkDialogFactory` to `DialogService`.
+This part is the most different from the FantasticFiasco version and will require some work to port.
+
+First, create a custom FrameworkDialogFactory like this. Note that you can create entirely new methods by adding new settings types. In this case we replace the standard message box method.
+
+```c#
+public class CustomFrameworkDialogFactory : FrameworkDialogFactory
+{
+    public override IFrameworkDialog<TResult> Create<TSettings, TResult>(TSettings settings, AppDialogSettingsBase appSettings)
+    {
+        var s2 = (AppDialogSettings)appSettings;
+        return settings switch
+        {
+            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s, s2),
+            _ => base.Create<TSettings, TResult>(settings, appSettings)
+        };
+    }
+}
+```
+
+Second, you must pass the new FrameworkDialogFactory when creating the DialogService.
+
+```c#
+new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory()))
+```
+
+Third, create a framework dialog class that inherits `FrameworkDialogBase<T>`.
+For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type. Override `ShowDialogAsync`.
+
+```c#
+Task<T> ShowDialogAsync(WindowWrapper owner)
+```
+
+Finally, if you're creating a new method, you must create a new extension method
+
+```c#
+namespace HanumanInstitute.MvvmDialogs;
+
+public static class Extensions
+{
+    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(
+        this IDialogService service, INotifyPropertyChanged ownerViewModel,
+        string text, string title = "")
+    {
+        var settings = new TaskMessageBoxSettings(text, title);
+        return ShowTaskMessageBoxAsync(service, ownerViewModel, settings);
+    }
+
+    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+        TaskMessageBoxSettings? settings = null)
+    {
+        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
+
+        DialogLogger.Write($"TASK Caption: {settings?.Title}; Message: {settings?.Text}");
+
+        return service.DialogManager.ShowFrameworkDialogAsync<MessageBoxSettings, TaskDialogButton>(
+            ownerViewModel, settings ?? new MessageBoxSettings());
+    }
+}
+```
+
+[Sample here](blob/master/samples/Wpf/Demo.CustomMessageBox/)
+
+## Unit Testing
+
+To unit-test your project, mock IDialogManager ([defined here](blob/master/src/MvvmDialogs/DialogTypeLocators/IDialogManager.cs)). All UI interactions pass through DialogManager.
+
+Pass your mock when creating your DialogService.
+
+```c#
+// Using Moq
+var dialogManagerMock = new Mock<IDialogManager>();
+new DialogService(dialogManager: dialogManagerMock.Object);
+```
+
+From here you can configure your mock to validate calls to `Show`, `ShowDialogAsync` and `ShowFrameworkDialogAsync`.
 
 ## Differences from FantasticFiasco/mvvm-dialogs
 
@@ -219,6 +314,7 @@ Here are the differences:
 - Framework dialog methods return the selected value instead of bool.
 - FolderBrowserDialog has been renamed to OpenFolderDialog.
 - Factory classes are implemented differently.
+- Default naming convention, for `ViewModels/MainViewModel`, FantasticFiasco looks for `Views/Main`. This version first looks for `Views/MainView` and then `Views/Main`.
 
 ## Contributions Are Welcomed
 

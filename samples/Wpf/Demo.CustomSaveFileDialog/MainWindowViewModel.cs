@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.SaveFile;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
 namespace Demo.CustomSaveFileDialog;
@@ -35,14 +36,15 @@ public class MainWindowViewModel : ObservableObject
         {
             Title = "This Is The Title",
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
-            Filter = "Text Documents (*.txt)|*.txt|All Files (*.*)|*.*",
+            Filters = new List<FileFilter>()
+            {
+                new FileFilter("Text Documents", "txt"),
+                new FileFilter("All Files", "*")
+            },
             CheckFileExists = false
         };
 
-        bool? success = dialogService.ShowSaveFileDialog(this, settings);
-        if (success == true)
-        {
-            Path = settings.FileName;
-        }
+        var result = dialogService.ShowSaveFileDialog(this, settings);
+        Path = result;
     }
 }

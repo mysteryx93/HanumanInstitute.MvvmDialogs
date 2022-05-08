@@ -1,12 +1,13 @@
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.FolderBrowser;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.CustomFolderBrowserDialog;
+namespace Demo.CustomOpenFolderDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
@@ -18,7 +19,7 @@ public class MainWindowViewModel : ObservableObject
     {
         this.dialogService = dialogService;
 
-        BrowseFolderCommand = new RelayCommand(BrowseFolder);
+        BrowseFolderCommand = new AsyncRelayCommand(OpenFolderAsync);
     }
 
     public string? Path
@@ -29,18 +30,15 @@ public class MainWindowViewModel : ObservableObject
 
     public ICommand BrowseFolderCommand { get; }
 
-    private void BrowseFolder()
+    private async Task OpenFolderAsync()
     {
-        var settings = new FolderBrowserDialogSettings
+        var settings = new OpenFolderDialogSettings
         {
-            Description = "This is a description",
-            SelectedPath = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+            Title = "This is a description",
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        bool? success = dialogService.ShowFolderBrowserDialog(this, settings);
-        if (success == true)
-        {
-            Path = settings.SelectedPath;
-        }
+        var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
+        Path = result;
     }
 }

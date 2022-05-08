@@ -31,7 +31,7 @@ internal class OpenFolderDialog : FrameworkDialogBase<OpenFolderDialogSettings, 
         new()
         {
             Description = Settings.Title,
-            SelectedPath = Settings.InitialPath,
+            SelectedPath = Settings.InitialDirectory,
             HelpRequest = Settings.HelpRequest
         };
 }

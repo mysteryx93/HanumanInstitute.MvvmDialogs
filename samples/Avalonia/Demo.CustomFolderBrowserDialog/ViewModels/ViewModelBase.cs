@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ReactiveUI;
 
-namespace Demo.CustomFolderBrowserDialog.ViewModels;
+namespace Demo.CustomOpenFolderDialog.ViewModels;
 
 public class ViewModelBase : ReactiveObject
 {
