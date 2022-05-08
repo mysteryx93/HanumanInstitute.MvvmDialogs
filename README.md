@@ -85,7 +85,7 @@ public class ModalDialogTabContentViewModel : INotifyPropertyChanged
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Wpf`
 
-You must be decorate the views to display with the attached property `DialogServiceViews.IsRegistered`:
+You must decorate the views with the attached property `DialogServiceViews.IsRegistered`:
 
 ```xaml
 <UserControl
@@ -125,7 +125,7 @@ it is recommended to use the async methods.
     private bool? ShowDialog()
     {
         var dialogViewModel = new AddTextDialogViewModel();
-        return dialogService.ShowDialog(this, dialogViewModel);
+        return dialogService.ShowDialog(this, dialogViewModel); // Sync
     }
 }
 ```
@@ -152,7 +152,7 @@ You must be decorate the views to display with the attached property `DialogServ
 
   ...
 
-</UserControl>
+</Window>
 ```
 
 DialogService must be registered in the DependencyInjection container of your choice. Note that IDialogService is defined in `HanumanInstitute.MvvmDialogs` and DialogService is defined in `HanumanInstitute.MvvmDialogs.Wpf`.
@@ -196,8 +196,8 @@ In your ViewModel, implement `IActivable` to add `RequestActivate` event which w
 ## Custom Windows
 
 To display custom dialogs that are not of type `Window` or `ContentDialog`,
-your dialog class must implement [IWindow](blob/master/src/MvvmDialogs/IWindow.cs)
-([sample](blob/master/samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
+your dialog class must implement [IWindow](src/MvvmDialogs/IWindow.cs)
+([sample](samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
 The usage will the same as a standard `Window`.
 
 ## Custom Naming Conventions
