@@ -7,6 +7,9 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf
 {
+    /// <summary>
+    /// Provides extension methods for WPF.
+    /// </summary>
     public static class Extensions
     {
         /// <summary>

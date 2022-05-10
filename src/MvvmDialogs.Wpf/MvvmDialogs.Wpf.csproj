@@ -9,7 +9,6 @@
     <AssemblyTitle>MVVM Dialogs for WPF</AssemblyTitle>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-    <PackageVersion>1.0.0</PackageVersion>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <Product>HanumanInstitute.MvvmDialogs</Product>
@@ -23,6 +22,7 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

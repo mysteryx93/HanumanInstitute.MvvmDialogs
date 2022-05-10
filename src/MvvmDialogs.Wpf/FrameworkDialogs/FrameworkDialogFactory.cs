@@ -12,6 +12,9 @@ public class FrameworkDialogFactory : IFrameworkDialogFactory
     private readonly IFrameworkDialogsApi api;
     private readonly IPathInfoFactory pathInfo;
 
+    /// <summary>
+    /// Initializes the FrameworkDialogFactory.
+    /// </summary>
     public FrameworkDialogFactory() : this(null)
     {}
 

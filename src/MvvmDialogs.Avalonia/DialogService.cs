@@ -53,6 +53,11 @@ public class DialogService : DialogServiceBase
     protected override IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
         Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
+    /// <summary>
+    /// Returns the Window owning specified ViewModel.
+    /// </summary>
+    /// <param name="ownerViewModel">The ViewModel to get the Window for.</param>
+    /// <returns>A Window for the ViewModel..</returns>
     protected Window? FindOwnerWindow(INotifyPropertyChanged ownerViewModel) =>
         (ViewRegistration.FindView(ownerViewModel) as WindowWrapper)?.Ref;
 }

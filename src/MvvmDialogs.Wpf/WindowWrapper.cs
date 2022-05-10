@@ -22,6 +22,9 @@ public class WindowWrapper : IWindow, IWindowSync
     /// </summary>
     public IWin32Window Win32Window => new Win32Window(Ref);
 
+    /// <summary>
+    /// Occurs when the window is about to close.
+    /// </summary>
     public event EventHandler? Closed
     {
         add => Ref.Closed += value;

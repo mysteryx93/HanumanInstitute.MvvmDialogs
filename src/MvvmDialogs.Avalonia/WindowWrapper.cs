@@ -18,6 +18,9 @@ public class WindowWrapper : IWindow
     /// <inheritdoc />
     public IWindow? Owner { get; set; }
 
+    /// <summary>
+    /// Fired when the window is closed.
+    /// </summary>
     public event EventHandler? Closed
     {
         add => Ref.Closed += value;
