@@ -80,6 +80,42 @@ public class ModalDialogTabContentViewModel : INotifyPropertyChanged
 }
 ```
 
+The recommended way of accessing your dialogs is to create a `DialogExtensions` class containing strongly-typed access to all your dialogs.
+
+```c#
+public static class DialogExtensions
+{
+    public static async Task<PresetItem?> ShowLoadPresetViewAsync(this IDialogService dialog, INotifyPropertyChanged ownerViewModel)
+    {
+        dialog.CheckNotNull(nameof(dialog)); // using HanumanInstitute.Validators
+
+        var viewModel = ViewModelLocator.SelectPreset.Load(false);
+        var result = await dialog.ShowDialogAsync(ownerViewModel, viewModel).ConfigureAwait(true);
+        return result == true ? viewModel.SelectedItem : null;
+    }
+
+    public static async Task<string?> ShowSavePresetViewAsync(this IDialogService dialog, INotifyPropertyChanged ownerViewModel)
+    {
+        dialog.CheckNotNull(nameof(dialog));
+
+        var viewModel = ViewModelLocator.SelectPreset.Load(true);
+        var result = await dialog.ShowDialogAsync(ownerViewModel, viewModel).ConfigureAwait(true);
+        return result == true ? viewModel.PresetName : null;
+    }
+}
+```
+
+Then the usage is super *sexy*! (a long way from ReactiveUI [Interactions](https://www.reactiveui.net/docs/handbook/interactions/)...)
+
+```c#
+private async Task<string?> SavePreset()
+{
+    var presetName = await dialogService.ShowSavePresetViewAsync(this);
+    if (presetName != null) { ... }
+    return presetName;
+}
+```
+
 ## WPF Usage
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Wpf`
