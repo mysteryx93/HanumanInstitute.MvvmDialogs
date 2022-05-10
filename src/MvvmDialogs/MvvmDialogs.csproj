@@ -2,28 +2,23 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <LangVersion>default</LangVersion>
-    <!--
-      Lets have the .NET Framework version listed first, otherwise we will get build warnings in Visual Studio.
-      See https://github.com/dotnet/project-system/issues/1162 for more information.
-     -->
-    <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>../../StrongName.snk</AssemblyOriginatorKeyFile>
-    <Nullable>enable</Nullable>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
+    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs</AssemblyName>
     <RootNamespace>HanumanInstitute.MvvmDialogs</RootNamespace>
-    <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
-    <Authors>Etienne Charland</Authors>
     <Company>Hanuman Institute</Company>
-    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <Authors>Etienne Charland</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>

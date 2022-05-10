@@ -1,0 +1,26 @@
+<Window x:Class="Demo.NonModalCustomDialog.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.NonModalCustomDialog"
+    mc:Ignorable="d"
+    md:DialogServiceViews.IsRegistered="True"
+    WindowStartupLocation="CenterScreen"
+    Title="Demo - Non-Modal Custom Dialog"
+    Width="300"
+    Height="200"
+    DataContext="{x:Static local:App.MainWindow}">
+
+    <UniformGrid Rows="2">
+        <Button
+            Command="{Binding ImplicitShowCommand}">
+            <TextBlock Text="Show current time using the dialog type locator" />
+        </Button>
+        <Button
+            Command="{Binding ExplicitShowCommand}">
+            <TextBlock Text="Show current time by specifying dialog type" />
+        </Button>
+    </UniformGrid>
+</Window>

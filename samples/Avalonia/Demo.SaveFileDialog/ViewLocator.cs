@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Demo.SaveFileDialog.ViewModels;
 
 namespace Demo.SaveFileDialog;
 

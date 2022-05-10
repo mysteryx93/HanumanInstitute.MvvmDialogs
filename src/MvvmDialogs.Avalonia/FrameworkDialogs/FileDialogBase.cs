@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 internal abstract class FileDialogBase<TSettings, TResult> : FrameworkDialogBase<TSettings, TResult>
     where TSettings : FileDialogSettings
@@ -21,12 +21,8 @@ internal abstract class FileDialogBase<TSettings, TResult> : FrameworkDialogBase
         // d.CheckFileExists = s.CheckFileExists;
         // d.CheckPathExists = s.CheckPathExists;
         var s = Settings;
-        if (!string.IsNullOrEmpty(s.InitialPath))
-        {
-            var file = PathInfo.GetFileInfo(s.InitialPath);
-            d.Directory = file.DirectoryName;
-            d.InitialFileName = file.FileName;
-        }
+        d.Directory = s.InitialDirectory;
+        d.InitialFileName = s.InitialFile;
         d.Filters = SyncFilters(s.Filters);
         d.Title = s.Title;
     }

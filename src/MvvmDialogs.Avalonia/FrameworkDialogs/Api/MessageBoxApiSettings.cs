@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using MessageBox.Avalonia.Enums;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 
 internal class MessageBoxApiSettings
 {

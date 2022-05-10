@@ -1,13 +1,11 @@
-﻿using System.Windows;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 internal class MessageBoxApiSettings
 {
     public string MessageBoxText { get; set; } = string.Empty;
     public string Caption { get; set; } = string.Empty;
-    public MessageBoxButton Buttons { get; set; }
-    public MessageBoxImage Icon { get; set; }
-    public MessageBoxResult DefaultButton { get; set; }
-    public MessageBoxOptions Options { get; set; }
+    public System.Windows.MessageBoxButton Buttons { get; set; }
+    public System.Windows.MessageBoxImage Icon { get; set; }
+    public System.Windows.MessageBoxResult DefaultButton { get; set; }
+    public System.Windows.MessageBoxOptions Options { get; set; }
 }

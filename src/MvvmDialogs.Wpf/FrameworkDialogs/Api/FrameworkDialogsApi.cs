@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Forms;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi

@@ -1,8 +1,8 @@
 ﻿using System;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using Ookii.Dialogs.Wpf;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Demo.CustomOpenFileDialog;
 
-public class CustomOpenFileDialog : FrameworkDialogBase<OpenFileDialogSettings, string[]>
+public class CustomOpenFileDialog : IFrameworkDialog<string[]>, IFrameworkDialogSync<string[]>
 {
     private readonly OpenFileDialogSettings settings;
     private readonly VistaOpenFileDialog openFileDialog;
@@ -19,9 +19,7 @@ public class CustomOpenFileDialog : FrameworkDialogBase<OpenFileDialogSettings, 
     /// Initializes a new instance of the <see cref="CustomOpenFileDialog"/> class.
     /// </summary>
     /// <param name="settings">The settings for the open file dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
-    public CustomOpenFileDialog(OpenFileDialogSettings settings, AppDialogSettings appSettings) :
-        base(settings, appSettings)
+    public CustomOpenFileDialog(OpenFileDialogSettings settings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
@@ -78,11 +76,12 @@ public class CustomOpenFileDialog : FrameworkDialogBase<OpenFileDialogSettings, 
     /// <returns>
     /// true if user clicks the OK button; otherwise false.
     /// </returns>
-    public override async Task<string[]> ShowDialogAsync(WindowWrapper owner)
+    public async Task<string[]> ShowDialogAsync(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = await owner.Ref.RunUiAsync(() => openFileDialog.ShowDialog(owner.Ref));
+        var window = owner.AsWrapper().Ref;
+        var result = await window.RunUiAsync(() => openFileDialog.ShowDialog(window));
 
         return openFileDialog.FileNames;
     }
@@ -96,11 +95,12 @@ public class CustomOpenFileDialog : FrameworkDialogBase<OpenFileDialogSettings, 
     /// <returns>
     /// true if user clicks the OK button; otherwise false.
     /// </returns>
-    public override string[] ShowDialog(WindowWrapper owner)
+    public string[] ShowDialog(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = openFileDialog.ShowDialog(owner.Ref);
+        var window = owner.AsWrapper().Ref;
+        var result = openFileDialog.ShowDialog(window);
 
         return openFileDialog.FileNames;
     }

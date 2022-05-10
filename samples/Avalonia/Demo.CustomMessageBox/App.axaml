@@ -8,5 +8,12 @@
 
     <Application.Styles>
         <FluentTheme Mode="Light"/>
+        <Style Selector="Button">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
     </Application.Styles>
+
 </Application>

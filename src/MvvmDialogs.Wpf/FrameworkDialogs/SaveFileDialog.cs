@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using Win32SaveFileDialog = System.Windows.Forms.SaveFileDialog;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Class wrapping <see cref="System.Windows.Forms.SaveFileDialog"/>.

@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using Win32Button = System.Windows.MessageBoxButton;
 using Win32Image = System.Windows.MessageBoxImage;
 using Win32Result = System.Windows.MessageBoxResult;
 using Win32Options = System.Windows.MessageBoxOptions;
 using Win32MessageBox = System.Windows.MessageBox;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Class wrapping <see cref="System.Windows.MessageBox"/>.

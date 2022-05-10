@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 namespace HanumanInstitute.MvvmDialogs;

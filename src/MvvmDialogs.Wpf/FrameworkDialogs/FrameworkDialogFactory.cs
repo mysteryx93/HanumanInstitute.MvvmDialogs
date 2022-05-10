@@ -1,10 +1,8 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Default framework dialog factory that will create instances of standard Windows dialogs.

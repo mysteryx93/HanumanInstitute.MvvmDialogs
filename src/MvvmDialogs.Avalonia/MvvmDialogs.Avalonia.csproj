@@ -1,21 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia</AssemblyName>
     <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia</RootNamespace>
-    <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
-    <Authors>Etienne Charland</Authors>
     <Company>Hanuman Institute</Company>
-    <Product>HanumanInstitute.MvvmDialogs</Product>
+    <Authors>Etienne Charland</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
-    <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
   </PropertyGroup>
@@ -31,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.13" />
+    <PackageReference Include="Avalonia" Version="0.10.14" />
     <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
   </ItemGroup>
 

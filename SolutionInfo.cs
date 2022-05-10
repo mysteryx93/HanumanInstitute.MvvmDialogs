@@ -10,4 +10,4 @@
 [assembly: AssemblyCulture("")]
 
 // Assembly version
-[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyVersion("1.5.0")]

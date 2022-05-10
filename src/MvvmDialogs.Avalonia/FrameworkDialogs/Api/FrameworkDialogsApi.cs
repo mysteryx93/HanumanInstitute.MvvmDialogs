@@ -4,7 +4,7 @@ using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi

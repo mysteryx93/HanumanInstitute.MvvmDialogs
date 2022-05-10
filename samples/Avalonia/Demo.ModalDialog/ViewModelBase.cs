@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.ModalDialog.ViewModels;
+namespace Demo.ModalDialog;
 
 public class ViewModelBase : ReactiveObject
 {

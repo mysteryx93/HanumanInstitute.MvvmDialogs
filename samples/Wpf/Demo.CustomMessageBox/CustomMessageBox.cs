@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Ookii.Dialogs.Wpf;
-using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.CustomMessageBox;
 
-public class CustomMessageBox : FrameworkDialogBase<TaskMessageBoxSettings, TaskDialogButton>, IFrameworkDialogSync<TaskDialogButton>
+public class CustomMessageBox : IFrameworkDialog<TaskDialogButton>, IFrameworkDialogSync<TaskDialogButton>
 {
     private readonly TaskMessageBoxSettings settings;
     private readonly TaskDialog messageBox;
@@ -19,7 +19,7 @@ public class CustomMessageBox : FrameworkDialogBase<TaskMessageBoxSettings, Task
     /// </summary>
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
-    public CustomMessageBox(TaskMessageBoxSettings settings, AppDialogSettings appSettings) : base(settings, appSettings)
+    public CustomMessageBox(TaskMessageBoxSettings settings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
@@ -68,11 +68,12 @@ public class CustomMessageBox : FrameworkDialogBase<TaskMessageBoxSettings, Task
     /// A bool? value that specifies which message box button is
     /// clicked by the user.
     /// </returns>
-    public override async Task<TaskDialogButton> ShowDialogAsync(WindowWrapper owner)
+    public async Task<TaskDialogButton> ShowDialogAsync(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = await owner.Ref.RunUiAsync(() => messageBox.ShowDialog(owner.Ref));
+        var window = owner.AsWrapper().Ref;
+        var result = await window.RunUiAsync(() => messageBox.ShowDialog(window));
         return result;
     }
 
@@ -83,14 +84,14 @@ public class CustomMessageBox : FrameworkDialogBase<TaskMessageBoxSettings, Task
     /// Handle to the window that owns the dialog.
     /// </param>
     /// <returns>
-    /// A bool? value that specifies which message box button is
-    /// clicked by the user.
+    /// The TaskDialogButton clicked by the user.
     /// </returns>
-    public override TaskDialogButton ShowDialog(WindowWrapper owner)
+    public TaskDialogButton ShowDialog(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = messageBox.ShowDialog(owner.Ref);
+        var window = owner.AsWrapper().Ref;
+        var result = messageBox.ShowDialog(window);
         return result;
     }
 }

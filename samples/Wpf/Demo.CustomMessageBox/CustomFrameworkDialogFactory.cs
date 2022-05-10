@@ -1,4 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -12,7 +12,7 @@ public class CustomFrameworkDialogFactory : FrameworkDialogFactory
         var s2 = (AppDialogSettings)appSettings;
         return settings switch
         {
-            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s, s2),
+            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s),
             _ => base.Create<TSettings, TResult>(settings, appSettings)
         };
     }

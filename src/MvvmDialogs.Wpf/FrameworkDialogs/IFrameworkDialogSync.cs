@@ -1,5 +1,5 @@
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Interface representing a framework dialog.

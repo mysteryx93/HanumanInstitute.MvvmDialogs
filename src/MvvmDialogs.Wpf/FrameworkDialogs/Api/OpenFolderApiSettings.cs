@@ -1,7 +1,7 @@
 ﻿
 using System;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 internal class OpenFolderApiSettings
 {

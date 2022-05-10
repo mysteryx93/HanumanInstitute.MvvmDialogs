@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 

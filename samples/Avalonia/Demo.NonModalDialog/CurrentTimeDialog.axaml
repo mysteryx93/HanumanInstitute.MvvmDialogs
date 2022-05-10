@@ -1,0 +1,21 @@
+﻿<Window
+    x:Class="Demo.NonModalDialog.CurrentTimeDialog"
+    xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.NonModalCustomDialog"
+    mc:Ignorable="d"
+    Title="Current Time"
+    WindowStartupLocation="CenterOwner"
+    CanResize="False"
+    Width="200"
+    Height="100"
+    d:DataContext="{x:Static local:App.CurrentTimeDialog}">
+
+    <TextBlock
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        Text="{Binding CurrentTime, StringFormat=Current time is {0:HH:mm:ss}}" />
+</Window>

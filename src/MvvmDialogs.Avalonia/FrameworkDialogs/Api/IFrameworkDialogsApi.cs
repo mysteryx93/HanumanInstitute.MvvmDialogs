@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using MessageBox.Avalonia.Enums;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 
 /// <summary>
 /// Wrapper around Win32 dialogs API that can be replaced by a mock for testing.

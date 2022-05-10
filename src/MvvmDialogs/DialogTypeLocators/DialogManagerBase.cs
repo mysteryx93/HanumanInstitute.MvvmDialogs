@@ -21,9 +21,9 @@ public class DialogManagerBase : IDialogManager
     /// <summary>
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
-    /// <param name="dialogFactory">A factory to resolve dialog types.</param>
     /// <param name="frameworkDialogFactory">A factory to resolve framework dialog types.</param>
-    public DialogManagerBase(IDialogFactory dialogFactory, IFrameworkDialogFactory frameworkDialogFactory)
+    /// <param name="dialogFactory">A factory to resolve dialog types.</param>
+    public DialogManagerBase(IFrameworkDialogFactory frameworkDialogFactory, IDialogFactory dialogFactory)
     {
         DialogFactory = dialogFactory;
         FrameworkDialogFactory = frameworkDialogFactory;

@@ -1,0 +1,40 @@
+<Window x:Class="Demo.CustomMessageBox.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.CustomMessageBox"
+    mc:Ignorable="d"
+    md:DialogServiceViews.IsRegistered="True"
+    WindowStartupLocation="CenterScreen"
+    Title="Demo - Custom Message Box"
+    Width="300"
+    Height="200"
+    d:DataContext="{x:Static local:App.MainWindow}">
+
+    <UniformGrid Columns="2" Rows="3">
+        <Button
+            Command="{Binding ShowMessageBoxWithMessageCommand}">
+            <TextBlock Text="Show message box with message" />
+        </Button>
+        <Button
+            Command="{Binding ShowMessageBoxWithCaptionCommand}">
+            <TextBlock Text="Show message box with caption" />
+        </Button>
+        <Button
+            Command="{Binding ShowMessageBoxWithButtonCommand}">
+            <TextBlock Text="Show message box with buttons" />
+        </Button>
+        <Button
+            Command="{Binding ShowMessageBoxWithIconCommand}">
+            <TextBlock Text="Show message box with icon" />
+        </Button>
+        <Button
+            Command="{Binding ShowMessageBoxWithDefaultResultCommand}">
+            <TextBlock Text="Show message box with default result" />
+        </Button>
+        <TextBlock
+            Text="{Binding Confirmation}" />
+    </UniformGrid>
+</Window>

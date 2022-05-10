@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using AvaloniaOpenFolderDialog = Avalonia.Controls.OpenFolderDialog;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 /// <summary>
 /// Class wrapping <see cref="OpenFolderDialog"/>.

@@ -80,6 +80,12 @@ public class ModalDialogTabContentViewModel : INotifyPropertyChanged
 }
 ```
 
+There is a useful extension method in `HanumanInstitute.MvvmDialogs` to run a synchronous UI method as an async method:
+
+```c#
+window.RunUiAsync(func)
+```
+
 ## WPF Usage
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Wpf`
@@ -129,11 +135,21 @@ it is recommended to use the async methods.
 }
 ```
 
-Here is a useful extension method in `HanumanInstitute.MvvmDialogs` to run a synchronous UI method as an async method:
+### AppDialogSettings
+When creating DialogService, you can pass AppDialogSettings with application-wide settings.
 
-```c#
-window.RunUiAsync(func)
-```
+
+#### bool MessageBoxRightToLeft
+
+Gets or sets whether message boxes are displayed right-to-left (RightAlign+RtlReading).
+
+#### bool MessageBoxDefaultDesktopOnly
+
+Gets or sets whether to display on the default desktop of the interactive window station. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
+
+#### bool MessageBoxServiceNotification
+
+Gets or sets whether to display on the currently active desktop even if a user is not logged on to the computer. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
 
 ## Avalonia Usage
 
@@ -183,6 +199,10 @@ public override void OnFrameworkInitializationCompleted()
     ...
 }
 ```
+
+#### AppDialogSettings
+
+For the moment there are no application-wide settings used for Avalonia.
 
 ## IModalDialogViewModel / ICloseable / IActivable
 
@@ -246,11 +266,13 @@ Second, you must pass the new FrameworkDialogFactory when creating the DialogSer
 new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory()))
 ```
 
-Third, create a framework dialog class that inherits `FrameworkDialogBase<T>`.
-For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type. Override `ShowDialogAsync`.
+Third, create a framework dialog class that implements `IFrameworkDialog<T>`.
+For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type.
+
+Implement `ShowDialogAsync` and access `IWindow` as `owner.AsWrapper().Ref`
 
 ```c#
-Task<T> ShowDialogAsync(WindowWrapper owner)
+Task<T> ShowDialogAsync(IWindow owner)
 ```
 
 Finally, if you're creating a new method, you must create a new extension method on `IDialogService`

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Text;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 internal abstract class FileDialogBase<TSettings, TResult> : FrameworkDialogBase<TSettings, TResult>
     where TSettings : FileDialogSettings

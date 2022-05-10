@@ -1,6 +1,6 @@
 ﻿using AvaloniaOpenFileDialog = Avalonia.Controls.OpenFileDialog;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 
 internal class OpenFileApiSettings : FileApiSettings
 {

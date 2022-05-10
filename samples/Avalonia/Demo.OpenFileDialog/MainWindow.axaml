@@ -1,0 +1,34 @@
+<Window x:Class="Demo.OpenFileDialog.MainWindow"
+        xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Demo.OpenFileDialog.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+        xmlns:local="clr-namespace:Demo.OpenFileDialog"
+    mc:Ignorable="d"
+    WindowStartupLocation="CenterScreen"
+    md:DialogServiceViews.IsRegistered="True"
+    Title="Demo - Open File Dialog"
+    Width="300"
+    Height="200"
+    d:DataContext="{x:Static local:App.MainWindow}">
+
+    <Grid VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox
+            Items="{Binding Paths, Mode=OneWay}" />
+        <Button
+            Grid.Column="1" Height="32" Margin="0, 10, 0, 0" VerticalAlignment="Top"
+            Content="Open single..."
+            Command="{Binding OpenFileCommand}" />
+        <Button
+            Grid.Column="1" Height="32" Margin="0, 50, 0, 0" VerticalAlignment="Top"
+            Content="Open multiple..."
+            Command="{Binding OpenFilesCommand}" />
+    </Grid>
+</Window>

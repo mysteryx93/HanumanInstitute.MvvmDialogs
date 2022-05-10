@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using Win32CustomPlace = System.Windows.Forms.FileDialogCustomPlace;
 using Win32CustomPlaces = Microsoft.Win32.FileDialogCustomPlaces;
 using Win32OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Class wrapping <see cref="System.Windows.Forms.OpenFileDialog"/>.

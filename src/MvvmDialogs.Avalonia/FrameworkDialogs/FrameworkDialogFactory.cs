@@ -1,8 +1,8 @@
 ﻿using System;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 /// <summary>
 /// Default framework dialog factory that will create instances of standard Windows dialogs.

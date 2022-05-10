@@ -1,7 +1,6 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Demo.NonModalCustomDialog.ViewModels;
 
 namespace Demo.NonModalCustomDialog;
 

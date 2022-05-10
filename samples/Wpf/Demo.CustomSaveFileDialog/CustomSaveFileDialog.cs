@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using Ookii.Dialogs.Wpf;
 
 namespace Demo.CustomSaveFileDialog;
 
-public class CustomSaveFileDialog : FrameworkDialogBase<SaveFileDialogSettings, string?>
+public class CustomSaveFileDialog : IFrameworkDialog<string?>, IFrameworkDialogSync<string?>
 {
     private readonly SaveFileDialogSettings settings;
     private readonly VistaSaveFileDialog saveFileDialog;
@@ -20,8 +20,7 @@ public class CustomSaveFileDialog : FrameworkDialogBase<SaveFileDialogSettings, 
     /// </summary>
     /// <param name="settings">The settings for the save file dialog.</param>
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
-    public CustomSaveFileDialog(SaveFileDialogSettings settings, AppDialogSettings appSettings) :
-        base(settings, appSettings)
+    public CustomSaveFileDialog(SaveFileDialogSettings settings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
 
@@ -78,11 +77,12 @@ public class CustomSaveFileDialog : FrameworkDialogBase<SaveFileDialogSettings, 
     /// <returns>
     /// true if user clicks the OK button; otherwise false.
     /// </returns>
-    public override async Task<string?> ShowDialogAsync(WindowWrapper owner)
+    public async Task<string?> ShowDialogAsync(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = await owner.Ref.RunUiAsync(() => saveFileDialog.ShowDialog(owner.Ref));
+        var window = owner.AsWrapper().Ref;
+        var result = await window.RunUiAsync(() => saveFileDialog.ShowDialog(window));
         return result == true ? saveFileDialog.FileName : null;
     }
 
@@ -95,11 +95,12 @@ public class CustomSaveFileDialog : FrameworkDialogBase<SaveFileDialogSettings, 
     /// <returns>
     /// true if user clicks the OK button; otherwise false.
     /// </returns>
-    public override string? ShowDialog(WindowWrapper owner)
+    public string? ShowDialog(IWindow owner)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var result = saveFileDialog.ShowDialog(owner.Ref);
+        var window = owner.AsWrapper().Ref;
+        var result = saveFileDialog.ShowDialog(window);
         return result == true ? saveFileDialog.FileName : null;
     }
 }

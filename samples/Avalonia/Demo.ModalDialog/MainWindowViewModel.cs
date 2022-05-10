@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Demo.ModalDialog.ViewModels;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 

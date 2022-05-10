@@ -1,24 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <UseWPF>true</UseWPF>
-    <UseWindowsForms>true</UseWindowsForms>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
     <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputType>Library</OutputType>
+    <AssemblyTitle>MVVM Dialogs for WPF</AssemblyTitle>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <PackageVersion>1.0.0</PackageVersion>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
-    <TargetFrameworks>net461;netcoreapp3.1</TargetFrameworks>
-    <Company>HanumanInstitute</Company>
-    <Authors>Etienne Charland</Authors>
     <Product>HanumanInstitute.MvvmDialogs</Product>
+    <PackageId>HanumanInstitute.MvvmDialogs.Wpf</PackageId>
+    <AssemblyName>HanumanInstitute.MvvmDialogs.Wpf</AssemblyName>
+    <RootNamespace>HanumanInstitute.MvvmDialogs.Wpf</RootNamespace>
+    <Company>Hanuman Institute</Company>
+    <Authors>Etienne Charland</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
-    <PackageProjectUrl></PackageProjectUrl>
-    <AssemblyVersion></AssemblyVersion>
-    <PackageId>HanumanInstitute.MvvmDialogs.Wpf</PackageId>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
 
   <ItemGroup>

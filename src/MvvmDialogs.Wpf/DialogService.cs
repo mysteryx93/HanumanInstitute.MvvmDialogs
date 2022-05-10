@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using Application = System.Windows.Application;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
@@ -24,21 +24,21 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
     /// and <see cref="FrameworkDialogFactory"/> is used as framework dialog factory.
     /// </remarks>
     public DialogService()
-        : this(null)
+        : this(settings: null)
     {
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogService"/> class.
     /// </summary>
-    /// <param name="settings">Set application-wide settings.</param>
     /// <param name="dialogManager">Class responsible for UI interactions.</param>
     /// <param name="dialogTypeLocator">Locator responsible for finding a dialog type matching a view model. Default value is
     /// an instance of <see cref="NamingConventionDialogTypeLocator"/>.</param>
+    /// <param name="settings">Set application-wide settings.</param>
     public DialogService(
-        AppDialogSettings? settings = null,
         IDialogManager? dialogManager = null,
-        IDialogTypeLocator? dialogTypeLocator = null)
+        IDialogTypeLocator? dialogTypeLocator = null,
+        AppDialogSettings? settings = null)
         : base(settings ?? new AppDialogSettings(),
             dialogManager ?? new DialogManager(new FrameworkDialogFactory(), new ReflectionDialogFactory()),
             dialogTypeLocator ?? new NamingConventionDialogTypeLocator())

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 using AvaloniaSaveFileDialog = Avalonia.Controls.SaveFileDialog;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 /// <summary>
 /// Class wrapping <see cref="AvaloniaSaveFileDialog"/>.

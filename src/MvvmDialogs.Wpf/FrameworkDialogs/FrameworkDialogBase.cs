@@ -1,16 +1,16 @@
 using System;
 using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 /// <summary>
 /// Interface representing a framework dialog.
 /// </summary>
 /// <typeparam name="TSettings">The type of settings to use for this dialog.</typeparam>
 /// <typeparam name="TResult">The data type returned by the dialog.</typeparam>
-public abstract class FrameworkDialogBase<TSettings, TResult> : IFrameworkDialog<TResult>, IFrameworkDialogSync<TResult>
+internal abstract class FrameworkDialogBase<TSettings, TResult> : IFrameworkDialog<TResult>, IFrameworkDialogSync<TResult>
 {
     /// <summary>
     /// Gets the Win32 dialogs API interface.

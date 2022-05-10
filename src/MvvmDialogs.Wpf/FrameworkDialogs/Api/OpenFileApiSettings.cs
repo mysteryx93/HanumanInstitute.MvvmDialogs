@@ -1,5 +1,5 @@
 ﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 internal class OpenFileApiSettings : FileApiSettings
 {

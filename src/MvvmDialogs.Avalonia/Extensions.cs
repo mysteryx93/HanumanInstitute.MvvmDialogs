@@ -1,7 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.LogicalTree;
+using Avalonia.Threading;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -40,4 +43,19 @@ public static class Extensions
     [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("window")]
     public static WindowWrapper? AsWrapper(this IWindow? window) =>
         (WindowWrapper?)window;
+
+    /// <summary>
+    /// Runs a synchronous action asynchronously on the UI thread.
+    /// </summary>
+    /// <param name="window">Any window to get the dispatcher from.</param>
+    /// <param name="action">The action to run asynchronously.</param>
+    /// <typeparam name="T">The return type of the action.</typeparam>
+    /// <returns>The result of the action.</returns>
+    public static Task<T> RunUiAsync<T>(this Window window, Func<T> action)
+    {
+        if (window == null) throw new ArgumentNullException(nameof(window));
+        TaskCompletionSource<T> completion = new();
+        Dispatcher.UIThread.Post(new Action(() => completion.SetResult(action())));
+        return completion.Task;
+    }
 }

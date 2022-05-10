@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
 using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 /// <summary>
 /// Class wrapping <see cref="MessageBoxManager"/>.

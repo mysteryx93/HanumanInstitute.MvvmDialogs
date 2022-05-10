@@ -2,8 +2,10 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Demo.CustomMessageBox.ViewModels;
-using Demo.CustomMessageBox.Views;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Avalonia;
+using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
+using Splat;
 
 namespace Demo.CustomMessageBox;
 
@@ -12,6 +14,12 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        var build = Locator.CurrentMutable;
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory())));
+
+        SplatRegistrations.Register<MainWindowViewModel>();
+        SplatRegistrations.SetupIOC();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -21,10 +29,12 @@ public class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = MainWindow
             };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>();
 }

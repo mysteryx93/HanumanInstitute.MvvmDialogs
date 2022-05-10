@@ -2,8 +2,9 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Demo.NonModalCustomDialog.ViewModels;
-using Demo.NonModalCustomDialog.Views;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Avalonia;
+using Splat;
 
 namespace Demo.NonModalCustomDialog;
 
@@ -12,6 +13,13 @@ public class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+
+        var build = Locator.CurrentMutable;
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService());
+
+        SplatRegistrations.Register<MainWindowViewModel>();
+        SplatRegistrations.Register<CurrentTimeCustomDialogViewModel>();
+        SplatRegistrations.SetupIOC();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -21,10 +29,13 @@ public class App : Application
         {
             desktop.MainWindow = new MainWindow
             {
-                DataContext = new MainWindowViewModel(),
+                DataContext = MainWindow
             };
         }
 
         base.OnFrameworkInitializationCompleted();
     }
+
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static CurrentTimeCustomDialogViewModel CurrentTimeDialog => Locator.Current.GetService<CurrentTimeCustomDialogViewModel>()!;
 }

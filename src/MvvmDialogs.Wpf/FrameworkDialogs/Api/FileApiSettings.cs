@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 internal class FileApiSettings
 {

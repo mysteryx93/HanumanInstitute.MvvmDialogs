@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Input;
-using Demo.ModalDialog.ViewModels;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs.Api;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 /// <summary>
 /// Wrapper around Win32 dialogs API that can be replaced by a mock for testing.

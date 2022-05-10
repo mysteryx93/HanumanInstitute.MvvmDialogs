@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 using AvaloniaOpenFileDialog = Avalonia.Controls.OpenFileDialog;
 
-namespace HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 
 /// <summary>
 /// Class wrapping <see cref="AvaloniaOpenFileDialog"/>.
@@ -29,7 +29,7 @@ internal class OpenFileDialog : FileDialogBase<OpenFileDialogSettings, string[]>
     {
         var d = new OpenFileApiSettings()
         {
-            AllowMultiple = Settings.AllowMultiple
+            AllowMultiple = Settings.AllowMultiple ?? false
             // d.ShowReadOnly = Settings.ShowReadOnly;
             // d.ReadOnlyChecked = Settings.ReadOnlyChecked;
         };

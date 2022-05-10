@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf
 {
@@ -13,7 +13,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
     {
         /// <inheritdoc />
         public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null, IDialogFactory? dialogFactory = null) :
-            base(dialogFactory ?? new ReflectionDialogFactory(), frameworkDialogFactory ?? new FrameworkDialogFactory())
+            base(frameworkDialogFactory ?? new FrameworkDialogFactory(), dialogFactory ?? new ReflectionDialogFactory())
         {
         }
 

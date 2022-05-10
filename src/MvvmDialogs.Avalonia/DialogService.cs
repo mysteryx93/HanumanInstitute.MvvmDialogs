@@ -5,7 +5,7 @@ using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
-using HanumanInstitute.MvvmDialogs.Avalonia.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -25,23 +25,23 @@ public class DialogService : DialogServiceBase
     /// and <see cref="FrameworkDialogFactory"/> is used as framework dialog factory.
     /// </remarks>
     public DialogService()
-        : this(null)
+        : this(settings: null)
     {
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogService"/> class.
     /// </summary>
-    /// <param name="settings">Set application-wide settings.</param>
     /// <param name="dialogManager">Class responsible for UI interactions.</param>
     /// <param name="dialogTypeLocator">Locator responsible for finding a dialog type matching a view model. Default value is
     /// an instance of <see cref="DialogTypeLocatorBase"/>.</param>
+    /// <param name="settings">Set application-wide settings.</param>
     public DialogService(
-        AppDialogSettings? settings = null,
         IDialogManager? dialogManager = null,
-        IDialogTypeLocator? dialogTypeLocator = null)
+        IDialogTypeLocator? dialogTypeLocator = null,
+        AppDialogSettings? settings = null)
         : base(settings ?? new AppDialogSettings(),
-            dialogManager ?? new DialogManagerBase(new ReflectionDialogFactory(), new FrameworkDialogFactory()),
+            dialogManager ?? new DialogManagerBase(new FrameworkDialogFactory(), new ReflectionDialogFactory()),
             dialogTypeLocator ?? new NamingConventionDialogTypeLocator())
     {
     }
