@@ -18,9 +18,9 @@ UI Frameworks currently supported:
 - [Avalonia](https://avaloniaui.net/) <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Avalonia/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Avalonia.svg"></a> (mature cross-platform UI framework with WPF-like syntax)
 
 UI Frameworks that can easily be added through community efforts:
-- UWP (Universal Windows Platform)
 - WinUI 3 (promising Android/iOS support but won't support Linux)
 - Blazor (full app in web browser)
+- UWP (Universal Windows Platform, this thing is dead)
 
 ## Table of contents
 
@@ -78,12 +78,6 @@ public class ModalDialogTabContentViewModel : INotifyPropertyChanged
         }
     }
 }
-```
-
-There is a useful extension method in `HanumanInstitute.MvvmDialogs` to run a synchronous UI method as an async method:
-
-```c#
-window.RunUiAsync(func)
 ```
 
 ## WPF Usage
@@ -150,6 +144,14 @@ Gets or sets whether to display on the default desktop of the interactive window
 #### bool MessageBoxServiceNotification
 
 Gets or sets whether to display on the currently active desktop even if a user is not logged on to the computer. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
+
+### RunUiAsync
+
+There is a useful extension method in `HanumanInstitute.MvvmDialogs.Wpf` to run a synchronous UI method as an async method:
+
+```c#
+window.RunUiAsync(func)
+```
 
 ## Avalonia Usage
 
