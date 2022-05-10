@@ -116,6 +116,10 @@ private async Task<string?> SavePreset()
 }
 ```
 
+Meanwhile...
+- You can use IDialogService within class libraries that have no reference to Avalonia nor Wpf (referencing only `HanumanInstitute.MvvmDialogs`)
+- It is friendly for unit tests
+
 ## WPF Usage
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Wpf`
