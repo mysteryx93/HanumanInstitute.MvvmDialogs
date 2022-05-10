@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
-    xmlns:local="clr-namespace:Demo.NonModalCustomDialog"
+    xmlns:local="clr-namespace:Demo.NonModalDialog"
     mc:Ignorable="d"
     Title="Current Time"
     WindowStartupLocation="CenterOwner"

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.CustomOpenFileDialog"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     md:DialogServiceViews.IsRegistered="True"

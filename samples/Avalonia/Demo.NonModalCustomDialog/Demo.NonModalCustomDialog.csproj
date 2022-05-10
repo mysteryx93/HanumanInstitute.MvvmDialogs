@@ -17,12 +17,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="CurrentTimeDialog.xaml">
-      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
   </ItemGroup>
 </Project>

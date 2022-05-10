@@ -4,7 +4,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
-using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 using Splat;
 
 namespace Demo.CustomMessageBox;

@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
+    xmlns:local="clr-namespace:Demo.CustomOpenFolderDialog"
     mc:Ignorable="d"
     md:DialogServiceViews.IsRegistered="True"
     WindowStartupLocation="CenterScreen"
@@ -11,7 +12,7 @@
     Width="300"
     Height="200"
     d:DataContext="{x:Static local:App.MainWindow}">
-    
+
     <Grid VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition />

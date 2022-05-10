@@ -4,7 +4,6 @@ using Avalonia.Win32;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 using Ookii.Dialogs.WinForms;
 
 namespace Demo.CustomOpenFolderDialog;

@@ -19,7 +19,6 @@ public class CustomSaveFileDialog : IFrameworkDialog<string?>
     /// Initializes a new instance of the <see cref="CustomSaveFileDialog"/> class.
     /// </summary>
     /// <param name="settings">The settings for the save file dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     public CustomSaveFileDialog(SaveFileDialogSettings settings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
@@ -46,7 +45,7 @@ public class CustomSaveFileDialog : IFrameworkDialog<string?>
     /// <returns>A string representation of the list compatible with Win32 API.</returns>
     private static string SyncFilters(List<FileFilter> filters)
     {
-        StringBuilder result = new StringBuilder();
+        var result = new StringBuilder();
         foreach (var item in filters)
         {
             // Add separator.
