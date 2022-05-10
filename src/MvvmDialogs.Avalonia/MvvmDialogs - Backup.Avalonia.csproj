@@ -1,46 +1,45 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
-    <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
-    <Title>MVVM Dialogs</Title>
+    <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
+    <Title>MVVM Dialogs for Avalonia</Title>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <Product>HanumanInstitute.MvvmDialogs</Product>
-    <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
-    <AssemblyName>HanumanInstitute.MvvmDialogs</AssemblyName>
-    <RootNamespace>HanumanInstitute.MvvmDialogs</RootNamespace>
+    <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
+    <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia</AssemblyName>
+    <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia</RootNamespace>
     <Company>Hanuman Institute</Company>
     <Authors>Etienne Charland</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM</Description>
+    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM in Avalonia</Description>
     <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageIcon>icon_64x64.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\build\icon_64x64.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
     <None Include="..\..\StrongName.snk">
       <Link>StrongName.snk</Link>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.14" />
+    <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
     <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
+    <Title>MVVM Dialogs for Avalonia</Title>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <AssemblyVersion>1.0.0</AssemblyVersion>
@@ -20,8 +21,11 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM in Avalonia</Description>
+    <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageIcon>icon_64x64.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\build\icon_64x64.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\StrongName.snk">
       <Link>StrongName.snk</Link>
     </None>
