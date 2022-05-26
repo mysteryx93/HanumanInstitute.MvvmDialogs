@@ -362,9 +362,14 @@ Here are the differences:
 
 ## Contributions Are Welcomed
 
-Implementation could easily be added for UWP, WinUI and Blazor.
-I will leave this task to someone who is going to use it with such framework.
+Todo:
+- Avalonia Open/Save dialogs need to display validation messages based on settings.
+- Implement for WinUI 3 (I'll leave this task to someone who is going to use it)
+- Implement for Blazor (I'm excited about this one)
+- Implement for UWP (this thing is dead... not worth implementing IMO)
+- Unit tests? (with extensive demos, this might be duplicate and overkill)
+- Automated builds
 
-Contributions are also welcomed to add unit tests and automated builds.
+### Author
 
-Todo: Avalonia Open/Save dialogs need to display validation messages based on settings.
+Brought to you by [Etienne Charland aka Hanuman](https://www.spiritualselftransformation.com/). Made by a Lightworker in his spare time.
