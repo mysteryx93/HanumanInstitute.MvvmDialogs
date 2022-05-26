@@ -1,6 +1,4 @@
 ﻿
-using System;
-
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 /// <summary>

@@ -1,6 +1,4 @@
-﻿using Avalonia;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Holds a weak reference to a FrameworkElement.

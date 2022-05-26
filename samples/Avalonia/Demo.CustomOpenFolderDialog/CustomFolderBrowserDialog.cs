@@ -14,7 +14,7 @@ public class CustomOpenFolderDialog : IFrameworkDialog<string?>
     private readonly VistaFolderBrowserDialog folderBrowserDialog;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FolderBrowserDialogWrapper"/> class.
+    /// Initializes a new instance of the <see cref="CustomOpenFolderDialog"/> class.
     /// </summary>
     /// <param name="settings">The settings for the folder browser dialog.</param>
     public CustomOpenFolderDialog(OpenFolderDialogSettings settings)

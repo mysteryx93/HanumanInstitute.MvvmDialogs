@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Avalonia.Controls;
-using MessageBox.Avalonia;
+﻿using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 

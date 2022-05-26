@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 

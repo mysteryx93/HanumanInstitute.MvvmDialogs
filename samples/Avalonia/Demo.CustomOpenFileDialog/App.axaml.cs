@@ -15,7 +15,9 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
-        build.RegisterLazySingleton(() => (IDialogService)new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory())));
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(
+            dialogManager: new DialogManager(new CustomFrameworkDialogFactory())),
+            new ViewLocator());
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.SetupIOC();

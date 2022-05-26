@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-using Avalonia.Controls;
-using MessageBox.Avalonia.Enums;
+﻿using MessageBox.Avalonia.Enums;
 
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 

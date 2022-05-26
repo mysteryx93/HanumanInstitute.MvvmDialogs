@@ -15,7 +15,7 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
-        build.RegisterLazySingleton(() => (IDialogService)new DialogService());
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(viewLocator: new ViewLocator()));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<CurrentTimeCustomDialogViewModel>();

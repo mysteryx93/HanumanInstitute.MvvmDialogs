@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// A view model representing a modal dialog opened using <see cref="DialogServiceBase"/>.

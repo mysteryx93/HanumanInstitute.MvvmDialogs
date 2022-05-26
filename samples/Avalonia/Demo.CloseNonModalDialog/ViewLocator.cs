@@ -1,28 +1,12 @@
-using System;
-using Avalonia.Controls;
-using Avalonia.Controls.Templates;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace Demo.CloseNonModalDialog;
 
-public class ViewLocator : IDataTemplate
+/// <summary>
+/// Maps view models to views in Avalonia.
+/// </summary>
+public class ViewLocator : ViewLocatorBase
 {
-    public IControl Build(object data)
-    {
-        var name = data.GetType().FullName!.Replace("ViewModel", "View");
-        var type = Type.GetType(name);
-
-        if (type != null)
-        {
-            return (Control)Activator.CreateInstance(type)!;
-        }
-        else
-        {
-            return new TextBlock { Text = "Not Found: " + name };
-        }
-    }
-
-    public bool Match(object data)
-    {
-        return data is ViewModelBase;
-    }
+    /// <inheritdoc />
+    protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "");
 }

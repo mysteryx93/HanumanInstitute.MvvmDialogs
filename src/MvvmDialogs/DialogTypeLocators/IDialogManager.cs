@@ -1,7 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 
@@ -15,17 +12,17 @@ public interface IDialogManager
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="dialogType">The type of the dialog to show.</param>
-    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, Type dialogType);
+    /// <param name="view">The view to show.</param>
+    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view);
 
     /// <summary>
     /// Shows a new dialog of specified type.
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="dialogType">The type of the dialog to show.</param>
+    /// <param name="view">The view to show.</param>
     /// <returns>The dialog result.</returns>
-    Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, Type dialogType);
+    Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view);
 
     /// <summary>
     /// Shows a framework dialog whose type depends on the settings type.
@@ -38,4 +35,11 @@ public interface IDialogManager
     /// <returns>A framework dialog implementing <see cref="IFrameworkDialog{TResult}"/>.</returns>
     Task<TResult> ShowFrameworkDialogAsync<TSettings, TResult>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings)
         where TSettings : DialogSettingsBase;
+
+    /// <summary>
+    /// Returns the window with a DataContext equal to specified ViewModel.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel to search for.</param>
+    /// <returns>A Window, or null.</returns>
+    IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel);
 }

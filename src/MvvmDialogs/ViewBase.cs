@@ -1,5 +1,4 @@
-﻿using System;
-using HanumanInstitute.MvvmDialogs.Private;
+﻿using HanumanInstitute.MvvmDialogs.Private;
 
 namespace HanumanInstitute.MvvmDialogs;
 

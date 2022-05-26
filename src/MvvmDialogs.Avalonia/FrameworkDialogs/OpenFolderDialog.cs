@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;

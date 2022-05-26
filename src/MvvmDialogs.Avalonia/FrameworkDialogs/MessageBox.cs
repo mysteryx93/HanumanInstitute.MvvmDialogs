@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using MessageBox.Avalonia;
+﻿using MessageBox.Avalonia;
 using MessageBox.Avalonia.Enums;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.Avalonia;

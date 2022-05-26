@@ -197,22 +197,9 @@ window.RunUiAsync(func)
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia`
 
-You must be decorate the views to display with the attached property `DialogServiceViews.IsRegistered`:
-
-```xaml
-<Window
-    x:Class="Demo.MainView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
-    md:DialogServiceViews.IsRegistered="True">
-
-  ...
-
-</Window>
-```
-
 DialogService must be registered in the DependencyInjection container of your choice. Note that IDialogService is defined in `HanumanInstitute.MvvmDialogs` and DialogService is defined in `HanumanInstitute.MvvmDialogs.Wpf`.
+
+In the constructor, you must pass the ViewLocator from the Avalonia project template.
 
 ```c#
 public class App : Application
@@ -223,7 +210,7 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
-        build.RegisterLazySingleton(() => (IDialogService)new DialogService());
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(viewLocator: new ViewLocator()));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<CurrentTimeDialogViewModel>();
@@ -231,16 +218,23 @@ public class App : Application
     }
 ```
 
-[There is currently an issue where the Avalonia previewer will not recognize the XAML namespace.](https://github.com/AvaloniaUI/Avalonia/issues/7200)
-The workaround is to force your assembly to be loaded by adding `GC.KeepAlive(typeof(DialogService))` to `App.OnFrameworkInitializationCompleted`.
+Replace `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Avalonia/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits both `IDataTemplate` (for Avalonia) and `IViewLocator` (for MvvmDialogs).
 
 ```c#
-public override void OnFrameworkInitializationCompleted()
+using HanumanInstitute.MvvmDialogs.Avalonia;
+namespace MyDemoApp;
+
+/// <summary>
+/// Maps view models to views in Avalonia.
+/// </summary>
+public class ViewLocator : ViewLocatorBase
 {
-    GC.KeepAlive(typeof(DialogService));
-    ...
+    /// <inheritdoc />
+    protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "");
 }
 ```
+
+
 
 #### AppDialogSettings
 
@@ -260,24 +254,6 @@ To display custom dialogs that are not of type `Window` or `ContentDialog`,
 your dialog class must implement [IWindow](src/MvvmDialogs/IWindow.cs)
 ([sample](samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
 The usage will the same as a standard `Window`.
-
-## Custom Naming Conventions
-
-You can declare a custom naming convention by creating a class inheriting `IDialogTypeLocator` just like in the FantasticFiasco version.
-
-```c#
-Type Locate(INotifyPropertyChanged viewModel)
-```
-
-Alternatively, you can simply create a class inheriting `NamingConventionDialogTypeLocator` that simply provides a list of paths to look at.
-```c#
-IList<string> LocateViewNames(string viewModelName)
-```
-
-You then pass the custom DialogTypeLocator in the constructor of DialogService.
-```c#
-new DialogService(dialogTypeLocator: new MyCustomDialogTypeLocator())
-```
 
 ## Custom Framework Dialogs
 
@@ -372,7 +348,7 @@ The internal code structure is completely different, while the public API remain
 Here are the differences:
 - Namespace changed from `MvvmDialogs` to `HanumanInstitute.MvvmDialogs`
 - Platform-specific code is in separate Wpf/Avalonia assembly
-- XAML namespace changed from `https://github.com/FantasticFiasco/mvvm-dialogs` to `https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs`
+- XAML registration is no longer required
 - All dialogs are shown using async methods. For WPF (only), sync methods remain available for compatibility.
 - Custom dialogs are treated the same way as standard dialogs
 - ICloseable / IActivable allow easily closing and activating the View from the ViewModel.
@@ -381,7 +357,8 @@ Here are the differences:
 - Framework dialog methods return the selected value instead of bool.
 - FolderBrowserDialog has been renamed to OpenFolderDialog.
 - Factory classes are implemented differently.
-- Default naming convention, for `ViewModels/MainViewModel`, FantasticFiasco looks for `Views/Main`. This version first looks for `Views/MainView` and then `Views/Main`.
+- Default naming convention, for `ViewModels/MainViewModel`, FantasticFiasco looks for `Views/Main`. This version looks for `Views/MainView`.
+- Maps view models to views using Avalonia's ViewLocator design that is easily customizable.
 
 ## Contributions Are Welcomed
 

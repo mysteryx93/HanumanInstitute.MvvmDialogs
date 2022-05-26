@@ -15,7 +15,7 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
-        build.RegisterLazySingleton(() => (IDialogService)new DialogService());
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(viewLocator: new ViewLocator()));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<AddTextCustomDialogViewModel>();
@@ -36,6 +36,6 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>();
-    public static AddTextCustomDialogViewModel AddTextDialog => Locator.Current.GetService<AddTextCustomDialogViewModel>();
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static AddTextCustomDialogViewModel AddTextDialog => Locator.Current.GetService<AddTextCustomDialogViewModel>()!;
 }

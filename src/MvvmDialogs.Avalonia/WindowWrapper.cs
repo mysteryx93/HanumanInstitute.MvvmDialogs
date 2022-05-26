@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Avalonia.Controls;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Class wrapping an instance of Avalonia <see cref="Window"/> within <see cref="IWindow"/>.

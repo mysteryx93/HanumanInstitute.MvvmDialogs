@@ -12,7 +12,7 @@ public class CustomFrameworkDialogFactory : FrameworkDialogFactory
         var s2 = (AppDialogSettings)appSettings;
         return settings switch
         {
-            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s),
+            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s, s2),
             _ => base.Create<TSettings, TResult>(settings, appSettings)
         };
     }

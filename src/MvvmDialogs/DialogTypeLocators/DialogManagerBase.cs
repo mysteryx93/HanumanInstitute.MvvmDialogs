@@ -1,18 +1,11 @@
-using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 
 /// <inheritdoc />
-public class DialogManagerBase : IDialogManager
+public abstract class DialogManagerBase<T> : IDialogManager
 {
-    /// <summary>
-    /// A factory to resolve dialog types.
-    /// </summary>
-    protected IDialogFactory DialogFactory { get; }
     /// <summary>
     /// A factory to resolve framework dialog types.
     /// </summary>
@@ -22,24 +15,19 @@ public class DialogManagerBase : IDialogManager
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
     /// <param name="frameworkDialogFactory">A factory to resolve framework dialog types.</param>
-    /// <param name="dialogFactory">A factory to resolve dialog types.</param>
-    public DialogManagerBase(IFrameworkDialogFactory frameworkDialogFactory, IDialogFactory dialogFactory)
-    {
-        DialogFactory = dialogFactory;
-        FrameworkDialogFactory = frameworkDialogFactory;
-    }
+    protected DialogManagerBase(IFrameworkDialogFactory frameworkDialogFactory) => FrameworkDialogFactory = frameworkDialogFactory;
 
     /// <inheritdoc />
-    public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, Type dialogType)
+    public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view)
     {
-        var dialog = CreateDialog(ownerViewModel, viewModel, dialogType);
+        var dialog = CreateDialog(ownerViewModel, viewModel, view);
         dialog.Show();
     }
 
     /// <inheritdoc />
-    public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, Type dialogType)
+    public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view)
     {
-        var dialog = CreateDialog(ownerViewModel, viewModel, dialogType);
+        var dialog = CreateDialog(ownerViewModel, viewModel, view);
         await dialog.ShowDialogAsync().ConfigureAwait(true);
     }
 
@@ -48,16 +36,35 @@ public class DialogManagerBase : IDialogManager
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="dialogType">The type of the dialog to show.</param>
+    /// <param name="view">The view to show.</param>
     /// <returns>The new IWindow.</returns>
-    protected IWindow CreateDialog(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, Type dialogType)
+    /// <exception cref="TypeLoadException">Could not load view for view model.</exception>
+    protected IWindow CreateDialog(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view)
     {
-        var dialog = DialogFactory.Create(dialogType);
-        dialog.Owner = ViewRegistration.FindView(ownerViewModel);
+        // ReSharper disable once SuspiciousTypeConversion.Global
+        var dialog = view switch
+        {
+            IWindow w => w,
+            T t => CreateWrapper(t),
+            null => throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}."),
+            _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.")
+        };
+        // var dialog = view is IWindow w ? w :
+        //     view is T t ? CreateWrapper(t) :
+        //     view is null ? throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}.") :
+        //     throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.");
+
+        dialog.Owner = FindWindowByViewModel(ownerViewModel);
         dialog.DataContext = viewModel;
         HandleDialogEvents(viewModel, dialog);
         return dialog;
     }
+
+    /// <summary>
+    /// Creates a wrapper around a native window.
+    /// </summary>
+    /// <param name="window">The window to create a wrapper for.</param>
+    protected abstract IWindow CreateWrapper(T window);
 
     /// <summary>
     /// Handles window events. By default, ICloseable and IActivable are handled.
@@ -82,6 +89,11 @@ public class DialogManagerBase : IDialogManager
         where TSettings : DialogSettingsBase
     {
         var dialog = FrameworkDialogFactory.Create<TSettings, TResult>(settings, appSettings);
-        return dialog.ShowDialogAsync(ViewRegistration.FindView(ownerViewModel));
+        var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+        return dialog.ShowDialogAsync(owner);
     }
+
+
+    /// <inheritdoc />
+    public abstract IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel);
 }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
+﻿using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 
 namespace HanumanInstitute.MvvmDialogs;
 

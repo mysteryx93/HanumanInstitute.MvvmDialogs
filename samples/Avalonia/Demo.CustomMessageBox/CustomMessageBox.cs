@@ -12,6 +12,7 @@ namespace Demo.CustomMessageBox;
 public class CustomMessageBox : IFrameworkDialog<TaskDialogButton>
 {
     private readonly TaskMessageBoxSettings settings;
+    private readonly AppDialogSettings appSettings;
     private readonly TaskDialog messageBox;
 
     /// <summary>
@@ -19,9 +20,10 @@ public class CustomMessageBox : IFrameworkDialog<TaskDialogButton>
     /// </summary>
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
-    public CustomMessageBox(TaskMessageBoxSettings settings)
+    public CustomMessageBox(TaskMessageBoxSettings settings, AppDialogSettings appSettings)
     {
         this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+        this.appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
         messageBox = new TaskDialog
         {
