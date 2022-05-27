@@ -14,11 +14,11 @@ If your convention is different than simply replacing 'ViewModel' with 'View':
 Adopting Avalonia's ViewLocator design greatly simplifies the code and avoids duplicating the design.
 
 - Internally, the following classes have been removed:
-DialogTypeLocatorBase, DialogTypeLocatorCache,
-IDialogFactory, NamingConventionDialogTypeLocator, ReflectionDialogFactoryBase, ViewRegistration,
-DialogServiceViews and ReflectionDialogFactory.
-- Renamed IDialogTypeLocator to IViewLocator.
-- Removed namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators.
+  `DialogTypeLocatorBase, DialogTypeLocatorCache,
+  IDialogFactory, NamingConventionDialogTypeLocator, ReflectionDialogFactoryBase, ViewRegistration,
+  DialogServiceViews, ReflectionDialogFactory`
+- Renamed `IDialogTypeLocator` to `IViewLocator`
+- Removed namespace `HanumanInstitute.MvvmDialogs.DialogTypeLocators`
 
 `MvvmDialogs.Avalonia` is no longer signed because dependency `ReactiveUI` is not signed.
 
