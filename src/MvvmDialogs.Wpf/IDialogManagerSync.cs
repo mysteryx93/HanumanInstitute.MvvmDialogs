@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -14,9 +12,9 @@ public interface IDialogManagerSync
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="dialogType">The type of the dialog to show.</param>
+    /// <param name="view">The view to show.</param>
     /// <returns>The dialog result.</returns>
-    void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, Type dialogType);
+    void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view);
 
     /// <summary>
     /// Shows a framework dialog whose type depends on the settings type.

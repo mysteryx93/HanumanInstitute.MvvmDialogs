@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.Wpf;
+﻿using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using Win32FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
 

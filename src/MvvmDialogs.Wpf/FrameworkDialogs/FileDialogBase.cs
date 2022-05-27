@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 

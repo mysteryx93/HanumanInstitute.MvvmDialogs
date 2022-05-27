@@ -1,4 +1,5 @@
-﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
+﻿
+namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 
 internal class MessageBoxApiSettings
 {

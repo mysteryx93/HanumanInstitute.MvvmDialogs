@@ -1,5 +1,4 @@
-﻿using System.Windows;
-
+﻿
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>

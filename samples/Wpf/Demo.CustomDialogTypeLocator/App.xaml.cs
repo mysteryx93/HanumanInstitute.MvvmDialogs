@@ -12,7 +12,7 @@ public partial class App
     {
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddSingleton<IDialogService>(new DialogService(dialogTypeLocator: new MyCustomDialogTypeLocator()))
+                .AddSingleton<IDialogService>(new DialogService(viewLocator: new ViewLocator()))
                 .AddTransient<MainWindowVM>()
                 .BuildServiceProvider());
     }

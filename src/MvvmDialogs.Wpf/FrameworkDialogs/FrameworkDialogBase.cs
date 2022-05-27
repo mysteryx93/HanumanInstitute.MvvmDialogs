@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 

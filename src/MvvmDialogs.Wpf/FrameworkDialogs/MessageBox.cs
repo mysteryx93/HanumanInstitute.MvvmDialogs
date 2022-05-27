@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs.Wpf;
+﻿using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using Win32Button = System.Windows.MessageBoxButton;
 using Win32Image = System.Windows.MessageBoxImage;

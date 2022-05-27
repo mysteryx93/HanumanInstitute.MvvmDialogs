@@ -1,9 +1,12 @@
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 // ReSharper disable MemberCanBePrivate.Global
 
-namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators;
+namespace HanumanInstitute.MvvmDialogs;
 
-/// <inheritdoc />
+/// <summary>
+/// Interface responsible for UI interactions.
+/// </summary>
+/// <typeparam name="T">The base data type of the dialog window for target framework.</typeparam>
 public abstract class DialogManagerBase<T> : IDialogManager
 {
     /// <summary>
@@ -49,10 +52,6 @@ public abstract class DialogManagerBase<T> : IDialogManager
             null => throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}."),
             _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.")
         };
-        // var dialog = view is IWindow w ? w :
-        //     view is T t ? CreateWrapper(t) :
-        //     view is null ? throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}.") :
-        //     throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.");
 
         dialog.Owner = FindWindowByViewModel(ownerViewModel);
         dialog.DataContext = viewModel;

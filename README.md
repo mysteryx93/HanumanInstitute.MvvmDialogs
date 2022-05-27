@@ -120,26 +120,19 @@ Meanwhile...
 - You can use IDialogService within class libraries that have no reference to Avalonia nor Wpf (referencing only `HanumanInstitute.MvvmDialogs`)
 - It is friendly for unit tests
 
+### XAML Registrations
+
+XAML registrations are no longer required as of v1.1 and these lines must be removed.
+
+    md:DialogServiceViews.IsRegistered="True"
+
 ## WPF Usage
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Wpf`
 
-You must decorate the views with the attached property `DialogServiceViews.IsRegistered`:
-
-```xaml
-<UserControl
-    x:Class="DemoApplication.Features.Dialog.Modal.Views.ModalDialogTabContent"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:md="https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs"
-    md:DialogServiceViews.IsRegistered="True">
-
-  ...
-
-</UserControl>
-```
-
 DialogService must be registered in the DependencyInjection container of your choice. Note that IDialogService is defined in `HanumanInstitute.MvvmDialogs` and DialogService is defined in `HanumanInstitute.MvvmDialogs.Wpf`.
+
+To customize ViewModels to Views naming convention, in the constructor, you must pass a ViewLocator.
 
 ```c#
 public partial class App
@@ -149,10 +142,26 @@ public partial class App
     {
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddSingleton<IDialogService, DialogService>()
+                .AddSingleton<IDialogService>(new DialogService(viewLocator: new ViewLocator()))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
     }
+}
+```
+
+Optinally, create `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Wpf/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits `IViewLocator`.
+
+```c#
+using HanumanInstitute.MvvmDialogs.Wpf;
+namespace MyDemoApp;
+
+/// <summary>
+/// Maps view models to views.
+/// </summary>
+public class ViewLocator : ViewLocatorBase
+{
+    /// <inheritdoc />
+    protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "");
 }
 ```
 
@@ -185,13 +194,6 @@ Gets or sets whether to display on the default desktop of the interactive window
 
 Gets or sets whether to display on the currently active desktop even if a user is not logged on to the computer. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
 
-### RunUiAsync
-
-There is a useful extension method in `HanumanInstitute.MvvmDialogs.Wpf` to run a synchronous UI method as an async method:
-
-```c#
-window.RunUiAsync(func)
-```
 
 ## Avalonia Usage
 
@@ -225,7 +227,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 namespace MyDemoApp;
 
 /// <summary>
-/// Maps view models to views in Avalonia.
+/// Maps view models to views.
 /// </summary>
 public class ViewLocator : ViewLocatorBase
 {
@@ -324,6 +326,15 @@ public static class Extensions
 [Sample here](samples/Wpf/Demo.CustomMessageBox/)
 
 You could create a class library providing a new set of `IDialogService` methods.
+
+### RunUiAsync
+
+There is a useful extension method in `HanumanInstitute.MvvmDialogs.Wpf` and `HanumanInstitute.MvvmDialogs.Avalonia` to run a synchronous UI method as an async method:
+
+```c#
+window.RunUiAsync(func)
+```
+
 
 ## Unit Testing
 

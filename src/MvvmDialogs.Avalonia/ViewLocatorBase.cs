@@ -1,7 +1,6 @@
 using System.Reflection;
 using Avalonia.Controls.Templates;
 using ReactiveUI;
-using IViewLocator = HanumanInstitute.MvvmDialogs.DialogTypeLocators.IViewLocator;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 

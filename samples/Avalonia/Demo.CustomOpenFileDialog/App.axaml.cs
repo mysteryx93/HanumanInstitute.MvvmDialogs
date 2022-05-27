@@ -16,8 +16,8 @@ public class App : Application
 
         var build = Locator.CurrentMutable;
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
-            dialogManager: new DialogManager(new CustomFrameworkDialogFactory())),
-            new ViewLocator());
+            dialogManager: new DialogManager(new CustomFrameworkDialogFactory()),
+            new ViewLocator()));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.SetupIOC();

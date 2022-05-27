@@ -1,5 +1,4 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
-using HanumanInstitute.MvvmDialogs.DialogTypeLocators;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 

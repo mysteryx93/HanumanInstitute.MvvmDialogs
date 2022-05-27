@@ -1,7 +1,7 @@
-﻿using System;
-using System.ComponentModel;
-using HanumanInstitute.MvvmDialogs.Wpf;
+﻿using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
+using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
 
 namespace HanumanInstitute.MvvmDialogs;
 

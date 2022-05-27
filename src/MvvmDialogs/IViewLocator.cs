@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Interface responsible for finding a dialog type matching a view model.

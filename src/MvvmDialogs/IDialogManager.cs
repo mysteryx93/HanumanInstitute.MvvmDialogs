@@ -1,6 +1,6 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
-namespace HanumanInstitute.MvvmDialogs.DialogTypeLocators;
+namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Interface responsible for UI interactions.

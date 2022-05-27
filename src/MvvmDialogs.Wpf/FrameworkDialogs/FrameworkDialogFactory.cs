@@ -1,5 +1,4 @@
-﻿using System;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf.Api;
 using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
