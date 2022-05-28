@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Extensions.Logging;
+
 namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
@@ -61,6 +63,7 @@ public abstract class DialogServiceBase : IDialogService
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
         var window = DialogManager.FindWindowByViewModel(viewModel);
+        DialogManager.Logger?.LogInformation("Activate View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(), viewModel.GetType());
         window?.Activate();
         return window != null;
     }
@@ -76,6 +79,7 @@ public abstract class DialogServiceBase : IDialogService
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
         var window = DialogManager.FindWindowByViewModel(viewModel);
+        DialogManager.Logger?.LogInformation("Close View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(), viewModel.GetType());
         if (window != null)
         {
             try
@@ -85,7 +89,7 @@ public abstract class DialogServiceBase : IDialogService
             }
             catch (Exception e)
             {
-                DialogLogger.Write($"Failed to close dialog: {e}");
+                DialogManager.Logger?.LogWarning(e, "Failed to close dialog");
             }
         }
         return false;
@@ -103,7 +107,6 @@ public abstract class DialogServiceBase : IDialogService
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        DialogLogger.Write($"Dialog: {view?.GetType()}; View model: {viewModel.GetType()}; Owner: {ownerViewModel.GetType()}");
         DialogManager.Show(ownerViewModel, viewModel, view);
     }
 
@@ -120,9 +123,7 @@ public abstract class DialogServiceBase : IDialogService
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        DialogLogger.Write($"Dialog: {view?.GetType()}; View model: {viewModel.GetType()}; Owner: {ownerViewModel.GetType()}");
         await DialogManager.ShowDialogAsync(ownerViewModel, viewModel, view);
-        DialogLogger.Write($"Dialog: {view?.GetType()}; Result: {viewModel.DialogResult}");
         return viewModel.DialogResult;
     }
 }

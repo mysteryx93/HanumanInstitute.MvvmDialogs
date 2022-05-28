@@ -2,6 +2,7 @@
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
+using Microsoft.Extensions.Logging;
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -64,8 +65,6 @@ public static class FrameworkDialogsExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        DialogLogger.Write($"Caption: {settings?.Title}; Message: {settings?.Text}");
-
         return service.DialogManager.AsSync().ShowFrameworkDialog<MessageBoxSettings, bool?>(
             ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings);
     }
@@ -102,12 +101,10 @@ public static class FrameworkDialogsExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        DialogLogger.Write($"Title: {settings?.Title}");
-
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
         return service.DialogManager.AsSync().ShowFrameworkDialog<OpenFileDialogSettings, string[]>(
-            ownerViewModel, settings, appSettings ?? service.AppSettings);
+            ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x));
     }
 
     /// <summary>
@@ -123,8 +120,6 @@ public static class FrameworkDialogsExtensions
         SaveFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
-        DialogLogger.Write($"Title: {settings?.Title}");
 
         return service.DialogManager.AsSync().ShowFrameworkDialog<SaveFileDialogSettings, string?>(
             ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings);
@@ -143,8 +138,6 @@ public static class FrameworkDialogsExtensions
         OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
-        DialogLogger.Write($"Title: {settings?.Title}");
 
         return service.DialogManager.AsSync().ShowFrameworkDialog<OpenFolderDialogSettings, string?>(
             ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings);

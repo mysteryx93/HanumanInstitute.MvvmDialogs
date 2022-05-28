@@ -11,6 +11,11 @@ public class WindowWrapper : IWindow
     /// </summary>
     public Window Ref { get; private set; }
 
+    /// <summary>
+    /// Gets the Window reference held by this class.
+    /// </summary>
+    public object RefObj => Ref;
+
     /// <inheritdoc />
     public IWindow? Owner { get; set; }
 

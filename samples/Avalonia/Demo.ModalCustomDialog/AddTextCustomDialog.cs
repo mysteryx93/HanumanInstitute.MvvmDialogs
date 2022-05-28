@@ -7,6 +7,8 @@ namespace Demo.ModalCustomDialog;
 
 public class AddTextCustomDialog : IWindow
 {
+    public object RefObj => this;
+
     private readonly AddTextDialog dialog = new();
 
     event EventHandler IWindow.Closed

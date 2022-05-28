@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
+using Microsoft.Extensions.Logging;
 using Splat;
 
 namespace Demo.CustomOpenFolderDialog;
@@ -15,8 +16,10 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
+        var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
+
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
-            dialogManager: new DialogManager(new CustomFrameworkDialogFactory()),
+            dialogManager: new DialogManager(new CustomFrameworkDialogFactory(), logger: loggerFactory.CreateLogger<DialogManager>()),
             new ViewLocator()));
 
         SplatRegistrations.Register<MainWindowViewModel>();

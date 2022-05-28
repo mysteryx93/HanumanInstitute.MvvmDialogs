@@ -32,6 +32,7 @@ UI Frameworks that can easily be added through community efforts:
 - [Custom Windows](#custom-windows)
 - [Custom Framework Dialogs](#custom-framework-dialogs)
 - [Unit Testing](#unit-testing)
+- [Logging](#logging)
 - [Differences from FantasticFiasco/mvvm-dialogs](#differences-from-fantasticfiascomvvm-dialogs)
 - [Contributions Are Welcomed](#contributions-are-welcomed)
 ---
@@ -350,6 +351,20 @@ new DialogService(dialogManager: dialogManagerMock.Object);
 
 From here you can configure your mock to validate calls to `Show`, `ShowDialogAsync` and `ShowFrameworkDialogAsync`.
 
+
+## Logging
+
+To enable logging, pass an `ILogger<DialogService>` to the DialogService constructor.
+
+```c#
+var loggerFactory = LoggerFactory.Create(builder =>
+{
+    builder.AddDebug();
+});
+var dialogService = new DialogService(logger: loggerFactory.CreateLogger<DialogService>());
+```
+
+
 ## Differences from FantasticFiasco/mvvm-dialogs
 
 It is very easy to port an application from `FantasticFiasco/mvvm-dialogs` to `HanumanInstitute.MvvmDialogs`, yet there are also differences due to the fact that this library's API is framework-agnostic.
@@ -370,6 +385,7 @@ Here are the differences:
 - Factory classes are implemented differently.
 - Default naming convention, for `ViewModels/MainViewModel`, FantasticFiasco looks for `Views/Main`. This version looks for `Views/MainView`.
 - Maps view models to views using Avalonia's ViewLocator design that is easily customizable.
+- Logging is done using standard ILogging interface
 
 ## Contributions Are Welcomed
 

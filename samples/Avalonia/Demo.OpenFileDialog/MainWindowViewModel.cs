@@ -29,7 +29,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task OpenFileAsync()
     {
-        var settings = GetSettings();
+        var settings = GetSettings(false);
         var result = await dialogService.ShowOpenFileDialogAsync(this, settings);
         Paths.Clear();
         if (result != null)
@@ -40,7 +40,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task OpenFilesAsync()
     {
-        var settings = GetSettings();
+        var settings = GetSettings(true);
         var result = await dialogService.ShowOpenFilesDialogAsync(this, settings);
         Paths.Clear();
         foreach (var item in result)
@@ -49,9 +49,9 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private OpenFileDialogSettings GetSettings() => new OpenFileDialogSettings
+    private OpenFileDialogSettings GetSettings(bool multiple) => new OpenFileDialogSettings
     {
-        Title = "Open multiple files",
+        Title = multiple ? "Open multiple files" : "Open single file",
         InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
         Filters = new List<FileFilter>()
             {

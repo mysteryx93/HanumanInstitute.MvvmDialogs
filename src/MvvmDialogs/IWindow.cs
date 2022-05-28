@@ -10,6 +10,11 @@
 public interface IWindow
 {
     /// <summary>
+    /// Gets the Window reference held by this class.
+    /// </summary>
+    public object RefObj { get; }
+
+    /// <summary>
     /// Occurs when the window is closed.
     /// </summary>
     event EventHandler Closed;

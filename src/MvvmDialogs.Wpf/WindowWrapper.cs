@@ -15,6 +15,11 @@ public class WindowWrapper : IWindow, IWindowSync
     public Window Ref { get; private set; }
 
     /// <summary>
+    /// Gets the Window reference held by this class.
+    /// </summary>
+    public object RefObj => Ref;
+
+    /// <summary>
     /// Returns a IWin32Window class that can be used for API calls.
     /// </summary>
     public IWin32Window Win32Window => new Win32Window(Ref);

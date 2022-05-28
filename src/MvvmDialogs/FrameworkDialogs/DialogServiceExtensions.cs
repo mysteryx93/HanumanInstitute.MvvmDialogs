@@ -1,5 +1,6 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
+// ReSharper disable once CheckNamespace
 namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
@@ -60,8 +61,6 @@ public static class FrameworkDialogsExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        DialogLogger.Write($"Caption: {settings?.Title}; Message: {settings?.Text}");
-
         return service.DialogManager.ShowFrameworkDialogAsync<MessageBoxSettings, bool?>(
             ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings);
     }
@@ -98,12 +97,10 @@ public static class FrameworkDialogsExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        DialogLogger.Write($"Title: {settings?.Title}");
-
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
         return service.DialogManager.ShowFrameworkDialogAsync<OpenFileDialogSettings, string[]>(
-            ownerViewModel, settings ?? new OpenFileDialogSettings(), appSettings ?? service.AppSettings);
+            ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x));
     }
 
     /// <summary>
@@ -119,8 +116,6 @@ public static class FrameworkDialogsExtensions
         SaveFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
-        DialogLogger.Write($"Title: {settings?.Title}");
 
         return service.DialogManager.ShowFrameworkDialogAsync<SaveFileDialogSettings, string?>(
             ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings);
@@ -139,8 +134,6 @@ public static class FrameworkDialogsExtensions
         OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
-        DialogLogger.Write($"Title: {settings?.Title}");
 
         return service.DialogManager.ShowFrameworkDialogAsync<OpenFolderDialogSettings, string?>(
             ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings);

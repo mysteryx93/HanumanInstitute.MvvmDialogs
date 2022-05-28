@@ -9,6 +9,8 @@ public class CurrentTimeCustomDialog : IWindow
 {
     private readonly CurrentTimeDialog dialog = new();
 
+    public object RefObj => this;
+
     event EventHandler IWindow.Closed
     {
         add => dialog.Closed += value;

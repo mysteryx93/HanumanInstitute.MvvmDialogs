@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Microsoft.Extensions.Logging;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -12,9 +13,9 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 public class DialogManager : DialogManagerBase<Window>
 {
     /// <inheritdoc />
-    public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null)
-        :
-        base(frameworkDialogFactory ?? new FrameworkDialogFactory())
+    public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null,
+        ILogger<IDialogManager>? logger = null) :
+        base(frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
     {
     }
 

@@ -9,6 +9,8 @@ public class AddTextCustomDialog : IWindow, IWindowSync
 {
     private readonly AddTextDialog dialog = new();
 
+    public object RefObj => this;
+
     event EventHandler IWindow.Closed
     {
         add => dialog.Closed += value;

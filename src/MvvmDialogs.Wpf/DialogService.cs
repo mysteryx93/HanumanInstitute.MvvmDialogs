@@ -39,11 +39,11 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
 
     /// <inheritdoc />
     public bool? ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel) =>
-        ShowDialogInternal(ownerViewModel, viewModel, DialogManager.FindWindowByViewModel(viewModel));
+        ShowDialogInternal(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
 
     /// <inheritdoc />
     public bool? ShowDialog<T>(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel) =>
-        ShowDialogInternal(ownerViewModel, viewModel, DialogManager.FindWindowByViewModel(viewModel));
+        ShowDialogInternal(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
 
     /// <summary>
     /// Displays a modal dialog of specified type.
@@ -58,9 +58,7 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        DialogLogger.Write($"Dialog: {view?.GetType()}; View model: {viewModel.GetType()}; Owner: {ownerViewModel.GetType()}");
         DialogManager.AsSync().ShowDialog(ownerViewModel, viewModel, view);
-        DialogLogger.Write($"Dialog: {view?.GetType()}; Result: {viewModel.DialogResult}");
         return viewModel.DialogResult;
     }
 }

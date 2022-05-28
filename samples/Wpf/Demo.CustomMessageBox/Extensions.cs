@@ -36,9 +36,7 @@ public static class Extensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        DialogLogger.Write($"Caption: {settings?.Title}; Message: {settings?.Text}");
-
         return service.DialogManager.ShowFrameworkDialogAsync<MessageBoxSettings, TaskDialogButton>(
-            ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings);
+            ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings, x => x.ButtonType.ToString());
     }
 }
