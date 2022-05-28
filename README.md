@@ -354,14 +354,12 @@ From here you can configure your mock to validate calls to `Show`, `ShowDialogAs
 
 ## Logging
 
-To enable logging, pass an `ILogger<DialogService>` to the DialogService constructor.
+To enable logging, pass an `ILogger<DialogManager>` to the DialogService constructor.
 
 ```c#
-var loggerFactory = LoggerFactory.Create(builder =>
-{
-    builder.AddDebug();
-});
-var dialogService = new DialogService(logger: loggerFactory.CreateLogger<DialogService>());
+var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
+var dialogService = new DialogService(
+    new DialogManager(logger: loggerFactory.CreateLogger<DialogManager>()));
 ```
 
 
