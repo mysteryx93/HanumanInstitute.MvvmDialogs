@@ -8,8 +8,8 @@ All notable changes to this project will be documented in this file.
 - Revamped the whole logging mechanisms
 - All demos now output logs to the Debug window
 - Added `IWindow.RefObj`, which can be implemented like this for custom dialogs: `public object RefObj => this;`
-- IDialogManager.ShowFrameworkDialogAsync now takes an extra optional parameter `resultToString` to convert the result to string for logging. If null, it uses `object.ToString()`.
-- Bug fix: WPF.DialogService.ShowDialog (sync method) was not working
+- `IDialogManager.ShowFrameworkDialogAsync` now takes an extra optional parameter `resultToString` to convert the result to string for logging. If null, it uses `object.ToString()`.
+- Bug fix: `WPF.DialogService.ShowDialog` (sync method) was not working
 
 ## 1.1.0 - 2022-05-26
 
