@@ -31,7 +31,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private void Show()
     {
-        DialogViewModel = App.CurrentTimeDialog;
+        DialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
         dialogService.Show(this, DialogViewModel);
     }
 

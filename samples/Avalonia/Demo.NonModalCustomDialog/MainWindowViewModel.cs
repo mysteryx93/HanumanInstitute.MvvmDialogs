@@ -31,9 +31,9 @@ public class MainWindowViewModel : ViewModelBase
         Show(viewModel => dialogService.Show<CurrentTimeCustomDialog>(this, viewModel));
     }
 
-    private static void Show(Action<CurrentTimeCustomDialogViewModel> show)
+    private void Show(Action<CurrentTimeCustomDialogViewModel> show)
     {
-        var dialogViewModel = new CurrentTimeCustomDialogViewModel();
+        var dialogViewModel = dialogService.CreateViewModel<CurrentTimeCustomDialogViewModel>();
         show(dialogViewModel);
     }
 }

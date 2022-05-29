@@ -13,9 +13,11 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 public class DialogManager : DialogManagerBase<Window>
 {
     /// <inheritdoc />
-    public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null,
-        ILogger<IDialogManager>? logger = null) :
-        base(frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
+    public DialogManager(IViewLocator? viewLocator = null,
+        IFrameworkDialogFactory? frameworkDialogFactory = null,
+        ILogger<DialogManager>? logger = null) :
+        base(viewLocator ?? new ViewLocatorBase(),
+            frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
     {
     }
 

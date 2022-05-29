@@ -10,8 +10,8 @@
     <Title>MVVM Dialogs for WPF</Title>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.2.0</AssemblyVersion>
-    <PackageVersion>1.2.0</PackageVersion>
+    <AssemblyVersion>1.2.1</AssemblyVersion>
+    <PackageVersion>1.2.1</PackageVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <Product>HanumanInstitute.MvvmDialogs</Product>
     <PackageId>HanumanInstitute.MvvmDialogs.Wpf</PackageId>

@@ -26,7 +26,7 @@ public class AddTextDialogViewModel : ViewModelBase, IModalDialogViewModel, IClo
     public bool? DialogResult
     {
         get => dialogResult;
-        private set => this.RaiseAndSetIfChanged(ref dialogResult, value, nameof(DialogResult));
+        set => this.RaiseAndSetIfChanged(ref dialogResult, value, nameof(DialogResult));
     }
 
     private void Ok()

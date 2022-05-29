@@ -16,8 +16,10 @@ public partial class App : Application
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
                 .AddSingleton<IDialogService>(new DialogService(
-                    new DialogManager(logger: loggerFactory.CreateLogger<DialogManager>()),
-                    viewLocator: new ViewLocator()))
+                    new DialogManager(
+                        viewLocator: new ViewLocator(),
+                        logger: loggerFactory.CreateLogger<DialogManager>()),
+                    viewModelFactory: x => Ioc.Default.GetService(x)))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
     }

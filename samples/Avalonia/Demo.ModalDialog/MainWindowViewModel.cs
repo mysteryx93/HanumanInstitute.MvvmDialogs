@@ -30,7 +30,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task ShowDialogAsync(Func<AddTextDialogViewModel, Task<bool?>> showDialogAsync)
     {
-        var dialogViewModel = new AddTextDialogViewModel();
+        var dialogViewModel = dialogService.CreateViewModel<AddTextDialogViewModel>();
 
         var success = await showDialogAsync(dialogViewModel).ConfigureAwait(true);
         if (success == true)

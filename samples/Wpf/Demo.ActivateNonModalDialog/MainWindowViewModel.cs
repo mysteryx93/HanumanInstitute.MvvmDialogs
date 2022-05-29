@@ -25,7 +25,7 @@ public class MainWindowViewModel : ObservableObject
 
     private void Show()
     {
-        dialogViewModel = new CurrentTimeDialogViewModel();
+        dialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
         dialogService.Show(this, dialogViewModel);
 
         ShowCommand.NotifyCanExecuteChanged();

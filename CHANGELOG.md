@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.1 - 2022-05-29
+
+Made the library more friendly for unit tests. One area that caused trouble is the creation of the
+dialog view model `new MyDialogViewModel()`. If it has dependencies, you might use `Locator.MyDialogViewModel`,
+but then that's not unit-test friendly.
+
+As a solution, you will now create the view model using
+`IDialogService.CreateViewModel<T>`.
+It will call a ViewModelFactory function set in the DialogService constructor.
+
+- Added `viewModelFactory` parameter to DialogService constructor
+- Moved `viewLocator` constructor parameter from DialogService to DialogManager
+- Updated all demos to use correct constructor parameters
+- Updated all demos to use `IDialogService.CreateViewModel<T>`
+- Added unit test sample project: `Demo.ModalDialog.Tests`
+
 ## 1.2.0 - 2022-05-28
 
 - Logging is now done using standard `ILogger<DialogService>` interface. See doc

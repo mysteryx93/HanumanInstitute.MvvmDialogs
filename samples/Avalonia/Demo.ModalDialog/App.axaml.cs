@@ -19,8 +19,10 @@ public class App : Application
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
-            new DialogManager(logger: loggerFactory.CreateLogger<DialogManager>()),
-            viewLocator: new ViewLocator()));
+            new DialogManager(
+                viewLocator: new ViewLocator(),
+                logger: loggerFactory.CreateLogger<DialogManager>()),
+            viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<AddTextDialogViewModel>();

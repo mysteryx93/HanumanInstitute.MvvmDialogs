@@ -66,4 +66,18 @@ public interface IDialogService
     /// <param name="viewModel">The view model of the dialog to close.</param>
     /// <returns>true if the window was successfully closed; otherwise, false.</returns>
     bool Close(INotifyPropertyChanged viewModel);
+
+    /// <summary>
+    /// Creates a view model of specified type, using the ViewModelFactory passed in the constructor.
+    /// </summary>
+    /// <param name="type">The type of the view model to create.</param>
+    /// <returns>The newly created view model.</returns>
+    object CreateViewModel(Type type);
+
+    /// <summary>
+    /// Creates a view model of specified type, using the ViewModelFactory passed in the constructor.
+    /// </summary>
+    /// <typeparam name="T">The type of the view model to create.</typeparam>
+    /// <returns>The newly created view model.</returns>
+    T CreateViewModel<T>();
 }

@@ -12,9 +12,8 @@ public interface IDialogManagerSync
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
     /// <returns>The dialog result.</returns>
-    void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view);
+    void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel);
 
     /// <summary>
     /// Shows a framework dialog whose type depends on the settings type.

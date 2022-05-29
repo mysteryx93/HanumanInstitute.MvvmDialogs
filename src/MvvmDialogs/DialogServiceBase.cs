@@ -1,5 +1,4 @@
-﻿
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -14,12 +13,13 @@ public abstract class DialogServiceBase : IDialogService
     /// </summary>
     /// <param name="appSettings">Set application-wide settings.</param>
     /// <param name="dialogManager">Class responsible to manage UI interactions.</param>
-    /// <param name="viewLocator">Locator responsible for finding a dialog type matching a view model.</param>
-    protected DialogServiceBase(AppDialogSettingsBase appSettings, IDialogManager dialogManager, IViewLocator viewLocator)
+    /// <param name="viewModelFactory">Function used to create view model instances. This function is used only by <see cref="IDialogService.CreateViewModel"/> and is not used internally.</param>
+    protected DialogServiceBase(AppDialogSettingsBase appSettings, IDialogManager dialogManager,
+        Func<Type, object?>? viewModelFactory)
     {
         AppSettings = appSettings;
         DialogManager = dialogManager;
-        ViewLocator = viewLocator;
+        ViewModelFactory = viewModelFactory;
     }
 
     /// <summary>
@@ -33,25 +33,25 @@ public abstract class DialogServiceBase : IDialogService
     public IDialogManager DialogManager { get; }
 
     /// <summary>
-    /// Locator responsible for finding a dialog type matching a view model.
+    /// Function used to create view model instances. This function is used only by <see cref="IDialogService.CreateViewModel"/> and is not used internally.
     /// </summary>
-    protected IViewLocator ViewLocator { get; }
+    protected Func<Type, object?>? ViewModelFactory { get; }
 
     /// <inheritdoc />
     public void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel) =>
-        ShowInternal(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
+        ShowInternal(ownerViewModel, viewModel);
 
     /// <inheritdoc />
     public void Show<T>(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel) =>
-        ShowInternal(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
+        ShowInternal(ownerViewModel, viewModel);
 
     /// <inheritdoc />
     public Task<bool?> ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel) =>
-        ShowDialogInternalAsync(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
+        ShowDialogInternalAsync(ownerViewModel, viewModel);
 
     /// <inheritdoc />
     public Task<bool?> ShowDialogAsync<T>(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel) =>
-        ShowDialogInternalAsync(ownerViewModel, viewModel, ViewLocator.Locate(viewModel));
+        ShowDialogInternalAsync(ownerViewModel, viewModel);
 
     /// <summary>
     /// Attempts to bring the window to the foreground and activates it.
@@ -63,7 +63,8 @@ public abstract class DialogServiceBase : IDialogService
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
         var window = DialogManager.FindWindowByViewModel(viewModel);
-        DialogManager.Logger?.LogInformation("Activate View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(), viewModel.GetType());
+        DialogManager.Logger?.LogInformation("Activate View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(),
+            viewModel.GetType());
         window?.Activate();
         return window != null;
     }
@@ -100,14 +101,13 @@ public abstract class DialogServiceBase : IDialogService
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    protected void ShowInternal(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view)
+    protected void ShowInternal(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        DialogManager.Show(ownerViewModel, viewModel, view);
+        DialogManager.Show(ownerViewModel, viewModel);
     }
 
     /// <summary>
@@ -115,15 +115,26 @@ public abstract class DialogServiceBase : IDialogService
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
     /// <returns>A nullable value of type <see cref="bool"/> that signifies how a window was closed by the user.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    protected async Task<bool?> ShowDialogInternalAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view)
+    protected async Task<bool?> ShowDialogInternalAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        await DialogManager.ShowDialogAsync(ownerViewModel, viewModel, view);
+        await DialogManager.ShowDialogAsync(ownerViewModel, viewModel);
         return viewModel.DialogResult;
     }
+
+    /// <inheritdoc />
+    public object CreateViewModel(Type type) =>
+        ViewModelFactory?.Invoke(type) ??
+        throw new NullReferenceException(
+            $"ViewModelFactory was not set in the DialogService constructor or the function returned null for type '{type}'.");
+
+    /// <inheritdoc />
+    public T CreateViewModel<T>() =>
+        (T?) ViewModelFactory?.Invoke(typeof(T)) ??
+        throw new NullReferenceException(
+            $"ViewModelFactory was not set in the DialogService constructor or the function returned null for type '{typeof(T)}'.");
 }

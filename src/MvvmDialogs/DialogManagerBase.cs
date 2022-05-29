@@ -11,6 +11,11 @@ namespace HanumanInstitute.MvvmDialogs;
 public abstract class DialogManagerBase<T> : IDialogManager
 {
     /// <summary>
+    /// Locator responsible for finding a dialog type matching a view model.
+    /// </summary>
+    protected IViewLocator ViewLocator { get; }
+
+    /// <summary>
     /// A factory to resolve framework dialog types.
     /// </summary>
     protected IFrameworkDialogFactory FrameworkDialogFactory { get; }
@@ -23,17 +28,20 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <summary>
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
+    /// <param name="viewLocator">Locator responsible for finding a dialog type matching a view model.</param>
     /// <param name="frameworkDialogFactory">A factory to resolve framework dialog types.</param>
     /// <param name="logger">A ILogger to capture MvvmDialogs logs.</param>
-    protected DialogManagerBase(IFrameworkDialogFactory frameworkDialogFactory, ILogger<IDialogManager>? logger)
+    protected DialogManagerBase(IViewLocator viewLocator, IFrameworkDialogFactory frameworkDialogFactory, ILogger<DialogManagerBase<T>>? logger)
     {
+        ViewLocator = viewLocator;
         FrameworkDialogFactory = frameworkDialogFactory;
         Logger = logger;
     }
 
     /// <inheritdoc />
-    public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view)
+    public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel)
     {
+        var view = ViewLocator.Locate(viewModel);
         Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
         var dialog = CreateDialog(ownerViewModel, viewModel, view);
@@ -41,8 +49,9 @@ public abstract class DialogManagerBase<T> : IDialogManager
     }
 
     /// <inheritdoc />
-    public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view)
+    public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
+        var view = ViewLocator.Locate(viewModel);
         Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
         var dialog = CreateDialog(ownerViewModel, viewModel, view);
@@ -89,6 +98,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <param name="dialog">The dialog being shown.</param>
     protected virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IWindow dialog)
     {
+        // ReSharper disable once SuspiciousTypeConversion.Global
         if (viewModel is ICloseable c)
         {
             c.RequestClose += (_, _) => dialog.Close();

@@ -18,17 +18,15 @@ public interface IDialogManager
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
-    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view);
+    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel);
 
     /// <summary>
     /// Shows a new dialog of specified type.
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
     /// <returns>The dialog result.</returns>
-    Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view);
+    Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel);
 
     /// <summary>
     /// Shows a framework dialog whose type depends on the settings type.

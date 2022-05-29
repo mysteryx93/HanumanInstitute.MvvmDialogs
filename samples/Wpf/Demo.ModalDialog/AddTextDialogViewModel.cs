@@ -27,7 +27,7 @@ public class AddTextDialogViewModel : ObservableObject, IModalDialogViewModel, I
     public bool? DialogResult
     {
         get => dialogResult;
-        private set => SetProperty(ref dialogResult, value);
+        set => SetProperty(ref dialogResult, value);
     }
 
     public event EventHandler? RequestClose;

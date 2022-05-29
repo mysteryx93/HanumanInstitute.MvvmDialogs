@@ -70,7 +70,7 @@ public class ModalDialogTabContentViewModel : INotifyPropertyChanged
 
     private async Task ShowDialogAsync()
     {
-        var dialogViewModel = new AddTextDialogViewModel();
+        var dialogViewModel = dialogService.CreateViewModel<AddTextDialogViewModel>();
 
         bool? success = await dialogService.ShowDialogAsync(this, dialogViewModel);
         if (success == true)
@@ -90,7 +90,8 @@ public static class DialogExtensions
     {
         dialog.CheckNotNull(nameof(dialog)); // using HanumanInstitute.Validators
 
-        var viewModel = ViewModelLocator.SelectPreset.Load(false);
+        var viewModel = dialog.CreateViewModel<SelectPresetViewModel>();
+        viewModel.Load(false);
         var result = await dialog.ShowDialogAsync(ownerViewModel, viewModel).ConfigureAwait(true);
         return result == true ? viewModel.SelectedItem : null;
     }
@@ -99,12 +100,15 @@ public static class DialogExtensions
     {
         dialog.CheckNotNull(nameof(dialog));
 
-        var viewModel = ViewModelLocator.SelectPreset.Load(true);
+        var viewModel = dialog.CreateViewModel<SelectPresetViewModel>();
+        viewModel.Load(true);
         var result = await dialog.ShowDialogAsync(ownerViewModel, viewModel).ConfigureAwait(true);
         return result == true ? viewModel.PresetName : null;
     }
 }
 ```
+
+To make your code testable, use `IDialogService.CreateViewModel<T>` to create your dialog view models. It will call `viewModelFactory` function that you set in `DialogService` constructor.
 
 Then the usage is super *sexy*! (a long way from ReactiveUI [Interactions](https://www.reactiveui.net/docs/handbook/interactions/)...)
 
@@ -143,7 +147,9 @@ public partial class App
     {
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
-                .AddSingleton<IDialogService>(new DialogService(viewLocator: new ViewLocator()))
+                .AddSingleton<IDialogService>(new DialogService(
+                    new DialogManager(viewLocator: new ViewLocator()),
+                    viewModelFactory: x => Ioc.Default.GetService(x)))
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
     }
@@ -162,7 +168,7 @@ namespace MyDemoApp;
 public class ViewLocator : ViewLocatorBase
 {
     /// <inheritdoc />
-    protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "");
+    protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "View");
 }
 ```
 
@@ -173,7 +179,7 @@ it is recommended to use the async methods.
 ```c#
     private bool? ShowDialog()
     {
-        var dialogViewModel = new AddTextDialogViewModel();
+        var dialogViewModel = dialogService.CreateViewModel<AddTextDialogViewModel>();
         return dialogService.ShowDialog(this, dialogViewModel); // Sync
     }
 }
@@ -213,7 +219,9 @@ public class App : Application
         AvaloniaXamlLoader.Load(this);
 
         var build = Locator.CurrentMutable;
-        build.RegisterLazySingleton(() => (IDialogService)new DialogService(viewLocator: new ViewLocator()));
+        build.RegisterLazySingleton(() => (IDialogService)new DialogService(
+            new DialogManager(viewLocator: new ViewLocator()),
+            viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();
         SplatRegistrations.Register<CurrentTimeDialogViewModel>();
@@ -236,8 +244,6 @@ public class ViewLocator : ViewLocatorBase
     protected override string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "");
 }
 ```
-
-
 
 #### AppDialogSettings
 
@@ -351,6 +357,17 @@ new DialogService(dialogManager: dialogManagerMock.Object);
 
 From here you can configure your mock to validate calls to `Show`, `ShowDialogAsync` and `ShowFrameworkDialogAsync`.
 
+One problem you may face with unit testing dialogs is with the creation of your view model if it has dependencies.
+
+In the `DialogService` constructor, pass `viewModelFactory`
+
+    new DialogService(viewModelFactory: x => Locator.Current.GetService(x))
+
+Create your view model instances using `IDialogService.CreateViewModel<T>`
+
+    var vm = dialogService.CreateViewModel<MyDialogViewModel>();
+
+*This* can easily be mocked. [Here's a sample unit test](samples/Avalonia/Demo.ModalDialog.Tests/MainWindowViewModelTests.cs)
 
 ## Logging
 

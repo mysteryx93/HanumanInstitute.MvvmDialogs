@@ -34,7 +34,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowDialogAsync(Func<AddTextCustomDialogViewModel, Task<bool?>> showDialog)
     {
-        var dialogViewModel = new AddTextCustomDialogViewModel();
+        var dialogViewModel = dialogService.CreateViewModel<AddTextCustomDialogViewModel>();
 
         bool? success = await showDialog(dialogViewModel);
         if (success == true)

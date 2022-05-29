@@ -23,7 +23,7 @@ public class MainWindowVM : ObservableObject
 
     private void ShowDialog()
     {
-        var dialogViewModel = new MyDialogVM();
+        var dialogViewModel = dialogService.CreateViewModel<MyDialogVM>();
         dialogService.ShowDialog(this, dialogViewModel);
     }
 }

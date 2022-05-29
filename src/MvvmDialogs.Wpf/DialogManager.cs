@@ -11,15 +11,17 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
     public class DialogManager : DialogManagerBase<Window>, IDialogManagerSync
     {
         /// <inheritdoc />
-        public DialogManager(IFrameworkDialogFactory? frameworkDialogFactory = null,
-            ILogger<IDialogManager>? logger = null) :
-            base(frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
+        public DialogManager(IViewLocator? viewLocator = null, IFrameworkDialogFactory? frameworkDialogFactory = null,
+            ILogger<DialogManager>? logger = null) :
+            base(viewLocator ?? new ViewLocatorBase(),
+                frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
         {
         }
 
         /// <inheritdoc />
-        public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel, object? view)
+        public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
         {
+            var view = ViewLocator.Locate(viewModel);
             Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
             var dialog = CreateDialog(ownerViewModel, viewModel, view);
