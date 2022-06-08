@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.3 - 2002-06-07
+
+- Fixed an issue with thread-safety
+
 ## 1.2.2 - 2002-06-07
 
 - DialogManager is now thread-safe, dispatching UI calls to the UI thread

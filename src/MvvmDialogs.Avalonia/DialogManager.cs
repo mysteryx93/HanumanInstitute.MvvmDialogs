@@ -36,8 +36,8 @@ public class DialogManager : DialogManagerBase<Window>
         Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
     /// <inheritdoc />
-    protected override void Dispatch(Action action) => _dispatcher.Post(action);
+    protected override void Dispatch(Action action) => _dispatcher.Post(action, DispatcherPriority.Render);
 
     /// <inheritdoc />
-    protected override Task<T> DispatchAsync<T>(Func<T> action) => _dispatcher.InvokeAsync(action);
+    protected override Task<T> DispatchAsync<T>(Func<T> action) => _dispatcher.InvokeAsync(action, DispatcherPriority.Render);
 }

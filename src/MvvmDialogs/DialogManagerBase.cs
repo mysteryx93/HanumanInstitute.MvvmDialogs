@@ -41,11 +41,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <inheritdoc />
     public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel)
     {
-        var view = ViewLocator.Locate(viewModel);
-        Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
-
         Dispatch(() =>
         {
+            var view = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
+
             var dialog = CreateDialog(ownerViewModel, viewModel, view);
             dialog.Show();
         });
@@ -54,16 +54,16 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <inheritdoc />
     public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
-        var view = ViewLocator.Locate(viewModel);
-        Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
-
-        await await DispatchAsync(() =>
+        await await DispatchAsync(async () =>
         {
-            var dialog = CreateDialog(ownerViewModel, viewModel, view);
-            return dialog.ShowDialogAsync();
-        });
+            var view = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
-        Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
+            var dialog = CreateDialog(ownerViewModel, viewModel, view);
+            await dialog.ShowDialogAsync();
+
+            Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
+        });
     }
 
     /// <summary>

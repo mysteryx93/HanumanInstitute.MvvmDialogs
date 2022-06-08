@@ -59,9 +59,9 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
         /// <inheritdoc />
-        protected override void Dispatch(Action action) => _dispatcher.Invoke(action);
+        protected override void Dispatch(Action action) => _dispatcher.Invoke(action, DispatcherPriority.Render);
 
         /// <inheritdoc />
-        protected override Task<T> DispatchAsync<T>(Func<T> action) => _dispatcher.InvokeAsync(action).Task;
+        protected override Task<T> DispatchAsync<T>(Func<T> action) => _dispatcher.InvokeAsync(action, DispatcherPriority.Render).Task;
     }
 }
