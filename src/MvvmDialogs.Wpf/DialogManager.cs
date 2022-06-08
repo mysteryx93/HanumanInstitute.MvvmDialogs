@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Threading;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using Microsoft.Extensions.Logging;
@@ -10,12 +11,15 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
     /// </summary>
     public class DialogManager : DialogManagerBase<Window>, IDialogManagerSync
     {
+        private readonly Dispatcher _dispatcher;
+
         /// <inheritdoc />
         public DialogManager(IViewLocator? viewLocator = null, IFrameworkDialogFactory? frameworkDialogFactory = null,
-            ILogger<DialogManager>? logger = null) :
+            ILogger<DialogManager>? logger = null, Dispatcher? dispatcher = null) :
             base(viewLocator ?? new ViewLocatorBase(),
                 frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
         {
+            _dispatcher = dispatcher ?? Application.Current.Dispatcher;
         }
 
         /// <inheritdoc />
@@ -53,5 +57,11 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <inheritdoc />
         public override IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
             Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
+
+        /// <inheritdoc />
+        protected override void Dispatch(Action action) => _dispatcher.Invoke(action);
+
+        /// <inheritdoc />
+        protected override Task<T> DispatchAsync<T>(Func<T> action) => _dispatcher.InvokeAsync(action).Task;
     }
 }

@@ -48,7 +48,7 @@ public class WindowWrapper : IWindow
     /// <inheritdoc />
     public Task<bool?> ShowDialogAsync()
     {
-        if (Owner is not WindowWrapper w) throw new InvalidOperationException("{nameof(Owner)} must be set before calling {nameof(ShowDialogAsync)}");
+        if (Owner is not WindowWrapper w) throw new InvalidOperationException($"{nameof(Owner)} must be set before calling {nameof(ShowDialogAsync)}");
 
         return Ref.ShowDialog<bool?>(w.Ref);
     }

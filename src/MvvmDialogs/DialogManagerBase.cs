@@ -44,8 +44,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
         var view = ViewLocator.Locate(viewModel);
         Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
-        var dialog = CreateDialog(ownerViewModel, viewModel, view);
-        dialog.Show();
+        Dispatch(() =>
+        {
+            var dialog = CreateDialog(ownerViewModel, viewModel, view);
+            dialog.Show();
+        });
     }
 
     /// <inheritdoc />
@@ -54,8 +57,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
         var view = ViewLocator.Locate(viewModel);
         Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
-        var dialog = CreateDialog(ownerViewModel, viewModel, view);
-        await dialog.ShowDialogAsync().ConfigureAwait(true);
+        await await DispatchAsync(() =>
+        {
+            var dialog = CreateDialog(ownerViewModel, viewModel, view);
+            return dialog.ShowDialogAsync();
+        });
 
         Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
     }
@@ -92,6 +98,19 @@ public abstract class DialogManagerBase<T> : IDialogManager
     protected abstract IWindow CreateWrapper(T window);
 
     /// <summary>
+    /// Dispatches an action to the UI thread.
+    /// </summary>
+    /// <param name="action">The action to execute on the UI thread.</param>
+    protected abstract void Dispatch(Action action);
+
+    /// <summary>
+    /// Dispatches an asynchronous action to the UI thread.
+    /// </summary>
+    /// <param name="action">The action to execute on the UI thread.</param>
+    /// <typeparam name="D">The return type of the dispatched function.</typeparam>
+    protected abstract Task<D> DispatchAsync<D>(Func<D> action);
+
+    /// <summary>
     /// Handles window events. By default, ICloseable and IActivable are handled.
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
@@ -101,12 +120,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
         // ReSharper disable once SuspiciousTypeConversion.Global
         if (viewModel is ICloseable c)
         {
-            c.RequestClose += (_, _) => dialog.Close();
+            c.RequestClose += (_, _) => Dispatch(dialog.Close);
         }
         // ReSharper disable once SuspiciousTypeConversion.Global
         if (viewModel is IActivable activable)
         {
-            activable.RequestActivate += (_, _) => dialog.Activate();
+            activable.RequestActivate += (_, _) => Dispatch(dialog.Activate);
         }
     }
 
@@ -116,9 +135,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
     {
         Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-        var dialog = FrameworkDialogFactory.Create<TSettings, TResult>(settings, appSettings);
-        var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-        var result = await dialog.ShowDialogAsync(owner);
+        var result = await await DispatchAsync(() =>
+        {
+            var dialog = FrameworkDialogFactory.Create<TSettings, TResult>(settings, appSettings);
+            var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+            return dialog.ShowDialogAsync(owner);
+        }).ConfigureAwait(false);
 
         Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings?.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
         return result;

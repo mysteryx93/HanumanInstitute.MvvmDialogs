@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.2.2 - 2002-06-07
+
+- DialogManager is now thread-safe, dispatching UI calls to the UI thread
+- Added optional `dispatcher` parameter to DialogManager
+
 ## 1.2.1 - 2022-05-29
 
 Made the library more friendly for unit tests. One area that caused trouble is the creation of the
