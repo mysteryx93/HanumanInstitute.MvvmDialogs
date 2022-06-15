@@ -1,5 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
-
+﻿
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
@@ -13,7 +12,7 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
     /// </summary>
     /// <remarks>
     /// By default, <see cref="ViewLocatorBase"/> is used as dialog type locator
-    /// and <see cref="FrameworkDialogFactory"/> is used as framework dialog factory.
+    /// and <see cref="DialogFactory"/> is used as framework dialog factory.
     /// </remarks>
     public DialogService()
         : this(null)
@@ -31,7 +30,7 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
         AppDialogSettings? settings = null,
         Func<Type, object?>? viewModelFactory = null)
         : base(settings ?? new AppDialogSettings(),
-            dialogManager ?? new DialogManager(frameworkDialogFactory: new FrameworkDialogFactory()),
+            dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
             viewModelFactory)
     {
     }

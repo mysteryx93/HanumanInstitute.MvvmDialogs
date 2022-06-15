@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
 using Avalonia.Threading;
 
@@ -17,10 +15,10 @@ public class DialogManager : DialogManagerBase<Window>
 
     /// <inheritdoc />
     public DialogManager(IViewLocator? viewLocator = null,
-        IFrameworkDialogFactory? frameworkDialogFactory = null,
+        IDialogFactory? dialogFactory = null,
         ILogger<DialogManager>? logger = null, IDispatcher? dispatcher = null) :
         base(viewLocator ?? new ViewLocatorBase(),
-            frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
+            dialogFactory ?? new DialogFactory(), logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
     }

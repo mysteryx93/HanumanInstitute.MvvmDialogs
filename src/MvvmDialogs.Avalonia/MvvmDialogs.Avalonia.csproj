@@ -27,7 +27,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
   </ItemGroup>
@@ -45,7 +45,6 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.12" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.12" />
-    <PackageReference Include="MessageBox.Avalonia" Version="2.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 

@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using System.Windows.Threading;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf
@@ -14,10 +12,10 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         private readonly Dispatcher _dispatcher;
 
         /// <inheritdoc />
-        public DialogManager(IViewLocator? viewLocator = null, IFrameworkDialogFactory? frameworkDialogFactory = null,
+        public DialogManager(IViewLocator? viewLocator = null, IDialogFactory? dialogFactory = null,
             ILogger<DialogManager>? logger = null, Dispatcher? dispatcher = null) :
             base(viewLocator ?? new ViewLocatorBase(),
-                frameworkDialogFactory ?? new FrameworkDialogFactory(), logger)
+                dialogFactory ?? new DialogFactory(), logger)
         {
             _dispatcher = dispatcher ?? Application.Current.Dispatcher;
         }
@@ -35,14 +33,13 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        public TResult ShowFrameworkDialog<TSettings, TResult>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<TResult, string>? resultToString = null)
+        public object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
             where TSettings : DialogSettingsBase
         {
             Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-            var dialog = FrameworkDialogFactory.Create<TSettings, TResult>(settings, appSettings);
             var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-            var result = dialog.AsSync().ShowDialog(owner);
+            var result = DialogFactory.AsSync().ShowDialog(owner, settings, appSettings);
 
             Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings?.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
             return result;

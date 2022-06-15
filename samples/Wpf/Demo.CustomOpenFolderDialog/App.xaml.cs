@@ -18,7 +18,7 @@ public partial class App
                 .AddSingleton<IDialogService>(_ => new DialogService(
                     new DialogManager(
                         viewLocator: new ViewLocator(),
-                        frameworkDialogFactory: new CustomFrameworkDialogFactory(),
+                        dialogFactory: new DialogFactory().AddCustomOpenFolder(),
                         logger: loggerFactory.CreateLogger<DialogManager>()),
                     viewModelFactory: x => Ioc.Default.GetService(x)))
                 .AddTransient<MainWindowViewModel>()

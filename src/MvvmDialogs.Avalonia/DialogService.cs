@@ -1,6 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Avalonia;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Class abstracting the interaction between view models and views when it comes to
@@ -13,7 +11,7 @@ public class DialogService : DialogServiceBase
     /// </summary>
     /// <remarks>
     /// By default, <see cref="ViewLocatorBase"/> is used as dialog type locator
-    /// and <see cref="FrameworkDialogFactory"/> is used as framework dialog factory.
+    /// and <see cref="DialogFactory"/> is used as framework dialog factory.
     /// </remarks>
     public DialogService()
         : this(null)
@@ -31,7 +29,7 @@ public class DialogService : DialogServiceBase
         AppDialogSettings? settings = null,
         Func<Type, object?>? viewModelFactory = null)
         : base(settings ?? new AppDialogSettings(),
-            dialogManager ?? new DialogManager(frameworkDialogFactory: new FrameworkDialogFactory()),
+            dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
             viewModelFactory)
     {
     }

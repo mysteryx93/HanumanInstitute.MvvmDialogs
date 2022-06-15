@@ -1,5 +1,4 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -57,8 +56,8 @@ public static class Extensions
     /// <summary>
     /// Returns the Sync interface of an IFrameworkDialog.
     /// </summary>
-    internal static IFrameworkDialogSync<T> AsSync<T>(this IFrameworkDialog<T> factory) =>
-        factory as IFrameworkDialogSync<T> ?? throw new InvalidCastException("IFrameworkDialog<T> instance doesn't implement IFrameworkDialogSync<T>.");
+    internal static IDialogFactorySync AsSync(this IDialogFactory factory) =>
+        factory as IDialogFactorySync ?? throw new InvalidCastException("IDialogFactory instance doesn't implement IDialogFactorySync.");
 
     /// <summary>
     /// Returns the Sync interface of an IWindow.

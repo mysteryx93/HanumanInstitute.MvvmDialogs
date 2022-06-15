@@ -44,5 +44,4 @@
       <Link>StrongName.snk</Link>
     </None>
   </ItemGroup>
-
 </Project>

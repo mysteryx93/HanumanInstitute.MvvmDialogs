@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -21,7 +21,7 @@ public class App : Application
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             dialogManager: new DialogManager(
                 viewLocator: new ViewLocator(),
-                frameworkDialogFactory: new CustomFrameworkDialogFactory(),
+                dialogFactory: new DialogFactory().AddCustomOpenFolder(),
                 logger: loggerFactory.CreateLogger<DialogManager>()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 

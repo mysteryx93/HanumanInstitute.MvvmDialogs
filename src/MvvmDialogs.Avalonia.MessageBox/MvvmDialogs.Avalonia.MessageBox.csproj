@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia.MessageBox</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="0.10.15" />
+      <PackageReference Include="MessageBox.Avalonia" Version="2.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
+      <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
+    </ItemGroup>
+
+</Project>

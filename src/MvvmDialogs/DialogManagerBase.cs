@@ -1,4 +1,3 @@
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Microsoft.Extensions.Logging;
 // ReSharper disable MemberCanBePrivate.Global
 
@@ -18,7 +17,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <summary>
     /// A factory to resolve framework dialog types.
     /// </summary>
-    protected IFrameworkDialogFactory FrameworkDialogFactory { get; }
+    protected IDialogFactory DialogFactory { get; }
 
     /// <summary>
     /// A ILogger to capture MvvmDialogs logs.
@@ -29,12 +28,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
     /// <param name="viewLocator">Locator responsible for finding a dialog type matching a view model.</param>
-    /// <param name="frameworkDialogFactory">A factory to resolve framework dialog types.</param>
+    /// <param name="dialogFactory">A factory to resolve framework dialog types.</param>
     /// <param name="logger">A ILogger to capture MvvmDialogs logs.</param>
-    protected DialogManagerBase(IViewLocator viewLocator, IFrameworkDialogFactory frameworkDialogFactory, ILogger<DialogManagerBase<T>>? logger)
+    protected DialogManagerBase(IViewLocator viewLocator, IDialogFactory dialogFactory, ILogger<DialogManagerBase<T>>? logger)
     {
         ViewLocator = viewLocator;
-        FrameworkDialogFactory = frameworkDialogFactory;
+        DialogFactory = dialogFactory;
         Logger = logger;
     }
 
@@ -130,19 +129,18 @@ public abstract class DialogManagerBase<T> : IDialogManager
     }
 
     /// <inheritdoc />
-    public virtual async Task<TResult> ShowFrameworkDialogAsync<TSettings, TResult>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<TResult, string>? resultToString = null)
+    public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase
     {
         Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
         var result = await await DispatchAsync(() =>
         {
-            var dialog = FrameworkDialogFactory.Create<TSettings, TResult>(settings, appSettings);
             var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-            return dialog.ShowDialogAsync(owner);
+            return DialogFactory.ShowDialogAsync(owner, settings, appSettings);
         }).ConfigureAwait(false);
 
-        Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings?.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
+        Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
         return result;
     }
 

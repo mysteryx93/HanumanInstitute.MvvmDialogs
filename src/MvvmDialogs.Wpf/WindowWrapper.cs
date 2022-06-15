@@ -1,5 +1,4 @@
 ﻿using System.Windows.Forms;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs.Wpf;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
