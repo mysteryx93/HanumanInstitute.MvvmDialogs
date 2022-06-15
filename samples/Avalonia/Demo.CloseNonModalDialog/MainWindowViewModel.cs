@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
@@ -23,19 +23,20 @@ public class MainWindowViewModel : ViewModelBase
         this.dialogService = dialogService;
 
         var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(d => d == null);
-        ShowCommand = ReactiveCommand.Create(Show, canShow);
+        ShowCommand = ReactiveCommand.Create(ShowImpl, canShow);
 
         var canClose = this.WhenAnyValue(x => x.DialogViewModel).Select(d => d != null);
-        CloseCommand = ReactiveCommand.Create(Close, canClose);
+        CloseCommand = ReactiveCommand.Create(CloseImpl, canClose);
     }
 
-    private void Show()
+    // Run from background threads
+    private void ShowImpl()
     {
         DialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
         dialogService.Show(this, DialogViewModel);
     }
 
-    private void Close()
+    private void CloseImpl()
     {
         dialogService.Close(DialogViewModel!);
         DialogViewModel = null;

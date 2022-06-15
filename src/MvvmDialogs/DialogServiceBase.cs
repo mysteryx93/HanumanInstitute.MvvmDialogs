@@ -55,6 +55,7 @@ public abstract class DialogServiceBase : IDialogService
 
     /// <summary>
     /// Attempts to bring the window to the foreground and activates it.
+    /// This method is not thread-safe and must be run on the UI thread.
     /// </summary>
     /// <param name="viewModel">The view model of the window.</param>
     /// <returns>true if the Window was successfully activated; otherwise, false.</returns>
@@ -70,8 +71,8 @@ public abstract class DialogServiceBase : IDialogService
     }
 
     /// <summary>
-    /// Closes a non-modal dialog that previously was opened using <see cref="DialogServiceBase.Show"/>,
-    /// <see cref="DialogServiceBase.Show{T}"/>.
+    /// Closes a non-modal dialog that previously was opened using <see cref="DialogServiceBase.Show"/>.
+    /// This method is not thread-safe and must be run on the UI thread.
     /// </summary>
     /// <param name="viewModel">The view model of the dialog to close.</param>
     /// <returns>true if the Window was successfully closed; otherwise, false.</returns>
@@ -134,7 +135,7 @@ public abstract class DialogServiceBase : IDialogService
 
     /// <inheritdoc />
     public T CreateViewModel<T>() =>
-        (T?) ViewModelFactory?.Invoke(typeof(T)) ??
+        (T?)ViewModelFactory?.Invoke(typeof(T)) ??
         throw new NullReferenceException(
             $"ViewModelFactory was not set in the DialogService constructor or the function returned null for type '{typeof(T)}'.");
 }

@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace HanumanInstitute.MvvmDialogs;
