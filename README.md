@@ -266,40 +266,49 @@ The usage will the same as a standard `Window`.
 
 ## Custom Framework Dialogs
 
-This part is the most different from the FantasticFiasco version and will require some work to port.
+This part is the most different from the FantasticFiasco version and will require some work to port. The implementation further changed as of v1.3 to be simpler and more modular.
 
-First, create a custom FrameworkDialogFactory like this. Note that you can create entirely new methods by adding new settings types.
+First, create a custom DialogFactory like this. Note that you can create entirely new methods by adding new settings types.
 
-Note: Since the dialog class selection is based on the settings type, you cannot have two different framework dialog classes using the same settings class. However, you can create a base settings class and various derived setting types, even if the derived type adds nothing.
+For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type.
 
 ```c#
-public class CustomFrameworkDialogFactory : FrameworkDialogFactory
+public class CustomDialogFactory : DialogFactoryBase
 {
-    public override IFrameworkDialog<TResult> Create<TSettings, TResult>(TSettings settings, AppDialogSettingsBase appSettings)
+    public CustomDialogFactory(IDialogFactory? chain = null)
+        : base(chain)
     {
-        var s2 = (AppDialogSettings)appSettings;
-        return settings switch
-        {
-            TaskMessageBoxSettings s => (IFrameworkDialog<TResult>)new CustomMessageBox(s, s2),
-            _ => base.Create<TSettings, TResult>(settings, appSettings)
-        };
     }
+
+    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+        settings switch
+        {
+            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings),
+            _ => base.ShowDialogAsync(owner, settings, appSettings)
+        };
+
+    private async Task<string?> ShowOpenFolderDialogAsync(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings) =>
+        "Action here";
 }
 ```
 
-Second, you must pass the new FrameworkDialogFactory when creating the DialogService.
+Second, create an extension method to facilitate registration of the new Dialog Factory.
 
 ```c#
-new DialogService(dialogManager: new DialogManager(new CustomFrameworkDialogFactory()))
+public static class DialogFactoryExtensions
+{
+    public static IDialogFactory AddCustomOpenFolder(this IDialogFactory factory) => new CustomDialogFactory(factory);
+}
 ```
 
-Third, create a framework dialog class that implements `IFrameworkDialog<T>`.
-For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type.
-
-Implement `ShowDialogAsync` and access `IWindow` as `owner.AsWrapper().Ref`
+Third, you must register DialogFactory when creating the DialogService. You can form a chain of DialogFactory 
+where each instance handles some types and passes unhandled requests to the next DialogFactory in the chain. 
+The extension method facilitates the creation of such chain. In this example, our new class handles OpenFolder, 
+and all other requests fallback to the default implementation.
 
 ```c#
-Task<T> ShowDialogAsync(IWindow owner)
+new DialogService(dialogManager: new DialogManager(
+    dialogFactory: new DialogFactory().AddCustomOpenFolder()))
 ```
 
 Finally, if you're creating a new method, you must create a new extension method on `IDialogService`
@@ -330,7 +339,9 @@ public static class Extensions
 }
 ```
 
-[Sample here](samples/Wpf/Demo.CustomMessageBox/)
+[Sample demo here](samples/Wpf/Demo.CustomMessageBox/)
+
+[MvvmDialogs.Avalonia.MessageBox is an example of custom implementation](src/MvvmDialogs.Avalonia.MessageBox)
 
 You could create a class library providing a new set of `IDialogService` methods.
 
