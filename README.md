@@ -33,6 +33,7 @@ UI Frameworks that can easily be added through community efforts:
 - [Custom Framework Dialogs](#custom-framework-dialogs)
 - [Unit Testing](#unit-testing)
 - [Logging](#logging)
+- [Thread Safety](#thread-safety)
 - [Differences from FantasticFiasco/mvvm-dialogs](#differences-from-fantasticfiascomvvm-dialogs)
 - [Contributions Are Welcomed](#contributions-are-welcomed)
 ---
@@ -390,6 +391,11 @@ var dialogService = new DialogService(
     new DialogManager(logger: loggerFactory.CreateLogger<DialogManager>()));
 ```
 
+## Thread Safety
+
+All methods to show windows and dialogs are thread-safe and can be called from background threads.
+
+`IDialogService.Activate` and `IDialogService.Close` are NOT thread-safe and must be called from the UI thread.
 
 ## Differences from FantasticFiasco/mvvm-dialogs
 

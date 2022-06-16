@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.3.0
+
+- Calls will only be dispatched if not already on UI thread
+- Redesigned FrameworkDialogFactory to be simpler and more modular
+- MessageBox for Avalonia is now split into a separate assembly `HanumanInstitute.MvvmDialogs.Avalonia.MessageBox`, since Avalonia doesn't have built-in support for message boxes
+- `MvvmDialogs.Avalonia`, removed reference to MessageBox.Avalonia
+
+
 ## 1.2.3 - 2002-06-07
 
 - Fixed an issue with thread-safety
