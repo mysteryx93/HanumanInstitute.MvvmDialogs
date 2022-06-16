@@ -221,7 +221,9 @@ public class App : Application
 
         var build = Locator.CurrentMutable;
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
-            new DialogManager(viewLocator: new ViewLocator()),
+            new DialogManager(
+                viewLocator: new ViewLocator(),
+                dialogFactory: new DialogFactory().AddMessageBox()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();
@@ -249,6 +251,34 @@ public class ViewLocator : ViewLocatorBase
 #### AppDialogSettings
 
 For the moment there are no application-wide settings used for Avalonia.
+
+### Avalonia.MessageBox
+
+Avalonia has no built-in support for message boxes. This extension handles message box requests
+using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia) library.
+
+1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.MessageBox`
+2. Register the MessageBox handler on IDialogService like this:
+ 
+```c#
+new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBox()))
+```
+
+### Avalonia.Fluent
+
+[FluentAvalonia](https://github.com/amwx/FluentAvalonia/) brings more of Fluent design and WinUI controls into Avalonia.
+
+1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.Fluent`
+2. Register the handlers on IDialogService like this:
+
+```c#
+new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddFluent(FluentMessageBoxType.ContentDialog)))
+```
+
+It will add `IDialogService.ShowContentDialogAsync` and `IDialogService.ShowTaskDialogAsync`.
+
+Additionally, `AddFluent` takes a parameter specifying whether to handle `IDialogService.ShowMessageBoxAsync` calls with ContentDialog or with TaskDialog. 
+
 
 ## IModalDialogViewModel / ICloseable / IActivable
 

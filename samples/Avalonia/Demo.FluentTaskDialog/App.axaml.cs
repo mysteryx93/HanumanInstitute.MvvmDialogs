@@ -4,10 +4,11 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
+using HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.MessageBox;
+namespace Demo.FluentTaskDialog;
 
 public class App : Application
 {
@@ -22,7 +23,7 @@ public class App : Application
             new DialogManager(
                 viewLocator: new ViewLocator(),
                 logger: loggerFactory.CreateLogger<DialogManager>(),
-                dialogFactory: new DialogFactory().AddMessageBox()),
+                dialogFactory: new DialogFactory().AddFluent()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();

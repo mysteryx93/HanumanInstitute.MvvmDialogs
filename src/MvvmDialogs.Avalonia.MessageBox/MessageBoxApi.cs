@@ -1,7 +1,4 @@
-using Avalonia.Controls;
-using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
-using MessageBox.Avalonia.Enums;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 

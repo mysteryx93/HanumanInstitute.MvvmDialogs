@@ -1,0 +1,23 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fluentContentDialog="clr-namespace:Demo.FluentContentDialog"
+             xmlns:sty="using:FluentAvalonia.Styling"
+             x:Class="Demo.FluentContentDialog.App">
+    <Application.DataTemplates>
+        <fluentContentDialog:ViewLocator/>
+    </Application.DataTemplates>
+
+    <Application.Styles>
+        <sty:FluentAvaloniaTheme />
+        <!-- <FluentTheme Mode="Light"/> -->
+        <Style Selector="Button">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+        </Style>
+        <Style Selector="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+    </Application.Styles>
+</Application>

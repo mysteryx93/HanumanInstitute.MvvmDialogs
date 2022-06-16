@@ -8,7 +8,11 @@ All notable changes to this project will be documented in this file.
 - Redesigned FrameworkDialogFactory to be simpler and more modular
 - MessageBox for Avalonia is now split into a separate assembly `HanumanInstitute.MvvmDialogs.Avalonia.MessageBox`, since Avalonia doesn't have built-in support for message boxes
 - `MvvmDialogs.Avalonia`, removed reference to MessageBox.Avalonia
+- Added preliminary support for FluentAvalonia `HanumanInstitute.MvvmDialogs.Avalonia.Fluent`
 
+TODO:
+- Support icons with Fluent MessageBox TaskDialogs
+- Support more complex usage of Fluent dialogs
 
 ## 1.2.3 - 2002-06-07
 

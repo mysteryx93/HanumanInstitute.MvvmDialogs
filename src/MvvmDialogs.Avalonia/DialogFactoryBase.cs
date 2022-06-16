@@ -40,5 +40,5 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// <returns>Return data specific to the dialog.</returns>
     public virtual Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
         Chain != null ? Chain.ShowDialogAsync(owner, settings, appSettings) :
-            throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
+            throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
 }

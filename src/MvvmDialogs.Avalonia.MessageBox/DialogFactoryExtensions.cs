@@ -1,4 +1,7 @@
-﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
+﻿using HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
+// ReSharper disable CheckNamespace
+
+namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Provides extensions to IDialogFactory.

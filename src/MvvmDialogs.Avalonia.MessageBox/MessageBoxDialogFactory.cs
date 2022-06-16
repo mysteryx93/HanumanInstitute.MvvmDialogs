@@ -1,5 +1,4 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using MessageBox.Avalonia.Enums;
 
 // ReSharper disable CheckNamespace
 
