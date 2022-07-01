@@ -79,6 +79,7 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new OpenFileApiSettings()
         {
+            CheckFileExists = true,
             Multiselect = settings.AllowMultiple ?? false,
             ReadOnlyChecked = settings.ReadOnlyChecked,
             ShowReadOnly = settings.ShowReadOnly
@@ -92,9 +93,7 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new SaveFileApiSettings()
         {
-            CheckFileExists = settings.CheckFileExists,
-            CreatePrompt = settings.CreatePrompt,
-            OverwritePrompt = settings.OverwritePrompt
+            DefaultExt = settings.DefaultExtension
         };
         AddSharedSettings(apiSettings, settings);
 
@@ -103,10 +102,6 @@ public class DialogFactory : DialogFactoryBase
 
     private void AddSharedSettings(FileApiSettings d, FileDialogSettings s)
     {
-        d.DefaultExt = s.DefaultExtension;
-        d.AddExtension = !string.IsNullOrEmpty(s.DefaultExtension);
-        d.CheckFileExists = s.CheckFileExists;
-        d.CheckPathExists = s.CheckPathExists;
         d.InitialDirectory = s.InitialDirectory;
         d.FileName = s.InitialFile;
         d.DereferenceLinks = s.DereferenceLinks;

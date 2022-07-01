@@ -38,11 +38,10 @@ public class MainWindowViewModel : ViewModelBase
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
             Filters = new List<FileFilter>()
             {
-                new FileFilter("Text Documents", "txt"),
+                new FileFilter("Text Documents", new[] { "txt", "md" }),
                 new FileFilter("All Files", "*")
             },
-            CreatePrompt = true,
-            DefaultExtension = ".mp3"
+            DefaultExtension = "mp3"
         };
 
         var result = await dialogService.ShowSaveFileDialogAsync(this, settings);

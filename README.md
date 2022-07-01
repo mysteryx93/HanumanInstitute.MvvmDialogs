@@ -452,12 +452,10 @@ Here are the differences:
 ## Contributions Are Welcomed
 
 Todo:
-- Avalonia Open/Save dialogs need to display validation messages based on settings.
 - Implement for WinUI 3 (I'll leave this task to someone who is going to use it)
-- Implement for Blazor (I'm excited about this one)
 - Implement for UWP (this thing is dead... not worth implementing IMO)
-- Unit tests? (with extensive demos, this might be duplicate and overkill)
-- Automated builds
+- Implement for Blazor?
+- Automated builds?
 
 ### Author
 

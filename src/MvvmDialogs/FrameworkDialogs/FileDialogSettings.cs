@@ -8,24 +8,6 @@ namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 public abstract class FileDialogSettings : DialogSettingsBase
 {
     /// <summary>
-    /// Gets or sets the default extension to be used (including the period ".")
-    /// if not set by the user or by a filter
-    /// </summary>
-    public string DefaultExtension { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Gets or sets a value indicating whether a file dialog displays a warning if the user
-    /// specifies a file name that does not exist.
-    /// </summary>
-    public bool CheckFileExists { get; set; } = false;
-
-    /// <summary>
-    /// Gets or sets a value that specifies whether warnings are displayed if the user types
-    /// invalid paths and file names.
-    /// </summary>
-    public bool CheckPathExists { get; set; } = true;
-
-    /// <summary>
     /// Gets or sets a value indicating whether a file dialog returns either the location of
     /// the file referenced by a shortcut or the location of the shortcut file (.lnk).
     /// </summary>

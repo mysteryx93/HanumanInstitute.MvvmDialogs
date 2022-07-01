@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## 1.3.1
+## 1.3.1 - 2022-07-01
 
 - File dialog filters can now take extensions with or without the dot
 - FluentAvalonia TaskDialog now supports default buttons
-- Handle the following settings in Avalonia framework dialogs: DefaultExtension, CheckFileExists, CheckPathExists, CreatePrompt, OverwritePrompt.
+- Open/save file framework dialog settings are now more consistent in Avalonia and WPF
 
 ## 1.3.0 - 2022-06-16
 

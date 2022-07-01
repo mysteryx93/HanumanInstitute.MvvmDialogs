@@ -6,14 +6,8 @@
 public class SaveFileDialogSettings : FileDialogSettings
 {
     /// <summary>
-    /// Gets or sets a value indicating whether the dialog box prompts the user for permission
-    /// to create a file if the user specifies a file that does not exist.
+    /// Gets or sets the default extension to be used (including the period ".")
+    /// if not set by the user or by a filter
     /// </summary>
-    public bool CreatePrompt { get; set; }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the dialog box displays a warning if the user
-    /// specifies the name of a file that already exists.
-    /// </summary>
-    public bool OverwritePrompt { get; set; }
+    public string DefaultExtension { get; set; } = string.Empty;
 }

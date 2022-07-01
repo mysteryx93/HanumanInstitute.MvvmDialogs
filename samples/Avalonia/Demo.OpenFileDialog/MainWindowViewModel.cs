@@ -68,9 +68,6 @@ public class MainWindowViewModel : ViewModelBase
                     ".exe", ".dll"
                 }),
             new FileFilter("All Files", "*")
-        },
-        CheckFileExists = true,
-        CheckPathExists = true,
-        DefaultExtension = ".mp3"
+        }
     };
 }
