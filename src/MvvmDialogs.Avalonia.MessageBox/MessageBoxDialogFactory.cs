@@ -35,8 +35,8 @@ public class MessageBoxDialogFactory : DialogFactoryBase
     public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
-            MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings),
-            _ => base.ShowDialogAsync(owner, settings, appSettings)
+            MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
+            _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
     private async Task<bool?> ShowMessageBoxDialogAsync(WindowWrapper owner, MessageBoxSettings settings, AppDialogSettings appSettings)

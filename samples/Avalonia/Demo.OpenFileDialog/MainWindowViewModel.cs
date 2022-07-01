@@ -54,9 +54,23 @@ public class MainWindowViewModel : ViewModelBase
         Title = multiple ? "Open multiple files" : "Open single file",
         InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
         Filters = new List<FileFilter>()
-            {
-                new FileFilter("Text Documents", "txt"),
-                new FileFilter("All Files", "*")
-            }
+        {
+            new FileFilter(
+                "Text Documents",
+                new[]
+                {
+                    "txt", "md"
+                }),
+            new FileFilter(
+                "Binaries",
+                new[]
+                {
+                    ".exe", ".dll"
+                }),
+            new FileFilter("All Files", "*")
+        },
+        CheckFileExists = true,
+        CheckPathExists = true,
+        DefaultExtension = ".mp3"
     };
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
@@ -56,7 +57,7 @@ public class FileFilter
     public string ExtensionsToString(char separator = ';')
     {
         var builder = new StringBuilder();
-        foreach (var ext in Extensions)
+        foreach (var ext in Extensions.Select(x => x.TrimStart('.')))
         {
             // Add separator.
             if (builder.Length > 0)

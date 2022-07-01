@@ -1,4 +1,4 @@
-
+﻿
 // ReSharper disable MemberCanBePrivate.Global
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -12,6 +12,11 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// If the dialog is not handled by this class, calls this other handler next.
     /// </summary>
     protected readonly IDialogFactory? Chain;
+        
+    /// <summary>
+    /// A reference to the top of the IDialogFactory chain, used to display message boxes.
+    /// </summary>
+    protected IDialogFactory ChainTop { get; set; }
 
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
@@ -20,6 +25,15 @@ public abstract class DialogFactoryBase : IDialogFactory
     protected DialogFactoryBase(IDialogFactory? chain)
     {
         Chain = chain;
+        ChainTop = this;
+        
+        // Set ChainTop recursively.
+        var item = chain;
+        while (item is DialogFactoryBase f)
+        {
+            f.ChainTop = this;
+            item = f.Chain;
+        }
     }
 
     /// <inheritdoc />
@@ -38,7 +52,7 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// <param name="settings">The settings for the framework dialog.</param>
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <returns>Return data specific to the dialog.</returns>
-    public virtual Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
-        Chain != null ? Chain.ShowDialogAsync(owner, settings, appSettings) :
+    public virtual async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+        Chain != null ? await Chain.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true) :
             throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
 }

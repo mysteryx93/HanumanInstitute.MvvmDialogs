@@ -7,5 +7,5 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 internal interface IFluentApi
 {
     Task<ContentDialogResult> ShowContentDialog(Window owner, ContentDialogSettings settings);
-    Task<TaskDialogStandardResult> ShowTaskDialog(Window owner, TaskDialogSettings settings);
+    Task<object> ShowTaskDialog(Window owner, TaskDialogSettings settings);
 }

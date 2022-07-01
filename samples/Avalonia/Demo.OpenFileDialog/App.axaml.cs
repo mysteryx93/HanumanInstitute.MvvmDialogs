@@ -21,7 +21,8 @@ public class App : Application
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
                 viewLocator: new ViewLocator(),
-                logger: loggerFactory.CreateLogger<DialogManager>()),
+                logger: loggerFactory.CreateLogger<DialogManager>(),
+                dialogFactory: new DialogFactory().AddMessageBox()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();

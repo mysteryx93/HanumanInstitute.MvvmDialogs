@@ -134,16 +134,15 @@ public abstract class DialogManagerBase<T> : IDialogManager
     {
         Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-        var result = await await DispatchAsync(() =>
+        var result = await await DispatchAsync(async () =>
         {
             var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-            return DialogFactory.ShowDialogAsync(owner, settings, appSettings);
-        }).ConfigureAwait(false);
+            return await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+        }).ConfigureAwait(true);
 
         Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
         return result;
     }
-
 
     /// <inheritdoc />
     public abstract IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel);

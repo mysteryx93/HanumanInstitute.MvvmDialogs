@@ -8,7 +8,7 @@ internal class FileApiSettings
     public string? InitialFileName { get; set; } = string.Empty;
     public List<FileDialogFilter> Filters { get; set; } = new List<FileDialogFilter>();
     public string? Title { get; set; }
-
+    
     internal void ApplyTo(FileDialog d)
     {
         d.Directory = Directory;

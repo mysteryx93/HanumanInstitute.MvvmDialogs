@@ -1,7 +1,6 @@
-﻿// ReSharper disable MemberCanBePrivate.Global
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable CheckNamespace
-
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
@@ -45,7 +44,7 @@ public class FluentDialogFactory : DialogFactoryBase
             MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.ContentDialog => await ShowMessageBoxContentDialogAsync(owner.Ref, s, appSettings)
                 .ConfigureAwait(true),
             MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.TaskDialog => await ShowMessageBoxTaskDialogAsync(owner.Ref, s, appSettings).ConfigureAwait(true),
-            _ => base.ShowDialogAsync(owner, settings, appSettings)
+            _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
     private async Task<bool?> ShowMessageBoxContentDialogAsync(Window owner, MessageBoxSettings settings, AppDialogSettings appSettings)
@@ -91,7 +90,8 @@ public class FluentDialogFactory : DialogFactoryBase
         {
             Title = settings.Title,
             Content = settings.Text,
-            Buttons = SyncButton(settings.Button),
+            Buttons = SyncButton(settings.Button, settings.DefaultValue),
+
             // Icon = SyncIcon(settings.Icon)
         };
 
@@ -109,28 +109,34 @@ public class FluentDialogFactory : DialogFactoryBase
         };
     }
 
-    private static TaskDialogButton[] SyncButton(MessageBoxButton value) =>
+    private static TaskDialogButton[] SyncButton(MessageBoxButton value, bool? defaultValue) =>
         (value) switch
         {
             MessageBoxButton.YesNo => new[]
             {
-                TaskDialogButton.YesButton,
-                TaskDialogButton.NoButton
+                GetButton("Yes", true, defaultValue),
+                GetButton("No", false, defaultValue)
             },
             MessageBoxButton.OkCancel => new[]
             {
-                TaskDialogButton.OKButton,
-                TaskDialogButton.CancelButton
+                GetButton("OK", true, defaultValue),
+                GetButton("Cancel", null, defaultValue)
             },
             MessageBoxButton.YesNoCancel => new[]
             {
-                TaskDialogButton.YesButton,
-                TaskDialogButton.NoButton,
-                TaskDialogButton.CancelButton
+                GetButton("Yes", true, defaultValue),
+                GetButton("No", false, defaultValue),
+                GetButton("Cancel", null, defaultValue)
             },
             _ => new[]
             {
-                TaskDialogButton.OKButton
+                GetButton("OK", true, true)
             }
+        };
+
+    private static TaskDialogButton GetButton(string text, bool? value, bool? defaultValue) =>
+        new TaskDialogButton(text, value)
+        {
+            IsDefault = defaultValue == value
         };
 }

@@ -118,7 +118,7 @@ public static class DialogServiceExtensions
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
         return (string?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings);
+            ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true);
     }
 
     /// <summary>
@@ -136,6 +136,6 @@ public static class DialogServiceExtensions
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
         return (string?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings);
+            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true);
     }
 }

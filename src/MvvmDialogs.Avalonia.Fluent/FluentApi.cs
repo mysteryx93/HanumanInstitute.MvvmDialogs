@@ -23,7 +23,7 @@ internal class FluentApi : IFluentApi
         return dialog.ShowAsync();
     }
 
-    public async Task<TaskDialogStandardResult> ShowTaskDialog(Window owner, TaskDialogSettings settings)
+    public Task<object> ShowTaskDialog(Window owner, TaskDialogSettings settings)
     {
         var dialog = new TaskDialog()
         {
@@ -39,6 +39,6 @@ internal class FluentApi : IFluentApi
         };
         dialog.Buttons.AddRange(settings.Buttons);
         dialog.XamlRoot = owner.GetVisualRoot();
-        return (TaskDialogStandardResult)await dialog.ShowAsync().ConfigureAwait(true);
+        return dialog.ShowAsync();
     }
 }

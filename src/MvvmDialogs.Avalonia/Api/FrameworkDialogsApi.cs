@@ -1,27 +1,26 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi
 {
-    public Task<string[]?> ShowOpenFileDialog(Window owner, OpenFileApiSettings settings)
+    public async Task<string[]?> ShowOpenFileDialogAsync(Window owner, OpenFileApiSettings settings)
     {
-        var dialog = new global::Avalonia.Controls.OpenFileDialog();
+        var dialog = new OpenFileDialog();
         settings.ApplyTo(dialog);
-        return dialog.ShowAsync(owner);
+        return await dialog.ShowAsync(owner).ConfigureAwait(true);
     }
 
-    public Task<string?> ShowSaveFileDialog(Window owner, SaveFileApiSettings settings)
+    public async Task<string?> ShowSaveFileDialogAsync(Window owner, SaveFileApiSettings settings)
     {
-        var dialog = new global::Avalonia.Controls.SaveFileDialog();
+        var dialog = new SaveFileDialog();
         settings.ApplyTo(dialog);
-        return dialog.ShowAsync(owner);
+        return await dialog.ShowAsync(owner).ConfigureAwait(true);
     }
 
-    public Task<string?> ShowOpenFolderDialog(Window owner, OpenFolderApiSettings settings)
+    public async Task<string?> ShowOpenFolderDialogAsync(Window owner, OpenFolderApiSettings settings)
     {
-        var dialog = new global::Avalonia.Controls.OpenFolderDialog();
+        var dialog = new OpenFolderDialog();
         settings.ApplyTo(dialog);
-        return dialog.ShowAsync(owner);
+        return await dialog.ShowAsync(owner).ConfigureAwait(true);
     }
 }

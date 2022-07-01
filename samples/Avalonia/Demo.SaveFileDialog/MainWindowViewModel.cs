@@ -19,7 +19,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         this.dialogService = dialogService;
 
-        SaveFileCommand = ReactiveCommand.Create(SaveFileAsync);
+        SaveFileCommand = ReactiveCommand.CreateFromTask(SaveFileAsync);
     }
 
     public string? Path
@@ -40,7 +40,9 @@ public class MainWindowViewModel : ViewModelBase
             {
                 new FileFilter("Text Documents", "txt"),
                 new FileFilter("All Files", "*")
-            }
+            },
+            CreatePrompt = true,
+            DefaultExtension = ".mp3"
         };
 
         var result = await dialogService.ShowSaveFileDialogAsync(this, settings);

@@ -27,6 +27,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\src\MvvmDialogs\MvvmDialogs.csproj" />
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
+    <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
   </ItemGroup>
 </Project>

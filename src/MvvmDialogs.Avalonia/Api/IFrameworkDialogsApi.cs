@@ -6,7 +6,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 /// </summary>
 internal interface IFrameworkDialogsApi
 {
-    Task<string[]?> ShowOpenFileDialog(Window owner, OpenFileApiSettings settings);
-    Task<string?> ShowSaveFileDialog(Window owner, SaveFileApiSettings settings);
-    Task<string?> ShowOpenFolderDialog(Window owner, OpenFolderApiSettings settings);
+    Task<string[]?> ShowOpenFileDialogAsync(Window owner, OpenFileApiSettings settings);
+    Task<string?> ShowSaveFileDialogAsync(Window owner, SaveFileApiSettings settings);
+    Task<string?> ShowOpenFolderDialogAsync(Window owner, OpenFolderApiSettings settings);
 }

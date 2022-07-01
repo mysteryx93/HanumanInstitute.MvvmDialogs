@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## 1.3.0
+## 1.3.1
+
+- File dialog filters can now take extensions with or without the dot
+- FluentAvalonia TaskDialog now supports default buttons
+- Handle the following settings in Avalonia framework dialogs: DefaultExtension, CheckFileExists, CheckPathExists, CreatePrompt, OverwritePrompt.
+
+## 1.3.0 - 2022-06-16
 
 - Calls will only be dispatched if not already on UI thread
 - Redesigned FrameworkDialogFactory to be simpler and more modular
@@ -14,11 +20,11 @@ TODO:
 - Support icons with Fluent MessageBox TaskDialogs
 - Support more complex usage of Fluent dialogs
 
-## 1.2.3 - 2002-06-07
+## 1.2.3 - 2022-06-07
 
 - Fixed an issue with thread-safety
 
-## 1.2.2 - 2002-06-07
+## 1.2.2 - 2022-06-07
 
 - DialogManager is now thread-safe, dispatching UI calls to the UI thread
 - Added optional `dispatcher` parameter to DialogManager
