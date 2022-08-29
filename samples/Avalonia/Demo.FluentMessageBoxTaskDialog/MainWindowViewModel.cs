@@ -83,7 +83,7 @@ public class MainWindowViewModel : ViewModelBase
             "This Is The Caption",
             MessageBoxButton.OkCancel,
             MessageBoxImage.Information,
-            null);
+            true);
 
         UpdateResult(result);
     }

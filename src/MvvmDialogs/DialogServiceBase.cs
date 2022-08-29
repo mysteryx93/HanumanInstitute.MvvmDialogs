@@ -38,11 +38,11 @@ public abstract class DialogServiceBase : IDialogService
     protected Func<Type, object?>? ViewModelFactory { get; }
 
     /// <inheritdoc />
-    public void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel) =>
+    public void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel) =>
         ShowInternal(ownerViewModel, viewModel);
 
     /// <inheritdoc />
-    public void Show<T>(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel) =>
+    public void Show<T>(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel) =>
         ShowInternal(ownerViewModel, viewModel);
 
     /// <inheritdoc />
@@ -103,9 +103,8 @@ public abstract class DialogServiceBase : IDialogService
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    protected void ShowInternal(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel)
+    protected void ShowInternal(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
         DialogManager.Show(ownerViewModel, viewModel);

@@ -23,7 +23,7 @@ public interface IDialogService
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel);
+    void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel);
 
     /// <summary>
     /// Displays a non-modal dialog of specified type <typeparamref name="T"/>.
@@ -32,7 +32,7 @@ public interface IDialogService
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <typeparam name="T">The type of the dialog to show.</typeparam>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    void Show<T>(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel); //where T : TWindow;
+    void Show<T>(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel); //where T : TWindow;
 
     /// <summary>
     /// Displays a modal dialog of a type that is determined by the dialog type locator.

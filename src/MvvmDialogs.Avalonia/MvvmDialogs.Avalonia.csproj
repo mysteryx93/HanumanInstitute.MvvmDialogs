@@ -9,8 +9,7 @@
     <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
     <Title>MVVM Dialogs for Avalonia</Title>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-    <AssemblyVersion>1.3.1</AssemblyVersion>
-    <PackageVersion>1.3.1</PackageVersion>
+    <Version>1.3.2</Version>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <Product>HanumanInstitute.MvvmDialogs</Product>
     <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
@@ -43,8 +42,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.12" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.12" />
+    <PackageReference Include="Avalonia" Version="0.10.15" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.15" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 

@@ -38,12 +38,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
     }
 
     /// <inheritdoc />
-    public virtual void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel)
+    public virtual void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
         Dispatch(() =>
         {
             var view = ViewLocator.Locate(viewModel);
-            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel?.GetType());
 
             var dialog = CreateDialog(ownerViewModel, viewModel, view);
             dialog.Show();
@@ -73,7 +73,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <param name="view">The view to show.</param>
     /// <returns>The new IWindow.</returns>
     /// <exception cref="TypeLoadException">Could not load view for view model.</exception>
-    protected IWindow CreateDialog(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel, object? view)
+    protected IWindow CreateDialog(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel, object? view)
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
         var dialog = view switch
@@ -84,7 +84,10 @@ public abstract class DialogManagerBase<T> : IDialogManager
             _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.")
         };
 
-        dialog.Owner = FindWindowByViewModel(ownerViewModel);
+        if (ownerViewModel != null)
+        {
+            dialog.Owner = FindWindowByViewModel(ownerViewModel);
+        }
         dialog.DataContext = viewModel;
         HandleDialogEvents(viewModel, dialog);
         return dialog;

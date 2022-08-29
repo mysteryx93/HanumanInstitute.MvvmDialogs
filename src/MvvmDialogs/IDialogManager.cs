@@ -17,7 +17,7 @@ public interface IDialogManager
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    void Show(INotifyPropertyChanged ownerViewModel, INotifyPropertyChanged viewModel);
+    void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel);
 
     /// <summary>
     /// Shows a new dialog of specified type.
