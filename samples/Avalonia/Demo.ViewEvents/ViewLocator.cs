@@ -1,4 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.Wpf;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace Demo.ActivateNonModalDialog;
 

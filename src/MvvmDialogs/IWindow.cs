@@ -15,6 +15,16 @@ public interface IWindow
     public object RefObj { get; }
 
     /// <summary>
+    /// Occurs when the window is loaded.
+    /// </summary>
+    event EventHandler Loaded;
+    
+    /// <summary>
+    /// Occurs when the window is closing.
+    /// </summary>
+    event EventHandler<CancelEventArgs> Closing; 
+    
+    /// <summary>
     /// Occurs when the window is closed.
     /// </summary>
     event EventHandler Closed;
@@ -50,4 +60,14 @@ public interface IWindow
     /// Tries to close the Window.
     /// </summary>
     void Close();
+    
+    /// <summary>
+    /// Gets or sets whether the window is enabled.
+    /// </summary>
+    bool IsEnabled { get; set; }
+    
+    /// <summary>
+    /// Gets or sets whether closing has been confirmed, in which case Closing event should be ignored. 
+    /// </summary>
+    bool ClosingConfirmed { get; set; }
 }

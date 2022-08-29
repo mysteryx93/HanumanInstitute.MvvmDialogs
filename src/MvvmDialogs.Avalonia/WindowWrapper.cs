@@ -20,6 +20,24 @@ public class WindowWrapper : IWindow
     public IWindow? Owner { get; set; }
 
     /// <summary>
+    /// Fired when the window is loaded.
+    /// </summary>
+    public event EventHandler? Loaded
+    {
+        add => Ref.Opened += value;
+        remove => Ref.Opened -= value;
+    }
+
+    /// <summary>
+    /// Fired when the window is closing.
+    /// </summary>
+    public event EventHandler<CancelEventArgs>? Closing
+    {
+        add => Ref.Closing += value;
+        remove => Ref.Closing -= value;
+    }
+
+    /// <summary>
     /// Fired when the window is closed.
     /// </summary>
     public event EventHandler? Closed
@@ -61,4 +79,14 @@ public class WindowWrapper : IWindow
 
     /// <inheritdoc />
     public void Close() => Ref.Close();
+
+    /// <inheritdoc />
+    public bool IsEnabled
+    {
+        get => Ref.IsEnabled;
+        set => Ref.IsEnabled = value;
+    }
+    
+    /// <inheritdoc />    
+    public bool ClosingConfirmed { get; set; }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
+
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable SuspiciousTypeConversion.Global
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -40,29 +42,31 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <inheritdoc />
     public virtual void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
-        Dispatch(() =>
-        {
-            var view = ViewLocator.Locate(viewModel);
-            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel?.GetType());
+        Dispatch(
+            () =>
+            {
+                var view = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel?.GetType());
 
-            var dialog = CreateDialog(ownerViewModel, viewModel, view);
-            dialog.Show();
-        });
+                var dialog = CreateDialog(ownerViewModel, viewModel, view);
+                dialog.Show();
+            });
     }
 
     /// <inheritdoc />
     public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
-        await await DispatchAsync(async () =>
-        {
-            var view = ViewLocator.Locate(viewModel);
-            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
+        await await DispatchAsync(
+            async () =>
+            {
+                var view = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
 
-            var dialog = CreateDialog(ownerViewModel, viewModel, view);
-            await dialog.ShowDialogAsync();
+                var dialog = CreateDialog(ownerViewModel, viewModel, view);
+                await dialog.ShowDialogAsync();
 
-            Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
-        });
+                Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
+            });
     }
 
     /// <summary>
@@ -119,29 +123,70 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <param name="dialog">The dialog being shown.</param>
     protected virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IWindow dialog)
     {
-        // ReSharper disable once SuspiciousTypeConversion.Global
-        if (viewModel is ICloseable c)
+        if (viewModel is ICloseable closable)
         {
-            c.RequestClose += (_, _) => Dispatch(dialog.Close);
+            closable.RequestClose += (_, _) => Dispatch(dialog.Close);
         }
-        // ReSharper disable once SuspiciousTypeConversion.Global
         if (viewModel is IActivable activable)
         {
             activable.RequestActivate += (_, _) => Dispatch(dialog.Activate);
         }
+        if (viewModel is IViewLoaded loaded)
+        {
+            dialog.Loaded += (_, _) => loaded.ViewLoaded();
+        }
+        if (viewModel is IViewClosing closing)
+        {
+            dialog.Closing += (_, e) => Window_Closing(dialog, e, closing);
+        }
+        if (viewModel is IViewClosed closed)
+        {
+            dialog.Closed += (_, _) => closed.ViewClosed();
+        }
+    }
+
+    private async void Window_Closing(IWindow dialog, CancelEventArgs e, IViewClosing closing)
+    {
+        if (dialog.ClosingConfirmed) { return; }
+
+        // ReSharper disable once MethodHasAsyncOverload
+        closing.ViewClosing(e);
+        if (e.Cancel)
+        {
+            dialog.IsEnabled = false;
+
+            // caller returns and window stays open
+            await Task.Yield();
+
+            await closing.ViewClosingAsync(e).ConfigureAwait(true);
+            if (!e.Cancel)
+            {
+                dialog.ClosingConfirmed = true;
+                dialog.Close();
+            }
+
+            // doesn't matter if it's closed
+            dialog.IsEnabled = true;
+        }
     }
 
     /// <inheritdoc />
-    public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+    public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(
+        INotifyPropertyChanged ownerViewModel,
+        TSettings settings,
+        AppDialogSettingsBase appSettings,
+        Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase
     {
         Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-        var result = await await DispatchAsync(async () =>
-        {
-            var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-            return await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
-        }).ConfigureAwait(true);
+        var result = await await DispatchAsync(
+            async () =>
+            {
+                var owner = FindWindowByViewModel(ownerViewModel) ??
+                            throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                return await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+            }).ConfigureAwait(true);
 
         Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
         return result;

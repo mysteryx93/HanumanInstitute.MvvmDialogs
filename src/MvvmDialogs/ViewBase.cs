@@ -7,7 +7,7 @@ namespace HanumanInstitute.MvvmDialogs;
 /// </summary>
 public abstract class ViewBase
 {
-    private readonly WeakReference viewReference;
+    private readonly WeakReference _viewReference;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewBase"/> class and hold a weak reference to specified object.
@@ -17,7 +17,7 @@ public abstract class ViewBase
     {
         if (view == null) throw new ArgumentNullException(nameof(view));
 
-        viewReference = new WeakReference(view);
+        _viewReference = new WeakReference(view);
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ public abstract class ViewBase
     /// <summary>
     /// Returns whether the weak reference is still available.
     /// </summary>
-    public virtual bool IsAlive => viewReference.IsAlive;
+    public virtual bool IsAlive => _viewReference.IsAlive;
 
     /// <summary>
     /// Returns the original view reference if it is still alive.
@@ -44,9 +44,9 @@ public abstract class ViewBase
         get
         {
             if (!IsAlive) throw new InvalidOperationException("View has been garbage collected.");
-            if (viewReference.Target == null) throw new InvalidOperationException("View has been set to null.");
+            if (_viewReference.Target == null) throw new InvalidOperationException("View has been set to null.");
 
-            return viewReference.Target;
+            return _viewReference.Target;
         }
     }
 

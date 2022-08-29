@@ -1,8 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Linq;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
 using Xunit;
 using Moq;
 

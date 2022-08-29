@@ -24,6 +24,56 @@ public class WindowWrapper : IWindow, IWindowSync
     public IWin32Window Win32Window => new Win32Window(Ref);
 
     /// <summary>
+    /// Occurs when the window is loading.
+    /// </summary>
+    public event EventHandler? Loaded
+    {
+        add
+        {
+            if (value != null)
+            {
+                var handler = new RoutedEventHandler((s, e) => value.Invoke(s, e));
+                _loadedHandlers.Add(value, handler);
+                Ref.Loaded += handler;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                Ref.Loaded += _loadedHandlers[value];
+                _loadedHandlers.Remove(value);
+            }
+        }
+    }
+    private Dictionary<EventHandler, RoutedEventHandler> _loadedHandlers = new();
+
+    /// <summary>
+    /// Occurs when the window is about to close.
+    /// </summary>
+    public event EventHandler<CancelEventArgs>? Closing
+    {
+        add
+        {
+            if (value != null)
+            {
+                var handler = new CancelEventHandler((s, e) => value.Invoke(s, e));
+                _closingHandlers.Add(value, handler);
+                Ref.Closing += handler;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                Ref.Closing += _closingHandlers[value];
+                _closingHandlers.Remove(value);
+            }
+        }
+    }
+    private Dictionary<EventHandler<CancelEventArgs>, CancelEventHandler> _closingHandlers = new();
+
+    /// <summary>
     /// Occurs when the window is about to close.
     /// </summary>
     public event EventHandler? Closed
@@ -73,4 +123,14 @@ public class WindowWrapper : IWindow, IWindowSync
 
     /// <inheritdoc />
     public void Close() => Ref.Close();
+
+    /// <inheritdoc />
+    public bool IsEnabled
+    {
+        get => Ref.IsEnabled;
+        set => Ref.IsEnabled = value;
+    }
+
+    /// <inheritdoc />
+    public bool ClosingConfirmed { get; set; }
 }

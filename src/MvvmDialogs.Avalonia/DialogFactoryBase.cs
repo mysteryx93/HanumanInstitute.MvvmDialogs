@@ -12,7 +12,7 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// If the dialog is not handled by this class, calls this other handler next.
     /// </summary>
     protected readonly IDialogFactory? Chain;
-        
+
     /// <summary>
     /// A reference to the top of the IDialogFactory chain, used to display message boxes.
     /// </summary>
@@ -26,7 +26,7 @@ public abstract class DialogFactoryBase : IDialogFactory
     {
         Chain = chain;
         ChainTop = this;
-        
+
         // Set ChainTop recursively.
         var item = chain;
         while (item is DialogFactoryBase f)

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.FluentTaskDialog;
+namespace Demo.ActivateNonModalDialog;
 
 public class App : Application
 {
@@ -22,7 +22,7 @@ public class App : Application
             new DialogManager(
                 viewLocator: new ViewLocator(),
                 logger: loggerFactory.CreateLogger<DialogManager>(),
-                dialogFactory: new DialogFactory().AddFluent()),
+                dialogFactory: new DialogFactory().AddMessageBox()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();
@@ -34,14 +34,14 @@ public class App : Application
         GC.KeepAlive(typeof(DialogService));
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = MainWindow
-            };
+            DialogService.Show(null, MainWindow);
+
+            desktop.MainWindow = desktop.Windows[0];
         }
 
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>();
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }
