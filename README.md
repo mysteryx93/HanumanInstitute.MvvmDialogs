@@ -317,7 +317,40 @@ Setting `e.Cancel = true` in `ViewClosing` will...
 2. Call ViewClosingAsync
 3. Setting `e.Cancel = false` in `ViewClosingAsync` will close the view
 
-See [Demo.ViewEvents](samples/Wpf/Demo.ViewEvents/MainWindowViewModel.cs) for a sample implementation.
+See [Wpf/Demo.ViewEvents](samples/Wpf/Demo.ViewEvents/MainWindowViewModel.cs) for a sample implementation.
+
+**IMPORTANT**: To use these added features in your main ViewModel, your main window must be initialized via `IDialogService`.
+
+Initializing your main window in WPF in `App.xaml.cs`
+
+```c#
+protected override void OnStartup(StartupEventArgs e)
+{
+    // ...
+    var dialogService = Ioc.Default.GetRequiredService<IDialogService>();
+    var vm = dialogService.CreateViewModel<MainWindowViewModel>();
+    dialogService.Show(null, vm);
+    Application.Current.MainWindow = Application.Current.Windows[0];
+}
+```
+
+Initializing your main window in Avalonia in `App.axaml.cs`
+
+```c#
+public override void OnFrameworkInitializationCompleted()
+{
+    GC.KeepAlive(typeof(DialogService));
+    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+    {
+        DialogService.Show(null, MainWindow);
+        desktop.MainWindow = desktop.Windows[0];
+    }
+    base.OnFrameworkInitializationCompleted();
+}
+
+public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
+```
 
 ## Custom Windows
 
