@@ -317,6 +317,8 @@ Setting `e.Cancel = true` in `ViewClosing` will...
 2. Call ViewClosingAsync
 3. Setting `e.Cancel = false` in `ViewClosingAsync` will close the view
 
+See [Demo.ViewEvents](samples/Wpf/Demo.ViewEvents/MainWindowViewModel.cs) for a sample implementation.
+
 ## Custom Windows
 
 To display custom dialogs that are not of type `Window` or `ContentDialog`,
