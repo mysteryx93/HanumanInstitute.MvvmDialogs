@@ -22,7 +22,7 @@ public class App : Application
             new DialogManager(
                 viewLocator: new ViewLocator(),
                 logger: loggerFactory.CreateLogger<DialogManager>(),
-                dialogFactory: new DialogFactory().AddMessageBox()),
+                dialogFactory: new DialogFactory().AddFluent()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();

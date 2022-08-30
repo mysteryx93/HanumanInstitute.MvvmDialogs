@@ -47,8 +47,8 @@ public static class DialogServiceExtensions
     /// </summary>
     /// <param name="dialog">The dialog to show.</param>
     /// <param name="owner">The owner of the modal dialog.</param>
-    public static DialogResult ShowDialog(this CommonDialog dialog, Window owner) =>
-        dialog.ShowDialog(new Win32Window(owner));
+    public static DialogResult ShowDialog(this CommonDialog dialog, Window? owner) =>
+        dialog.ShowDialog(owner != null ? new Win32Window(owner) : null);
 
     /// <summary>
     /// Displays a message box that has a message, title bar caption, button, and icon; and
@@ -68,7 +68,7 @@ public static class DialogServiceExtensions
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static bool? ShowMessageBox(
         this IDialogService service,
-        INotifyPropertyChanged ownerViewModel,
+        INotifyPropertyChanged? ownerViewModel,
         string text,
         string title = "",
         MessageBoxButton button = MessageBoxButton.Ok,
@@ -98,11 +98,9 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>A value that specifies which message box button is clicked by the user. True=OK/Yes, False=No, Null=Cancel</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static bool? ShowMessageBox(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+    public static bool? ShowMessageBox(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         MessageBoxSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
         return (bool?)service.DialogManager.AsSync().ShowFrameworkDialog(
             ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings);
     }
@@ -116,7 +114,7 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowOpenFileDialog(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+    public static string? ShowOpenFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         settings ??= new OpenFileDialogSettings();
@@ -134,11 +132,9 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The list of files selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string[] ShowOpenFilesDialog(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+    public static string[] ShowOpenFilesDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
         return service.DialogManager.AsSync().ShowFrameworkDialog(
@@ -154,11 +150,9 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The path to the file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+    public static string? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         SaveFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
         return (string?)service.DialogManager.AsSync().ShowFrameworkDialog(
             ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings);
     }
@@ -172,11 +166,9 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowOpenFolderDialog(this IDialogService service, INotifyPropertyChanged ownerViewModel,
+    public static string? ShowOpenFolderDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
         return (string?)service.DialogManager.AsSync().ShowFrameworkDialog(
             ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings);
     }

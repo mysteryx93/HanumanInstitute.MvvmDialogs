@@ -51,10 +51,10 @@ public abstract class ViewBase
     }
 
     /// <summary>
-    /// Returns the owner of the element, within a <see cref="IWindow"/> wrapper.
+    /// Returns the owner of the element, within a <see cref="IView"/> wrapper.
     /// </summary>
-    /// <returns>A <see cref="IWindow"/> wrapper around the owner, or null.</returns>
-    public abstract IWindow? GetOwner();
+    /// <returns>A <see cref="IView"/> wrapper around the owner, or null.</returns>
+    public abstract IView? GetOwner();
 
     /// <summary>
     /// Returns whether referenced element is loaded.

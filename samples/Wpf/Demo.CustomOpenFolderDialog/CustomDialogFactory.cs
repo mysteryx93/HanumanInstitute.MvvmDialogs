@@ -20,22 +20,22 @@ public class CustomDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => await owner.Ref.RunUiAsync(() => ShowOpenFolderDialog(owner, s, appSettings)).ConfigureAwait(true),
+            OpenFolderDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFolderDialog(owner, s, appSettings)).ConfigureAwait(true),
             _ => base.ShowDialogAsync(owner, settings, appSettings)
         };
 
     /// <inheritdoc />
-    public override object? ShowDialog<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
             OpenFolderDialogSettings s => ShowOpenFolderDialog(owner, s, appSettings),
             _ => base.ShowDialog(owner, settings, appSettings)
         };
 
-    private string? ShowOpenFolderDialog(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private string? ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 

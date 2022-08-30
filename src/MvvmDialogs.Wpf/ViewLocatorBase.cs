@@ -26,7 +26,7 @@ public class ViewLocatorBase : IViewLocator
         var view = type != null ? Activator.CreateInstance(type)! : null;
 
         // ReSharper disable once SuspiciousTypeConversion.Global
-        if (view is null || (view is not Window && view is not IWindow))
+        if (view is null || (view is not Window && view is not IView))
         {
             var message = $"Dialog view of type {name} for view model {viewModel.GetType().FullName} is missing.";
             const string errorInfo = "You can create a ViewLocator class in the project base to map your " +

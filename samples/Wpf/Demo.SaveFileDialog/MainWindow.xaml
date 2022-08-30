@@ -21,14 +21,11 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBox
-            AutomationProperties.AutomationId="-u3vcUdRMUaG4Af_kzSeZQ"
-            IsReadOnly="True"
-            Text="{Binding Path, Mode=OneWay}" />
-        <Button
-            Grid.Column="1"
-            AutomationProperties.AutomationId="HstqC8HI9EOGiTfPA4_xag"
-            Content="Save..."
-            Command="{Binding SaveFileCommand}" />
+        <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding Path, Mode=OneWay}" />
+        <StackPanel Grid.Column="1">
+            <Button Content="Save Sync..." Command="{Binding SaveFile}" />
+            <Button Content="Save Async..." Command="{Binding SaveFileAsync}" />
+            <CheckBox IsChecked="{Binding SetOwner}" Content="Set owner" />
+        </StackPanel>
     </Grid>
 </Window>

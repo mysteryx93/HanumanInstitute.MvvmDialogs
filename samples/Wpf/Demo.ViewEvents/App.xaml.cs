@@ -23,8 +23,6 @@ public partial class App
                 .AddTransient<MainWindowViewModel>()
                 .BuildServiceProvider());
 
-        base.OnStartup(e);
-    
         var dialogService = Ioc.Default.GetRequiredService<IDialogService>();
         var vm = dialogService.CreateViewModel<MainWindowViewModel>();
         dialogService.Show(null, vm);

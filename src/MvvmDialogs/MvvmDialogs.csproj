@@ -10,7 +10,7 @@
     <Title>MVVM Dialogs</Title>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-    <Version>1.3.2</Version>
+    <Version>1.4</Version>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
     <Product>HanumanInstitute.MvvmDialogs</Product>
     <PackageId>HanumanInstitute.MvvmDialogs</PackageId>

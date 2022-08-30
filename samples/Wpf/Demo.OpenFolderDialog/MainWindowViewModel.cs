@@ -1,3 +1,4 @@
+﻿using System.ComponentModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -13,13 +14,12 @@ public class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService dialogService;
 
-    private string? path;
-
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
 
-        OpenFolderCommand = new AsyncRelayCommand(OpenFolderAsync);
+        OpenFolder = new RelayCommand(() => OpenFolderImpl(SetOwner ? this : null));
+        OpenFolderAsync = new AsyncRelayCommand(() => OpenFolderImplAsync(SetOwner ? this : null));
     }
 
     public string? Path
@@ -27,10 +27,20 @@ public class MainWindowViewModel : ObservableObject
         get => path;
         private set => SetProperty(ref path, value);
     }
+    private string? path;
 
-    public ICommand OpenFolderCommand { get; }
+    public bool SetOwner
+    {
+        get => setOwner;
+        set => SetProperty(ref setOwner, value);
+    }
+    private bool setOwner = true;
 
-    private async Task OpenFolderAsync()
+
+    public ICommand OpenFolder { get; }
+    public ICommand OpenFolderAsync { get; }
+
+    private void OpenFolderImpl(INotifyPropertyChanged? owner)
     {
         var settings = new OpenFolderDialogSettings
         {
@@ -38,7 +48,19 @@ public class MainWindowViewModel : ObservableObject
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
+        var result = dialogService.ShowOpenFolderDialog(owner, settings);
+        Path = result;
+    }
+
+    private async Task OpenFolderImplAsync(INotifyPropertyChanged? owner)
+    {
+        var settings = new OpenFolderDialogSettings
+        {
+            Title = "This is a description",
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+        };
+
+        var result = await dialogService.ShowOpenFolderDialogAsync(owner, settings);
         Path = result;
     }
 }

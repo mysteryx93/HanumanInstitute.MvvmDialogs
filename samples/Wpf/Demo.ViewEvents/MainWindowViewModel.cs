@@ -23,7 +23,7 @@ public class MainWindowViewModel : ObservableObject, IViewLoaded, IViewClosing, 
 
     public void ViewClosed()
     {
-        // _dialogService.ShowMessageBox(null!, "It's over.", "Closed");
+        _dialogService.ShowMessageBox(null, "It's over.", "Closed");
     }
 
     public void ViewClosing(CancelEventArgs e)

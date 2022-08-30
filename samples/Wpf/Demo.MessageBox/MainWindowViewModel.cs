@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -13,27 +13,47 @@ public class MainWindowViewModel : ObservableObject
     private readonly IDialogService dialogService;
 
     private string? confirmation;
-    
+
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
 
-        ShowMessageBoxWithMessageCommand = new AsyncRelayCommand(ShowMessageBoxWithMessageAsync);
-        ShowMessageBoxWithCaptionCommand = new AsyncRelayCommand(ShowMessageBoxWithCaptionAsync);
-        ShowMessageBoxWithButtonCommand = new AsyncRelayCommand(ShowMessageBoxWithButtonAsync);
-        ShowMessageBoxWithIconCommand = new AsyncRelayCommand(ShowMessageBoxWithIconAsync);
-        ShowMessageBoxWithDefaultResultCommand = new AsyncRelayCommand(ShowMessageBoxWithDefaultResultAsync);
+        ShowWithMessage = new AsyncRelayCommand(() => Show(ShowWithMessageImpl, ShowWithMessageImplAsync));
+        ShowWithCaption = new AsyncRelayCommand(() => Show(ShowWithCaptionImpl, ShowWithCaptionImplAsync));
+        ShowWithButton = new AsyncRelayCommand(() => Show(ShowWithButtonImpl, ShowWithButtonImplAsync));
+        ShowWithIcon = new AsyncRelayCommand(() => Show(ShowWithIconImpl, ShowWithIconImplAsync));
+        ShowWithDefaultResult = new AsyncRelayCommand(() => Show(ShowWithDefaultResultImpl, ShowWithDefaultResultImplAsync));
     }
 
-    public ICommand ShowMessageBoxWithMessageCommand { get; }
+    public ICommand ShowWithMessage { get; }
+    public ICommand ShowWithCaption { get; }
+    public ICommand ShowWithButton { get; }
+    public ICommand ShowWithIcon { get; }
+    public ICommand ShowWithDefaultResult { get; }
 
-    public ICommand ShowMessageBoxWithCaptionCommand { get; }
+    private Task Show(Action action, Func<Task> asyncAction)
+    {
+        if (UseAsync)
+        {
+            return asyncAction();
+        }
+        action();
+        return Task.CompletedTask;
+    }
 
-    public ICommand ShowMessageBoxWithButtonCommand { get; }
+    public bool UseAsync
+    {
+        get => useAsync;
+        set => SetProperty(ref useAsync, value);
+    }
+    private bool useAsync = true;
 
-    public ICommand ShowMessageBoxWithIconCommand { get; }
-
-    public ICommand ShowMessageBoxWithDefaultResultCommand { get; }
+    public bool SetOwner
+    {
+        get => setOwner;
+        set => SetProperty(ref setOwner, value);
+    }
+    private bool setOwner = true;
 
     public string? Confirmation
     {
@@ -41,57 +61,98 @@ public class MainWindowViewModel : ObservableObject
         private set => SetProperty(ref confirmation, value);
     }
 
-    private async Task ShowMessageBoxWithMessageAsync()
+    private void ShowWithMessageImpl()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
-            this,
+        var result = dialogService.ShowMessageBox(
+            SetOwner ? this : null,
             "This is the text.");
 
         UpdateResult(result);
     }
 
-    private async Task ShowMessageBoxWithCaptionAsync()
+    private async Task ShowWithMessageImplAsync()
     {
         var result = await dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption");
+            SetOwner ? this : null,
+            "This is the text.");
 
         UpdateResult(result);
     }
 
-    private async Task ShowMessageBoxWithButtonAsync()
+    private void ShowWithCaptionImpl()
+    {
+        var result = dialogService.ShowMessageBox(
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption");
+
+        UpdateResult(result);
+    }
+
+    private async Task ShowWithCaptionImplAsync()
     {
         var result = await dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption");
+
+        UpdateResult(result);
+    }
+
+    private void ShowWithButtonImpl()
+    {
+        var result = dialogService.ShowMessageBox(
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel);
 
         UpdateResult(result);
     }
 
-    private async Task ShowMessageBoxWithIconAsync()
+    private async Task ShowWithButtonImplAsync()
     {
         var result = await dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
-            MessageBoxButton.OkCancel,
-            MessageBoxImage.Information);
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
+            MessageBoxButton.OkCancel);
 
         UpdateResult(result);
     }
 
-    private async Task ShowMessageBoxWithDefaultResultAsync()
+    private void ShowWithIconImpl()
+    {
+        var result = dialogService.ShowMessageBox(
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
+            MessageBoxButton.OkCancel, MessageBoxImage.Information);
+
+        UpdateResult(result);
+    }
+
+    private async Task ShowWithIconImplAsync()
     {
         var result = await dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
-            MessageBoxButton.OkCancel,
-            MessageBoxImage.Information,
-            false);
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
+            MessageBoxButton.OkCancel, MessageBoxImage.Information);
+
+        UpdateResult(result);
+    }
+
+    private void ShowWithDefaultResultImpl()
+    {
+        var result = dialogService.ShowMessageBox(
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
+            MessageBoxButton.OkCancel, MessageBoxImage.Information, false);
+
+        UpdateResult(result);
+    }
+
+    private async Task ShowWithDefaultResultImplAsync()
+    {
+        var result = await dialogService.ShowMessageBoxAsync(
+            SetOwner ? this : null,
+            "This is the text.", "This Is The Caption",
+            MessageBoxButton.OkCancel, MessageBoxImage.Information, false);
 
         UpdateResult(result);
     }

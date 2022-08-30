@@ -7,7 +7,7 @@
 /// This interface allows cross-platform support, and allows for custom windows
 /// not deriving from the standard types.
 /// </remarks>
-public interface IWindow
+public interface IView
 {
     /// <summary>
     /// Gets the Window reference held by this class.
@@ -18,12 +18,12 @@ public interface IWindow
     /// Occurs when the window is loaded.
     /// </summary>
     event EventHandler Loaded;
-    
+
     /// <summary>
     /// Occurs when the window is closing.
     /// </summary>
-    event EventHandler<CancelEventArgs> Closing; 
-    
+    event EventHandler<CancelEventArgs> Closing;
+
     /// <summary>
     /// Occurs when the window is closed.
     /// </summary>
@@ -35,9 +35,9 @@ public interface IWindow
     object? DataContext { get; set; }
 
     /// <summary>
-    /// Gets or sets the <see cref="IWindow"/> that owns this <see cref="IWindow"/>.
+    /// Gets or sets the <see cref="IView"/> that owns this <see cref="IView"/>.
     /// </summary>
-    IWindow? Owner { get; set; }
+    IView? Owner { get; set; }
 
     /// <summary>
     /// Opens a window and returns without waiting for the newly opened window to close.
@@ -60,12 +60,12 @@ public interface IWindow
     /// Tries to close the Window.
     /// </summary>
     void Close();
-    
+
     /// <summary>
     /// Gets or sets whether the window is enabled.
     /// </summary>
     bool IsEnabled { get; set; }
-    
+
     /// <summary>
     /// Gets or sets whether closing has been confirmed, in which case Closing event should be ignored. 
     /// </summary>

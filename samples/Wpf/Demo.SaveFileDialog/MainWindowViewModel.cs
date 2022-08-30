@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,13 +15,12 @@ public class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService dialogService;
 
-    private string? path;
-
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
 
-        SaveFileCommand = new AsyncRelayCommand(SaveFileAsync);
+        SaveFile = new RelayCommand(() => SaveFileImpl(SetOwner ? this : null));
+        SaveFileAsync = new AsyncRelayCommand(() => SaveFileImplAsync(SetOwner ? this : null));
     }
 
     public string? Path
@@ -28,10 +28,19 @@ public class MainWindowViewModel : ObservableObject
         get => path;
         private set => SetProperty(ref path, value);
     }
+    private string? path;
 
-    public ICommand SaveFileCommand { get; }
+    public bool SetOwner
+    {
+        get => setOwner;
+        set => SetProperty(ref setOwner, value);
+    }
+    private bool setOwner = true;
 
-    private async Task SaveFileAsync()
+    public ICommand SaveFile { get; }
+    public ICommand SaveFileAsync { get; }
+
+    private void SaveFileImpl(INotifyPropertyChanged? owner)
     {
         var settings = new SaveFileDialogSettings
         {
@@ -44,7 +53,24 @@ public class MainWindowViewModel : ObservableObject
             }
         };
 
-        var result = await dialogService.ShowSaveFileDialogAsync(this, settings);
+        var result = dialogService.ShowSaveFileDialog(owner, settings);
+        Path = result;
+    }
+
+    private async Task SaveFileImplAsync(INotifyPropertyChanged? owner)
+    {
+        var settings = new SaveFileDialogSettings
+        {
+            Title = "This is the title",
+            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+            Filters = new List<FileFilter>()
+            {
+                new FileFilter("Text Documents", "txt"),
+                new FileFilter("All Files", "*")
+            }
+        };
+
+        var result = await dialogService.ShowSaveFileDialogAsync(owner, settings);
         Path = result;
     }
 }

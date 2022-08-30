@@ -24,13 +24,13 @@ public class DialogManager : DialogManagerBase<Window>
     }
 
     /// <inheritdoc />
-    protected override IWindow CreateWrapper(Window window) => window.AsWrapper();
+    protected override IView CreateWrapper(Window window) => window.AsWrapper();
 
     private static IEnumerable<Window> Windows =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Windows ?? Array.Empty<Window>();
 
     /// <inheritdoc />
-    public override IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
+    public override IView? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
         Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
     /// <inheritdoc />

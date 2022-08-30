@@ -20,14 +20,14 @@ public class CustomDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
             OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings),
             _ => base.ShowDialogAsync(owner, settings, appSettings)
         };
 
-    private async Task<string?> ShowOpenFolderDialogAsync(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<string?> ShowOpenFolderDialogAsync(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
@@ -40,7 +40,7 @@ public class CustomDialogFactory : DialogFactoryBase
             Description = settings.Title,
             SelectedPath = settings.InitialDirectory
         };
-        var result = await window.RunUiAsync(() => dialog.ShowDialog(handle));
+        var result = await UiExtensions.RunUiAsync(() => dialog.ShowDialog(handle));
 
         return result == true ? dialog.SelectedPath : null;
     }

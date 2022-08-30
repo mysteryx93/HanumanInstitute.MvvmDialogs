@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace Demo.ActivateNonModalDialog;
 
-public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing
+public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IViewClosed
 {
     private readonly IDialogService _dialogService;
 
@@ -20,6 +20,11 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing
         set => this.RaiseAndSetIfChanged(ref _text, value);
     }
     private string _text = string.Empty;
+
+    public void ViewClosed()
+    {
+        // await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
+    }
 
     public void ViewClosing(CancelEventArgs e)
     {

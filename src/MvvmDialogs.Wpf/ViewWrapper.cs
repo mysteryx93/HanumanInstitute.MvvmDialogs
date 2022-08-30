@@ -1,38 +1,136 @@
-﻿
+﻿using System.Windows.Forms;
+
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
-/// Holds a weak reference to a FrameworkElement.
+/// Class wrapping an instance of WPF <see cref="Window"/> within <see cref="IView"/>.
 /// </summary>
-public class ViewWrapper : ViewBase
+/// <seealso cref="IView" />
+public class ViewWrapper : IView, IViewSync
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ViewWrapper"/> class and hold a weak reference to specified <see cref="FrameworkElement"/>.
+    /// Gets the Window reference held by this class.
     /// </summary>
-    /// <param name="view">The object to hold a weak reference for.</param>
-    public ViewWrapper(FrameworkElement view) : base(view)
+    public Window Ref { get; private set; }
+
+    /// <summary>
+    /// Gets the Window reference held by this class.
+    /// </summary>
+    public object RefObj => Ref;
+
+    /// <summary>
+    /// Returns a IWin32Window class that can be used for API calls.
+    /// </summary>
+    public IWin32Window Win32Window => new Win32Window(Ref);
+
+    /// <summary>
+    /// Occurs when the window is loading.
+    /// </summary>
+    public event EventHandler? Loaded
     {
-        view.Loaded += (_, _) => RaiseLoaded();
+        add
+        {
+            if (value != null)
+            {
+                var handler = new RoutedEventHandler((s, e) => value.Invoke(s, e));
+                _loadedHandlers.Add(value, handler);
+                Ref.Loaded += handler;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                Ref.Loaded += _loadedHandlers[value];
+                _loadedHandlers.Remove(value);
+            }
+        }
+    }
+    private Dictionary<EventHandler, RoutedEventHandler> _loadedHandlers = new();
+
+    /// <summary>
+    /// Occurs when the window is about to close.
+    /// </summary>
+    public event EventHandler<CancelEventArgs>? Closing
+    {
+        add
+        {
+            if (value != null)
+            {
+                var handler = new CancelEventHandler((s, e) => value.Invoke(s, e));
+                _closingHandlers.Add(value, handler);
+                Ref.Closing += handler;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                Ref.Closing += _closingHandlers[value];
+                _closingHandlers.Remove(value);
+            }
+        }
+    }
+    private Dictionary<EventHandler<CancelEventArgs>, CancelEventHandler> _closingHandlers = new();
+
+    /// <summary>
+    /// Occurs when the window is about to close.
+    /// </summary>
+    public event EventHandler? Closed
+    {
+        add => Ref.Closed += value;
+        remove => Ref.Closed -= value;
     }
 
     /// <summary>
-    /// Returns the referenced <see cref="FrameworkElement"/> if it is still alive.
+    /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
     /// </summary>
-    public FrameworkElement Source => (FrameworkElement)base.SourceObj;
+    /// <param name="window">The window.</param>
+    public ViewWrapper(Window window) =>
+        this.Ref = window ?? throw new ArgumentNullException(nameof(window));
 
-    /// <summary>
-    /// Returns the DataContext of referenced element.
-    /// </summary>
-    public override object DataContext => Source.DataContext;
+    /// <inheritdoc />
+    public object? DataContext
+    {
+        get => Ref.DataContext;
+        set => Ref.DataContext = value;
+    }
 
-    /// <summary>
-    /// Returns whether referenced element is loaded.
-    /// </summary>
-    public override bool IsLoaded => Source.IsLoaded;
+    /// <inheritdoc />
+    public IView? Owner
+    {
+        get => Ref.Owner.AsWrapper();
+        set =>
+            Ref.Owner = value switch
+            {
+                null => null,
+                ViewWrapper w => w.Ref,
+                _ => throw new ArgumentException($"Owner must be of type {typeof(ViewWrapper).FullName}")
+            };
+    }
 
-    /// <summary>
-    /// Returns the owner of the element, within a <see cref="IWindow"/> wrapper.
-    /// </summary>
-    /// <returns>A <see cref="IWindow"/> wrapper around the owner, or null.</returns>
-    public override IWindow? GetOwner() => Source.GetOwner();
+    /// <inheritdoc />
+    public Task<bool?> ShowDialogAsync() => UiExtensions.RunUiAsync(ShowDialog);
+
+    /// <inheritdoc />
+    public bool? ShowDialog() => Ref.ShowDialog();
+
+    /// <inheritdoc />
+    public void Show() => Ref.Show();
+
+    /// <inheritdoc />
+    public void Activate() => Ref.Activate();
+
+    /// <inheritdoc />
+    public void Close() => Ref.Close();
+
+    /// <inheritdoc />
+    public bool IsEnabled
+    {
+        get => Ref.IsEnabled;
+        set => Ref.IsEnabled = value;
+    }
+
+    /// <inheritdoc />
+    public bool ClosingConfirmed { get; set; }
 }

@@ -8,6 +8,7 @@ using Win32Options = System.Windows.MessageBoxOptions;
 using Win32MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
+using System;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -42,18 +43,18 @@ public class DialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => await owner.Ref.RunUiAsync(() => ShowOpenFolderDialog(owner, s, appSettings)).ConfigureAwait(true),
-            OpenFileDialogSettings s => await owner.Ref.RunUiAsync(() => ShowOpenFileDialog(owner, s, appSettings)).ConfigureAwait(true),
-            SaveFileDialogSettings s => await owner.Ref.RunUiAsync(() => ShowSaveFileDialog(owner, s, appSettings)).ConfigureAwait(true),
-            MessageBoxSettings s => await owner.Ref.RunUiAsync(() => ShowMessageBox(owner, s, appSettings)).ConfigureAwait(true),
+            OpenFolderDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFolderDialog(owner, s, appSettings)).ConfigureAwait(true),
+            OpenFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFileDialog(owner, s, appSettings)).ConfigureAwait(true),
+            SaveFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowSaveFileDialog(owner, s, appSettings)).ConfigureAwait(true),
+            MessageBoxSettings s => await UiExtensions.RunUiAsync(() => ShowMessageBox(owner, s, appSettings)).ConfigureAwait(true),
             _ => base.ShowDialogAsync(owner, settings, appSettings)
         };
 
     /// <inheritdoc />
-    public override object? ShowDialog<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
             OpenFolderDialogSettings s => ShowOpenFolderDialog(owner, s, appSettings),
@@ -63,7 +64,7 @@ public class DialogFactory : DialogFactoryBase
             _ => base.ShowDialog(owner, settings, appSettings)
         };
 
-    private string? ShowOpenFolderDialog(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private string? ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFolderApiSettings()
         {
@@ -72,10 +73,10 @@ public class DialogFactory : DialogFactoryBase
             HelpRequest = settings.HelpRequest
         };
 
-        return _api.ShowOpenFolderDialog(owner.Ref, apiSettings);
+        return _api.ShowOpenFolderDialog(owner?.Ref, apiSettings);
     }
 
-    private string[] ShowOpenFileDialog(WindowWrapper owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
+    private string[] ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFileApiSettings()
         {
@@ -86,10 +87,10 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        return _api.ShowOpenFileDialog(owner.Ref, apiSettings) ?? Array.Empty<string>();
+        return _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<string>();
     }
 
-    private string? ShowSaveFileDialog(WindowWrapper owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
+    private string? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new SaveFileApiSettings()
         {
@@ -97,7 +98,7 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        return _api.ShowSaveFileDialog(owner.Ref, apiSettings);
+        return _api.ShowSaveFileDialog(owner?.Ref, apiSettings);
     }
 
     private void AddSharedSettings(FileApiSettings d, FileDialogSettings s)
@@ -141,7 +142,7 @@ public class DialogFactory : DialogFactoryBase
         return result.ToString();
     }
 
-    private bool? ShowMessageBox(WindowWrapper owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private bool? ShowMessageBox(ViewWrapper? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new MessageBoxApiSettings()
         {
@@ -153,7 +154,7 @@ public class DialogFactory : DialogFactoryBase
             Options = SyncOptions(appSettings)
         };
 
-        var button = _api.ShowMessageBox(owner.Ref, apiSettings);
+        var button = _api.ShowMessageBox(owner?.Ref, apiSettings);
         return button switch
         {
             Win32Result.Yes => true,

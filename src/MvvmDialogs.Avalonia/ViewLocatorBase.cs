@@ -45,7 +45,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
         var view = type != null ? Activator.CreateInstance(type)! : null;
 
         // ReSharper disable once SuspiciousTypeConversion.Global
-        if (view is null || (view is not IControl && view is not Window && view is not IWindow))
+        if (view is null || (view is not IControl && view is not Window && view is not IView))
         {
             var message = $"Dialog view of type {name} for view model {viewModel.GetType().FullName} is missing.";
             const string errorInfo = "Avalonia project template includes ViewLocator in the project base. " +

@@ -21,14 +21,11 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBox
-            AutomationProperties.AutomationId="RQ_N2kIsN0C39sxTonCRtA"
-            IsReadOnly="True"
-            Text="{Binding Path, Mode=OneWay}" />
-        <Button
-            Grid.Column="1"
-            AutomationProperties.AutomationId="TTK4W3coCE2skIHpcUe97Q"
-            Content="Browse..."
-            Command="{Binding OpenFolderCommand}" />
+        <TextBox Grid.Column="0" IsReadOnly="True" Text="{Binding Path, Mode=OneWay}" />
+        <StackPanel Grid.Column="1">
+            <Button Content="Browse Sync..." Command="{Binding OpenFolder}" />
+            <Button Content="Browse Async..." Command="{Binding OpenFolderAsync}" />
+            <CheckBox IsChecked="{Binding SetOwner}" Content="Set owner" />
+        </StackPanel>
     </Grid>
 </Window>

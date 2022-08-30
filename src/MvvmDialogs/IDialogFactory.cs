@@ -1,4 +1,4 @@
-namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Interface representing a framework dialog.
@@ -13,5 +13,5 @@ public interface IDialogFactory
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <typeparam name="TSettings">The type of settings to use for this dialog.</typeparam>
     /// <returns>Return data specific to the dialog.</returns>
-    Task<object?> ShowDialogAsync<TSettings>(IWindow owner, TSettings settings, AppDialogSettingsBase appSettings);
+    Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings);
 }

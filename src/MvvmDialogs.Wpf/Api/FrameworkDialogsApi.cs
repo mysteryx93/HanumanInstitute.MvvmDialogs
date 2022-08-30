@@ -6,16 +6,23 @@ namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 internal class FrameworkDialogsApi : IFrameworkDialogsApi
 {
 
-    public MessageBoxResult ShowMessageBox(Window owner, MessageBoxApiSettings settings) =>
+    public MessageBoxResult ShowMessageBox(Window? owner, MessageBoxApiSettings settings) =>
+        owner != null ?
             System.Windows.MessageBox.Show(
                 owner,
                 settings.MessageBoxText,
                 settings.Caption,
                 settings.Buttons,
                 settings.Icon,
+                settings.DefaultButton) :
+            System.Windows.MessageBox.Show(
+                settings.MessageBoxText,
+                settings.Caption,
+                settings.Buttons,
+                settings.Icon,
                 settings.DefaultButton);
 
-    public string[] ShowOpenFileDialog(Window owner, OpenFileApiSettings settings)
+    public string[] ShowOpenFileDialog(Window? owner, OpenFileApiSettings settings)
     {
         var dialog = new System.Windows.Forms.OpenFileDialog();
         settings.ApplyTo(dialog);
@@ -23,7 +30,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         return result == DialogResult.OK ? dialog.FileNames : Array.Empty<string>();
     }
 
-    public string? ShowSaveFileDialog(Window owner, SaveFileApiSettings settings)
+    public string? ShowSaveFileDialog(Window? owner, SaveFileApiSettings settings)
     {
         var dialog = new System.Windows.Forms.SaveFileDialog();
         settings.ApplyTo(dialog);
@@ -31,7 +38,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         return result == DialogResult.OK ? dialog.FileName : null;
     }
 
-    public string? ShowOpenFolderDialog(Window owner, OpenFolderApiSettings settings)
+    public string? ShowOpenFolderDialog(Window? owner, OpenFolderApiSettings settings)
     {
         var dialog = new FolderBrowserDialog();
         settings.ApplyTo(dialog);

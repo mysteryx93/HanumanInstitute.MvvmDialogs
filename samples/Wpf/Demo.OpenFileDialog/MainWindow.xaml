@@ -21,15 +21,13 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <ListBox 
-            ItemsSource="{Binding Paths, Mode=OneWay}" />
-        <Button
-            Grid.Column="1" Height="24" Margin="0, 10, 0, 0" VerticalAlignment="Top"
-            Content="Open single..."
-            Command="{Binding OpenFileCommand}" />
-        <Button
-            Grid.Column="1" Height="24" Margin="0, 40, 0, 0" VerticalAlignment="Top"
-            Content="Open multiple..."
-            Command="{Binding OpenFilesCommand}" />
+        <ListBox Grid.Column="0" ItemsSource="{Binding Paths, Mode=OneWay}" />
+        <StackPanel Grid.Column="1">
+            <Button Content="Open single..." Command="{Binding OpenFile}" />
+            <Button Content="Open multiple..." Command="{Binding OpenFiles}" />
+            <Button Content="Single Async..." Command="{Binding OpenFileAsync}" />
+            <Button Content="Multiple Async..." Command="{Binding OpenFilesAsync}" />
+            <CheckBox IsChecked="{Binding SetOwner}" Content="Set owner" />
+        </StackPanel>
     </Grid>
 </Window>

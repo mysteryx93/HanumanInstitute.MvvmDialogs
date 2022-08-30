@@ -36,7 +36,7 @@ public class DialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
             OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings).ConfigureAwait(true),
@@ -45,7 +45,7 @@ public class DialogFactory : DialogFactoryBase
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<string?> ShowOpenFolderDialogAsync(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<string?> ShowOpenFolderDialogAsync(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFolderApiSettings()
         {
@@ -54,10 +54,10 @@ public class DialogFactory : DialogFactoryBase
             // d.ShowNewFolderButton = Settings.ShowNewFolderButton;
         };
 
-        return await _api.ShowOpenFolderDialogAsync(owner.Ref, apiSettings).ConfigureAwait(true);
+        return await _api.ShowOpenFolderDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true);
     }
 
-    private async Task<string[]> ShowOpenFileDialogAsync(WindowWrapper owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<string[]> ShowOpenFileDialogAsync(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFileApiSettings()
         {
@@ -67,10 +67,10 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        return await _api.ShowOpenFileDialogAsync(owner.Ref, apiSettings).ConfigureAwait(true) ?? Array.Empty<string>();
+        return await _api.ShowOpenFileDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true) ?? Array.Empty<string>();
     }
 
-    private async Task<string?> ShowSaveFileDialogAsync(WindowWrapper owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<string?> ShowSaveFileDialogAsync(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new SaveFileApiSettings()
         {
@@ -78,7 +78,7 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        var result = await _api.ShowSaveFileDialogAsync(owner.Ref, apiSettings).ConfigureAwait(true);
+        var result = await _api.ShowSaveFileDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true);
 
         // Add DefaultExtension.
         if (result != null && !string.IsNullOrEmpty(settings.DefaultExtension) && !_pathInfo.GetFileInfo(result).Exists && !result.Contains('.'))

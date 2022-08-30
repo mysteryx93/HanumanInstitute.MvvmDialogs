@@ -77,15 +77,15 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <param name="view">The view to show.</param>
     /// <returns>The new IWindow.</returns>
     /// <exception cref="TypeLoadException">Could not load view for view model.</exception>
-    protected IWindow CreateDialog(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel, object? view)
+    protected IView CreateDialog(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel, object? view)
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
         var dialog = view switch
         {
-            IWindow w => w,
+            IView w => w,
             T t => CreateWrapper(t),
             null => throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}."),
-            _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IWindow)} are supported.")
+            _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IView)} are supported.")
         };
 
         if (ownerViewModel != null)
@@ -101,7 +101,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// Creates a wrapper around a native window.
     /// </summary>
     /// <param name="window">The window to create a wrapper for.</param>
-    protected abstract IWindow CreateWrapper(T window);
+    protected abstract IView CreateWrapper(T window);
 
     /// <summary>
     /// Dispatches an action to the UI thread.
@@ -121,7 +121,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <param name="dialog">The dialog being shown.</param>
-    protected virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IWindow dialog)
+    protected virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
     {
         if (viewModel is ICloseable closable)
         {
@@ -145,7 +145,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
     }
 
-    private async void Window_Closing(IWindow dialog, CancelEventArgs e, IViewClosing closing)
+    private async void Window_Closing(IView dialog, CancelEventArgs e, IViewClosing closing)
     {
         if (dialog.ClosingConfirmed) { return; }
 
@@ -172,7 +172,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
 
     /// <inheritdoc />
     public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(
-        INotifyPropertyChanged ownerViewModel,
+        INotifyPropertyChanged? ownerViewModel,
         TSettings settings,
         AppDialogSettingsBase appSettings,
         Func<object?, string>? resultToString = null)
@@ -183,8 +183,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
         var result = await await DispatchAsync(
             async () =>
             {
-                var owner = FindWindowByViewModel(ownerViewModel) ??
-                            throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                IView? owner = null;
+                if (ownerViewModel != null)
+                {
+                    owner = FindWindowByViewModel(ownerViewModel) ??
+                                throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                }
                 return await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
             }).ConfigureAwait(true);
 
@@ -193,5 +197,5 @@ public abstract class DialogManagerBase<T> : IDialogManager
     }
 
     /// <inheritdoc />
-    public abstract IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel);
+    public abstract IView? FindWindowByViewModel(INotifyPropertyChanged viewModel);
 }

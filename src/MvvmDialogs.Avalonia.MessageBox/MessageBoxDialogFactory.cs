@@ -32,14 +32,14 @@ public class MessageBoxDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         settings switch
         {
             MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<bool?> ShowMessageBoxDialogAsync(WindowWrapper owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private async Task<bool?> ShowMessageBoxDialogAsync(ViewWrapper? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new MessageBoxApiSettings()
         {
@@ -51,7 +51,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
             EscDefaultButton = SyncDefaultEsc(settings.Button)
         };
 
-        var result =  await _api.ShowMessageBox(owner.Ref, apiSettings);
+        var result = await _api.ShowMessageBox(owner?.Ref, apiSettings);
         return result switch
         {
             ButtonResult.Yes => true,
@@ -61,7 +61,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
             _ => null
         };
     }
-    
+
     // Convert platform-agnostic types into Win32 types.
 
     private static ButtonEnum SyncButton(MessageBoxButton value) =>

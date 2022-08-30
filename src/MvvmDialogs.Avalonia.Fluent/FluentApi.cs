@@ -1,4 +1,4 @@
-
+﻿
 using Avalonia.VisualTree;
 using DynamicData;
 
@@ -6,7 +6,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
 internal class FluentApi : IFluentApi
 {
-    public Task<ContentDialogResult> ShowContentDialog(Window owner, ContentDialogSettings settings)
+    public Task<ContentDialogResult> ShowContentDialog(Window? owner, ContentDialogSettings settings)
     {
         var dialog = new ContentDialog()
         {
@@ -23,7 +23,7 @@ internal class FluentApi : IFluentApi
         return dialog.ShowAsync();
     }
 
-    public Task<object> ShowTaskDialog(Window owner, TaskDialogSettings settings)
+    public Task<object> ShowTaskDialog(Window? owner, TaskDialogSettings settings)
     {
         var dialog = new TaskDialog()
         {
@@ -38,7 +38,10 @@ internal class FluentApi : IFluentApi
             ShowProgressBar = settings.ShowProgressBar
         };
         dialog.Buttons.AddRange(settings.Buttons);
-        dialog.XamlRoot = owner.GetVisualRoot();
+        if (owner != null)
+        {
+            dialog.XamlRoot = owner.GetVisualRoot();
+        }
         return dialog.ShowAsync();
     }
 }

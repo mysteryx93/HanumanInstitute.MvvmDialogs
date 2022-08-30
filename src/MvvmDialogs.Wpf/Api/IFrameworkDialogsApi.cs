@@ -6,8 +6,8 @@ namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 /// </summary>
 internal interface IFrameworkDialogsApi
 {
-    MessageBoxResult ShowMessageBox(Window owner, MessageBoxApiSettings settings);
-    string[] ShowOpenFileDialog(Window owner, OpenFileApiSettings settings);
-    string? ShowSaveFileDialog(Window owner, SaveFileApiSettings settings);
-    string? ShowOpenFolderDialog(Window owner, OpenFolderApiSettings settings);
+    MessageBoxResult ShowMessageBox(Window? owner, MessageBoxApiSettings settings);
+    string[] ShowOpenFileDialog(Window? owner, OpenFileApiSettings settings);
+    string? ShowSaveFileDialog(Window? owner, SaveFileApiSettings settings);
+    string? ShowOpenFolderDialog(Window? owner, OpenFolderApiSettings settings);
 }

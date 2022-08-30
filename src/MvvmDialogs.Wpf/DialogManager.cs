@@ -33,12 +33,16 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        public object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+        public object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
             where TSettings : DialogSettingsBase
         {
             Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-            var owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+            IView? owner = null;
+            if (ownerViewModel != null)
+            {
+                owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+            }
             var result = DialogFactory.AsSync().ShowDialog(owner, settings, appSettings);
 
             Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings?.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
@@ -46,13 +50,13 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        protected override IWindow CreateWrapper(Window window) => window.AsWrapper();
+        protected override IView CreateWrapper(Window window) => window.AsWrapper();
 
         private static IEnumerable<Window> Windows =>
             Application.Current.Windows.Cast<Window>();
 
         /// <inheritdoc />
-        public override IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
+        public override IView? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
             Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
         /// <inheritdoc />

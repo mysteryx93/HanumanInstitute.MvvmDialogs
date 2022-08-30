@@ -17,32 +17,29 @@
 
     <UniformGrid Columns="2" Rows="3">
         <Button
-            AutomationProperties.AutomationId="1k7d1Nm8MkOYK5qGrdVX4Q"
-            Command="{Binding ShowMessageBoxWithMessageCommand}">
+            Command="{Binding ShowWithMessage}">
             <TextBlock Text="Show message box with message" />
         </Button>
         <Button
-            AutomationProperties.AutomationId="EvNqZT9tYkuNzKDDrLJ8Yw"
-            Command="{Binding ShowMessageBoxWithCaptionCommand}">
+            Command="{Binding ShowWithCaption}">
             <TextBlock Text="Show message box with caption" />
         </Button>
         <Button
-            AutomationProperties.AutomationId="FWGzBkom5ESJz_p7KCPKqQ"
-            Command="{Binding ShowMessageBoxWithButtonCommand}">
+            Command="{Binding ShowWithButton}">
             <TextBlock Text="Show message box with buttons" />
         </Button>
         <Button
-            AutomationProperties.AutomationId="SapYi2J7bkiJ1z1GWwOZAQ"
-            Command="{Binding ShowMessageBoxWithIconCommand}">
+            Command="{Binding ShowWithIcon}">
             <TextBlock Text="Show message box with icon" />
         </Button>
         <Button
-            AutomationProperties.AutomationId="sUjm2_m1LUGWso8S2Us5ow"
-            Command="{Binding ShowMessageBoxWithDefaultResultCommand}">
+            Command="{Binding ShowWithDefaultResult}">
             <TextBlock Text="Show message box with default result" />
         </Button>
-        <TextBlock
-            AutomationProperties.AutomationId="kT3_ZUZfsEK1QdZ2jBfuIQ"
-            Text="{Binding Confirmation}" />
+        <Grid>
+            <CheckBox IsChecked="{Binding UseAsync}" Content="Async" />
+            <CheckBox IsChecked="{Binding SetOwner}" Content="Set Owner" HorizontalAlignment="Right" />
+            <TextBlock Text="{Binding Confirmation}" VerticalAlignment="Bottom" />
+        </Grid>
     </UniformGrid>
 </Window>

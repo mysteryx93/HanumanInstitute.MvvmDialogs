@@ -1,37 +1,92 @@
 ﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
-/// Holds a weak reference to a FrameworkElement.
+/// Class wrapping an instance of Avalonia <see cref="Window"/> within <see cref="IView"/>.
 /// </summary>
-public class ViewWrapper : ViewBase
+/// <seealso cref="IView" />
+public class ViewWrapper : IView
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="ViewWrapper"/> class and hold a weak reference to specified <see cref="StyledElement"/>.
+    /// Gets the Window reference held by this class.
     /// </summary>
-    /// <param name="view">The object to hold a weak reference for.</param>
-    public ViewWrapper(StyledElement view) : base(view)
+    public Window Ref { get; private set; }
+
+    /// <summary>
+    /// Gets the Window reference held by this class.
+    /// </summary>
+    public object RefObj => Ref;
+
+    /// <inheritdoc />
+    public IView? Owner { get; set; }
+
+    /// <summary>
+    /// Fired when the window is loaded.
+    /// </summary>
+    public event EventHandler? Loaded
     {
-        view.Initialized += (_, _) => RaiseLoaded();
+        add => Ref.Opened += value;
+        remove => Ref.Opened -= value;
     }
 
     /// <summary>
-    /// Returns the referenced <see cref="StyledElement"/> if it is still alive.
+    /// Fired when the window is closing.
     /// </summary>
-    public StyledElement Source => (StyledElement)base.SourceObj;
+    public event EventHandler<CancelEventArgs>? Closing
+    {
+        add => Ref.Closing += value;
+        remove => Ref.Closing -= value;
+    }
 
     /// <summary>
-    /// Returns the DataContext of referenced element.
+    /// Fired when the window is closed.
     /// </summary>
-    public override object? DataContext => Source.DataContext;
+    public event EventHandler? Closed
+    {
+        add => Ref.Closed += value;
+        remove => Ref.Closed -= value;
+    }
 
     /// <summary>
-    /// Returns whether referenced element is loaded.
+    /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
     /// </summary>
-    public override bool IsLoaded => Source.IsInitialized;
+    /// <param name="window">The window.</param>
+    public ViewWrapper(Window window)
+    {
+        Ref = window ?? throw new ArgumentNullException(nameof(window));
+        Owner = window.Owner is Window w ? w.AsWrapper() : null;
+    }
 
-    /// <summary>
-    /// Returns the owner of the element, within a <see cref="IWindow"/> wrapper.
-    /// </summary>
-    /// <returns>A <see cref="IWindow"/> wrapper around the owner, or null.</returns>
-    public override IWindow? GetOwner() => Source.GetOwner();
+    /// <inheritdoc />
+    public object? DataContext
+    {
+        get => Ref.DataContext;
+        set => Ref.DataContext = value;
+    }
+
+    /// <inheritdoc />
+    public Task<bool?> ShowDialogAsync()
+    {
+        if (Owner is not ViewWrapper w) throw new InvalidOperationException($"{nameof(Owner)} must be set before calling {nameof(ShowDialogAsync)}");
+
+        return Ref.ShowDialog<bool?>(w.Ref);
+    }
+
+    /// <inheritdoc />
+    public void Show() => Ref.Show();
+
+    /// <inheritdoc />
+    public void Activate() => Ref.Activate();
+
+    /// <inheritdoc />
+    public void Close() => Ref.Close();
+
+    /// <inheritdoc />
+    public bool IsEnabled
+    {
+        get => Ref.IsEnabled;
+        set => Ref.IsEnabled = value;
+    }
+    
+    /// <inheritdoc />    
+    public bool ClosingConfirmed { get; set; }
 }

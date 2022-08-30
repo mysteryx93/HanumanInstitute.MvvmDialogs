@@ -24,6 +24,6 @@ public interface IDialogManagerSync
     /// <param name="resultToString">A function to convert the result into a string for logging. If null, ToString will be used.</param>
     /// <typeparam name="TSettings">The settings type used to determine which dialog to show.</typeparam>
     /// <returns>The dialog result.</returns>
-    object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+    object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase;
 }

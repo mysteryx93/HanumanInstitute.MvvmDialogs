@@ -36,7 +36,7 @@ public interface IDialogManager
     /// <param name="resultToString">A function to convert the result into a string for logging. If null, ToString will be used.</param>
     /// <typeparam name="TSettings">The settings type used to determine which dialog to show.</typeparam>
     /// <returns>The dialog result.</returns>
-    Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+    Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase;
 
     /// <summary>
@@ -44,5 +44,5 @@ public interface IDialogManager
     /// </summary>
     /// <param name="viewModel">The ViewModel to search for.</param>
     /// <returns>A Window, or null.</returns>
-    IWindow? FindWindowByViewModel(INotifyPropertyChanged viewModel);
+    IView? FindWindowByViewModel(INotifyPropertyChanged viewModel);
 }

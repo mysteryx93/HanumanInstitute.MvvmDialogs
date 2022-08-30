@@ -29,6 +29,7 @@ UI Frameworks that can easily be added through community efforts:
 - [WPF Usage](#wpf-usage)
 - [Avalonia Usage](#avalonia-usage)
 - [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel--icloseable--iactivable)
+- [IViewLoaded / IViewClosing / IViewClosed](#iviewloaded--iviewclosing--iviewclosed)
 - [Custom Windows](#custom-windows)
 - [Custom Framework Dialogs](#custom-framework-dialogs)
 - [Unit Testing](#unit-testing)
@@ -288,10 +289,38 @@ In your ViewModel, implement `ICloseable` to add `RequestClose` event which will
 
 In your ViewModel, implement `IActivable` to add `RequestActivate` event which will automatically activate the View when raised.
 
+## IViewLoaded / IViewClosing / IViewClosed
+
+Handling Loading, Closing and Closed events presents a few annoyances.
+
+Loading is a common business concern. Why would you have to write code in your View for it?
+
+Closing is generally used to display a confirmation before exit. Calling async code from the Closing event would require complex code, both in the ViewModel and the View.
+
+Closed cannot even call a command via an XAML behavior!
+
+As a simple solution, you can implement `IViewLoaded`, `IViewClosing` and/or `IViewClosed` from your ViewModel with no code required in your View.
+
+**IViewLoaded**  
+`void ViewLoaded();` Called after the view is displayed.
+
+**IViewClosed**  
+`void ViewClosed();` Called after the view is closed.
+
+**IViewClosing**  
+`void ViewClosing(CancelEventArgs e);` Called when closing the view.  
+`Task ViewClosingAsync(CancelEventArgs e);` Called if `e.Cancel` has been set to True in `ViewClosing`
+
+Setting `e.Cancel = true` in `ViewClosing` will...
+
+1. Cancel the close
+2. Call ViewClosingAsync
+3. Setting `e.Cancel = false` in `ViewClosingAsync` will close the view
+
 ## Custom Windows
 
 To display custom dialogs that are not of type `Window` or `ContentDialog`,
-your dialog class must implement [IWindow](src/MvvmDialogs/IWindow.cs)
+your dialog class must implement [IView](src/MvvmDialogs/IView.cs)
 ([sample](samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
 The usage will the same as a standard `Window`.
 
@@ -381,7 +410,7 @@ You could create a class library providing a new set of `IDialogService` methods
 There is a useful extension method in `HanumanInstitute.MvvmDialogs.Wpf` and `HanumanInstitute.MvvmDialogs.Avalonia` to run a synchronous UI method as an async method:
 
 ```c#
-window.RunUiAsync(func)
+UiExtensions.RunUiAsync(func)
 ```
 
 

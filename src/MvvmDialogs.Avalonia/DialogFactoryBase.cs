@@ -37,12 +37,11 @@ public abstract class DialogFactoryBase : IDialogFactory
     }
 
     /// <inheritdoc />
-    public Task<object?> ShowDialogAsync<TSettings>(IWindow owner, TSettings settings, AppDialogSettingsBase appSettings)
+    public Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings)
     {
-        if (owner == null) throw new ArgumentNullException(nameof(owner));
-        if (owner is not WindowWrapper window) throw new ArgumentException($"{nameof(owner)} must be of type {nameof(WindowWrapper)}");
+        if (owner is not null and not ViewWrapper) throw new ArgumentException($"{nameof(owner)} must be of type {nameof(ViewWrapper)}");
         if (appSettings is not AppDialogSettings app) throw new ArgumentException($"{nameof(appSettings)} must be of type {nameof(AppDialogSettings)}");
-        return ShowDialogAsync(window, settings, app);
+        return ShowDialogAsync((ViewWrapper?)owner, settings, app);
     }
 
     /// <summary>
@@ -52,7 +51,7 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// <param name="settings">The settings for the framework dialog.</param>
     /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <returns>Return data specific to the dialog.</returns>
-    public virtual async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
+    public virtual async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
         Chain != null ? await Chain.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true) :
             throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
 }
