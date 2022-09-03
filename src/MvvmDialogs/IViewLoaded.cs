@@ -8,5 +8,5 @@ public interface IViewLoaded
     /// <summary>
     /// Called when the view is loaded.
     /// </summary>
-    void ViewLoaded();
+    void OnLoaded();
 }

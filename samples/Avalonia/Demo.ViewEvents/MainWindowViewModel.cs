@@ -21,23 +21,23 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
     }
     private string _text = string.Empty;
 
-    public void ViewClosed()
+    public void OnClosed()
     {
         // await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
     }
 
-    public void ViewClosing(CancelEventArgs e)
+    public void OnClosing(CancelEventArgs e)
     {
         e.Cancel = true;
     }
 
-    public async Task ViewClosingAsync(CancelEventArgs e)
+    public async Task OnClosingAsync(CancelEventArgs e)
     {
         var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton.YesNo);
         e.Cancel = quit != true;
     }
 
-    public void ViewLoaded()
+    public void OnLoaded()
     {
         Text = "Loaded!";
     }

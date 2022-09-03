@@ -8,5 +8,5 @@ public interface IViewClosed
     /// <summary>
     /// Called when the view is closed.
     /// </summary>
-    void ViewClosed();
+    void OnClosed();
 }
