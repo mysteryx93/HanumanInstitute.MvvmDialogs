@@ -86,7 +86,10 @@ public class ViewWrapper : IView
         get => Ref.IsEnabled;
         set => Ref.IsEnabled = value;
     }
-    
+
+    /// <inheritdoc />
+    public bool IsVisible => Ref.IsVisible;
+
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }
 }

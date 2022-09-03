@@ -67,6 +67,11 @@ public interface IView
     bool IsEnabled { get; set; }
 
     /// <summary>
+    /// Gets whether the window is visible.
+    /// </summary>
+    bool IsVisible { get; }
+
+    /// <summary>
     /// Gets or sets whether closing has been confirmed, in which case Closing event should be ignored. 
     /// </summary>
     bool ClosingConfirmed { get; set; }

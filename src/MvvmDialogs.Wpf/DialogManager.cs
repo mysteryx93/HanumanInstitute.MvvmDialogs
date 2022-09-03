@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Microsoft.Extensions.Logging;
 
@@ -58,6 +59,27 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <inheritdoc />
         public override IView? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
             Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
+
+        /// <inheritdoc />
+        public override IView? GetMainWindow() =>
+            Application.Current.MainWindow.AsWrapper();
+
+        /// <inheritdoc />
+        public override IView? GetDummyWindow()
+        {
+            var parent = new Window()
+            {
+                Height = 1,
+                Width = 1,
+                WindowStyle = WindowStyle.None,
+                ShowInTaskbar = false,
+                ResizeMode = ResizeMode.NoResize,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Background = Brushes.Transparent
+            };
+            parent.Show();
+            return parent.AsWrapper();
+        }
 
         /// <inheritdoc />
         protected override void Dispatch(Action action)

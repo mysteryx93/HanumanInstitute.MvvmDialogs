@@ -184,12 +184,28 @@ public abstract class DialogManagerBase<T> : IDialogManager
             async () =>
             {
                 IView? owner = null;
+                var isDummyOwner = false;
                 if (ownerViewModel != null)
                 {
                     owner = FindWindowByViewModel(ownerViewModel) ??
                                 throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
                 }
-                return await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+                else
+                {
+                    // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
+                    owner = GetMainWindow();
+                    if (owner == null || !owner.IsVisible)
+                    {
+                        owner = GetDummyWindow();
+                        isDummyOwner = true;
+                    }
+                }
+                var result = await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+                if (isDummyOwner)
+                {
+                    owner!.Close();
+                }
+                return result;
             }).ConfigureAwait(true);
 
         Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
@@ -198,4 +214,10 @@ public abstract class DialogManagerBase<T> : IDialogManager
 
     /// <inheritdoc />
     public abstract IView? FindWindowByViewModel(INotifyPropertyChanged viewModel);
+
+    /// <inheritdoc />
+    public abstract IView? GetMainWindow();
+
+    /// <inheritdoc />
+    public abstract IView? GetDummyWindow();
 }

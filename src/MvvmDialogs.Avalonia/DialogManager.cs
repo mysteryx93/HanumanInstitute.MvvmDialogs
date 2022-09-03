@@ -3,6 +3,7 @@ using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Logging;
 using Avalonia.Threading;
+using Avalonia.Media;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -32,6 +33,27 @@ public class DialogManager : DialogManagerBase<Window>
     /// <inheritdoc />
     public override IView? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
         Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
+
+    /// <inheritdoc />
+    public override IView? GetMainWindow() =>
+        (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.MainWindow.AsWrapper();
+
+    /// <inheritdoc />
+    public override IView? GetDummyWindow()
+    {
+        var parent = new Window()
+        {
+            Height = 1,
+            Width = 1,
+            SystemDecorations = SystemDecorations.None,
+            ShowInTaskbar = false,
+            CanResize = false,
+            WindowStartupLocation = WindowStartupLocation.CenterScreen,
+            Background = Brushes.Transparent
+        };
+        parent.Show();
+        return parent.AsWrapper();
+    }
 
     /// <inheritdoc />
     protected override void Dispatch(Action action)

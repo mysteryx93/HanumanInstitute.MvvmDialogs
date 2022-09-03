@@ -132,5 +132,8 @@ public class ViewWrapper : IView, IViewSync
     }
 
     /// <inheritdoc />
+    public bool IsVisible => Ref.IsVisible;
+
+    /// <inheritdoc />
     public bool ClosingConfirmed { get; set; }
 }

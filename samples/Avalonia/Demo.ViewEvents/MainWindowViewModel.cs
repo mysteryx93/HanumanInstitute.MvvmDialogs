@@ -21,9 +21,9 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
     }
     private string _text = string.Empty;
 
-    public void OnClosed()
+    public async void OnClosed()
     {
-        // await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
+        await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
     }
 
     public void OnClosing(CancelEventArgs e)
