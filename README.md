@@ -302,20 +302,20 @@ Closed cannot even call a command via an XAML behavior! Yet you need it to unreg
 As a simple solution, you can implement `IViewLoaded`, `IViewClosing` and/or `IViewClosed` from your ViewModel with no code required in your View.
 
 **IViewLoaded**  
-`void ViewLoaded();` Called after the view is displayed.
+`void OnLoaded();` Called after the view is displayed.
 
 **IViewClosed**  
-`void ViewClosed();` Called after the view is closed.
+`void OnClosed();` Called after the view is closed.
 
 **IViewClosing**  
-`void ViewClosing(CancelEventArgs e);` Called when closing the view.  
-`Task ViewClosingAsync(CancelEventArgs e);` Called if `e.Cancel` has been set to True in `ViewClosing`
+`void OnClosing(CancelEventArgs e);` Called when closing the view.  
+`Task OnClosingAsync(CancelEventArgs e);` Called if `e.Cancel` has been set to True in `OnClosing`
 
-Setting `e.Cancel = true` in `ViewClosing` will...
+Setting `e.Cancel = true` in `OnClosing` will...
 
 1. Cancel the close
-2. Call ViewClosingAsync
-3. Setting `e.Cancel = false` in `ViewClosingAsync` will close the view
+2. Call OnClosingAsync
+3. Setting `e.Cancel = false` in `OnClosingAsync` will close the view
 
 See [Wpf/Demo.ViewEvents](samples/Wpf/Demo.ViewEvents/MainWindowViewModel.cs) for a sample implementation.
 
