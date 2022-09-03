@@ -297,7 +297,7 @@ Loading is a common business concern. Why would you have to write code in your V
 
 Closing is generally used to display a confirmation before exit. Calling async code from the Closing event would require complex code, both in the ViewModel and the View.
 
-Closed cannot even call a command via an XAML behavior!
+Closed cannot even call a command via an XAML behavior! Yet you need it to unregister some events to avoid memory leaks.
 
 As a simple solution, you can implement `IViewLoaded`, `IViewClosing` and/or `IViewClosed` from your ViewModel with no code required in your View.
 
