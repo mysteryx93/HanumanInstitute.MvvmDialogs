@@ -96,18 +96,7 @@ public class FluentDialogFactory : DialogFactoryBase
         };
 
         var result = await _api.ShowTaskDialog(owner, apiSettings).ConfigureAwait(true);
-        return (bool?)result;
-        //return result switch
-        //{
-        //    TaskDialogStandardResult.None => null,
-        //    TaskDialogStandardResult.Yes => true,
-        //    TaskDialogStandardResult.No => false,
-        //    TaskDialogStandardResult.Cancel => false,
-        //    TaskDialogStandardResult.OK => true,
-        //    TaskDialogStandardResult.Close => null,
-        //    TaskDialogStandardResult.Retry => true,
-        //    _ => null
-        //};
+        return result as bool?; // It can be TaskDialogStandardResult.None if we press Escape
     }
 
     private static TaskDialogButton[] SyncButton(MessageBoxButton value, bool? defaultValue) =>
