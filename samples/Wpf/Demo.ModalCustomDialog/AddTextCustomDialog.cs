@@ -58,5 +58,7 @@ public class AddTextCustomDialog : IView, IViewSync
         set => dialog.IsEnabled = value;
     }
 
+    public bool IsVisible => dialog.IsVisible;
+
     public bool ClosingConfirmed { get; set; }
 }

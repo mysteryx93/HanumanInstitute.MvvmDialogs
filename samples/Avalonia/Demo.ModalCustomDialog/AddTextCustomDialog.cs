@@ -52,5 +52,7 @@ public class AddTextCustomDialog : IView
         set => dialog.IsEnabled = value;
     }
 
+    public bool IsVisible => dialog.IsVisible;
+
     public bool ClosingConfirmed { get; set; }
 }
