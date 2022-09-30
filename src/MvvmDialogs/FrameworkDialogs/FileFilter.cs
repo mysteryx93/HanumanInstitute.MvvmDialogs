@@ -24,7 +24,7 @@ public class FileFilter
     public FileFilter(string name, string extension)
     {
         Name = name;
-        Extensions.Add(extension);
+        Extensions = new[] { extension };
     }
 
     /// <summary>
@@ -32,21 +32,41 @@ public class FileFilter
     /// </summary>
     /// <param name="name">The display name of the filter.</param>
     /// <param name="extensions">The file extensions to filter on, excluding the trailing dots.</param>
-    public FileFilter(string name, IEnumerable<string> extensions)
+    public FileFilter(string name, IReadOnlyList<string> extensions)
     {
         Name = name;
-        Extensions.AddRange(extensions);
+        Extensions = extensions;
     }
 
     /// <summary>
     /// Gets or sets the display name of the filter.
     /// </summary>
     public string Name { get; set; } = string.Empty;
-
+    
     /// <summary>
     /// Gets or sets a list of file extensions matched by the filter, excluding the trailing dots (e.g. "txt" or "*" for all files).
     /// </summary>
-    public List<string> Extensions { get; set; } = new List<string>();
+    /// <remarks>
+    /// Used on Windows and Linux systems.
+    /// </remarks>
+    public IReadOnlyList<string>? Extensions { get; set; }
+
+    /// <summary>
+    /// List of extensions in MIME format.
+    /// </summary>
+    /// <remarks>
+    /// Used on Android, Browser and Linux systems.
+    /// </remarks>
+    public IReadOnlyList<string>? MimeTypes { get; set; }
+
+    /// <summary>
+    /// List of extensions in Apple uniform format.
+    /// </summary>
+    /// <remarks>
+    /// Used only on Apple devices.
+    /// See https://developer.apple.com/documentation/uniformtypeidentifiers/system_declared_uniform_type_identifiers.
+    /// </remarks>
+    public IReadOnlyList<string>? AppleUniformTypeIdentifiers { get; set; }
 
     /// <summary>
     /// Returns a string with all extensions starting with '*.' and separated by specified separator.
@@ -54,8 +74,10 @@ public class FileFilter
     /// </summary>
     /// <param name="separator">The separator between extensions.</param>
     /// <returns>A string representation of the extensions.</returns>
-    public string ExtensionsToString(char separator = ';')
+    public string? ExtensionsToString(char separator = ';')
     {
+        if (Extensions == null) { return null; }
+        
         var builder = new StringBuilder();
         foreach (var ext in Extensions.Select(x => x.TrimStart('.')))
         {
@@ -87,7 +109,7 @@ public class FileFilter
     /// </remarks>
     /// <param name="extensions">The extensions to add, calculated with <see cref="ExtensionsToString"/>.</param>
     /// <returns>The name ready for display.</returns>
-    public string NameToString(string extensions)
+    public string NameToString(string? extensions)
     {
         var name = Name ?? string.Empty;
         // Only add extensions to description if it doesn't contain parenthesis.

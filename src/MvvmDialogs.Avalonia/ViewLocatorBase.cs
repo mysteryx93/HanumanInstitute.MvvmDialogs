@@ -17,17 +17,17 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     protected virtual string GetViewName(object viewModel) => viewModel.GetType().FullName!.Replace("ViewModel", "View");
 
     /// <inheritdoc />
-    public virtual IControl Build(object data)
+    public virtual IControl Build(object? data)
     {
         try
         {
-            return (IControl)Locate(data);
+            return (IControl)Locate(data!);
         }
         catch (Exception)
         {
             return new TextBlock
             {
-                Text = "Not Found: " + GetViewName(data)
+                Text = "Not Found: " + GetViewName(data!)
             };
         }
     }
@@ -56,5 +56,5 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     }
 
     /// <inheritdoc />
-    public virtual bool Match(object data) => data is ReactiveObject;
+    public virtual bool Match(object? data) => data is ReactiveObject;
 }

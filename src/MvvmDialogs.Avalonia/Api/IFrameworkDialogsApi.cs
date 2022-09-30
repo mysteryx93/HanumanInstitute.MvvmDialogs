@@ -1,4 +1,8 @@
 ﻿
+using System.Collections.Generic;
+using Avalonia.Platform.Storage;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 
 /// <summary>
@@ -6,7 +10,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 /// </summary>
 internal interface IFrameworkDialogsApi
 {
-    Task<string[]?> ShowOpenFileDialogAsync(Window? owner, OpenFileApiSettings settings);
-    Task<string?> ShowSaveFileDialogAsync(Window? owner, SaveFileApiSettings settings);
-    Task<string?> ShowOpenFolderDialogAsync(Window? owner, OpenFolderApiSettings settings);
+    Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(Window? owner, FilePickerOpenOptions options);
+    Task<IDialogStorageFile?> ShowSaveFileDialogAsync(Window? owner, FilePickerSaveOptions options);
+    Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(Window? owner, FolderPickerOpenOptions options);
 }

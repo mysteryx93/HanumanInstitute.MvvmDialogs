@@ -1,0 +1,61 @@
+﻿using Avalonia.Platform.Storage;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+
+namespace HanumanInstitute.MvvmDialogs.Avalonia;
+
+/// <inheritdoc />
+public class DialogStorageItem : IDialogStorageItem
+{
+    private readonly IStorageItem _item;
+
+    /// <summary>
+    /// Initializes a new instance of DialogStorageItem as a bridge to specified Avalonia IStorageItem.
+    /// </summary>
+    /// <param name="item">An Avalonia IStorageItem from which to get the values.</param>
+    public DialogStorageItem(IStorageItem item)
+    {
+        _item = item;
+    }
+
+    /// <inheritdoc />
+    public string Name => _item.Name;
+    
+    /// <inheritdoc />
+    public Uri? Path
+    {
+        get
+        {
+            if (!_pathLoaded)
+            {
+                _item.TryGetUri(out _path);                
+                _pathLoaded = true;
+            }
+            return _path;
+        }
+    }
+    private Uri? _path;
+    private bool _pathLoaded;
+
+    /// <inheritdoc />
+    public async Task<DialogStorageItemProperties> GetBasicPropertiesAsync()
+    {
+        var result = await _item.GetBasicPropertiesAsync().ConfigureAwait(true);
+        return new DialogStorageItemProperties(result.Size, result.DateCreated, result.DateModified);
+    }
+
+    /// <inheritdoc />
+    public bool CanBookmark => _item.CanBookmark;
+    
+    /// <inheritdoc />
+    public Task<string?> SaveBookmarkAsync() => _item.SaveBookmarkAsync();
+
+    /// <inheritdoc />
+    public async Task<IDialogStorageFolder?> GetParentAsync()
+    {
+        var result = await _item.GetParentAsync().ConfigureAwait(true);
+        return result != null ? new DialogStorageFolder(result) : null;
+    }
+    
+    /// <inheritdoc />
+    public void Dispose() => _item.Dispose();
+}

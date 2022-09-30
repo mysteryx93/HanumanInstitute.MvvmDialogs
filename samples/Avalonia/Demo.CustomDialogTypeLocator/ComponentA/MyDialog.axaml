@@ -10,5 +10,5 @@
     Width="200"
     Height="100">
 
-    <TextBlock>This is a dialog</TextBlock>
+    <TextBlock Text="This is a dialog" />
 </Window>

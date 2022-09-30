@@ -32,7 +32,7 @@ public class CustomDialogFactory : DialogFactoryBase
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
         var window = owner.AsWrapper().Ref;
-        var platformImpl = (WindowImpl)window.PlatformImpl;
+        var platformImpl = (WindowImpl)window.PlatformImpl!;
         var handle = platformImpl.Handle.Handle;
 
         var dialog = new VistaFolderBrowserDialog

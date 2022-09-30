@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
@@ -45,63 +46,65 @@ public class DialogFactory : DialogFactoryBase
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<string?> ShowOpenFolderDialogAsync(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
-        var apiSettings = new OpenFolderApiSettings()
+        var apiSettings = new FolderPickerOpenOptions()
         {
             Title = settings.Title,
-            Directory = settings.InitialDirectory
-            // d.ShowNewFolderButton = Settings.ShowNewFolderButton;
+            // Directory = settings.InitialDirectory
         };
 
         return await _api.ShowOpenFolderDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true);
     }
 
-    private async Task<string[]> ShowOpenFileDialogAsync(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
     {
-        var apiSettings = new OpenFileApiSettings()
+        var apiSettings = new FilePickerOpenOptions()
         {
-            AllowMultiple = settings.AllowMultiple ?? false
+            AllowMultiple = settings.AllowMultiple ?? false,
+            FileTypeFilter = SyncFilters(settings.Filters)
             // d.ShowReadOnly = Settings.ShowReadOnly;
             // d.ReadOnlyChecked = Settings.ReadOnlyChecked;
         };
         AddSharedSettings(apiSettings, settings);
 
-        return await _api.ShowOpenFileDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true) ?? Array.Empty<string>();
+        return await _api.ShowOpenFileDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true) ?? Array.Empty<IDialogStorageFile>();
     }
 
-    private async Task<string?> ShowSaveFileDialogAsync(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
     {
-        var apiSettings = new SaveFileApiSettings()
+        var apiSettings = new FilePickerSaveOptions()
         {
-            DefaultExtension = settings.DefaultExtension
+            DefaultExtension = settings.DefaultExtension,
+            FileTypeChoices = SyncFilters(settings.Filters)
         };
         AddSharedSettings(apiSettings, settings);
 
         var result = await _api.ShowSaveFileDialogAsync(owner?.Ref, apiSettings).ConfigureAwait(true);
 
         // Add DefaultExtension.
-        if (result != null && !string.IsNullOrEmpty(settings.DefaultExtension) && !_pathInfo.GetFileInfo(result).Exists && !result.Contains('.'))
-        {
-            result += "." + settings.DefaultExtension.TrimStart('.');
-        }
+        // if (result != null && !string.IsNullOrEmpty(settings.DefaultExtension) && !_pathInfo.GetFileInfo(result).Exists && !result.Contains('.'))
+        // {
+        //     result += "." + settings.DefaultExtension.TrimStart('.');
+        // }
         return result;
     }
 
-    private void AddSharedSettings(FileApiSettings d, FileDialogSettings s)
+    private void AddSharedSettings(PickerOptions d, FileDialogSettings s)
     {
         // d.DereferenceLinks = s.DereferenceLinks;
-        d.Directory = s.InitialDirectory;
-        d.InitialFileName = s.InitialFile;
-        d.Filters = SyncFilters(s.Filters);
+        // d.Directory = s.InitialDirectory;
+        // d.InitialFileName = s.InitialFile;
+        // d.Filters = SyncFilters(s.Filters);
         d.Title = s.Title;
     }
 
-    private static List<FileDialogFilter> SyncFilters(List<FileFilter> filters) =>
+    private static List<FilePickerFileType> SyncFilters(List<FileFilter> filters) =>
         filters.Select(
-            x => new FileDialogFilter()
+            x => new FilePickerFileType(x.NameToString(x.ExtensionsToString()))
             {
-                Name = x.NameToString(x.ExtensionsToString()),
-                Extensions = x.Extensions.Select(y => y.TrimStart('.')).ToList()
+                Patterns = x.Extensions?.Select(y => y.TrimStart('.')).ToList(),
+                MimeTypes = x.MimeTypes,
+                AppleUniformTypeIdentifiers = x.AppleUniformTypeIdentifiers
             }).ToList();
 }

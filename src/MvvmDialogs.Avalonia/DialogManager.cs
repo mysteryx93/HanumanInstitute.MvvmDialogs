@@ -70,5 +70,19 @@ public class DialogManager : DialogManagerBase<Window>
 
     /// <inheritdoc />
     protected override Task<T> DispatchAsync<T>(Func<T> action) =>
-        _dispatcher.CheckAccess() ? Task.FromResult(action()) : _dispatcher.InvokeAsync(action, DispatcherPriority.Render);
+        //_dispatcher.CheckAccess() ? Task.FromResult(action()) : _dispatcher.InvokeAsync(action, DispatcherPriority.Render);
+        _dispatcher.CheckAccess() ? Task.FromResult(action()) : DispatchWithResult(action);
+
+    /// <summary>
+    /// Work-around for missing interface member in Avalonia v11-preview1.
+    /// </summary>
+    private Task<T> DispatchWithResult<T>(Func<T> action)
+    {
+        var tcs = new TaskCompletionSource<T>();
+        _ = _dispatcher.InvokeAsync(() => 
+        {
+            tcs.SetResult(action());
+        }, DispatcherPriority.Render);
+        return tcs.Task;
+    }
 }

@@ -44,5 +44,5 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowVM MainWindow => Locator.Current.GetService<MainWindowVM>();
+    public static MainWindowVM MainWindow => Locator.Current.GetService<MainWindowVM>()!;
 }

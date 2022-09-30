@@ -43,6 +43,6 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>();
-    public static CurrentTimeDialogViewModel CurrentTimeDialog => Locator.Current.GetService<CurrentTimeDialogViewModel>();
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static CurrentTimeDialogViewModel CurrentTimeDialog => Locator.Current.GetService<CurrentTimeDialogViewModel>()!;
 }

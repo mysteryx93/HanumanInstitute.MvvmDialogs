@@ -1,26 +1,31 @@
-﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Platform.Storage;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+
+namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi
 {
-    public async Task<string[]?> ShowOpenFileDialogAsync(Window? owner, OpenFileApiSettings settings)
+    public async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(Window? owner, FilePickerOpenOptions options)
     {
-        var dialog = new OpenFileDialog();
-        settings.ApplyTo(dialog);
-        return await dialog.ShowAsync(owner!).ConfigureAwait(true);
+        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        var result = await owner.StorageProvider.OpenFilePickerAsync(options).ConfigureAwait(true);
+        return result.Select(x => new DialogStorageFile(x)).ToList();
     }
 
-    public async Task<string?> ShowSaveFileDialogAsync(Window? owner, SaveFileApiSettings settings)
+    public async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(Window? owner, FilePickerSaveOptions options)
     {
-        var dialog = new SaveFileDialog();
-        settings.ApplyTo(dialog);
-        return await dialog.ShowAsync(owner!).ConfigureAwait(true);
+        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        var result = await owner.StorageProvider.SaveFilePickerAsync(options).ConfigureAwait(true);
+        return result != null ? new DialogStorageFile(result) : null;
     }
 
-    public async Task<string?> ShowOpenFolderDialogAsync(Window? owner, OpenFolderApiSettings settings)
+    public async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(Window? owner, FolderPickerOpenOptions options)
     {
-        var dialog = new OpenFolderDialog();
-        settings.ApplyTo(dialog);
-        return await dialog.ShowAsync(owner!).ConfigureAwait(true);
+        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        var result = await owner.StorageProvider.OpenFolderPickerAsync(options).ConfigureAwait(true);
+        return result.Select(x => new DialogStorageFolder(x)).ToList();
     }
 }
