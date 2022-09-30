@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <summary>
 /// Provides access to the content-related properties of an item (like a file or folder).

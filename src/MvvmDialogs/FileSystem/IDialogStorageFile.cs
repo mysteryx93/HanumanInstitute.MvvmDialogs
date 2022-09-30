@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <summary>
 /// Represents a file. Provides information about the file and its contents, and ways to manipulate them.

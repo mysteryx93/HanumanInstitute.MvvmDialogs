@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 // ReSharper disable once CheckNamespace

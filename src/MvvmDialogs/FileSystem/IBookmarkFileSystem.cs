@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <summary>
 /// Provides access to the file system via bookmarks, a method commonly used on mobile devices and browser.

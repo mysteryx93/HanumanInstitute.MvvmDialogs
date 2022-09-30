@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <summary>
 /// Manipulates storage items (files and folders) and their contents, and provides information about them
