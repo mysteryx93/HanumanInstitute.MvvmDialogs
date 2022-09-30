@@ -43,6 +43,6 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>();
-    public static AddTextDialogViewModel AddTextDialog => Locator.Current.GetService<AddTextDialogViewModel>();
+    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static AddTextDialogViewModel AddTextDialog => Locator.Current.GetService<AddTextDialogViewModel>()!;
 }

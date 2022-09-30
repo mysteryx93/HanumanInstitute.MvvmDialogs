@@ -96,7 +96,7 @@ public static class DialogServiceExtensions
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
-        return (IDialogStorageFile[])(await service.DialogManager.ShowFrameworkDialogAsync(
+        return (IReadOnlyList<IDialogStorageFile>)(await service.DialogManager.ShowFrameworkDialogAsync(
             ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x)).ConfigureAwait(true))!;
     }
 
@@ -117,7 +117,23 @@ public static class DialogServiceExtensions
     }
 
     /// <summary>
-    /// Displays the FolderBrowserDialog.
+    /// Displays the FolderBrowserDialog to select multiple folders.
+    /// </summary>
+    /// <param name="service">The IDialogService on which to attach the extension method.</param>
+    /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
+    /// <param name="settings">The settings for the folder browser dialog.</param>
+    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
+    /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
+    /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
+    public static async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFoldersDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+        OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+    {
+        return (IReadOnlyList<IDialogStorageFolder>)(await service.DialogManager.ShowFrameworkDialogAsync(
+            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true))!;
+    }
+    
+    /// <summary>
+    /// Displays the FolderBrowserDialog to select a single folder.
     /// </summary>
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
@@ -128,7 +144,9 @@ public static class DialogServiceExtensions
     public static async Task<IDialogStorageFolder?> ShowOpenFolderDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        return (IDialogStorageFolder?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true);
+        settings ??= new OpenFolderDialogSettings();
+        settings.AllowMultiple ??= false;
+        var result = await ShowOpenFoldersDialogAsync(service, ownerViewModel, settings, appSettings).ConfigureAwait(true);
+        return result.Count > 0 ? result[0] : null;
     }
 }

@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.ActivateNonModalDialog;
+namespace Demo.ViewEvents;
 
 public class App : Application
 {

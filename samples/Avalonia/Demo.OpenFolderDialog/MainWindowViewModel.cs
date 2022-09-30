@@ -38,6 +38,6 @@ public class MainWindowViewModel : ViewModelBase
         };
 
         var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
-        Path = result;
+        Path = result?.Path?.ToString();
     }
 }

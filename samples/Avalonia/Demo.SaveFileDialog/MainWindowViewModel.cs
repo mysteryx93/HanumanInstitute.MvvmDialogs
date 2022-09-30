@@ -45,6 +45,6 @@ public class MainWindowViewModel : ViewModelBase
         };
 
         var result = await dialogService.ShowSaveFileDialogAsync(this, settings);
-        Path = result;
+        Path = result?.Path?.ToString();
     }
 }

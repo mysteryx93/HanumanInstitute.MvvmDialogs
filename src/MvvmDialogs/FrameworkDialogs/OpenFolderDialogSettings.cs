@@ -7,6 +7,11 @@ namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 public class OpenFolderDialogSettings : DialogSettingsBase
 {
     /// <summary>
+    /// DO NOT USE. Use OpenFolderDialog / OpenFoldersDialog instead.
+    /// </summary>
+    public bool? AllowMultiple { get; set; }
+
+    /// <summary>
     /// Gets or sets the path initially selected.
     /// </summary>
     public string? InitialDirectory { get; set; }

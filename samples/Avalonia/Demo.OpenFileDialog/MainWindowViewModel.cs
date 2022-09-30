@@ -32,9 +32,9 @@ public class MainWindowViewModel : ViewModelBase
         var settings = GetSettings(false);
         var result = await dialogService.ShowOpenFileDialogAsync(this, settings);
         Paths.Clear();
-        if (result != null)
+        if (result?.Path != null)
         {
-            Paths.Add(result);
+            Paths.Add(result.Path.ToString());
         }
     }
 
@@ -45,7 +45,7 @@ public class MainWindowViewModel : ViewModelBase
         Paths.Clear();
         foreach (var item in result)
         {
-            Paths.Add(item);
+            Paths.Add(item?.Path?.ToString() ?? string.Empty);
         }
     }
 

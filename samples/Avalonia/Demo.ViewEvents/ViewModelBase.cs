@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.ActivateNonModalDialog;
+namespace Demo.ViewEvents;
 
 public class ViewModelBase : ReactiveObject
 {
