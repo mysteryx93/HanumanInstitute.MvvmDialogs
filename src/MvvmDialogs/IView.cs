@@ -10,6 +10,20 @@
 public interface IView
 {
     /// <summary>
+    /// Initializes the <see cref="IView"/> from specified view model and view type.
+    /// </summary>
+    /// <param name="viewModel">The view model to display.</param>
+    /// <param name="viewType">The data type of the view.</param>
+    void Initialize(INotifyPropertyChanged viewModel, Type viewType);
+
+    /// <summary>
+    /// Initializes the <see cref="IView"/> from specified view model and existing view.
+    /// </summary>
+    /// <param name="viewModel">The view model to display.</param>
+    /// <param name="view">The view to display.</param>
+    void InitializeExisting(INotifyPropertyChanged viewModel, object view);
+
+    /// <summary>
     /// Gets the Window reference held by this class.
     /// </summary>
     public object RefObj { get; }
@@ -32,24 +46,19 @@ public interface IView
     /// <summary>
     /// Gets or sets the data context for an element when it participates in data binding.
     /// </summary>
-    object? DataContext { get; set; }
-
-    /// <summary>
-    /// Gets or sets the <see cref="IView"/> that owns this <see cref="IView"/>.
-    /// </summary>
-    IView? Owner { get; set; }
+    INotifyPropertyChanged ViewModel { set; }
 
     /// <summary>
     /// Opens a window and returns without waiting for the newly opened window to close.
     /// </summary>
-    void Show();
+    void Show(IView? owner);
 
     /// <summary>
     /// Opens a window and returns only when the newly opened window is closed.
     /// </summary>
     /// <returns>
     /// A <see cref="Nullable{Boolean}"/> value that specifies whether the activity was accepted (true) or canceled (false).</returns>
-    Task<bool?> ShowDialogAsync();
+    Task<bool?> ShowDialogAsync(IView owner);
 
     /// <summary>
     /// Tries to activate the Window.

@@ -63,7 +63,7 @@ public abstract class DialogServiceBase : IDialogService
     {
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        var window = DialogManager.FindWindowByViewModel(viewModel);
+        var window = DialogManager.FindViewByViewModel(viewModel);
         DialogManager.Logger?.LogInformation("Activate View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(),
             viewModel.GetType());
         window?.Activate();
@@ -80,8 +80,8 @@ public abstract class DialogServiceBase : IDialogService
     {
         if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
 
-        var window = DialogManager.FindWindowByViewModel(viewModel);
-        DialogManager.Logger?.LogInformation("Close View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(), viewModel.GetType());
+        var window = DialogManager.FindViewByViewModel(viewModel);
+        DialogManager.Logger?.LogInformation("Close View: {View}; ViewModel: {ViewModel}", window?.RefObj.GetType(), viewModel.GetType());
         if (window != null)
         {
             try

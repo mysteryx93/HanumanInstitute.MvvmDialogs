@@ -90,7 +90,7 @@ public class ViewWrapper : IView, IViewSync
         this.Ref = window ?? throw new ArgumentNullException(nameof(window));
 
     /// <inheritdoc />
-    public object? DataContext
+    public object? ViewModel
     {
         get => Ref.DataContext;
         set => Ref.DataContext = value;

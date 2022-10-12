@@ -45,7 +45,7 @@ public class MainWindowViewModel : ViewModelBase
         Paths.Clear();
         foreach (var item in result)
         {
-            Paths.Add(item?.Path?.ToString() ?? string.Empty);
+            Paths.Add(item?.Path?.LocalPath ?? string.Empty);
         }
     }
 

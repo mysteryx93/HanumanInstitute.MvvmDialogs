@@ -21,7 +21,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     {
         try
         {
-            return (IControl)Locate(data!);
+            return (IControl)Create(data!);
         }
         catch (Exception)
         {
@@ -32,28 +32,26 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
         }
     }
 
-    /// <summary>
-    /// Creates a view based on the specified view model.
-    /// </summary>
-    /// <param name="viewModel">The view model to create a view for.</param>
-    public virtual object Locate(object viewModel)
+    /// <inheritdoc />
+    public virtual Type Locate(object viewModel)
     {
         var name = GetViewName(viewModel);
         // var type = Type.GetType(name, x => Assembly.GetEntryAssembly(), null, false);
-        var type = Assembly.GetEntryAssembly()?.GetType(name);
+        var viewType = Assembly.GetEntryAssembly()?.GetType(name);
 
-        var view = type != null ? Activator.CreateInstance(type)! : null;
-
-        // ReSharper disable once SuspiciousTypeConversion.Global
-        if (view is null || (view is not IControl && view is not Window && view is not IView))
+        if (viewType is null || (!typeof(IControl).IsAssignableFrom(viewType) && !typeof(Window).IsAssignableFrom(viewType) && !typeof(IView).IsAssignableFrom(viewType)))
         {
             var message = $"Dialog view of type {name} for view model {viewModel.GetType().FullName} is missing.";
             const string errorInfo = "Avalonia project template includes ViewLocator in the project base. " +
                                      "You can customize it to map your view models to your views.";
             throw new TypeLoadException(message + Environment.NewLine + errorInfo);
         }
-        return view;
+        return viewType;
     }
+
+    /// <inheritdoc />
+    public virtual object Create(object viewModel) =>
+        Activator.CreateInstance(Locate(viewModel))!;
 
     /// <inheritdoc />
     public virtual bool Match(object? data) => data is ReactiveObject;

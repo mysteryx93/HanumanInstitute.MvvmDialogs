@@ -33,7 +33,7 @@ public class MainWindowViewModel : ViewModelBase
     private void ShowImpl()
     {
         DialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
-        dialogService.Show(null, DialogViewModel);
+        dialogService.Show(this, DialogViewModel);
     }
 
     private void CloseImpl()

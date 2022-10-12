@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace Demo.NonModalCustomDialog;
 
@@ -10,42 +10,49 @@ public class CurrentTimeCustomDialog : IView
 {
     private readonly CurrentTimeDialog _dialog = new();
 
+    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    {
+        ViewModel = viewModel;
+    }
+    public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
+    {
+        ViewModel = viewModel;
+    }
+
+    public Type ViewType { get; set; } = default!;
+    
     public object RefObj => this;
 
-    event EventHandler IView.Loaded
+    public event EventHandler Loaded
     {
         add => _dialog.Opened += value;
         remove => _dialog.Opened -= value;
     }
 
-    event EventHandler IView.Closed
+    public event EventHandler Closed
     {
         add => _dialog.Closed += value;
         remove => _dialog.Closed -= value;
     }
 
-    event EventHandler<CancelEventArgs> IView.Closing
+    public event EventHandler<CancelEventArgs> Closing
     {
         add => _dialog.Closing += value;
         remove => _dialog.Closing -= value;
     }
 
-    object? IView.DataContext
+    public INotifyPropertyChanged ViewModel
     {
-        get => _dialog.DataContext;
+        get => (INotifyPropertyChanged)_dialog.DataContext!;
         set => _dialog.DataContext = value;
     }
 
-    public IView? Owner { get; set; }
-
-    public Task<bool?> ShowDialogAsync()
+    public Task<bool?> ShowDialogAsync(IView owner)
     {
-        if (Owner is not ViewWrapper w) throw new InvalidOperationException("{nameof(Owner)} must be set before calling {nameof(ShowDialogAsync)}");
-
-        return _dialog.ShowDialog<bool?>(w.Ref);
+        return _dialog.ShowDialog<bool?>((Window)owner.RefObj);
     }
 
-    void IView.Show() => _dialog.Show();
+    public void Show(IView? owner) => _dialog.Show((Window)owner!.RefObj);
 
     public void Activate() => _dialog.Activate();
 

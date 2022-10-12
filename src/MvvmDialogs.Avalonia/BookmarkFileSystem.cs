@@ -9,11 +9,10 @@ public class BookmarkFileSystem : IBookmarkFileSystem
 {
     private IStorageProvider? GetStorageProvider()
     {
-        var app = Application.Current?.ApplicationLifetime;
-        var result = 0 switch
+        var result = Application.Current?.ApplicationLifetime switch
         {
-            _ when app is IClassicDesktopStyleApplicationLifetime d => d.MainWindow,
-            _ when app is ISingleViewApplicationLifetime s => s.MainView as TopLevel,
+            IClassicDesktopStyleApplicationLifetime d => d.MainWindow,
+            ISingleViewApplicationLifetime s => s.MainView as TopLevel,
             _ => null
         };
         return result?.StorageProvider;

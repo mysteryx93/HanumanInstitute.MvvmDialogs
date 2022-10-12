@@ -45,11 +45,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
         Dispatch(
             () =>
             {
-                var view = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel?.GetType());
+                var viewType = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel?.GetType());
 
-                var dialog = CreateDialog(ownerViewModel, viewModel, view);
-                dialog.Show();
+                var dialog = CreateDialog(viewModel, viewType);
+                dialog.Show(GetOwnerView(ownerViewModel));
             });
     }
 
@@ -59,49 +59,62 @@ public abstract class DialogManagerBase<T> : IDialogManager
         await await DispatchAsync(
             async () =>
             {
-                var view = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
+                var viewType = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel.GetType());
 
-                var dialog = CreateDialog(ownerViewModel, viewModel, view);
-                await dialog.ShowDialogAsync();
+                var dialog = CreateDialog(viewModel, viewType);
+                await dialog.ShowDialogAsync(GetOwnerView(ownerViewModel)!);
 
-                Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
+                Logger?.LogInformation("View: {View}; Result: {Result}", viewType, viewModel.DialogResult);
             });
+    }
+
+    private IView? GetOwnerView(INotifyPropertyChanged? ownerViewModel)
+    {
+        if (ownerViewModel == null) { return null; }
+        var owner = FindViewByViewModel(ownerViewModel);
+        if (owner == null)
+        {
+            throw new InvalidOperationException($"Cannot find View for ownerViewModel of type {ownerViewModel.GetType()}");
+        }
+        return owner;
     }
 
     /// <summary>
     /// Creates a new IWindow from the configured IDialogFactory.
     /// </summary>
-    /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="view">The view to show.</param>
+    /// <param name="viewType">The type of view to show.</param>
     /// <returns>The new IWindow.</returns>
     /// <exception cref="TypeLoadException">Could not load view for view model.</exception>
-    protected IView CreateDialog(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel, object? view)
+    protected IView CreateDialog(INotifyPropertyChanged viewModel, Type viewType)
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
-        var dialog = view switch
+        IView? dialog;
+        if (typeof(IView).IsAssignableFrom(viewType))
         {
-            IView w => w,
-            T t => CreateWrapper(t),
-            null => throw new TypeLoadException($"Could not load view for view model of type {viewModel.GetType().FullName}."),
-            _ => throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IView)} are supported.")
-        };
-
-        if (ownerViewModel != null)
-        {
-            dialog.Owner = FindWindowByViewModel(ownerViewModel);
+            dialog = (IView)Activator.CreateInstance(viewType)!;
         }
-        dialog.DataContext = viewModel;
+        else if (typeof(T).IsAssignableFrom(viewType))
+        {
+            dialog = CreateWrapper(viewModel, viewType);
+        }
+        else
+        {
+            throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IView)} are supported.");
+        }
+
+        dialog.ViewModel = viewModel;
         HandleDialogEvents(viewModel, dialog);
         return dialog;
     }
 
     /// <summary>
-    /// Creates a wrapper around a native window.
+    /// Creates a wrapper around a View.
     /// </summary>
-    /// <param name="window">The window to create a wrapper for.</param>
-    protected abstract IView CreateWrapper(T window);
+    /// <param name="viewModel">The view model of the View.</param>
+    /// <param name="viewType">The data type of the View.</param>
+    protected abstract IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType);
 
     /// <summary>
     /// Dispatches an action to the UI thread.
@@ -183,11 +196,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
         var result = await await DispatchAsync(
             async () =>
             {
-                IView? owner = null;
+                IView? owner;
                 var isDummyOwner = false;
                 if (ownerViewModel != null)
                 {
-                    owner = FindWindowByViewModel(ownerViewModel) ??
+                    owner = FindViewByViewModel(ownerViewModel) ??
                                 throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
                 }
                 else
@@ -213,7 +226,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     }
 
     /// <inheritdoc />
-    public abstract IView? FindWindowByViewModel(INotifyPropertyChanged viewModel);
+    public abstract IView? FindViewByViewModel(INotifyPropertyChanged viewModel);
 
     /// <inheritdoc />
     public abstract IView? GetMainWindow();

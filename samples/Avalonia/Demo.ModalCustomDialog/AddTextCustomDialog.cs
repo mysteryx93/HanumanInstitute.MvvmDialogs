@@ -1,58 +1,70 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace Demo.ModalCustomDialog;
 
 public class AddTextCustomDialog : IView
 {
+    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    {
+        ViewModel = viewModel;
+    }
+    
+    public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
+    {
+        ViewModel = viewModel;
+    }
+
+    public Type ViewType { get; set; } = default!;
+    
     public object RefObj => this;
-
-    private readonly AddTextDialog dialog = new();
-
-    event EventHandler IView.Loaded
+    
+    public AddTextDialog Ref { get; } = new();
+    
+    public event EventHandler Loaded
     {
-        add => dialog.Opened += value;
-        remove => dialog.Opened -= value;
+        add => Ref.Opened += value;
+        remove => Ref.Opened -= value;
     }
-
-    event EventHandler IView.Closed
+    
+    public event EventHandler Closed
     {
-        add => dialog.Closed += value;
-        remove => dialog.Closed -= value;
+        add => Ref.Closed += value;
+        remove => Ref.Closed -= value;
     }
-
-    event EventHandler<CancelEventArgs> IView.Closing
+    
+    public event EventHandler<CancelEventArgs> Closing
     {
-        add => dialog.Closing += value;
-        remove => dialog.Closing -= value;
+        add => Ref.Closing += value;
+        remove => Ref.Closing -= value;
     }
-
-    object? IView.DataContext
+    
+    public INotifyPropertyChanged ViewModel
     {
-        get => dialog.DataContext;
-        set => dialog.DataContext = value;
+        get => (INotifyPropertyChanged)Ref.DataContext!;
+        set => Ref.DataContext = value;
     }
-
-    public IView? Owner { get; set; }
-
-    Task<bool?> IView.ShowDialogAsync() => dialog.ShowDialog<bool?>(Owner.AsWrapper()!.Ref);
-
-    void IView.Show() => dialog.Show();
-
-    public void Activate() => dialog.Activate();
-
-    public void Close() => dialog.Close();
-
+    
+    public INotifyPropertyChanged? Owner { get; set; }
+    
+    public Task<bool?> ShowDialogAsync(IView owner) => Ref.ShowDialog<bool?>((Window)owner.RefObj!);
+    
+    public void Show(IView? owner) => Ref.Show((Window)owner!.RefObj);
+    
+    public void Activate() => Ref.Activate();
+    
+    public void Close() => Ref.Close();
+    
     public bool IsEnabled
     {
-        get => dialog.IsEnabled;
-        set => dialog.IsEnabled = value;
+        get => Ref.IsEnabled;
+        set => Ref.IsEnabled = value;
     }
-
-    public bool IsVisible => dialog.IsVisible;
-
+    
+    public bool IsVisible => Ref.IsVisible;
+    
     public bool ClosingConfirmed { get; set; }
 }

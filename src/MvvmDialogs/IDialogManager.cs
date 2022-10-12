@@ -44,7 +44,7 @@ public interface IDialogManager
     /// </summary>
     /// <param name="viewModel">The ViewModel to search for.</param>
     /// <returns>A Window, or null.</returns>
-    IView? FindWindowByViewModel(INotifyPropertyChanged viewModel);
+    IView? FindViewByViewModel(INotifyPropertyChanged viewModel);
 
     /// <summary>
     /// Returns the main window of the application.
