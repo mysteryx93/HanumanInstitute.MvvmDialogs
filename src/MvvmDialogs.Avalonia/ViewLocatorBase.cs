@@ -37,7 +37,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     {
         var name = GetViewName(viewModel);
         // var type = Type.GetType(name, x => Assembly.GetEntryAssembly(), null, false);
-        var viewType = Assembly.GetEntryAssembly()?.GetType(name);
+        var viewType = Assembly.GetAssembly(viewModel.GetType())?.GetType(name);
 
         if (viewType is null || (!typeof(IControl).IsAssignableFrom(viewType) && !typeof(Window).IsAssignableFrom(viewType) && !typeof(IView).IsAssignableFrom(viewType)))
         {

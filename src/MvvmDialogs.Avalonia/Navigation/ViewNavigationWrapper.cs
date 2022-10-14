@@ -1,6 +1,6 @@
 ﻿#pragma warning disable CS1591
 #pragma warning disable CS8618
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// Class wrapping an instance of Avalonia <see cref="Window"/> within <see cref="IView"/>.
@@ -8,7 +8,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// <seealso cref="IView" />
 public class ViewNavigationWrapper : IView
 {
-    private NavigationManager _navigation = default!;
+    private INavigationManager _navigation = default!;
 
     public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
     {
@@ -20,9 +20,10 @@ public class ViewNavigationWrapper : IView
     {
         ViewModel = viewModel;
         ViewType = view.GetType();
+        Ref = (UserControl)view;
     }
         
-    public ViewNavigationWrapper SetNavigation(NavigationManager navigationManager)
+    public ViewNavigationWrapper SetNavigation(INavigationManager navigationManager)
     {
         _navigation = navigationManager;
         return this;
@@ -40,7 +41,6 @@ public class ViewNavigationWrapper : IView
     /// </summary>
     public object RefObj => Ref;
     
-    /// <inheritdoc />
     public IView? Owner { get; set; }
     
     /// <summary>
@@ -70,20 +70,25 @@ public class ViewNavigationWrapper : IView
     internal void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
    
     /// <inheritdoc />
-    public INotifyPropertyChanged ViewModel
+    public INotifyPropertyChanged ViewModel { get; private set;  }
+
+    /// <inheritdoc />
+    public async Task ShowDialogAsync(IView owner)
     {
-        get => (INotifyPropertyChanged)Ref.DataContext!;
-        set => Ref.DataContext = value;
+        var task = _navigation.ShowDialogAsync(ViewModel, ViewType, owner.ViewModel);
+        //Ref = _navigation.CurrentView!;
+        await task.ConfigureAwait(true);
+    }
+
+    /// <inheritdoc />
+    public void Show(IView? owner)
+    {
+        _navigation.Show(ViewModel, ViewType);  
+        //Ref = _navigation.CurrentView!;
     }
     
     /// <inheritdoc />
-    public Task<bool?> ShowDialogAsync(IView owner) => _navigation.ShowDialogAsync(ViewModel, ViewType);
-    
-    /// <inheritdoc />
-    public void Show(IView? owner) => _navigation.Show(ViewModel, ViewType);
-    
-    /// <inheritdoc />
-    public void Activate() => _navigation.Show(ViewModel, ViewType);
+    public void Activate() => _navigation.Activate(ViewModel, ViewType);
     
     /// <inheritdoc />
     public void Close() => _navigation.Close(ViewModel, ViewType);
@@ -94,9 +99,9 @@ public class ViewNavigationWrapper : IView
         get => Ref.IsEnabled;
         set => Ref.IsEnabled = value;
     }
-    
+
     /// <inheritdoc />
-    public bool IsVisible => Ref.IsVisible;
+    public bool IsVisible => true;
     
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }

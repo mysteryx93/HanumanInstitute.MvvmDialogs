@@ -3,10 +3,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:mvvm="clr-namespace:HanumanInstitute.MvvmDialogs.Avalonia"
+             xmlns:navigation="clr-namespace:HanumanInstitute.MvvmDialogs.Avalonia.Navigation"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="HanumanInstitute.MvvmDialogs.Avalonia.NavigationRoot">
+             x:Class="HanumanInstitute.MvvmDialogs.Avalonia.Navigation.NavigationRoot">
     <Design.DataContext>
-        <mvvm:NavigationManager />
+        <navigation:NavigationManager />
     </Design.DataContext>
     <TransitioningContentControl Content="{Binding CurrentView}" >
         <TransitioningContentControl.PageTransition>

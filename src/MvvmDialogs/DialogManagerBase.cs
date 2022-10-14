@@ -94,6 +94,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
         if (typeof(IView).IsAssignableFrom(viewType))
         {
             dialog = (IView)Activator.CreateInstance(viewType)!;
+            dialog.Initialize(viewModel, viewType);
         }
         else if (typeof(T).IsAssignableFrom(viewType))
         {
@@ -104,7 +105,6 @@ public abstract class DialogManagerBase<T> : IDialogManager
             throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IView)} are supported.");
         }
 
-        dialog.ViewModel = viewModel;
         HandleDialogEvents(viewModel, dialog);
         return dialog;
     }

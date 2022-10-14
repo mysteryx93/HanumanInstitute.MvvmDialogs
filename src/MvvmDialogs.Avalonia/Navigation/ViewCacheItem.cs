@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// Represents an item in the <see cref="ViewCache"/> 

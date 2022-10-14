@@ -73,7 +73,7 @@ public class ViewWrapper : IView
     }
 
     /// <inheritdoc />
-    public Task<bool?> ShowDialogAsync(IView owner)
+    public Task ShowDialogAsync(IView owner)
     {
         return Ref.ShowDialog<bool?>((Window)owner.RefObj);
     }

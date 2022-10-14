@@ -48,4 +48,15 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Navigation\NavigationRootWindow.axaml.cs">
+      <DependentUpon>NavigationRootWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Navigation\NavigationRoot.axaml.cs">
+      <DependentUpon>NavigationRoot.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

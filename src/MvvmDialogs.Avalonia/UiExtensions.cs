@@ -3,6 +3,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Avalonia.Threading;
+using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -48,7 +49,7 @@ public static class UiExtensions
     /// <param name="navigationManager"></param>
     /// <returns>A ViewNavigationWrapper referencing the user control.</returns>
     [return: NotNullIfNotNull("view")]
-    public static ViewNavigationWrapper? AsWrapper(this UserControl? view, NavigationManager navigationManager)
+    public static ViewNavigationWrapper? AsWrapper(this UserControl? view, INavigationManager navigationManager)
     {
         if (view != null)
         {

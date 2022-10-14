@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Microsoft.Extensions.Logging;
 using Avalonia.Threading;
 using Avalonia.Media;
+using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -12,9 +13,9 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// </summary>
 public class DialogManager : DialogManagerBase<ContentControl>
 {
-    private readonly NavigationManager _navigationManager;
+    private readonly INavigationManager? _navigationManager;
     private readonly IDispatcher _dispatcher;
-    private readonly bool _singlePageApp;
+    private readonly bool _useNavigation;
 
     /// <inheritdoc />
     public DialogManager(
@@ -22,7 +23,8 @@ public class DialogManager : DialogManagerBase<ContentControl>
         IDialogFactory? dialogFactory = null,
         ILogger<DialogManager>? logger = null,
         IDispatcher? dispatcher = null,
-        NavigationManager? navigationManager = null)
+        bool useSinglePageNavigation = false,
+        Control? customNavigationRoot = null)
         :
         base(
             viewLocator ?? new ViewLocatorBase(),
@@ -30,15 +32,24 @@ public class DialogManager : DialogManagerBase<ContentControl>
             logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
-        _navigationManager = navigationManager ?? new NavigationManager();
-        _singlePageApp = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime;
+        _useNavigation = useSinglePageNavigation || Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime;
+        if (_useNavigation)
+        {
+            _navigationManager = new NavigationManager();
+            _navigationManager.Launch(customNavigationRoot);
+        }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public INavigationManager? NavigationManager => _navigationManager;
 
     /// <inheritdoc />
     protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
     {
-        var wrapper = _singlePageApp ?
-            (IView)new ViewNavigationWrapper().SetNavigation(_navigationManager) :
+        var wrapper = _useNavigation ?
+            (IView)new ViewNavigationWrapper().SetNavigation(_navigationManager!) :
             new ViewWrapper();
         wrapper.Initialize(viewModel, viewType);
         return wrapper;
@@ -50,9 +61,9 @@ public class DialogManager : DialogManagerBase<ContentControl>
     /// <inheritdoc />
     public override IView? FindViewByViewModel(INotifyPropertyChanged viewModel)
     {
-        if (_singlePageApp)
+        if (_useNavigation)
         {
-            return _navigationManager.GetViewForViewModel(viewModel).AsWrapper(_navigationManager);
+            return _navigationManager!.GetViewForViewModel(viewModel).AsWrapper(_navigationManager);
         }
         else
         {
@@ -63,7 +74,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
     /// <inheritdoc />
     public override IView? GetMainWindow()
     {
-        if (_singlePageApp)
+        if (_useNavigation)
         {
             return null;
         }
@@ -74,7 +85,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
     /// <inheritdoc />
     public override IView? GetDummyWindow()
     {
-        if (_singlePageApp)
+        if (_useNavigation)
         {
             return null;
         }

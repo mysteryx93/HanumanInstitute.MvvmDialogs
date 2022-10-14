@@ -46,7 +46,7 @@ public interface IView
     /// <summary>
     /// Gets or sets the data context for an element when it participates in data binding.
     /// </summary>
-    INotifyPropertyChanged ViewModel { set; }
+    INotifyPropertyChanged ViewModel { get; }
 
     /// <summary>
     /// Opens a window and returns without waiting for the newly opened window to close.
@@ -58,7 +58,7 @@ public interface IView
     /// </summary>
     /// <returns>
     /// A <see cref="Nullable{Boolean}"/> value that specifies whether the activity was accepted (true) or canceled (false).</returns>
-    Task<bool?> ShowDialogAsync(IView owner);
+    Task ShowDialogAsync(IView owner);
 
     /// <summary>
     /// Tries to activate the Window.
