@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.PathInfo;
 
 /// <summary>
 /// Allows creating IFileInfo classes to get file information.

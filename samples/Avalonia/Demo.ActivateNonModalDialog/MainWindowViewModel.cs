@@ -4,7 +4,7 @@ using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
-namespace Demo.ViewEvents;
+namespace Demo.ActivateNonModalDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

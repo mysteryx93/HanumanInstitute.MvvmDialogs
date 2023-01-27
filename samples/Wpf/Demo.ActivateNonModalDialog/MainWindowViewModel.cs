@@ -1,9 +1,4 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-
-namespace Demo.ViewEvents;
+﻿namespace Demo.ActivateNonModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

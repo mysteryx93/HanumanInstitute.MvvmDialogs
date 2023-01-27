@@ -9,7 +9,7 @@ public class NavigationTests
     public IDialogService DialogService => _dialogService ??= new DialogService(DialogManager);
     private IDialogService _dialogService;
 
-    public DialogManager DialogManager => _dialogManager ??= new DialogManager(useSinglePageNavigation:true);
+    public DialogManager DialogManager => _dialogManager ??= new DialogManager(singlePageNavigation:true);
     private DialogManager _dialogManager;
 
     public INavigationManager NavigationManager => DialogManager.NavigationManager!;

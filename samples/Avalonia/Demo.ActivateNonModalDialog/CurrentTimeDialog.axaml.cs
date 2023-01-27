@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.ViewEvents;
+namespace Demo.ActivateNonModalDialog;
 
 public partial class CurrentTimeDialog : Window
 {

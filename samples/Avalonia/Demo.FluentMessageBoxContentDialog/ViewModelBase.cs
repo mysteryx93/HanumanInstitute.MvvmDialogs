@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.FluentMessageBoxContentDialog;
 
 public class ViewModelBase : ReactiveObject
 {

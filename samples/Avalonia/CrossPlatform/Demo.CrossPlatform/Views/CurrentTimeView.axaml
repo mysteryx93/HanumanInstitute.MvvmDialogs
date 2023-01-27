@@ -1,0 +1,14 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             x:Class="Demo.CrossPlatform.Views.CurrentTimeView"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Demo.CrossPlatform"
+             mc:Ignorable="d"
+             d:DataContext="{x:Static local:App.CurrentTimeViewModel}">
+    <Grid>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Text="{Binding CurrentTime, StringFormat=Current time is {0:HH:mm:ss}}" />
+        <Button Content="Close" VerticalAlignment="Bottom" HorizontalAlignment="Right" Command="{Binding Close}" />
+    </Grid>
+</UserControl>

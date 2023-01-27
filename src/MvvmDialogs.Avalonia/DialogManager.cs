@@ -23,7 +23,6 @@ public class DialogManager : DialogManagerBase<ContentControl>
         IDialogFactory? dialogFactory = null,
         ILogger<DialogManager>? logger = null,
         IDispatcher? dispatcher = null,
-        bool useSinglePageNavigation = false,
         Control? customNavigationRoot = null)
         :
         base(
@@ -32,7 +31,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
             logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
-        _useNavigation = useSinglePageNavigation || Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime;
+        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator?.SinglePageNavigation == true;
         if (_useNavigation)
         {
             _navigationManager = new NavigationManager();

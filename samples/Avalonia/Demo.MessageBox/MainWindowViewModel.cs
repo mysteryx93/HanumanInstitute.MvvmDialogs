@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Demo.MessageBox.ViewModels;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;

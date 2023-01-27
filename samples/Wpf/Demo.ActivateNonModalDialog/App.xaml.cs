@@ -1,11 +1,4 @@
-﻿using System.Windows;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
-using Microsoft.Extensions.Logging;
-
-namespace Demo.ViewEvents;
+﻿namespace Demo.ActivateNonModalDialog;
 
 public partial class App
 {

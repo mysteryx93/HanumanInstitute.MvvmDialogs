@@ -23,5 +23,6 @@ internal class ViewCacheItem
     /// <summary>
     /// A weak reference to a View instance.
     /// </summary>
+    // public WeakReference<UserControl> View { get; set; }
     public WeakReference<UserControl> View { get; set; }
 }

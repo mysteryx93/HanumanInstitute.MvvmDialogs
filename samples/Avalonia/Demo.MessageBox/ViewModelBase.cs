@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.MessageBox.ViewModels;
+namespace Demo.MessageBox;
 
 public class ViewModelBase : ReactiveObject
 {

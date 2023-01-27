@@ -1,4 +1,4 @@
-﻿namespace Demo.ViewEvents;
+﻿namespace Demo.ActivateNonModalDialog;
 
 public partial class CurrentTimeDialog
 {

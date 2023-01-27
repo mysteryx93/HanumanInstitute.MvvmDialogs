@@ -4,7 +4,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.FluentMessageBoxTaskDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

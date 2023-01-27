@@ -1,6 +1,4 @@
-using CommunityToolkit.Mvvm.DependencyInjection;
-
-namespace Demo.ViewEvents;
+namespace Demo.ActivateNonModalDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the

@@ -4,6 +4,7 @@ using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 

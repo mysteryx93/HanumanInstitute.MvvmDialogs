@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.PathInfo;
 
 /// <inheritdoc />
 public class PathInfoFactory : IPathInfoFactory

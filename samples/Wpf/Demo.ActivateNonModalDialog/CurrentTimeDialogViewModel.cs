@@ -1,10 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-
-namespace Demo.ViewEvents;
+﻿namespace Demo.ActivateNonModalDialog;
 
 public class CurrentTimeDialogViewModel : ObservableObject
 {

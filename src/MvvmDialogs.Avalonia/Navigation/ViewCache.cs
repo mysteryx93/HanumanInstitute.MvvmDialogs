@@ -22,8 +22,16 @@ public class ViewCache
         {
             if (item.View.TryGetTarget(out var result))
             {
-                result.DataContext = viewModel;
+                // result = CreateView(item.ViewType);
+                result!.DataContext = viewModel;
                 return result;
+            }
+            else
+            {
+                var newView = CreateView(item.ViewType);
+                item.View = new WeakReference<UserControl>(newView);
+                newView.DataContext = viewModel;
+                return newView;
             }
         }
         return null;

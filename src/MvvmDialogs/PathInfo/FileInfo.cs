@@ -1,5 +1,5 @@
 ﻿
-namespace HanumanInstitute.MvvmDialogs;
+namespace HanumanInstitute.MvvmDialogs.PathInfo;
 
 /// <inheritdoc />
 public class FileInfo : IFileInfo

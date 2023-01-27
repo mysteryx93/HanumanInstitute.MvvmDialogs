@@ -1,4 +1,4 @@
-﻿namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.PathInfo;
 
 /// <summary>
 /// Provides information about a directory path.
