@@ -1,5 +1,4 @@
 // ReSharper disable MemberCanBePrivate.Global
-
 using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
@@ -9,7 +8,7 @@ public class NavigationTests
     public IDialogService DialogService => _dialogService ??= new DialogService(DialogManager);
     private IDialogService _dialogService;
 
-    public DialogManager DialogManager => _dialogManager ??= new DialogManager(singlePageNavigation:true);
+    public DialogManager DialogManager => _dialogManager ??= new DialogManager(new ViewLocatorBase() { ForceSinglePageNavigation = true });
     private DialogManager _dialogManager;
 
     public INavigationManager NavigationManager => DialogManager.NavigationManager!;

@@ -2,12 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Demo.CrossPlatform"
              xmlns:crossPlatform="clr-namespace:Demo.CrossPlatform"
+             xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              x:Class="Demo.CrossPlatform.App">
     <Application.DataTemplates>
         <crossPlatform:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <styling:FluentAvaloniaTheme />
     </Application.Styles>
 </Application>

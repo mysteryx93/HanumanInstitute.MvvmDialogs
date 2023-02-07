@@ -1,5 +1,7 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 
+using System.Collections.Generic;
+
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
@@ -52,9 +54,25 @@ public class ViewWrapper : IView
     /// </summary>
     public event EventHandler<CancelEventArgs>? Closing
     {
-        add => Ref.Closing += value;
-        remove => Ref.Closing -= value;
+        add
+        {
+            if (value != null)
+            {
+                var handler = new EventHandler<WindowClosingEventArgs>(value.Invoke);
+                _closingHandlers.Add(value, handler);
+                Ref.Closing += handler;
+            }
+        }
+        remove
+        {
+            if (value != null)
+            {
+                Ref.Closing += _closingHandlers[value];
+                _closingHandlers.Remove(value);
+            }
+        }
     }
+    private readonly Dictionary<EventHandler<CancelEventArgs>, EventHandler<WindowClosingEventArgs>> _closingHandlers = new();
 
     /// <summary>
     /// Fired when the window is closed.

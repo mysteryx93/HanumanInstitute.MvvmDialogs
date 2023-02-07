@@ -11,36 +11,36 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 public class ViewLocatorBase : IDataTemplate, IViewLocator
 {
     /// <inheritdoc />
-    public bool? SinglePageNavigation { get; set; }
+    public bool ForceSinglePageNavigation { get; set; }
     
     /// <summary>
     /// Returns the view type name for specified view model type. By default, it replaces 'ViewModel' with 'View'.
     /// </summary>
     /// <param name="viewModel">The view model to get the view type for.</param>
     /// <returns>The view type name.</returns>
-    protected virtual string GetViewName(object viewModel, bool singlePageNavigation)
+    protected virtual string GetViewName(object viewModel)
     {
         const string ViewModel = "ViewModel";
         var result = viewModel.GetType().FullName!.Replace(".ViewModels.", ".Views.");
         if (result.EndsWith(ViewModel))
         {
-            result = result.Remove(result.Length - ViewModel.Length) + (singlePageNavigation ? "View" : "Window");
+            result = result.Remove(result.Length - ViewModel.Length) + (UseSinglePageNavigation ? "View" : "Window");
         }
         return result;
     }
 
     /// <inheritdoc />
-    public virtual IControl Build(object? data)
+    public virtual Control Build(object? data)
     {
         try
         {
-            return (IControl)Create(data!);
+            return (Control)Create(data!);
         }
         catch (Exception)
         {
             return new TextBlock
             {
-                Text = "Not Found: " + GetViewName(data!, UseNavigation)
+                Text = "Not Found: " + GetViewName(data!)
             };
         }
     }
@@ -48,16 +48,16 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     /// <inheritdoc />
     public virtual Type Locate(object viewModel)
     {
-        var name = GetViewName(viewModel, UseNavigation);
+        var name = GetViewName(viewModel);
         // var type = Type.GetType(name, x => Assembly.GetEntryAssembly(), null, false);
         var viewType = Assembly.GetAssembly(viewModel.GetType())?.GetType(name);
 
-        if (viewType is null || (!typeof(IControl).IsAssignableFrom(viewType) && !typeof(Window).IsAssignableFrom(viewType) && !typeof(IView).IsAssignableFrom(viewType)))
+        if (viewType is null || (!typeof(Control).IsAssignableFrom(viewType) && !typeof(Window).IsAssignableFrom(viewType) && !typeof(IView).IsAssignableFrom(viewType)))
         {
             var message = $"Dialog view of type {name} for view model {viewModel.GetType().FullName} is missing.";
-            const string errorInfo = "Avalonia project template includes ViewLocator in the project base. " +
+            const string ErrorInfo = "Avalonia project template includes ViewLocator in the project base. " +
                                      "You can customize it to map your view models to your views.";
-            throw new TypeLoadException(message + Environment.NewLine + errorInfo);
+            throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
         return viewType;
     }
@@ -69,5 +69,6 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     /// <inheritdoc />
     public virtual bool Match(object? data) => data is ReactiveObject;
 
-    private bool UseNavigation => Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || SinglePageNavigation == true;
+    /// <inheritdoc />
+    public bool UseSinglePageNavigation => Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || ForceSinglePageNavigation;
 }

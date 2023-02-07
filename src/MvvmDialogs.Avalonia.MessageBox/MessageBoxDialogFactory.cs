@@ -32,14 +32,14 @@ public class MessageBoxDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
         settings switch
         {
             MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<bool?> ShowMessageBoxDialogAsync(ViewWrapper? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private async Task<bool?> ShowMessageBoxDialogAsync(IView? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     {
         var apiSettings = new MessageBoxApiSettings()
         {
@@ -51,15 +51,23 @@ public class MessageBoxDialogFactory : DialogFactoryBase
             EscDefaultButton = SyncDefaultEsc(settings.Button)
         };
 
-        var result = await _api.ShowMessageBox(owner?.Ref, apiSettings);
-        return result switch
+        var ownerRef = owner.GetRef();
+        if (ownerRef is Window ownerWin)
         {
-            ButtonResult.Yes => true,
-            ButtonResult.Ok => true,
-            ButtonResult.No => false,
-            ButtonResult.Cancel => null,
-            _ => null
-        };
+            var result = await _api.ShowMessageBox(ownerWin, apiSettings);
+            return result switch
+            {
+                ButtonResult.Yes => true,
+                ButtonResult.Ok => true,
+                ButtonResult.No => false,
+                ButtonResult.Cancel => null,
+                _ => null
+            };
+        }
+        else
+        {
+            throw new InvalidCastException("Owner must be of type Window.");
+        }
     }
 
     // Convert platform-agnostic types into Win32 types.

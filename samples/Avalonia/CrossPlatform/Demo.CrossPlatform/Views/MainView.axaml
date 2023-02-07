@@ -22,8 +22,15 @@
                 <Button Content="Show" Command="{Binding Show}" />
                 <Button Content="Activate" Command="{Binding Activate}" />
                 <Button Content="Close" Command="{Binding Close}" />
-                <Button Content="ShowDialog" Command="{Binding ShowDialog}" />
+                <Button Content="Show Dialog" Command="{Binding ShowDialog}" />
+                <Button Content="Open File" Command="{Binding OpenFile}" />
+                <Button Content="Open Files" Command="{Binding OpenFiles}" />
+                <Button Content="Open Folder" Command="{Binding OpenFolder}" />
+                <Button Content="Open Folders" Command="{Binding OpenFolders}" />
+                <Button Content="Save File" Command="{Binding SaveFile}" />
+                <Button Content="MessageBox" Command="{Binding MessageBox}" />
             </StackPanel>
         </ScrollViewer>
+        <TextBlock Grid.Column="1" Text="{Binding Output}" />
     </Grid>
 </UserControl>

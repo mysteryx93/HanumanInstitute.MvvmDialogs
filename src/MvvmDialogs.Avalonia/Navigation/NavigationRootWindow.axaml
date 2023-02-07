@@ -10,9 +10,10 @@
     <Design.DataContext>
         <navigation:NavigationManager />
     </Design.DataContext>
-    <TransitioningContentControl Content="{Binding CurrentView}" >
+    <ContentControl Content="{Binding CurrentView}" />
+    <!--<TransitioningContentControl Content="{Binding CurrentView}">
         <TransitioningContentControl.PageTransition>
             <PageSlide Orientation="Horizontal" Duration="0:00:00.300" />
         </TransitioningContentControl.PageTransition>
-    </TransitioningContentControl>
+    </TransitioningContentControl>-->
 </Window>

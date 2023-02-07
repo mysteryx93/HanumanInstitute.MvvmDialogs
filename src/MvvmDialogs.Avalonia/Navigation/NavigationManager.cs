@@ -100,23 +100,34 @@ public class NavigationManager : ReactiveObject, INavigationManager
         // If visible, show previous one, or dialog owner. Ignore owner for non-dialogs.
         if (object.ReferenceEquals(CurrentView?.DataContext, viewModel))
         {
-            var prev = dialog?.OwnerViewModel ?? _history.Last();
-            var prevView = _viewCache.GetViewForViewModel(prev);
-            // Remove all history after owner.
-            if (dialog?.OwnerViewModel != null)
+            var prev = dialog?.OwnerViewModel ?? _history.LastOrDefault();
+            if (prev != null)
             {
-                var pos = _history.IndexOf(dialog.OwnerViewModel);
-                if (pos > -1 && _history.Count > pos + 1)
+                var prevView = _viewCache.GetViewForViewModel(prev);
+                // Remove all history after owner.
+                if (dialog?.OwnerViewModel != null)
                 {
-                    _history.RemoveRange(pos + 1, _history.Count - pos - 1);
+                    var pos = _history.IndexOf(dialog.OwnerViewModel);
+                    if (pos > -1 && _history.Count > pos + 1)
+                    {
+                        _history.RemoveRange(pos + 1, _history.Count - pos - 1);
+                    }
                 }
+                CurrentView = prevView;
             }
-            CurrentView = prevView;
+            else if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopApp)
+            {
+                desktopApp.Shutdown();
+            }
+            else if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
+            {
+                viewApp.MainView = null;
+            }
         }
     }
 
     /// <inheritdoc />
-    public void Activate(INotifyPropertyChanged viewModel, Type viewType)
+    public bool Activate(INotifyPropertyChanged viewModel, Type viewType)
     {
         if (_history.Contains(viewModel))
         {
@@ -124,7 +135,9 @@ public class NavigationManager : ReactiveObject, INavigationManager
             _history.Add(viewModel);
             var view = _viewCache.GetViewForViewModel(viewModel);
             CurrentView = view;
+            return true;
         }
+        return false;
     }
     
     //

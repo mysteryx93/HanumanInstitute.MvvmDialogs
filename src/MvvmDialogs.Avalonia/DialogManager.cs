@@ -31,7 +31,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
             logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
-        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator?.SinglePageNavigation == true;
+        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator?.ForceSinglePageNavigation == true;
         if (_useNavigation)
         {
             _navigationManager = new NavigationManager();

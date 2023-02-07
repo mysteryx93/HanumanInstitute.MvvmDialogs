@@ -12,10 +12,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia.Web" Version="$(AvaloniaVersion)" />
+    <ProjectReference Include="..\Demo.CrossPlatform\Demo.CrossPlatform.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Demo.CrossPlatform\Demo.CrossPlatform.csproj" />
+    <PackageReference Include="Avalonia.Browser.Blazor" Version="11.0.0-preview5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.2" />
   </ItemGroup>
 </Project>

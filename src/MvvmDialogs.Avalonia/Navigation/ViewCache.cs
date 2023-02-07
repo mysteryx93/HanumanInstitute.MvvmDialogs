@@ -22,8 +22,7 @@ public class ViewCache
         {
             if (item.View.TryGetTarget(out var result))
             {
-                // result = CreateView(item.ViewType);
-                result!.DataContext = viewModel;
+                result.DataContext = viewModel;
                 return result;
             }
             else

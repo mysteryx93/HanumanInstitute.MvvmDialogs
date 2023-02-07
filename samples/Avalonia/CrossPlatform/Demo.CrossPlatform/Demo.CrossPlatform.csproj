@@ -17,8 +17,9 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-    <PackageReference Include="Splat" Version="14.6.1" />
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.69">
+    <PackageReference Include="ReactiveUI.Fody" Version="18.4.20" />
+    <PackageReference Include="Splat" Version="14.6.8" />
+    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.93">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -26,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\src\MvvmDialogs.Avalonia.Fluent\MvvmDialogs.Avalonia.Fluent.csproj" />
     <ProjectReference Include="..\..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
     <ProjectReference Include="..\..\..\..\src\MvvmDialogs\MvvmDialogs.csproj" />
   </ItemGroup>

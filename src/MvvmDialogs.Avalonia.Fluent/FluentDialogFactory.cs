@@ -36,18 +36,18 @@ public class FluentDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
         settings switch
         {
-            ContentDialogSettings s => await _api.ShowContentDialog(owner?.Ref, s).ConfigureAwait(true),
-            TaskDialogSettings s => await _api.ShowTaskDialog(owner?.Ref, s).ConfigureAwait(true),
-            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.ContentDialog => await ShowMessageBoxContentDialogAsync(owner?.Ref, s, appSettings)
+            ContentDialogSettings s => await _api.ShowContentDialog(owner.GetRef(), s).ConfigureAwait(true),
+            TaskDialogSettings s => await _api.ShowTaskDialog(owner.GetRef(), s).ConfigureAwait(true),
+            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.ContentDialog => await ShowMessageBoxContentDialogAsync(owner.GetRef(), s, appSettings)
                 .ConfigureAwait(true),
-            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.TaskDialog => await ShowMessageBoxTaskDialogAsync(owner?.Ref, s, appSettings).ConfigureAwait(true),
+            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.TaskDialog => await ShowMessageBoxTaskDialogAsync(owner.GetRef(), s, appSettings).ConfigureAwait(true),
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<bool?> ShowMessageBoxContentDialogAsync(Window? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private async Task<bool?> ShowMessageBoxContentDialogAsync(ContentControl? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     {
         var apiSettings = new ContentDialogSettings()
         {
@@ -84,7 +84,7 @@ public class FluentDialogFactory : DialogFactoryBase
         return result == yes ? true : result == no ? false : null;
     }
 
-    private async Task<bool?> ShowMessageBoxTaskDialogAsync(Window? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private async Task<bool?> ShowMessageBoxTaskDialogAsync(ContentControl? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     {
         var apiSettings = new TaskDialogSettings()
         {

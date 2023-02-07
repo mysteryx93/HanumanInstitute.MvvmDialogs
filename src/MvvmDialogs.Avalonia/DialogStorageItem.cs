@@ -19,23 +19,10 @@ public class DialogStorageItem : IDialogStorageItem
 
     /// <inheritdoc />
     public string Name => _item.Name;
-    
-    /// <inheritdoc />
-    public Uri? Path
-    {
-        get
-        {
-            if (!_pathLoaded)
-            {
-                _item.TryGetUri(out _path);                
-                _pathLoaded = true;
-            }
-            return _path;
-        }
-    }
-    private Uri? _path;
-    private bool _pathLoaded;
 
+    /// <inheritdoc />
+    public Uri Path => _item.Path;
+    
     /// <inheritdoc />
     public async Task<DialogStorageItemProperties> GetBasicPropertiesAsync()
     {

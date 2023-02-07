@@ -32,7 +32,7 @@ public class ViewWrapper : IView, IViewSync
         {
             if (value != null)
             {
-                var handler = new RoutedEventHandler((s, e) => value.Invoke(s, e));
+                var handler = new RoutedEventHandler(value.Invoke);
                 _loadedHandlers.Add(value, handler);
                 Ref.Loaded += handler;
             }
@@ -46,7 +46,7 @@ public class ViewWrapper : IView, IViewSync
             }
         }
     }
-    private Dictionary<EventHandler, RoutedEventHandler> _loadedHandlers = new();
+    private readonly Dictionary<EventHandler, RoutedEventHandler> _loadedHandlers = new();
 
     /// <summary>
     /// Occurs when the window is about to close.
@@ -57,7 +57,7 @@ public class ViewWrapper : IView, IViewSync
         {
             if (value != null)
             {
-                var handler = new CancelEventHandler((s, e) => value.Invoke(s, e));
+                var handler = new CancelEventHandler(value.Invoke);
                 _closingHandlers.Add(value, handler);
                 Ref.Closing += handler;
             }
@@ -71,7 +71,7 @@ public class ViewWrapper : IView, IViewSync
             }
         }
     }
-    private Dictionary<EventHandler<CancelEventArgs>, CancelEventHandler> _closingHandlers = new();
+    private readonly Dictionary<EventHandler<CancelEventArgs>, CancelEventHandler> _closingHandlers = new();
 
     /// <summary>
     /// Occurs when the window is about to close.

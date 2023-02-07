@@ -10,7 +10,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Api;
 /// </summary>
 internal interface IFrameworkDialogsApi
 {
-    Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(Window? owner, FilePickerOpenOptions options);
-    Task<IDialogStorageFile?> ShowSaveFileDialogAsync(Window? owner, FilePickerSaveOptions options);
-    Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(Window? owner, FolderPickerOpenOptions options);
+    Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(ContentControl? owner, FilePickerOpenOptions options);
+    Task<IDialogStorageFile?> ShowSaveFileDialogAsync(ContentControl? owner, FilePickerSaveOptions options);
+    Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(ContentControl? owner, FolderPickerOpenOptions options);
 }

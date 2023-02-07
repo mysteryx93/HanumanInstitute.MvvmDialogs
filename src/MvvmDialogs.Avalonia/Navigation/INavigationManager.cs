@@ -51,5 +51,6 @@ public interface INavigationManager
     /// </summary>
     /// <param name="viewModel">The ViewModel to display in the View.</param>
     /// <param name="viewType">The data type of the View.</param>
-    void Activate(INotifyPropertyChanged viewModel, Type viewType);
+    /// <returns>Whether a matching view from history has been activated.</returns>
+    bool Activate(INotifyPropertyChanged viewModel, Type viewType);
 }
