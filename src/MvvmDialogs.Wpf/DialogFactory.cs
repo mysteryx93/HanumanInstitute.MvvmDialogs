@@ -1,5 +1,6 @@
 ﻿using HanumanInstitute.MvvmDialogs.Wpf.Api;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using HanumanInstitute.MvvmDialogs.PathInfo;
 using System.Text;
 using Win32Button = System.Windows.MessageBoxButton;
 using Win32Image = System.Windows.MessageBoxImage;
@@ -120,7 +121,7 @@ public class DialogFactory : DialogFactoryBase
     /// <returns>A string representation of the list compatible with Win32 API.</returns>
     private static string SyncFilters(List<FileFilter> filters)
     {
-        StringBuilder result = new StringBuilder();
+        var result = new StringBuilder();
         foreach (var item in filters)
         {
             // Add separator.

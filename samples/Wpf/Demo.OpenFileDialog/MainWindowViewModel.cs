@@ -69,7 +69,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         if (result != null)
         {
-            Paths.Add(result);
+            Paths.Add(result.Path?.ToString() ?? "");
         }
     }
 
@@ -80,7 +80,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         foreach (var item in result)
         {
-            Paths.Add(item);
+            Paths.Add(item.Path?.ToString() ?? "");
         }
     }
 

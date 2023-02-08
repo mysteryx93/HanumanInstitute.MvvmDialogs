@@ -1,4 +1,11 @@
-﻿namespace Demo.ActivateNonModalDialog;
+﻿using System.Windows;
+using CommunityToolkit.Mvvm.DependencyInjection;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Wpf;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+
+namespace Demo.ViewEvents;
 
 public partial class App
 {

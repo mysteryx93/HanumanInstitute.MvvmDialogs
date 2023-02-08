@@ -9,9 +9,29 @@ namespace HanumanInstitute.MvvmDialogs.Wpf;
 public class ViewWrapper : IView, IViewSync
 {
     /// <summary>
+    /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
+    /// </summary>
+    /// <param name="viewModel"></param>
+    /// <param name="viewType"></param>
+    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    {
+        Ref = (Window)Activator.CreateInstance(viewType)!;
+        ViewModel = viewModel;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
+    /// </summary>
+    public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
+    {
+        Ref = (Window)view;
+        ViewModel = viewModel;
+    }
+
+    /// <summary>
     /// Gets the Window reference held by this class.
     /// </summary>
-    public Window Ref { get; private set; }
+    public Window Ref { get; private set; } = default!;
 
     /// <summary>
     /// Gets the Window reference held by this class.
@@ -82,17 +102,17 @@ public class ViewWrapper : IView, IViewSync
         remove => Ref.Closed -= value;
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
-    /// </summary>
-    /// <param name="window">The window.</param>
-    public ViewWrapper(Window window) =>
-        this.Ref = window ?? throw new ArgumentNullException(nameof(window));
+    ///// <summary>
+    ///// Initializes a new instance of the <see cref="ViewWrapper"/> class.
+    ///// </summary>
+    ///// <param name="window">The window.</param>
+    //public ViewWrapper(Window window) =>
+    //    this.Ref = window ?? throw new ArgumentNullException(nameof(window));
 
     /// <inheritdoc />
-    public object? ViewModel
+    public INotifyPropertyChanged ViewModel
     {
-        get => Ref.DataContext;
+        get => (INotifyPropertyChanged)Ref.DataContext;
         set => Ref.DataContext = value;
     }
 
@@ -110,13 +130,21 @@ public class ViewWrapper : IView, IViewSync
     }
 
     /// <inheritdoc />
-    public Task<bool?> ShowDialogAsync() => UiExtensions.RunUiAsync(ShowDialog);
+    public Task ShowDialogAsync(IView? owner) => UiExtensions.RunUiAsync(() => ShowDialog(owner));
 
     /// <inheritdoc />
-    public bool? ShowDialog() => Ref.ShowDialog();
+    public void ShowDialog(IView? owner)
+    {
+        Ref.Owner = owner?.RefObj as Window;
+        Ref.ShowDialog();
+    }
 
     /// <inheritdoc />
-    public void Show() => Ref.Show();
+    public void Show(IView? owner)
+    {
+        Ref.Owner = owner?.RefObj as Window;
+        Ref.Show();
+    }
 
     /// <inheritdoc />
     public void Activate() => Ref.Activate();

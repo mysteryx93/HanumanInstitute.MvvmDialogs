@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net462;netcoreapp3.1;net6.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.ActivateNonModalDialog</RootNamespace>
-    <AssemblyName>Demo.ActivateNonModalDialog</AssemblyName>
+    <RootNamespace>Demo.ViewEvents</RootNamespace>
+    <AssemblyName>Demo.ViewEvents</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

@@ -1,4 +1,7 @@
-﻿namespace Demo.ActivateNonModalDialog;
+﻿using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+
+namespace Demo.ViewEvents;
 
 public class MainWindowViewModel : ObservableObject, IViewLoaded, IViewClosing, IViewClosed
 {

@@ -20,7 +20,7 @@ public class ViewWrapper : IView
         Ref = (Window)Activator.CreateInstance(viewType)!;
         ViewModel = viewModel;
     }
-    
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
     /// </summary>

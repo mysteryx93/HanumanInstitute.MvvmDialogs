@@ -24,13 +24,13 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <inheritdoc />
         public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
         {
-            var view = ViewLocator.Locate(viewModel);
-            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", view?.GetType(), viewModel.GetType(), ownerViewModel.GetType());
+            var viewType = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel.GetType());
 
-            var dialog = CreateDialog(ownerViewModel, viewModel, view);
-            dialog.AsSync().ShowDialog();
+            var dialog = CreateDialog(viewModel, viewType);
+            dialog.AsSync().ShowDialog(FindViewByViewModelOrThrow(ownerViewModel)!);
 
-            Logger?.LogInformation("View: {View}; Result: {Result}", view?.GetType(), viewModel.DialogResult);
+            Logger?.LogInformation("View: {View}; Result: {Result}", viewType?.GetType(), viewModel.DialogResult);
         }
 
         /// <inheritdoc />
@@ -42,7 +42,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             IView? owner = null;
             if (ownerViewModel != null)
             {
-                owner = FindWindowByViewModel(ownerViewModel) ?? throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                owner = FindViewByViewModelOrThrow(ownerViewModel);
             }
             var result = DialogFactory.AsSync().ShowDialog(owner, settings, appSettings);
 
@@ -51,13 +51,18 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        protected override IView CreateWrapper(Window window) => window.AsWrapper();
+        protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
+        {
+            var wrapper = new ViewWrapper();
+            wrapper.Initialize(viewModel, viewType);
+            return wrapper;
+        }
 
         private static IEnumerable<Window> Windows =>
             Application.Current.Windows.Cast<Window>();
 
         /// <inheritdoc />
-        public override IView? FindWindowByViewModel(INotifyPropertyChanged viewModel) =>
+        public override IView? FindViewByViewModel(INotifyPropertyChanged viewModel) =>
             Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
 
         /// <inheritdoc />

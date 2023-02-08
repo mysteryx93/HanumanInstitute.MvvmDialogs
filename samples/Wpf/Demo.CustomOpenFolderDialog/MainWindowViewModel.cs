@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -39,6 +39,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
-        Path = result;
+        Path = result?.Path?.ToString();
     }
 }

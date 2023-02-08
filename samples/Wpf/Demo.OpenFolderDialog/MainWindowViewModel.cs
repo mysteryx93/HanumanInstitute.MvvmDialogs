@@ -61,6 +61,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await dialogService.ShowOpenFolderDialogAsync(owner, settings);
-        Path = result;
+        Path = result?.Path?.ToString() ?? "";
     }
 }

@@ -60,7 +60,7 @@ public static class UiExtensions
         }
         return null;
     }
-    
+
     /// <summary>
     /// Returns the <see cref="IView"/> RefObj property as an Avalonia ContentControl.
     /// </summary>
@@ -78,7 +78,7 @@ public static class UiExtensions
         }
         return null;
     }
-    
+
     // /// <summary>
     // /// Converts an IView into a ViewWrapper.
     // /// </summary>

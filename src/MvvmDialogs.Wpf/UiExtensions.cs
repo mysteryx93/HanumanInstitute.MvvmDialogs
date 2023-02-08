@@ -21,13 +21,36 @@ public static class UiExtensions
     }
 
     /// <summary>
+    /// Runs a synchronous action asynchronously on the UI thread.
+    /// </summary>
+    /// <param name="action">The action to run asynchronously.</param>
+    public static Task RunUiAsync(Action action)
+    {
+        TaskCompletionSource<bool> completion = new();
+        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+        {
+            action();
+            completion.SetResult(true);
+        }));
+        return completion.Task;
+    }
+
+    /// <summary>
     /// Creates a WindowWrapper around specified window.
     /// </summary>
     /// <param name="window">The Window to get a wrapper for.</param>
     /// <returns>A WindowWrapper referencing the window.</returns>
     [return: System.Diagnostics.CodeAnalysis.NotNullIfNotNull("window")]
-    public static ViewWrapper? AsWrapper(this Window? window) =>
-        window != null ? new ViewWrapper(window) : null;
+    public static ViewWrapper? AsWrapper(this Window? window)
+    {
+        if (window != null)
+        {
+            var result = new ViewWrapper();
+            result.InitializeExisting((INotifyPropertyChanged)window.DataContext!, window);
+            return result;
+        }
+        return null;
+    }
 
     /// <summary>
     /// Converts an IWindow into a WindowWrapper.

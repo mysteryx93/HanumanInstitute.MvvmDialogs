@@ -49,7 +49,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel?.GetType());
 
                 var dialog = CreateDialog(viewModel, viewType);
-                dialog.Show(GetOwnerView(ownerViewModel));
+                dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
             });
     }
 
@@ -63,19 +63,25 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel.GetType());
 
                 var dialog = CreateDialog(viewModel, viewType);
-                await dialog.ShowDialogAsync(GetOwnerView(ownerViewModel)!);
+                await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
 
                 Logger?.LogInformation("View: {View}; Result: {Result}", viewType, viewModel.DialogResult);
             });
     }
 
-    private IView? GetOwnerView(INotifyPropertyChanged? ownerViewModel)
+    /// <summary>
+    /// Returns the IView with a DataContext equal to specified ViewModel.
+    /// </summary>
+    /// <param name="viewModel">The ViewModel to search for.</param>
+    /// <returns>A IView, or null.</returns>
+    /// <exception cref="InvalidOperationException">Cannot find View for viewModel type.</exception>
+    protected IView? FindViewByViewModelOrThrow(INotifyPropertyChanged? viewModel)
     {
-        if (ownerViewModel == null) { return null; }
-        var owner = FindViewByViewModel(ownerViewModel);
+        if (viewModel == null) { return null; }
+        var owner = FindViewByViewModel(viewModel);
         if (owner == null)
         {
-            throw new InvalidOperationException($"Cannot find View for ownerViewModel of type {ownerViewModel.GetType()}");
+            throw new InvalidOperationException($"Cannot find View for viewModel of type {viewModel.GetType()}");
         }
         return owner;
     }

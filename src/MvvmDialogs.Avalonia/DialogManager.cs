@@ -19,7 +19,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
 
     /// <inheritdoc />
     public DialogManager(
-        IViewLocator? viewLocator = null,
+        ViewLocatorBase? viewLocator = null,
         IDialogFactory? dialogFactory = null,
         ILogger<DialogManager>? logger = null,
         IDispatcher? dispatcher = null,

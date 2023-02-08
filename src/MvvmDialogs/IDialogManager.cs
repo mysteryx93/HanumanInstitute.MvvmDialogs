@@ -43,7 +43,7 @@ public interface IDialogManager
     /// Returns the window with a DataContext equal to specified ViewModel.
     /// </summary>
     /// <param name="viewModel">The ViewModel to search for.</param>
-    /// <returns>A Window, or null.</returns>
+    /// <returns>A IView, or null.</returns>
     IView? FindViewByViewModel(INotifyPropertyChanged viewModel);
 
     /// <summary>

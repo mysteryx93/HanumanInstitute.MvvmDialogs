@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 using ReactiveUI;
@@ -10,9 +10,11 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// </summary>
 public class ViewLocatorBase : IDataTemplate, IViewLocator
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets or sets whether to force single-page navigation. Setting this to true can allow running in single-page mode on desktop.
+    /// </summary>
     public bool ForceSinglePageNavigation { get; set; }
-    
+
     /// <summary>
     /// Returns the view type name for specified view model type. By default, it replaces 'ViewModel' with 'View'.
     /// </summary>
@@ -69,6 +71,8 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     /// <inheritdoc />
     public virtual bool Match(object? data) => data is ReactiveObject;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets whether the application runs in single-page navigation mode.
+    /// </summary>
     public bool UseSinglePageNavigation => Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || ForceSinglePageNavigation;
 }

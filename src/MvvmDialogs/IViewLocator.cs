@@ -6,16 +6,6 @@
 public interface IViewLocator
 {
     /// <summary>
-    /// Gets or sets whether to force single-page navigation. Setting this to true can allow running in single-page mode on desktop.
-    /// </summary>
-    bool ForceSinglePageNavigation { get; set; }
-    
-    /// <summary>
-    /// Gets whether the application runs in single-page navigation mode.
-    /// </summary>
-    bool UseSinglePageNavigation { get; }
-    
-    /// <summary>
     /// Get the view type based on the specified view model.
     /// </summary>
     /// <param name="viewModel">The view model to get the view type for.</param>
