@@ -2,7 +2,7 @@
 using System.Reactive.Linq;
 using ReactiveUI;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Avalonia.CloseNonModalDialog;
 
 public class CurrentTimeDialogViewModel : ViewModelBase
 {

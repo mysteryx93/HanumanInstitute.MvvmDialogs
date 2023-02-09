@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.FluentMessageBoxTaskDialog;
+namespace Demo.Avalonia.FluentMessageBoxTaskDialog;
 
 public partial class MainWindow : Window
 {

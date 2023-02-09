@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Wpf.SaveFileDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

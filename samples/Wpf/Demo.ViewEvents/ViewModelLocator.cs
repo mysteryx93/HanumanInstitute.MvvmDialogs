@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.ViewEvents;
+namespace Demo.Wpf.ViewEvents;
 
 /// <summary>
 /// This class contains static references to all the view models in the

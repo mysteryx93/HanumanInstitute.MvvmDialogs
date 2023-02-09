@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:fluentTaskDialog="clr-namespace:Demo.FluentTaskDialog"
+             xmlns:fluentTaskDialog="clr-namespace:Demo.Avalonia.FluentTaskDialog"
              xmlns:sty="using:FluentAvalonia.Styling"
-             x:Class="Demo.FluentTaskDialog.App">
+             x:Class="Demo.Avalonia.FluentTaskDialog.App">
     <Application.DataTemplates>
         <fluentTaskDialog:ViewLocator/>
     </Application.DataTemplates>

@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.CustomDialogTypeLocator;
+namespace Demo.Avalonia.CustomDialogTypeLocator;
 
 public class ViewModelBase : ReactiveObject
 {

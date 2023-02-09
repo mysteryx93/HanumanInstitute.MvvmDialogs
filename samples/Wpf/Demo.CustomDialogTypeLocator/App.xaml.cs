@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
-using Demo.CustomDialogTypeLocator.ComponentA;
+using Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
-namespace Demo.CustomDialogTypeLocator;
+namespace Demo.Wpf.CustomDialogTypeLocator;
 
 public partial class App
 {

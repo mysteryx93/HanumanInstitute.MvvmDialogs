@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.NonModalDialog;
+namespace Demo.Wpf.NonModalDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

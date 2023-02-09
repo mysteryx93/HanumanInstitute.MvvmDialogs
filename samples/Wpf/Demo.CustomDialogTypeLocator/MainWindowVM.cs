@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows.Input;
-using Demo.CustomDialogTypeLocator.ComponentA;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.CustomDialogTypeLocator;
+namespace Demo.Wpf.CustomDialogTypeLocator;
 
 public class MainWindowVM : ObservableObject
 {

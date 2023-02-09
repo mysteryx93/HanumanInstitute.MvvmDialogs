@@ -1,4 +1,4 @@
-﻿namespace Demo.NonModalCustomDialog;
+﻿namespace Demo.Wpf.NonModalCustomDialog;
 
 public partial class MainWindow
 {

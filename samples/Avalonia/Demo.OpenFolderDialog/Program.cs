@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.OpenFolderDialog;
+namespace Demo.Avalonia.OpenFolderDialog;
 
 class Program
 {

@@ -1,10 +1,10 @@
 ﻿<Window
-    x:Class="Demo.FluentMessageBoxTaskDialog.MainWindow"
+    x:Class="Demo.Avalonia.FluentMessageBoxTaskDialog.MainWindow"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:fluentContentDialog="clr-namespace:Demo.FluentMessageBoxTaskDialog"
+    xmlns:fluentContentDialog="clr-namespace:Demo.Avalonia.FluentMessageBoxTaskDialog"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Title="Demo - Message Box"

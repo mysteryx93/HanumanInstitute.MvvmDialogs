@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Demo.Avalonia.CustomOpenFolderDialog</AssemblyName>
+    <RootNamespace>Demo.Avalonia.CustomOpenFolderDialog</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaXaml Remove="Models\**" />

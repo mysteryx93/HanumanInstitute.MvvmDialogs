@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Ookii.Dialogs.Wpf;
 
-namespace Demo.CustomOpenFolderDialog;
+namespace Demo.Wpf.CustomOpenFolderDialog;
 
 public class CustomDialogFactory : DialogFactoryBase
 {

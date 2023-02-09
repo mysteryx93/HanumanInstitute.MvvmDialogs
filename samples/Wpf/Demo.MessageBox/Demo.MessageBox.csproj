@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.MessageBox</RootNamespace>
-    <AssemblyName>Demo.MessageBox</AssemblyName>
+    <RootNamespace>Demo.Wpf.MessageBox</RootNamespace>
+    <AssemblyName>Demo.Wpf.MessageBox</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.MessageBox;
+namespace Demo.Avalonia.MessageBox;
 
 public class App : Application
 {

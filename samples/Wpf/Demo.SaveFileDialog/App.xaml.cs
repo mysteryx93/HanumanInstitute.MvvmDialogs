@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Wpf.SaveFileDialog;
 
 public partial class App
 {

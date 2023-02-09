@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Avalonia.ModalCustomDialog;
 
 class Program
 {

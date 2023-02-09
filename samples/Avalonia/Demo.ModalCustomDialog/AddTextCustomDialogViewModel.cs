@@ -3,7 +3,7 @@ using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Avalonia.ModalCustomDialog;
 
 public class AddTextCustomDialogViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {

@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Avalonia.OpenFileDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

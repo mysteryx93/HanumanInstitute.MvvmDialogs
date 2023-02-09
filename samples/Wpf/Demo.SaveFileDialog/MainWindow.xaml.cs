@@ -1,4 +1,4 @@
-﻿namespace Demo.SaveFileDialog;
+﻿namespace Demo.Wpf.SaveFileDialog;
 
 public partial class MainWindow
 {

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.CustomDialogTypeLocator.ComponentA;
+namespace Demo.Avalonia.CustomDialogTypeLocator.ComponentA;
 
 public partial class MyDialog : Window
 {

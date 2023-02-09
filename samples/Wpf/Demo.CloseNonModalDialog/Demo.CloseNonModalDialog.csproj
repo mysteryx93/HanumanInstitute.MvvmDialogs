@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.CloseNonModalDialog</RootNamespace>
-    <AssemblyName>Demo.CloseNonModalDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.CloseNonModalDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.CloseNonModalDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

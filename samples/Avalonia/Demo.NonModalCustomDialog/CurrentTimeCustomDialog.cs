@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.NonModalCustomDialog;
+namespace Demo.Avalonia.NonModalCustomDialog;
 
 public class CurrentTimeCustomDialog : IView
 {

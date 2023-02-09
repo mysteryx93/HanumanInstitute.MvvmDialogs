@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.CustomDialogTypeLocator</RootNamespace>
-    <AssemblyName>Demo.CustomDialogTypeLocator</AssemblyName>
+    <RootNamespace>Demo.Wpf.CustomDialogTypeLocator</RootNamespace>
+    <AssemblyName>Demo.Wpf.CustomDialogTypeLocator</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

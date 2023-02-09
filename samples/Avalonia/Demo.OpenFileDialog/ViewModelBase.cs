@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Avalonia.OpenFileDialog;
 
 public class ViewModelBase : ReactiveObject
 {

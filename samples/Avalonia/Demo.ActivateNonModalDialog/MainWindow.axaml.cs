@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.ActivateNonModalDialog;
+namespace Demo.Avalonia.ActivateNonModalDialog;
 
 public partial class MainWindow : Window
 {

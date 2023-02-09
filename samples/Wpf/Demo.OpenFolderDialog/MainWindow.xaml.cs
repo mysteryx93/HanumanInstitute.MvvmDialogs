@@ -1,4 +1,4 @@
-﻿namespace Demo.OpenFolderDialog;
+﻿namespace Demo.Wpf.OpenFolderDialog;
 
 public partial class MainWindow
 {

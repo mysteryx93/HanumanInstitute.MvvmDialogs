@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.Avalonia.FluentContentDialog;
 
 public class ViewModelBase : ReactiveObject
 {

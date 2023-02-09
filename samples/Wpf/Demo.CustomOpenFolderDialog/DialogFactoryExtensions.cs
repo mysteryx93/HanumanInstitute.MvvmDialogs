@@ -1,7 +1,7 @@
 ﻿
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.CustomOpenFolderDialog
+namespace Demo.Wpf.CustomOpenFolderDialog
 {
     public static class DialogFactoryExtensions
     {

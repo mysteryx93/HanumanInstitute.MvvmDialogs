@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.Avalonia.FluentContentDialog;
 
 class Program
 {

@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.ModalDialog</RootNamespace>
-    <AssemblyName>Demo.ModalDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.ModalDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.ModalDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.ModalDialog;
+namespace Demo.Wpf.ModalDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the

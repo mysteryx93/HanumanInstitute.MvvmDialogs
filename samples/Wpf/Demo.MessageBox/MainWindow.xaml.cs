@@ -1,4 +1,4 @@
-﻿namespace Demo.MessageBox;
+﻿namespace Demo.Wpf.MessageBox;
 
 public partial class MainWindow
 {

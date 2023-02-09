@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.FolderBrowserDialog</RootNamespace>
-    <AssemblyName>Demo.FolderBrowserDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.FolderBrowserDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.FolderBrowserDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

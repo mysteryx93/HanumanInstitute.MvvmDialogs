@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.NonModalDialog;
+namespace Demo.Avalonia.NonModalDialog;
 
 public class ViewModelBase : ReactiveObject
 {

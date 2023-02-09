@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.OpenFolderDialog;
+namespace Demo.Avalonia.OpenFolderDialog;
 
 public class ViewModelBase : ReactiveObject
 {

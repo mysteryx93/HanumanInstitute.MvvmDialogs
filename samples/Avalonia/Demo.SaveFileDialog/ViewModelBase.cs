@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Avalonia.SaveFileDialog;
 
 public class ViewModelBase : ReactiveObject
 {

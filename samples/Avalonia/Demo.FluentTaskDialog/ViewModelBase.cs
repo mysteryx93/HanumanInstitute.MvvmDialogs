@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.FluentTaskDialog;
+namespace Demo.Avalonia.FluentTaskDialog;
 
 public class ViewModelBase : ReactiveObject
 {

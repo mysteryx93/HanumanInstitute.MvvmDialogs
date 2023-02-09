@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.FluentMessageBoxContentDialog;
+namespace Demo.Avalonia.FluentMessageBoxContentDialog;
 
 public class ViewModelBase : ReactiveObject
 {

@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs;
 using System.Linq;
 
-namespace Demo.ModalDialog.Tests;
+namespace Demo.Wpf.ModalDialog.Tests;
 
 public class MainWindowViewModelTests
 {

@@ -2,13 +2,13 @@ using System;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Demo.CustomDialogTypeLocator.ComponentA;
+using Demo.Avalonia.CustomDialogTypeLocator.ComponentA;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.CustomDialogTypeLocator;
+namespace Demo.Avalonia.CustomDialogTypeLocator;
 
 public class App : Application
 {

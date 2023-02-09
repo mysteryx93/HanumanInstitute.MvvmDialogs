@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.MessageBox;
+namespace Demo.Avalonia.MessageBox;
 
 public class ViewModelBase : ReactiveObject
 {

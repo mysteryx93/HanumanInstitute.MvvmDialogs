@@ -1,7 +1,7 @@
 ﻿using ReactiveUI;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.CustomDialogTypeLocator.ComponentA;
+namespace Demo.Avalonia.CustomDialogTypeLocator.ComponentA;
 
 public class MyDialogVM : ViewModelBase, IModalDialogViewModel
 {

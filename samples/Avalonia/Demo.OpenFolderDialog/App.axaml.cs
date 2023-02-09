@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.OpenFolderDialog;
+namespace Demo.Avalonia.OpenFolderDialog;
 
 public class App : Application
 {

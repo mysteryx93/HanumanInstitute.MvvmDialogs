@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Avalonia.SaveFileDialog;
 
 public partial class MainWindow : Window
 {

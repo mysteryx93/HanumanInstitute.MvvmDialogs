@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Wpf.ModalCustomDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

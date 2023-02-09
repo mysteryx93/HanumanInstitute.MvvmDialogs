@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.Avalonia.FluentContentDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.NonModalDialog;
+namespace Demo.Wpf.NonModalDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the

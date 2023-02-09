@@ -1,8 +1,8 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sty="using:FluentAvalonia.Styling"
-             xmlns:fluentMessageBoxTaskDialog="clr-namespace:Demo.FluentMessageBoxTaskDialog"
-             x:Class="Demo.FluentMessageBoxTaskDialog.App">
+             xmlns:fluentMessageBoxTaskDialog="clr-namespace:Demo.Avalonia.FluentMessageBoxTaskDialog"
+             x:Class="Demo.Avalonia.FluentMessageBoxTaskDialog.App">
     <Application.DataTemplates>
         <fluentMessageBoxTaskDialog:ViewLocator/>
     </Application.DataTemplates>

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.MessageBox;
+namespace Demo.Avalonia.MessageBox;
 
 public partial class MainWindow : Window
 {

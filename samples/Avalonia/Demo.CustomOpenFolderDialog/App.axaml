@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Demo.CustomOpenFolderDialog"
-             x:Class="Demo.CustomOpenFolderDialog.App">
+             xmlns:local="using:Demo.Avalonia.CustomOpenFolderDialog"
+             x:Class="Demo.Avalonia.CustomOpenFolderDialog.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>

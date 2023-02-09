@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Avalonia;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.Avalonia.FluentContentDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using Demo.Avalonia.CustomDialogTypeLocator.ComponentA;
 using ReactiveUI;
 using HanumanInstitute.MvvmDialogs;
-using Demo.CustomDialogTypeLocator.ComponentA;
 
-namespace Demo.CustomDialogTypeLocator;
+namespace Demo.Avalonia.CustomDialogTypeLocator;
 
 public class MainWindowVM : ViewModelBase
 {

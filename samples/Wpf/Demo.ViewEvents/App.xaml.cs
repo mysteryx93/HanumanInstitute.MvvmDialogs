@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.ViewEvents;
+namespace Demo.Wpf.ViewEvents;
 
 public partial class App
 {

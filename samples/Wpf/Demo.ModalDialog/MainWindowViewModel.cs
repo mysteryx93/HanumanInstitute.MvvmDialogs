@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.ModalDialog;
+namespace Demo.Wpf.ModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
@@ -30,7 +30,7 @@ public class MainWindowViewModel : ObservableObject
         ShowDialogAsync(viewModel => dialogService.ShowDialogAsync(this, viewModel));
 
     private Task ExplicitShowDialogAsync() =>
-        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync<Demo.ModalDialog.AddTextDialog>(this, viewModel));
+        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync<AddTextDialog>(this, viewModel));
 
     private async Task ShowDialogAsync(Func<AddTextDialogViewModel, Task<bool?>> showDialog)
     {

@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.CustomDialogTypeLocator.ComponentA;
+namespace Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
 public class MyDialogVM : ObservableObject, IModalDialogViewModel
 {

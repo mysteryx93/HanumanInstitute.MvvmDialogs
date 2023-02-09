@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Avalonia.ModalCustomDialog;
 
 public partial class MainWindow : Window
 {

@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Avalonia.OpenFileDialog;
 
 class Program
 {

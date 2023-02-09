@@ -1,4 +1,4 @@
-﻿namespace Demo.ViewEvents;
+﻿namespace Demo.Wpf.ViewEvents;
 
 public partial class MainWindow
 {

@@ -1,7 +1,7 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Demo.NonModalCustomDialog"
-             x:Class="Demo.NonModalCustomDialog.App">
+             xmlns:local="using:Demo.Avalonia.NonModalCustomDialog"
+             x:Class="Demo.Avalonia.NonModalCustomDialog.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>

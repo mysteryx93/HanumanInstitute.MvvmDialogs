@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 
-namespace Demo.FluentTaskDialog;
+namespace Demo.Avalonia.FluentTaskDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

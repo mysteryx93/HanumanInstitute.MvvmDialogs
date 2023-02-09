@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.FluentContentDialog;
+namespace Demo.Avalonia.FluentContentDialog;
 
 public class App : Application
 {

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Wpf.ModalCustomDialog;
 
 public class AddTextCustomDialog : IView, IViewSync
 {

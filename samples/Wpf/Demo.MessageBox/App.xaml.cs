@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.MessageBox;
+namespace Demo.Wpf.MessageBox;
 
 public partial class App : Application
 {

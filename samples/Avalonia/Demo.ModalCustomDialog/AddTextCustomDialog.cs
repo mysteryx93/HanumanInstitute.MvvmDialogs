@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Avalonia.ModalCustomDialog;
 
 public class AddTextCustomDialog : IView
 {

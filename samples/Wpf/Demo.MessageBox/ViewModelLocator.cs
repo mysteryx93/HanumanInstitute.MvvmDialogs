@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.MessageBox;
+namespace Demo.Wpf.MessageBox;
 
 /// <summary>
 /// This class contains static references to all the view models in the

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
-namespace Demo.ViewEvents;
+namespace Demo.Avalonia.ViewEvents;
 
 public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IViewClosed
 {

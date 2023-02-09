@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.ViewEvents;
+namespace Demo.Avalonia.ViewEvents;
 
 public class Program
 {

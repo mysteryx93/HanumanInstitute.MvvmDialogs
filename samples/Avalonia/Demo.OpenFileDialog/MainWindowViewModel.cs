@@ -8,7 +8,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 using IOPath = System.IO.Path;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Avalonia.OpenFileDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

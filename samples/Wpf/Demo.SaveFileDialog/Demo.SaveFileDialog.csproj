@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.SaveFileDialog</RootNamespace>
-    <AssemblyName>Demo.SaveFileDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.SaveFileDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.SaveFileDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

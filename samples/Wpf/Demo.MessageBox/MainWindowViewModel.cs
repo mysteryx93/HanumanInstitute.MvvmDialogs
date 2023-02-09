@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
-namespace Demo.MessageBox;
+namespace Demo.Wpf.MessageBox;
 
 public class MainWindowViewModel : ObservableObject
 {

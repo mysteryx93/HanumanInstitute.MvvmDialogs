@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.NonModalDialog;
+namespace Demo.Wpf.NonModalDialog;
 
 public partial class App
 {

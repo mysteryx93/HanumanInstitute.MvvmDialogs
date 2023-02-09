@@ -1,4 +1,4 @@
-﻿namespace Demo.CustomDialogTypeLocator.ComponentA;
+﻿namespace Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
 public partial class MyDialog
 {

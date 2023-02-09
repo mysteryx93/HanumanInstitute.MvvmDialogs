@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.MessageBox;
+namespace Demo.Wpf.MessageBox;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

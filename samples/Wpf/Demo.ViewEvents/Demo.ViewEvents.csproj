@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFrameworks>net462;net7.0-windows</TargetFrameworks>
+    <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.ViewEvents</RootNamespace>
-    <AssemblyName>Demo.ViewEvents</AssemblyName>
+    <RootNamespace>Demo.Wpf.ViewEvents</RootNamespace>
+    <AssemblyName>Demo.Wpf.ViewEvents</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

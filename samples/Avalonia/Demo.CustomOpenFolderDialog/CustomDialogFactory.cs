@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Ookii.Dialogs.WinForms;
 using Avalonia.Controls;
 
-namespace Demo.CustomOpenFolderDialog;
+namespace Demo.Avalonia.CustomOpenFolderDialog;
 
 public class CustomDialogFactory : DialogFactoryBase
 {

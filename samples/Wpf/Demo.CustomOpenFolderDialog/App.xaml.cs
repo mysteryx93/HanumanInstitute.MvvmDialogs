@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.CustomOpenFolderDialog;
+namespace Demo.Wpf.CustomOpenFolderDialog;
 
 public partial class App
 {

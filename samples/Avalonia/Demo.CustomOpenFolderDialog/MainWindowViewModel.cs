@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 using IOPath = System.IO.Path;
 
-namespace Demo.CustomOpenFolderDialog;
+namespace Demo.Avalonia.CustomOpenFolderDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

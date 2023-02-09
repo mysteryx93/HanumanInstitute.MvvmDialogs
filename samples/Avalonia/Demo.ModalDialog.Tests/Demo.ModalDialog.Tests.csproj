@@ -1,10 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <AssemblyName>Demo.Avalonia.ModalDialog.Tests</AssemblyName>
+
+        <RootNamespace>Demo.Avalonia.ModalDialog.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Microsoft.Extensions.Logging;
 using Splat;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Avalonia.ModalCustomDialog;
 
 public class App : Application
 {

@@ -8,7 +8,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.OpenFolderDialog;
+namespace Demo.Wpf.OpenFolderDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

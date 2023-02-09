@@ -5,8 +5,8 @@
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.ActivateNonModalDialog</RootNamespace>
-    <AssemblyName>Demo.ActivateNonModalDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.ActivateNonModalDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.ActivateNonModalDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

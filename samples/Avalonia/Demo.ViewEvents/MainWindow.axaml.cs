@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.ViewEvents;
+namespace Demo.Avalonia.ViewEvents;
 
 public partial class MainWindow : Window
 {

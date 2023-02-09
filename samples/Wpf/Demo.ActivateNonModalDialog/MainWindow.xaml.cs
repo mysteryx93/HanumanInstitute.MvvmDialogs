@@ -1,4 +1,4 @@
-﻿namespace Demo.ActivateNonModalDialog;
+﻿namespace Demo.Wpf.ActivateNonModalDialog;
 
 public partial class MainWindow
 {

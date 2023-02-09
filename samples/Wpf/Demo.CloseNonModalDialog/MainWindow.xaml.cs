@@ -1,4 +1,4 @@
-﻿namespace Demo.CloseNonModalDialog;
+﻿namespace Demo.Wpf.CloseNonModalDialog;
 
 public partial class MainWindow
 {

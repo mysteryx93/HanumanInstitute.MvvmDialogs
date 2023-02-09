@@ -4,7 +4,7 @@ using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Avalonia.CloseNonModalDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

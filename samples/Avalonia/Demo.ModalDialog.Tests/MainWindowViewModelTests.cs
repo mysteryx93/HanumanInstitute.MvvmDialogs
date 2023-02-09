@@ -6,7 +6,7 @@ using HanumanInstitute.MvvmDialogs.Avalonia;
 using Xunit;
 using Moq;
 
-namespace Demo.ModalDialog.Tests;
+namespace Demo.Avalonia.ModalDialog.Tests;
 
 public class MainWindowViewModelTests
 {

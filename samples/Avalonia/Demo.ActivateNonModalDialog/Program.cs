@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.ActivateNonModalDialog;
+namespace Demo.Avalonia.ActivateNonModalDialog;
 
 public class Program
 {

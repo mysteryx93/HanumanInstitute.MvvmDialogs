@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.CustomOpenFolderDialog;
+namespace Demo.Wpf.CustomOpenFolderDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

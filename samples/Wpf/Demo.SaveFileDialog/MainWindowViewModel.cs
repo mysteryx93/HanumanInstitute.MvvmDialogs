@@ -9,7 +9,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Wpf.SaveFileDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

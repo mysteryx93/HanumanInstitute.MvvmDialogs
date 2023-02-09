@@ -1,6 +1,6 @@
 ﻿using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.ViewEvents;
+namespace Demo.Wpf.ViewEvents;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

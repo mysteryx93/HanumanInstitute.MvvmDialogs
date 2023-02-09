@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Avalonia.CloseNonModalDialog;
 
 class Program
 {

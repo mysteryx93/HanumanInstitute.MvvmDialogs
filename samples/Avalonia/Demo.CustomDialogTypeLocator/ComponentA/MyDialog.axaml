@@ -1,10 +1,10 @@
 ﻿<Window
-    x:Class="Demo.CustomDialogTypeLocator.ComponentA.MyDialog"
+    x:Class="Demo.Avalonia.CustomDialogTypeLocator.ComponentA.MyDialog"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:Demo.CustomDialogTypeLocator.ComponentA"
+    xmlns:local="clr-namespace:Demo.Avalonia.CustomDialogTypeLocator.ComponentA"
     mc:Ignorable="d"
     WindowStartupLocation="CenterOwner"
     Width="200"

@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Wpf.SaveFileDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the

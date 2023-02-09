@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Avalonia.CloseNonModalDialog;
 
 public partial class MainWindow : Window
 {

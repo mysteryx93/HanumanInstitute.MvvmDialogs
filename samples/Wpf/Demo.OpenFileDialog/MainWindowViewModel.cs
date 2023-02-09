@@ -10,7 +10,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Wpf.OpenFileDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

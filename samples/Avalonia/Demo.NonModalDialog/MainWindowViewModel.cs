@@ -3,7 +3,7 @@ using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
-namespace Demo.NonModalDialog;
+namespace Demo.Avalonia.NonModalDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

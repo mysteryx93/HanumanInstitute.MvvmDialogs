@@ -1,12 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.NonModalDialog</RootNamespace>
-    <AssemblyName>Demo.NonModalDialog</AssemblyName>
+    <RootNamespace>Demo.Wpf.NonModalDialog</RootNamespace>
+    <AssemblyName>Demo.Wpf.NonModalDialog</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

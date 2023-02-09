@@ -2,7 +2,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Avalonia.SaveFileDialog;
 
 class Program
 {

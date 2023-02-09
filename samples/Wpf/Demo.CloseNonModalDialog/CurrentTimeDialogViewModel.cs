@@ -4,7 +4,7 @@ using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Wpf.CloseNonModalDialog;
 
 public class CurrentTimeDialogViewModel : ObservableObject
 {

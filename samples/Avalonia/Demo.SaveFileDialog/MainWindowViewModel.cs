@@ -7,7 +7,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
-namespace Demo.SaveFileDialog;
+namespace Demo.Avalonia.SaveFileDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {

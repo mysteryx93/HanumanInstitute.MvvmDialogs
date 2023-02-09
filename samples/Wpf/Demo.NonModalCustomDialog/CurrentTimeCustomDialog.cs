@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.NonModalCustomDialog;
+namespace Demo.Wpf.NonModalCustomDialog;
 
 public class CurrentTimeCustomDialog : IView, IViewSync
 {

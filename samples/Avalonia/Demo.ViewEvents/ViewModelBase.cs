@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.ViewEvents;
+namespace Demo.Avalonia.ViewEvents;
 
 public class ViewModelBase : ReactiveObject
 {

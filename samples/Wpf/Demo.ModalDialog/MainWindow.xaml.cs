@@ -1,4 +1,4 @@
-﻿namespace Demo.ModalDialog;
+﻿namespace Demo.Wpf.ModalDialog;
 
 public partial class MainWindow
 {

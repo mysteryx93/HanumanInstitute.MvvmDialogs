@@ -1,6 +1,6 @@
 using HanumanInstitute.MvvmDialogs.Wpf;
 
-namespace Demo.ModalCustomDialog;
+namespace Demo.Wpf.ModalCustomDialog;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

@@ -1,6 +1,6 @@
 ﻿using ReactiveUI;
 
-namespace Demo.CloseNonModalDialog;
+namespace Demo.Avalonia.CloseNonModalDialog;
 
 public class ViewModelBase : ReactiveObject
 {

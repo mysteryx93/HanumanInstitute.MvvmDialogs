@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.OpenFileDialog;
+namespace Demo.Wpf.OpenFileDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the
