@@ -60,7 +60,11 @@ public class CurrentTimeCustomDialog : IView, IViewSync
         dialog.ShowDialog();
     }
 
-    public void Show(IView? owner) => dialog.Show();
+    public void Show(IView? owner)
+    {
+        dialog.Owner = owner.GetRef();
+        dialog.Show();
+    }
 
     public void Activate() => dialog.Activate();
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
@@ -148,6 +149,6 @@ public static class DialogServiceExtensions
         settings ??= new OpenFolderDialogSettings();
         settings.AllowMultiple ??= false;
         var result = await ShowOpenFoldersDialogAsync(service, ownerViewModel, settings, appSettings).ConfigureAwait(true);
-        return result.Count > 0 ? result[0] : null;
+        return result?.FirstOrDefault();
     }
 }

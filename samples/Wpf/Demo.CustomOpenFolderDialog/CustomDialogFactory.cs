@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Interop;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Ookii.Dialogs.Wpf;

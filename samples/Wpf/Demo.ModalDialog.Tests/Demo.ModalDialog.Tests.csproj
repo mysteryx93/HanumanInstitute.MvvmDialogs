@@ -6,6 +6,8 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
+    <AssemblyName>Demo.Wpf.ModalDialog.Tests</AssemblyName>
+    <RootNamespace>Demo.Wpf.ModalDialog.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

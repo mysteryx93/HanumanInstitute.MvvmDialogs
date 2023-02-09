@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -9,7 +9,7 @@ namespace Demo.Wpf.NonModalCustomDialog;
 public class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService dialogService;
-    
+
     public MainWindowViewModel(IDialogService dialogService)
     {
         this.dialogService = dialogService;
