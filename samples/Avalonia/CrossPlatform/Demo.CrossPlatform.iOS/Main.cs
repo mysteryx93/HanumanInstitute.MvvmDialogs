@@ -1,3 +1,5 @@
+﻿using UIKit;
+
 namespace Demo.CrossPlatform.iOS;
 
 public class Application

@@ -71,6 +71,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await dialogService.ShowSaveFileDialogAsync(owner, settings);
-        Path = result;
+        Path = result?.Path?.ToString();
     }
 }

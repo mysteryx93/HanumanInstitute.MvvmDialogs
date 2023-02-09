@@ -5,6 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
 using Ookii.Dialogs.WinForms;
+using Avalonia.Controls;
 
 namespace Demo.CustomOpenFolderDialog;
 
@@ -20,19 +21,24 @@ public class CustomDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
         settings switch
         {
             OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings),
             _ => base.ShowDialogAsync(owner, settings, appSettings)
         };
 
-    private async Task<string?> ShowOpenFolderDialogAsync(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private async Task<string?> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings, AppDialogSettingsBase appSettings)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
-        var window = owner.AsWrapper().Ref;
-        var platformImpl = (WindowImpl)window.PlatformImpl!;
+        var window = TopLevel.GetTopLevel(owner.GetRef());
+        var platformImpl = window?.PlatformImpl as WindowImpl;
+        if (platformImpl == null)
+        {
+            throw new NullReferenceException("Cannot obtain HWND handle for owner.");
+        }
+
         var handle = platformImpl.Handle.Handle;
 
         var dialog = new VistaFolderBrowserDialog

@@ -1,3 +1,8 @@
+﻿using Avalonia;
+using Avalonia.iOS;
+using Avalonia.ReactiveUI;
+using Foundation;
+
 namespace Demo.CrossPlatform.iOS;
 
 // The UIApplicationDelegate for the application. This class is responsible for launching the 

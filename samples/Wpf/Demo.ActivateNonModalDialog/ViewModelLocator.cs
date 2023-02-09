@@ -1,3 +1,5 @@
+﻿using CommunityToolkit.Mvvm.DependencyInjection;
+
 namespace Demo.ActivateNonModalDialog;
 
 /// <summary>

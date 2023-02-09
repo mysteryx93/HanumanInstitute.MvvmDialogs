@@ -62,6 +62,20 @@ public static class UiExtensions
         (ViewWrapper?)window;
 
     /// <summary>
+    /// Returns the <see cref="IView"/> RefObj property as an Avalonia ContentControl.
+    /// </summary>
+    /// <param name="view">The IView to get the Ref property for.</param>
+    /// <returns>The ContentControl held within the IView.</returns>
+    public static Window? GetRef(this IView? view)
+    {
+        if (view is ViewWrapper v)
+        {
+            return v.Ref;
+        }
+        return null;
+    }
+
+    /// <summary>
     /// Gets the owner of a <see cref="FrameworkElement"/> wrapped in a <see cref="ViewWrapper"/>.
     /// </summary>
     /// <param name="frameworkElement">

@@ -12,27 +12,37 @@ public class CurrentTimeCustomDialog : IView, IViewSync
 
     public object RefObj => this;
 
-    event EventHandler IView.Closed
+    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    {
+        ViewModel = viewModel;
+    }
+
+    public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
+    {
+        ViewModel = viewModel;
+    }
+
+    public event EventHandler Closed
     {
         add => dialog.Closed += value;
         remove => dialog.Closed -= value;
     }
 
-    event EventHandler IView.Loaded
+    public event EventHandler Loaded
     {
         add { }
         remove { }
     }
 
-    event EventHandler<CancelEventArgs> IView.Closing
+    public event EventHandler<CancelEventArgs> Closing
     {
         add { }
         remove { }
     }
 
-    object? IView.DataContext
+    public INotifyPropertyChanged ViewModel
     {
-        get => dialog.DataContext;
+        get => (INotifyPropertyChanged)dialog.DataContext;
         set => dialog.DataContext = value;
     }
 
@@ -42,11 +52,15 @@ public class CurrentTimeCustomDialog : IView, IViewSync
         set => dialog.Owner = value.AsWrapper()?.Ref;
     }
 
-    Task<bool?> IView.ShowDialogAsync() => UiExtensions.RunUiAsync(() => dialog.ShowDialog());
+    public Task ShowDialogAsync(IView owner) => UiExtensions.RunUiAsync(() => ShowDialog(owner));
 
-    public bool? ShowDialog() => dialog.ShowDialog();
+    public void ShowDialog(IView owner)
+    {
+        dialog.Owner = owner.GetRef();
+        dialog.ShowDialog();
+    }
 
-    void IView.Show() => dialog.Show();
+    public void Show(IView? owner) => dialog.Show();
 
     public void Activate() => dialog.Activate();
 
