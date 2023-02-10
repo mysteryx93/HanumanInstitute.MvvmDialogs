@@ -20,14 +20,9 @@ public class DialogStorageFolder : DialogStorageItem, IDialogStorageFolder
     }
 
     /// <inheritdoc />
-    public async Task<IReadOnlyList<IDialogStorageItem>> GetItemsAsync()
+    public async Task<IEnumerable<IDialogStorageItem>> GetItemsAsync()
     {
-        var result = await _item.GetItemsAsync().ConfigureAwait(true);
-        return result.Select(x => (IDialogStorageItem)(x switch
-        {
-            IStorageFolder fo => new DialogStorageFolder(fo),
-            IStorageFile fi => new DialogStorageFile(fi),
-            _ => null!
-        })).ToList();
+        var list = await _item.GetItemsAsync();
+        return list.Select(x => x is IStorageFile f ? (IDialogStorageItem)new DialogStorageFile(f) : new DialogStorageFolder((IStorageFolder)x));
     }
 }

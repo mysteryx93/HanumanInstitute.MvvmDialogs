@@ -10,8 +10,25 @@ public interface IDialogStorageFolder : IDialogStorageItem
     /// <summary>
     /// Gets the files and subfolders in the current folder.
     /// </summary>
-    /// <returns>
-    /// When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.
-    /// </returns>
-    Task<IReadOnlyList<IDialogStorageItem>> GetItemsAsync();
+    /// <exception cref="T:System.IO.DirectoryNotFoundException">The path encapsulated in the <see cref="T:System.IO.DirectoryInfo" /> object is invalid (for example, it is on an unmapped drive).</exception>
+    /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+    /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
+    Task<IEnumerable<IDialogStorageItem>> GetItemsAsync();
+    // /// <summary>
+    // /// Gets the files and subfolders in the current folder.
+    // /// </summary>
+    // /// <param name="searchPattern">The search string to match against the names of directories.  This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
+    // /// <exception cref="T:System.IO.DirectoryNotFoundException">The path encapsulated in the <see cref="T:System.IO.DirectoryInfo" /> object is invalid (for example, it is on an unmapped drive).</exception>
+    // /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+    // /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
+    // Task<IEnumerable<IDialogStorageItem>> GetItemsAsync(string searchPattern);
+    // /// <summary>
+    // /// Gets the files and subfolders in the current folder.
+    // /// </summary>
+    // /// <param name="searchPattern">The search string to match against the names of directories.  This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
+    // /// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or all subdirectories. The default value is <see cref="F:System.IO.SearchOption.TopDirectoryOnly" />.</param>
+    // /// <exception cref="T:System.IO.DirectoryNotFoundException">The path encapsulated in the <see cref="T:System.IO.DirectoryInfo" /> object is invalid (for example, it is on an unmapped drive).</exception>
+    // /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
+    // /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
+    // Task<IEnumerable<IDialogStorageItem>> GetItemsAsync(string searchPattern, SearchOption searchOption);
 }
