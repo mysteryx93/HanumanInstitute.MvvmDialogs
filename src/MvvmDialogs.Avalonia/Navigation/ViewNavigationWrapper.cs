@@ -8,7 +8,16 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 /// <seealso cref="IView" />
 public class ViewNavigationWrapper : IView
 {
-    private INavigationManager _navigation = default!;
+    private readonly INavigationManager _navigation;
+
+    /// <summary>
+    /// Initializes a new instance of the ViewNavigationWrapper class. 
+    /// </summary>
+    /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
+    public ViewNavigationWrapper(INavigationManager navigationManager)
+    {
+        _navigation = navigationManager;
+    }
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
@@ -25,16 +34,16 @@ public class ViewNavigationWrapper : IView
         Ref = (UserControl)view;
     }
       
-    /// <summary>
-    /// Sets the <see cref="INavigationManager"/> associated with this wrapper. Must be called before use. 
-    /// </summary>
-    /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
-    /// <returns>Returns this class instance.</returns>
-    public ViewNavigationWrapper SetNavigation(INavigationManager navigationManager)
-    {
-        _navigation = navigationManager;
-        return this;
-    }
+    // /// <summary>
+    // /// Sets the <see cref="INavigationManager"/> associated with this wrapper. Must be called before use. 
+    // /// </summary>
+    // /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
+    // /// <returns>Returns this class instance.</returns>
+    // public ViewNavigationWrapper SetNavigation(INavigationManager navigationManager)
+    // {
+    //     _navigation = navigationManager;
+    //     return this;
+    // }
     
     public Type ViewType { get; set; }
 

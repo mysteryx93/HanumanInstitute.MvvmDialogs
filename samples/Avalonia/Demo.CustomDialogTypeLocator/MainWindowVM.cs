@@ -7,13 +7,13 @@ using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.Avalonia.CustomDialogTypeLocator;
 
-public class MainWindowVM : ViewModelBase
+public class MainWindowVm : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    public MainWindowVM(IDialogService dialogService)
+    public MainWindowVm(IDialogService dialogService)
     {
-        this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+        this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
         ShowDialogCommand = ReactiveCommand.Create(ShowDialogAsync);
     }
@@ -22,7 +22,7 @@ public class MainWindowVM : ViewModelBase
 
     private async Task ShowDialogAsync()
     {
-        var dialogViewModel = dialogService.CreateViewModel<MyDialogVM>();
-        await dialogService.ShowDialogAsync(this, dialogViewModel);
+        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVm>();
+        await _dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 }

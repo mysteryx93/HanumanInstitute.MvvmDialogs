@@ -8,13 +8,13 @@ using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.Wpf.CustomDialogTypeLocator;
 
-public class MainWindowVM : ObservableObject
+public class MainWindowVm : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    public MainWindowVM(IDialogService dialogService)
+    public MainWindowVm(IDialogService dialogService)
     {
-        this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+        this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
         ShowDialogCommand = new RelayCommand(ShowDialog);
     }
@@ -23,7 +23,7 @@ public class MainWindowVM : ObservableObject
 
     private void ShowDialog()
     {
-        var dialogViewModel = dialogService.CreateViewModel<MyDialogVM>();
-        dialogService.ShowDialog(this, dialogViewModel);
+        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVm>();
+        _dialogService.ShowDialog(this, dialogViewModel);
     }
 }

@@ -7,13 +7,13 @@ namespace Demo.Wpf.ActivateNonModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    private INotifyPropertyChanged? dialogViewModel;
+    private INotifyPropertyChanged? _dialogViewModel;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ShowCommand = new RelayCommand(Show, CanShow);
         ActivateCommand = new RelayCommand(Activate, CanActivate);
@@ -25,8 +25,8 @@ public class MainWindowViewModel : ObservableObject
 
     private void Show()
     {
-        dialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
-        dialogService.Show(this, dialogViewModel);
+        _dialogViewModel = _dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
+        _dialogService.Show(this, _dialogViewModel);
 
         ShowCommand.NotifyCanExecuteChanged();
         ActivateCommand.NotifyCanExecuteChanged();
@@ -34,16 +34,16 @@ public class MainWindowViewModel : ObservableObject
 
     private bool CanShow()
     {
-        return dialogViewModel == null;
+        return _dialogViewModel == null;
     }
 
     private void Activate()
     {
-        dialogService.Activate(dialogViewModel!);
+        _dialogService.Activate(_dialogViewModel!);
     }
 
     private bool CanActivate()
     {
-        return dialogViewModel != null;
+        return _dialogViewModel != null;
     }
 }

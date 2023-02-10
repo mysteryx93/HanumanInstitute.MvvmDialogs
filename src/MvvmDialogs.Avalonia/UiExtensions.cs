@@ -53,9 +53,8 @@ public static class UiExtensions
     {
         if (view != null)
         {
-            var result = new ViewNavigationWrapper();
+            var result = new ViewNavigationWrapper(navigationManager);
             result.InitializeExisting((INotifyPropertyChanged)view.DataContext!, view);
-            result.SetNavigation(navigationManager);
             return result;
         }
         return null;

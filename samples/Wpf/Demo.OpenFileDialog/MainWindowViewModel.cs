@@ -14,13 +14,13 @@ namespace Demo.Wpf.OpenFileDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<string> Paths { get; private set; } = new();
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         OpenFile = new RelayCommand(() => OpenFileImpl(SetOwner ? this : null));
         OpenFiles = new RelayCommand(() => OpenFilesImpl(SetOwner ? this : null));
@@ -35,15 +35,15 @@ public class MainWindowViewModel : ObservableObject
 
     public bool SetOwner
     {
-        get => setOwner;
-        set => SetProperty(ref setOwner, value);
+        get => _setOwner;
+        set => SetProperty(ref _setOwner, value);
     }
-    private bool setOwner = true;
+    private bool _setOwner = true;
 
     private void OpenFileImpl(INotifyPropertyChanged? owner)
     {
         var settings = GetSettings(false);
-        var result = dialogService.ShowOpenFileDialog(owner, settings);
+        var result = _dialogService.ShowOpenFileDialog(owner, settings);
         Paths.Clear();
         if (result != null)
         {
@@ -54,7 +54,7 @@ public class MainWindowViewModel : ObservableObject
     private void OpenFilesImpl(INotifyPropertyChanged? owner)
     {
         var settings = GetSettings(true);
-        var result = dialogService.ShowOpenFilesDialog(owner, settings);
+        var result = _dialogService.ShowOpenFilesDialog(owner, settings);
         Paths.Clear();
         foreach (var item in result)
         {
@@ -65,7 +65,7 @@ public class MainWindowViewModel : ObservableObject
     private async Task OpenFileImplAsync(INotifyPropertyChanged? owner)
     {
         var settings = GetSettings(false);
-        var result = await dialogService.ShowOpenFileDialogAsync(owner, settings);
+        var result = await _dialogService.ShowOpenFileDialogAsync(owner, settings);
         Paths.Clear();
         if (result != null)
         {
@@ -76,7 +76,7 @@ public class MainWindowViewModel : ObservableObject
     private async Task OpenFilesImplAsync(INotifyPropertyChanged? owner)
     {
         var settings = GetSettings(true);
-        var result = await dialogService.ShowOpenFilesDialogAsync(owner, settings);
+        var result = await _dialogService.ShowOpenFilesDialogAsync(owner, settings);
         Paths.Clear();
         foreach (var item in result)
         {

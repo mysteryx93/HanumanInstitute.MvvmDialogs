@@ -8,8 +8,8 @@ namespace Demo.Wpf.ModalDialog;
 
 public class AddTextDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {
-    private string? text;
-    private bool? dialogResult;
+    private string? _text;
+    private bool? _dialogResult;
 
     public AddTextDialogViewModel()
     {
@@ -18,16 +18,16 @@ public class AddTextDialogViewModel : ObservableObject, IModalDialogViewModel, I
 
     public string? Text
     {
-        get => text;
-        set => SetProperty(ref text, value);
+        get => _text;
+        set => SetProperty(ref _text, value);
     }
 
     public ICommand OkCommand { get; }
 
     public bool? DialogResult
     {
-        get => dialogResult;
-        set => SetProperty(ref dialogResult, value);
+        get => _dialogResult;
+        set => SetProperty(ref _dialogResult, value);
     }
 
     public event EventHandler? RequestClose;

@@ -11,21 +11,21 @@ namespace Demo.Wpf.CustomOpenFolderDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    private string? path;
+    private string? _path;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         BrowseFolderCommand = new AsyncRelayCommand(OpenFolderAsync);
     }
 
     public string? Path
     {
-        get => path;
-        private set => SetProperty(ref path, value);
+        get => _path;
+        private set => SetProperty(ref _path, value);
     }
 
     public ICommand BrowseFolderCommand { get; }
@@ -38,7 +38,7 @@ public class MainWindowViewModel : ObservableObject
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        var result = await dialogService.ShowOpenFolderDialogAsync(this, settings);
+        var result = await _dialogService.ShowOpenFolderDialogAsync(this, settings);
         Path = result?.Path?.ToString();
     }
 }

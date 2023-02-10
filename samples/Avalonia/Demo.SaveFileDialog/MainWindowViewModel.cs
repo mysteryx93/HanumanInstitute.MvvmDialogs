@@ -11,21 +11,21 @@ namespace Demo.Avalonia.SaveFileDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    private string? path;
+    private string? _path;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         SaveFileCommand = ReactiveCommand.CreateFromTask(SaveFileAsync);
     }
 
     public string? Path
     {
-        get => path;
-        private set => this.RaiseAndSetIfChanged(ref path, value);
+        get => _path;
+        private set => this.RaiseAndSetIfChanged(ref _path, value);
     }
 
     public ICommand SaveFileCommand { get; }
@@ -44,7 +44,7 @@ public class MainWindowViewModel : ViewModelBase
             DefaultExtension = "mp3"
         };
 
-        var result = await dialogService.ShowSaveFileDialogAsync(this, settings);
-        Path = result?.Path?.ToString();
+        var result = await _dialogService.ShowSaveFileDialogAsync(this, settings);
+        Path = result?.Path?.LocalPath;
     }
 }

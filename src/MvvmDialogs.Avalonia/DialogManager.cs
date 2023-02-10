@@ -48,7 +48,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
     protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
     {
         var wrapper = _useNavigation ?
-            (IView)new ViewNavigationWrapper().SetNavigation(_navigationManager!) :
+            (IView)new ViewNavigationWrapper(_navigationManager!) :
             new ViewWrapper();
         wrapper.Initialize(viewModel, viewType);
         return wrapper;

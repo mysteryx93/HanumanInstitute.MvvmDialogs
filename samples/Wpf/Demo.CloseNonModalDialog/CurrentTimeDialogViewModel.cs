@@ -9,7 +9,7 @@ namespace Demo.Wpf.CloseNonModalDialog;
 public class CurrentTimeDialogViewModel : ObservableObject
 {
     // ReSharper disable once NotAccessedField.Local
-    private DispatcherTimer? timer;
+    private DispatcherTimer? _timer;
 
     public CurrentTimeDialogViewModel()
     {
@@ -22,7 +22,7 @@ public class CurrentTimeDialogViewModel : ObservableObject
 
     private void StartClock()
     {
-        timer = new DispatcherTimer(
+        _timer = new DispatcherTimer(
             TimeSpan.FromSeconds(1),
             DispatcherPriority.Normal,
             OnTick,

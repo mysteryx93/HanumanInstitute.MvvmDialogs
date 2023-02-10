@@ -3,13 +3,13 @@ using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
-public class MyDialogVM : ObservableObject, IModalDialogViewModel
+public class MyDialogVm : ObservableObject, IModalDialogViewModel
 {
-    private bool? dialogResult;
+    private bool? _dialogResult;
 
     public bool? DialogResult
     {
-        get => dialogResult;
-        private set => SetProperty(ref dialogResult, value);
+        get => _dialogResult;
+        private set => SetProperty(ref _dialogResult, value);
     }
 }

@@ -9,28 +9,28 @@ namespace Demo.Avalonia.ModalCustomDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
     public ICommand ImplicitShowDialogCommand { get; }
     public ICommand ExplicitShowDialogCommand { get; }
     public ObservableCollection<string> Texts { get; } = new ObservableCollection<string>();
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ImplicitShowDialogCommand = ReactiveCommand.Create(ImplicitShowDialog);
         ExplicitShowDialogCommand = ReactiveCommand.Create(ExplicitShowDialog);
     }
 
     private Task ImplicitShowDialog() =>
-        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync(this, viewModel));
+        ShowDialogAsync(viewModel => _dialogService.ShowDialogAsync(this, viewModel));
 
     private Task ExplicitShowDialog() =>
-        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync<AddTextCustomDialog>(this, viewModel));
+        ShowDialogAsync(viewModel => _dialogService.ShowDialogAsync<AddTextCustomDialog>(this, viewModel));
 
     private async Task ShowDialogAsync(Func<AddTextCustomDialogViewModel, Task<bool?>> showDialogAsync)
     {
-        var dialogViewModel = dialogService.CreateViewModel<AddTextCustomDialogViewModel>();
+        var dialogViewModel = _dialogService.CreateViewModel<AddTextCustomDialogViewModel>();
 
         var success = await showDialogAsync(dialogViewModel).ConfigureAwait(true);
         if (success == true)

@@ -13,11 +13,11 @@ namespace Demo.Wpf.SaveFileDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         SaveFile = new RelayCommand(() => SaveFileImpl(SetOwner ? this : null));
         SaveFileAsync = new AsyncRelayCommand(() => SaveFileImplAsync(SetOwner ? this : null));
@@ -25,17 +25,17 @@ public class MainWindowViewModel : ObservableObject
 
     public string? Path
     {
-        get => path;
-        private set => SetProperty(ref path, value);
+        get => _path;
+        private set => SetProperty(ref _path, value);
     }
-    private string? path;
+    private string? _path;
 
     public bool SetOwner
     {
-        get => setOwner;
-        set => SetProperty(ref setOwner, value);
+        get => _setOwner;
+        set => SetProperty(ref _setOwner, value);
     }
-    private bool setOwner = true;
+    private bool _setOwner = true;
 
     public ICommand SaveFile { get; }
     public ICommand SaveFileAsync { get; }
@@ -53,7 +53,7 @@ public class MainWindowViewModel : ObservableObject
             }
         };
 
-        var result = dialogService.ShowSaveFileDialog(owner, settings);
+        var result = _dialogService.ShowSaveFileDialog(owner, settings);
         Path = result;
     }
 
@@ -70,7 +70,7 @@ public class MainWindowViewModel : ObservableObject
             }
         };
 
-        var result = await dialogService.ShowSaveFileDialogAsync(owner, settings);
+        var result = await _dialogService.ShowSaveFileDialogAsync(owner, settings);
         Path = result?.Path?.ToString();
     }
 }

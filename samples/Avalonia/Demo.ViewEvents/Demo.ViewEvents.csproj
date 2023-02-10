@@ -14,6 +14,8 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview5" />
+    <PackageReference Include="FluentAvalonia.UI.Windowing" Version="2.0.0-preview5" />
+    <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview5" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.93">
       <PrivateAssets>all</PrivateAssets>

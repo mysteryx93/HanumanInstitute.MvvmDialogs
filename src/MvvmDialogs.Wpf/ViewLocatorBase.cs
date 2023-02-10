@@ -28,9 +28,9 @@ public class ViewLocatorBase : IViewLocator
         if (viewType is null || (!typeof(Window).IsAssignableFrom(viewType) && !typeof(IView).IsAssignableFrom(viewType)))
         {
             var message = $"Dialog view of type {name} for view model {viewModel.GetType().FullName} is missing.";
-            const string errorInfo = "You can create a ViewLocator class in the project base to map your " +
+            const string ErrorInfo = "You can create a ViewLocator class in the project base to map your " +
                                      "view models to your views. See online documentation for more info.";
-            throw new TypeLoadException(message + Environment.NewLine + errorInfo);
+            throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
         return viewType;
     }

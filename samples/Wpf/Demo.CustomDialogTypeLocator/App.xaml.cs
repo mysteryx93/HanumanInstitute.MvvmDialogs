@@ -21,8 +21,8 @@ public partial class App
                         viewLocator: new ViewLocator(),
                         logger: loggerFactory.CreateLogger<DialogManager>()),
                     viewModelFactory: x => Ioc.Default.GetService(x)))
-                .AddTransient<MainWindowVM>()
-                .AddTransient<MyDialogVM>()
+                .AddTransient<MainWindowVm>()
+                .AddTransient<MyDialogVm>()
                 .BuildServiceProvider());
     }
 }

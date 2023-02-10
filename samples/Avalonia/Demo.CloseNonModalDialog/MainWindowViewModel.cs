@@ -8,19 +8,19 @@ namespace Demo.Avalonia.CloseNonModalDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
-    private INotifyPropertyChanged? dialogViewModel;
+    private readonly IDialogService _dialogService;
+    private INotifyPropertyChanged? _dialogViewModel;
     public INotifyPropertyChanged? DialogViewModel
     {
-        get => dialogViewModel;
-        set => this.RaiseAndSetIfChanged(ref dialogViewModel, value, nameof(DialogViewModel));
+        get => _dialogViewModel;
+        set => this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
     }
     public ICommand ShowCommand { get; }
     public ICommand CloseCommand { get; }
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(d => d == null);
         ShowCommand = ReactiveCommand.Create(ShowImpl, canShow);
@@ -32,13 +32,13 @@ public class MainWindowViewModel : ViewModelBase
     // Run from background threads
     private void ShowImpl()
     {
-        DialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
-        dialogService.Show(this, DialogViewModel);
+        DialogViewModel = _dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
+        _dialogService.Show(this, DialogViewModel);
     }
 
     private void CloseImpl()
     {
-        dialogService.Close(DialogViewModel!);
+        _dialogService.Close(DialogViewModel!);
         DialogViewModel = null;
     }
 }

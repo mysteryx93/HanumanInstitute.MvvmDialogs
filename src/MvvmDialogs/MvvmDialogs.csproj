@@ -9,7 +9,7 @@
     <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
     <Title>MVVM Dialogs</Title>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
     <Version>2.0</Version>
     <PackageVersion>2.0-preview1</PackageVersion>
     <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
@@ -36,11 +36,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\..\build\icon_64x64.png">
+    <None Include="..\icon_64x64.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\..\StrongName.snk">
+    <None Include="..\StrongName.snk">
       <Link>StrongName.snk</Link>
     </None>
   </ItemGroup>

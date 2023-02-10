@@ -12,13 +12,13 @@ namespace Demo.Avalonia.OpenFileDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public ObservableCollection<string> Paths { get; private set; } = new();
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         OpenFileCommand = ReactiveCommand.Create(OpenFileAsync);
         OpenFilesCommand = ReactiveCommand.Create(OpenFilesAsync);
@@ -30,18 +30,18 @@ public class MainWindowViewModel : ViewModelBase
     private async Task OpenFileAsync()
     {
         var settings = GetSettings(false);
-        var result = await dialogService.ShowOpenFileDialogAsync(this, settings);
+        var result = await _dialogService.ShowOpenFileDialogAsync(this, settings);
         Paths.Clear();
         if (result?.Path != null)
         {
-            Paths.Add(result.Path.ToString());
+            Paths.Add(result.Path.LocalPath);
         }
     }
 
     private async Task OpenFilesAsync()
     {
         var settings = GetSettings(true);
-        var result = await dialogService.ShowOpenFilesDialogAsync(this, settings);
+        var result = await _dialogService.ShowOpenFilesDialogAsync(this, settings);
         Paths.Clear();
         foreach (var item in result)
         {

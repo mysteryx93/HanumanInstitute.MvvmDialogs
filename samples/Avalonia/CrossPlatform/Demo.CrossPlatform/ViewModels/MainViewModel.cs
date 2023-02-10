@@ -10,11 +10,11 @@ namespace Demo.CrossPlatform.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x == null);
         Show = ReactiveCommand.Create(ShowImpl, canShow);
@@ -35,17 +35,17 @@ public class MainViewModel : ViewModelBase
     [Reactive]
     public string? Output { get; set; }
 
-    private CurrentTimeViewModel? dialogViewModel;
+    private CurrentTimeViewModel? _dialogViewModel;
     protected CurrentTimeViewModel? DialogViewModel
     {
-        get => dialogViewModel;
+        get => _dialogViewModel;
         set
         {
             if (DialogViewModel != null)
             {
                 DialogViewModel.ViewClosed -= Dialog_ViewClosed;
             }
-            this.RaiseAndSetIfChanged(ref dialogViewModel, value, nameof(DialogViewModel));
+            this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
             if (DialogViewModel != null)
             {
                 DialogViewModel.ViewClosed += Dialog_ViewClosed;
@@ -68,57 +68,57 @@ public class MainViewModel : ViewModelBase
 
     private void ShowImpl()
     {
-        DialogViewModel = dialogService.CreateViewModel<CurrentTimeViewModel>();
-        dialogService.Show(this, DialogViewModel);
+        DialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
+        _dialogService.Show(this, DialogViewModel);
     }
     
     private async Task ShowDialogImplAsync()
     {
-        var vm = dialogService.CreateViewModel<CurrentTimeViewModel>();
-        await dialogService.ShowDialogAsync(this, vm);
+        var vm = _dialogService.CreateViewModel<CurrentTimeViewModel>();
+        await _dialogService.ShowDialogAsync(this, vm);
     }
 
-    private void ActivateImpl() => dialogService.Activate(DialogViewModel!);
+    private void ActivateImpl() => _dialogService.Activate(DialogViewModel!);
 
     private void CloseImpl()
     {
-        dialogService.Close(DialogViewModel!);
+        _dialogService.Close(DialogViewModel!);
         DialogViewModel = null;
     }
 
     private async Task OpenFileImplAsync()
     {
-        var file = await dialogService.ShowOpenFileDialogAsync(this);
+        var file = await _dialogService.ShowOpenFileDialogAsync(this);
         Output = file?.Path?.ToString();
     }
 
     private async Task OpenFilesImplAsync()
     {
-        var files = await dialogService.ShowOpenFilesDialogAsync(this);
+        var files = await _dialogService.ShowOpenFilesDialogAsync(this);
         Output = string.Join(Environment.NewLine, files.Select(x => x?.Path?.ToString() ?? ""));
     }
 
     private async Task OpenFolderImplAsync()
     {
-        var folder = await dialogService.ShowOpenFolderDialogAsync(this);
+        var folder = await _dialogService.ShowOpenFolderDialogAsync(this);
         Output = folder?.Path?.ToString();
     }
 
     private async Task OpenFoldersImplAsync()
     {
-        var folders = await dialogService.ShowOpenFoldersDialogAsync(this);
+        var folders = await _dialogService.ShowOpenFoldersDialogAsync(this);
         Output = string.Join(Environment.NewLine, folders.Select(x => x?.Path?.ToString() ?? ""));
     }
 
     private async Task SaveFileImplAsync()
     {
-        var file = await dialogService.ShowSaveFileDialogAsync(this);
+        var file = await _dialogService.ShowSaveFileDialogAsync(this);
         Output = file?.Path?.ToString();
     }
     
     private async Task MessageBoxImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(this, "Do you want it?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
+        var result = await _dialogService.ShowMessageBoxAsync(this, "Do you want it?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
         Output = result.ToString();
     }
 }

@@ -5,7 +5,7 @@
 // associated with an assembly.
 [assembly: AssemblyCompany("Hanuman Institute")]
 [assembly: AssemblyProduct("HanumanInstitute.MvvmDialogs")]
-[assembly: AssemblyCopyright("Copyright © 2009-2022 MVVM Dialogs contributors")]
+[assembly: AssemblyCopyright("Copyright © 2009-2023 MVVM Dialogs contributors")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -15,7 +15,7 @@ public class ViewNavigationWrapperTests
 
     public ViewNavigationWrapper CreateView(bool existing)
     {
-        var result = new ViewNavigationWrapper();
+        var result = new ViewNavigationWrapper(NavigationManager);
         if (existing)
         {
             result.InitializeExisting(ViewModel, new FirstView());
@@ -24,7 +24,6 @@ public class ViewNavigationWrapperTests
         {
             result.Initialize(ViewModel, typeof(FirstView));
         }
-        result.SetNavigation(NavigationManager);
         return result;
     }
     

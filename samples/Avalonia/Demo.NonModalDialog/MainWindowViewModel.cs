@@ -7,11 +7,11 @@ namespace Demo.Avalonia.NonModalDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ImplicitShowCommand = ReactiveCommand.Create(ImplicitShow);
         ExplicitShowCommand = ReactiveCommand.Create(ExplicitShow);
@@ -23,17 +23,17 @@ public class MainWindowViewModel : ViewModelBase
 
     private void ImplicitShow()
     {
-        Show(viewModel => dialogService.Show(this, viewModel));
+        Show(viewModel => _dialogService.Show(this, viewModel));
     }
 
     private void ExplicitShow()
     {
-        Show(viewModel => dialogService.Show<CurrentTimeDialog>(this, viewModel));
+        Show(viewModel => _dialogService.Show<CurrentTimeDialog>(this, viewModel));
     }
 
     private void Show(Action<CurrentTimeDialogViewModel> show)
     {
-        var dialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
+        var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
         show(dialogViewModel);
     }
 }

@@ -25,8 +25,8 @@ public class App : Application
                 logger: loggerFactory.CreateLogger<DialogManager>()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
-        SplatRegistrations.Register<MainWindowVM>();
-        SplatRegistrations.Register<MyDialogVM>();
+        SplatRegistrations.Register<MainWindowVm>();
+        SplatRegistrations.Register<MyDialogVm>();
         SplatRegistrations.SetupIOC();
     }
 
@@ -44,5 +44,5 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowVM MainWindow => Locator.Current.GetService<MainWindowVM>()!;
+    public static MainWindowVm MainWindow => Locator.Current.GetService<MainWindowVm>()!;
 }

@@ -10,14 +10,14 @@ namespace Demo.Avalonia.ModalDialog.Tests;
 
 public class MainWindowViewModelTests
 {
-    public MainWindowViewModel Model => model ??= new MainWindowViewModel(DialogService);
-    private MainWindowViewModel? model;
+    public MainWindowViewModel Model => _model ??= new MainWindowViewModel(DialogService);
+    private MainWindowViewModel? _model;
 
-    public DialogService DialogService => dialogService ??= new DialogService(MockDialogManager.Object, viewModelFactory: ViewModelFactory);
-    private DialogService? dialogService;
+    public DialogService DialogService => _dialogService ??= new DialogService(MockDialogManager.Object, viewModelFactory: ViewModelFactory);
+    private DialogService? _dialogService;
 
-    public Mock<IDialogManager> MockDialogManager => mockDialogManager ??= new Mock<IDialogManager>();
-    private Mock<IDialogManager>? mockDialogManager;
+    public Mock<IDialogManager> MockDialogManager => _mockDialogManager ??= new Mock<IDialogManager>();
+    private Mock<IDialogManager>? _mockDialogManager;
 
     private object? ViewModelFactory(Type type) => (type) switch
     {

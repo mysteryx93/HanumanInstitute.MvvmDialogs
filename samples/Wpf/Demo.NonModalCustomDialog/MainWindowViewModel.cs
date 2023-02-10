@@ -8,11 +8,11 @@ namespace Demo.Wpf.NonModalCustomDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ImplicitShowCommand = new RelayCommand(ImplicitShow);
         ExplicitShowCommand = new RelayCommand(ExplicitShow);
@@ -24,17 +24,17 @@ public class MainWindowViewModel : ObservableObject
 
     private void ImplicitShow()
     {
-        Show(viewModel => dialogService.Show(this, viewModel));
+        Show(viewModel => _dialogService.Show(this, viewModel));
     }
 
     private void ExplicitShow()
     {
-        Show(viewModel => dialogService.Show<CurrentTimeCustomDialog>(this, viewModel));
+        Show(viewModel => _dialogService.Show<CurrentTimeCustomDialog>(this, viewModel));
     }
 
     private void Show(Action<CurrentTimeCustomDialogViewModel> show)
     {
-        var dialogViewModel = dialogService.CreateViewModel<CurrentTimeCustomDialogViewModel>();
+        var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeCustomDialogViewModel>();
         show(dialogViewModel);
     }
 }

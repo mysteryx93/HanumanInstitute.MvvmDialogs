@@ -4,7 +4,7 @@ namespace HanumanInstitute.MvvmDialogs.Private;
 
 internal static class ViewIdGenerator
 {
-    private static int id;
+    private static int s_id;
 
-    public static int Generate() => Interlocked.Increment(ref id);
+    public static int Generate() => Interlocked.Increment(ref s_id);
 }

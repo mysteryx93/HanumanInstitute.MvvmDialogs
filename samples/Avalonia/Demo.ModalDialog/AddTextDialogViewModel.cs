@@ -7,8 +7,8 @@ namespace Demo.Avalonia.ModalDialog;
 
 public class AddTextDialogViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {
-    private string text = string.Empty;
-    private bool? dialogResult;
+    private string _text = string.Empty;
+    private bool? _dialogResult;
     public ICommand OkCommand { get; }
     public event EventHandler? RequestClose;
 
@@ -19,14 +19,14 @@ public class AddTextDialogViewModel : ViewModelBase, IModalDialogViewModel, IClo
 
     public string Text
     {
-        get => text;
-        set => this.RaiseAndSetIfChanged(ref text, value, nameof(Text));
+        get => _text;
+        set => this.RaiseAndSetIfChanged(ref _text, value, nameof(Text));
     }
 
     public bool? DialogResult
     {
-        get => dialogResult;
-        set => this.RaiseAndSetIfChanged(ref dialogResult, value, nameof(DialogResult));
+        get => _dialogResult;
+        set => this.RaiseAndSetIfChanged(ref _dialogResult, value, nameof(DialogResult));
     }
 
     private void Ok()

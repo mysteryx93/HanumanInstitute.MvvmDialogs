@@ -7,13 +7,13 @@ namespace Demo.Wpf.CloseNonModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    private INotifyPropertyChanged? dialogViewModel;
+    private INotifyPropertyChanged? _dialogViewModel;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ShowCommand = new RelayCommand(Show, CanShow);
         CloseCommand = new RelayCommand(Close, CanClose);
@@ -25,8 +25,8 @@ public class MainWindowViewModel : ObservableObject
 
     private void Show()
     {
-        dialogViewModel = dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
-        dialogService.Show(this, dialogViewModel);
+        _dialogViewModel = _dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
+        _dialogService.Show(this, _dialogViewModel);
 
         ShowCommand.NotifyCanExecuteChanged();
         CloseCommand.NotifyCanExecuteChanged();
@@ -34,13 +34,13 @@ public class MainWindowViewModel : ObservableObject
 
     private bool CanShow()
     {
-        return dialogViewModel == null;
+        return _dialogViewModel == null;
     }
 
     private void Close()
     {
-        dialogService.Close(dialogViewModel!);
-        dialogViewModel = null;
+        _dialogService.Close(_dialogViewModel!);
+        _dialogViewModel = null;
 
         ShowCommand.NotifyCanExecuteChanged();
         CloseCommand.NotifyCanExecuteChanged();
@@ -48,6 +48,6 @@ public class MainWindowViewModel : ObservableObject
 
     private bool CanClose()
     {
-        return dialogViewModel != null;
+        return _dialogViewModel != null;
     }
 }

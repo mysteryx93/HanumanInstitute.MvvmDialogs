@@ -10,13 +10,13 @@ namespace Demo.Wpf.MessageBox;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
-    private string? confirmation;
+    private string? _confirmation;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ShowWithMessage = new AsyncRelayCommand(() => Show(ShowWithMessageImpl, ShowWithMessageImplAsync));
         ShowWithCaption = new AsyncRelayCommand(() => Show(ShowWithCaptionImpl, ShowWithCaptionImplAsync));
@@ -43,27 +43,27 @@ public class MainWindowViewModel : ObservableObject
 
     public bool UseAsync
     {
-        get => useAsync;
-        set => SetProperty(ref useAsync, value);
+        get => _useAsync;
+        set => SetProperty(ref _useAsync, value);
     }
-    private bool useAsync = true;
+    private bool _useAsync = true;
 
     public bool SetOwner
     {
-        get => setOwner;
-        set => SetProperty(ref setOwner, value);
+        get => _setOwner;
+        set => SetProperty(ref _setOwner, value);
     }
-    private bool setOwner = true;
+    private bool _setOwner = true;
 
     public string? Confirmation
     {
-        get => confirmation;
-        private set => SetProperty(ref confirmation, value);
+        get => _confirmation;
+        private set => SetProperty(ref _confirmation, value);
     }
 
     private void ShowWithMessageImpl()
     {
-        var result = dialogService.ShowMessageBox(
+        var result = _dialogService.ShowMessageBox(
             SetOwner ? this : null,
             "This is the text.");
 
@@ -72,7 +72,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowWithMessageImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             SetOwner ? this : null,
             "This is the text.");
 
@@ -81,7 +81,7 @@ public class MainWindowViewModel : ObservableObject
 
     private void ShowWithCaptionImpl()
     {
-        var result = dialogService.ShowMessageBox(
+        var result = _dialogService.ShowMessageBox(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption");
 
@@ -90,7 +90,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowWithCaptionImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption");
 
@@ -99,7 +99,7 @@ public class MainWindowViewModel : ObservableObject
 
     private void ShowWithButtonImpl()
     {
-        var result = dialogService.ShowMessageBox(
+        var result = _dialogService.ShowMessageBox(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel);
@@ -109,7 +109,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowWithButtonImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel);
@@ -119,7 +119,7 @@ public class MainWindowViewModel : ObservableObject
 
     private void ShowWithIconImpl()
     {
-        var result = dialogService.ShowMessageBox(
+        var result = _dialogService.ShowMessageBox(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel, MessageBoxImage.Information);
@@ -129,7 +129,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowWithIconImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel, MessageBoxImage.Information);
@@ -139,7 +139,7 @@ public class MainWindowViewModel : ObservableObject
 
     private void ShowWithDefaultResultImpl()
     {
-        var result = dialogService.ShowMessageBox(
+        var result = _dialogService.ShowMessageBox(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel, MessageBoxImage.Information, false);
@@ -149,7 +149,7 @@ public class MainWindowViewModel : ObservableObject
 
     private async Task ShowWithDefaultResultImplAsync()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             SetOwner ? this : null,
             "This is the text.", "This Is The Caption",
             MessageBoxButton.OkCancel, MessageBoxImage.Information, false);

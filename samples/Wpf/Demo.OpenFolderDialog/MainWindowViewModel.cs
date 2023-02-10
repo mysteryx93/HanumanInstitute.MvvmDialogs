@@ -12,11 +12,11 @@ namespace Demo.Wpf.OpenFolderDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         OpenFolder = new RelayCommand(() => OpenFolderImpl(SetOwner ? this : null));
         OpenFolderAsync = new AsyncRelayCommand(() => OpenFolderImplAsync(SetOwner ? this : null));
@@ -24,17 +24,17 @@ public class MainWindowViewModel : ObservableObject
 
     public string? Path
     {
-        get => path;
-        private set => SetProperty(ref path, value);
+        get => _path;
+        private set => SetProperty(ref _path, value);
     }
-    private string? path;
+    private string? _path;
 
     public bool SetOwner
     {
-        get => setOwner;
-        set => SetProperty(ref setOwner, value);
+        get => _setOwner;
+        set => SetProperty(ref _setOwner, value);
     }
-    private bool setOwner = true;
+    private bool _setOwner = true;
 
 
     public ICommand OpenFolder { get; }
@@ -48,7 +48,7 @@ public class MainWindowViewModel : ObservableObject
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        var result = dialogService.ShowOpenFolderDialog(owner, settings);
+        var result = _dialogService.ShowOpenFolderDialog(owner, settings);
         Path = result;
     }
 
@@ -60,7 +60,7 @@ public class MainWindowViewModel : ObservableObject
             InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
         };
 
-        var result = await dialogService.ShowOpenFolderDialogAsync(owner, settings);
+        var result = await _dialogService.ShowOpenFolderDialogAsync(owner, settings);
         Path = result?.Path?.ToString() ?? "";
     }
 }

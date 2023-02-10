@@ -11,7 +11,7 @@ namespace Demo.Avalonia.FluentTaskDialog;
 
 public class MainWindowViewModel : ViewModelBase
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
     public ICommand ShowMessageBoxWithMessageCommand { get; }
     public ICommand ShowMessageBoxWithCaptionCommand { get; }
     public ICommand ShowMessageBoxWithButtonCommand { get; }
@@ -20,7 +20,7 @@ public class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ShowMessageBoxWithMessageCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithMessage);
         ShowMessageBoxWithCaptionCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithCaption);
@@ -29,11 +29,11 @@ public class MainWindowViewModel : ViewModelBase
         ShowMessageBoxWithDefaultResultCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithDefaultResult);
     }
 
-    private string confirmation = string.Empty;
+    private string _confirmation = string.Empty;
     public string Confirmation
     {
-        get => confirmation;
-        private set => this.RaiseAndSetIfChanged(ref confirmation, value, nameof(Confirmation));
+        get => _confirmation;
+        private set => this.RaiseAndSetIfChanged(ref _confirmation, value, nameof(Confirmation));
     }
 
     private async Task ShowMessageBoxWithMessage()
@@ -48,14 +48,14 @@ public class MainWindowViewModel : ViewModelBase
                 TaskDialogButton.NoButton
             }
         };
-        var result = await dialogService.ShowTaskDialogAsync(this, settings);
+        var result = await _dialogService.ShowTaskDialogAsync(this, settings);
         
         UpdateResult(result == TaskDialogStandardResult.Yes);
     }
 
     private async Task ShowMessageBoxWithCaption()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption");
@@ -65,7 +65,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task ShowMessageBoxWithButton()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",
@@ -76,7 +76,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task ShowMessageBoxWithIcon()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",
@@ -88,7 +88,7 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task ShowMessageBoxWithDefaultResult()
     {
-        var result = await dialogService.ShowMessageBoxAsync(
+        var result = await _dialogService.ShowMessageBoxAsync(
             this,
             "This is the text.",
             "This Is The Caption",

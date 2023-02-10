@@ -38,7 +38,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="..\..\build\icon_64x64.png">
+      <None Include="..\icon_64x64.png">
         <Pack>True</Pack>
         <PackagePath>/</PackagePath>
         <Link>icon_64x64.png</Link>

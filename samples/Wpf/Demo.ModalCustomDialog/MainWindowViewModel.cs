@@ -10,11 +10,11 @@ namespace Demo.Wpf.ModalCustomDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
-    private readonly IDialogService dialogService;
+    private readonly IDialogService _dialogService;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
-        this.dialogService = dialogService;
+        this._dialogService = dialogService;
 
         ImplicitShowDialogCommand = new AsyncRelayCommand(ImplicitShowDialogAsync);
         ExplicitShowDialogCommand = new AsyncRelayCommand(ExplicitShowDialogAsync);
@@ -27,14 +27,14 @@ public class MainWindowViewModel : ObservableObject
     public ICommand ExplicitShowDialogCommand { get; }
 
     private Task ImplicitShowDialogAsync() =>
-        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync(this, viewModel));
+        ShowDialogAsync(viewModel => _dialogService.ShowDialogAsync(this, viewModel));
 
     private Task ExplicitShowDialogAsync() =>
-        ShowDialogAsync(viewModel => dialogService.ShowDialogAsync<AddTextCustomDialog>(this, viewModel));
+        ShowDialogAsync(viewModel => _dialogService.ShowDialogAsync<AddTextCustomDialog>(this, viewModel));
 
     private async Task ShowDialogAsync(Func<AddTextCustomDialogViewModel, Task<bool?>> showDialog)
     {
-        var dialogViewModel = dialogService.CreateViewModel<AddTextCustomDialogViewModel>();
+        var dialogViewModel = _dialogService.CreateViewModel<AddTextCustomDialogViewModel>();
 
         bool? success = await showDialog(dialogViewModel);
         if (success == true)
