@@ -1,4 +1,6 @@
 ﻿
+using HanumanInstitute.MvvmDialogs.FileSystem;
+
 namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 /// <summary>
@@ -7,7 +9,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 internal interface IFrameworkDialogsApi
 {
     MessageBoxResult ShowMessageBox(Window? owner, MessageBoxApiSettings settings);
-    string[] ShowOpenFileDialog(Window? owner, OpenFileApiSettings settings);
-    string? ShowSaveFileDialog(Window? owner, SaveFileApiSettings settings);
-    string? ShowOpenFolderDialog(Window? owner, OpenFolderApiSettings settings);
+    IReadOnlyList<IDialogStorageFile> ShowOpenFileDialog(Window? owner, OpenFileApiSettings settings);
+    IDialogStorageFile? ShowSaveFileDialog(Window? owner, SaveFileApiSettings settings);
+    IReadOnlyList<IDialogStorageFolder> ShowOpenFolderDialog(Window? owner, OpenFolderApiSettings settings);
 }

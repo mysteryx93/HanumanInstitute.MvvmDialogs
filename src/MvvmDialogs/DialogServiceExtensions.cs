@@ -133,7 +133,7 @@ public static class DialogServiceExtensions
         return (IReadOnlyList<IDialogStorageFolder>)(await service.DialogManager.ShowFrameworkDialogAsync(
             ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true))!;
     }
-    
+
     /// <summary>
     /// Displays the FolderBrowserDialog to select a single folder.
     /// </summary>

@@ -22,7 +22,10 @@ public class DialogStorageItem : IDialogStorageItem
 
     /// <inheritdoc />
     public Uri Path => _item.Path;
-    
+
+    /// <inheritdoc />
+    public string LocalPath => _item.Path.LocalPath;
+
     /// <inheritdoc />
     public async Task<DialogStorageItemProperties> GetBasicPropertiesAsync()
     {
@@ -32,7 +35,7 @@ public class DialogStorageItem : IDialogStorageItem
 
     /// <inheritdoc />
     public bool CanBookmark => _item.CanBookmark;
-    
+
     /// <inheritdoc />
     public Task<string?> SaveBookmarkAsync() => _item.SaveBookmarkAsync();
 
@@ -42,7 +45,7 @@ public class DialogStorageItem : IDialogStorageItem
         var result = await _item.GetParentAsync().ConfigureAwait(true);
         return result != null ? new DialogStorageFolder(result) : null;
     }
-    
+
     /// <inheritdoc />
     public void Dispose() => _item.Dispose();
 }

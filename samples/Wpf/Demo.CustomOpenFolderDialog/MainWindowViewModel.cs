@@ -39,6 +39,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await _dialogService.ShowOpenFolderDialogAsync(this, settings);
-        Path = result?.Path?.ToString();
+        Path = result?.LocalPath;
     }
 }

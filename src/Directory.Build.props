@@ -1,13 +1,17 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <VersionSuffix></VersionSuffix>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionSuffix>preview2</VersionSuffix>
     <Authors>Etienne Charland</Authors>
     <Company>Hanuman Institute</Company>
     <Product>HanumanInstitute.MvvmDialogs</Product>
     <Copyright>Copyright © 2009-2023 MVVM Dialogs contributors</Copyright>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM in WPF</Description>
+    <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker</PackageTags>
   </PropertyGroup>
 
 </Project>

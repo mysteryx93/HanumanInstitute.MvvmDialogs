@@ -47,7 +47,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         if (result != null)
         {
-            Paths.Add(result);
+            Paths.Add(result.LocalPath);
         }
     }
 
@@ -58,7 +58,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         foreach (var item in result)
         {
-            Paths.Add(item);
+            Paths.Add(item.LocalPath);
         }
     }
 
@@ -69,7 +69,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         if (result != null)
         {
-            Paths.Add(result.Path?.ToString() ?? "");
+            Paths.Add(result.LocalPath ?? "");
         }
     }
 
@@ -80,7 +80,7 @@ public class MainWindowViewModel : ObservableObject
         Paths.Clear();
         foreach (var item in result)
         {
-            Paths.Add(item.Path?.ToString() ?? "");
+            Paths.Add(item.LocalPath ?? "");
         }
     }
 

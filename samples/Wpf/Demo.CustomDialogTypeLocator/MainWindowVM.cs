@@ -8,11 +8,11 @@ using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.Wpf.CustomDialogTypeLocator;
 
-public class MainWindowVm : ObservableObject
+public class MainWindowVM : ObservableObject
 {
     private readonly IDialogService _dialogService;
 
-    public MainWindowVm(IDialogService dialogService)
+    public MainWindowVM(IDialogService dialogService)
     {
         this._dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
@@ -23,7 +23,7 @@ public class MainWindowVm : ObservableObject
 
     private void ShowDialog()
     {
-        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVm>();
+        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVM>();
         _dialogService.ShowDialog(this, dialogViewModel);
     }
 }

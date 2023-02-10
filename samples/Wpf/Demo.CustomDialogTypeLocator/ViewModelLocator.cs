@@ -8,5 +8,5 @@ namespace Demo.Wpf.CustomDialogTypeLocator;
 /// </summary>
 public class ViewModelLocator
 {
-    public MainWindowVm MainWindow => Ioc.Default.GetRequiredService<MainWindowVm>();
+    public MainWindowVM MainWindow => Ioc.Default.GetRequiredService<MainWindowVM>();
 }

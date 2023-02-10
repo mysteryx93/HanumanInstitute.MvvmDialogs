@@ -24,12 +24,16 @@ public abstract class DialogStorageItem : IDialogStorageItem
     public string Name => InfoBase.Name;
 
     /// <inheritdoc />
-    public Uri Path => new Uri(InfoBase.FullName);
+    public Uri Path => _path ??= new Uri(InfoBase.FullName);
+    private Uri? _path;
+
+    /// <inheritdoc />
+    public string LocalPath => Path.LocalPath;
 
     /// <inheritdoc />
     public Task<DialogStorageItemProperties> GetBasicPropertiesAsync()
     {
-        var length = InfoBase is IFileInfo f ? (ulong?)f.Length : null; 
+        var length = InfoBase is IFileInfo f ? (ulong?)f.Length : null;
         return Task.FromResult(new DialogStorageItemProperties(length, new DateTimeOffset(InfoBase.CreationTime), new DateTimeOffset(InfoBase.LastWriteTime)));
     }
 

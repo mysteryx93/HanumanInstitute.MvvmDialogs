@@ -23,6 +23,11 @@ public interface IDialogStorageItem : IDisposable
     Uri? Path { get; }
 
     /// <summary>
+    /// Gets a local operating-system representation of a file name.
+    /// </summary>
+    string LocalPath { get; }
+
+    /// <summary>
     /// Gets the basic properties of the current item.
     /// </summary>
     Task<DialogStorageItemProperties> GetBasicPropertiesAsync();

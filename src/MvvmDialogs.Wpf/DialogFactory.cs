@@ -10,6 +10,7 @@ using Win32MessageBox = System.Windows.MessageBox;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
 using System;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -39,8 +40,8 @@ public class DialogFactory : DialogFactoryBase
     internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api, IPathInfoFactory? pathInfo)
         : base(chain)
     {
-        _api = api ?? new FrameworkDialogsApi();
         _pathInfo = pathInfo ?? new PathInfoFactory();
+        _api = api ?? new FrameworkDialogsApi(_pathInfo);
     }
 
     /// <inheritdoc />
@@ -65,7 +66,7 @@ public class DialogFactory : DialogFactoryBase
             _ => base.ShowDialog(owner, settings, appSettings)
         };
 
-    private string? ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private IReadOnlyList<IDialogStorageFolder> ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFolderApiSettings()
         {
@@ -77,7 +78,7 @@ public class DialogFactory : DialogFactoryBase
         return _api.ShowOpenFolderDialog(owner?.Ref, apiSettings);
     }
 
-    private string[] ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
+    private IReadOnlyList<IDialogStorageFile> ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new OpenFileApiSettings()
         {
@@ -88,10 +89,10 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        return _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<string>();
+        return _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<IDialogStorageFile>();
     }
 
-    private string? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
+    private IDialogStorageFile? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
     {
         var apiSettings = new SaveFileApiSettings()
         {

@@ -10,20 +10,9 @@
     <Title>MVVM Dialogs</Title>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
-    <Version>2.0</Version>
-    <PackageVersion>2.0-preview1</PackageVersion>
-    <Copyright>Copyright © 2009-2022 MVVM Dialogs contributors</Copyright>
-    <Product>HanumanInstitute.MvvmDialogs</Product>
     <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs</AssemblyName>
     <RootNamespace>HanumanInstitute.MvvmDialogs</RootNamespace>
-    <Company>Hanuman Institute</Company>
-    <Authors>Etienne Charland</Authors>
-    <NeutralLanguage>en-US</NeutralLanguage>
-    <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM</Description>
-    <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>

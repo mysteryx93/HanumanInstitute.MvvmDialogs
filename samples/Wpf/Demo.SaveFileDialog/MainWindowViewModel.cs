@@ -54,7 +54,7 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = _dialogService.ShowSaveFileDialog(owner, settings);
-        Path = result;
+        Path = result?.LocalPath;
     }
 
     private async Task SaveFileImplAsync(INotifyPropertyChanged? owner)
@@ -71,6 +71,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await _dialogService.ShowSaveFileDialogAsync(owner, settings);
-        Path = result?.Path?.ToString();
+        Path = result?.LocalPath;
     }
 }

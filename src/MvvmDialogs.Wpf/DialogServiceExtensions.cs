@@ -3,6 +3,8 @@ using HanumanInstitute.MvvmDialogs.Wpf;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
+using HanumanInstitute.MvvmDialogs.FileSystem;
+using System.Linq;
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -114,13 +116,12 @@ public static class DialogServiceExtensions
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowOpenFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFile? ShowOpenFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= false;
-        var result = ShowOpenFilesDialog(service, ownerViewModel, settings, appSettings);
-        return result.Length > 0 ? result[0] : null;
+        return ShowOpenFilesDialog(service, ownerViewModel, settings, appSettings).FirstOrDefault();
     }
 
     /// <summary>
@@ -130,15 +131,15 @@ public static class DialogServiceExtensions
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the open file dialog.</param>
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
-    /// <returns>The list of files selected by the user, or null if the user cancelled.</returns>
+    /// <returns>The list of files selected by the user, or empty if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string[] ShowOpenFilesDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IReadOnlyList<IDialogStorageFile> ShowOpenFilesDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
         return service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x)) as string[] ?? Array.Empty<string>();
+            ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x)) as IReadOnlyList<IDialogStorageFile> ?? Array.Empty<IDialogStorageFile>();
     }
 
     /// <summary>
@@ -148,12 +149,12 @@ public static class DialogServiceExtensions
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the save file dialog.</param>
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
-    /// <returns>The path to the file selected by the user, or null if the user cancelled.</returns>
+    /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFile? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         SaveFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        return (string?)service.DialogManager.AsSync().ShowFrameworkDialog(
+        return (IDialogStorageFile?)service.DialogManager.AsSync().ShowFrameworkDialog(
             ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings);
     }
 
@@ -164,12 +165,12 @@ public static class DialogServiceExtensions
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
-    /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
+    /// <returns>The folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static string? ShowOpenFolderDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFolder? ShowOpenFolderDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
     {
-        return (string?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings);
+        return ((IReadOnlyList<IDialogStorageFolder>?)service.DialogManager.AsSync().ShowFrameworkDialog(
+            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings)).FirstOrDefault();
     }
 }

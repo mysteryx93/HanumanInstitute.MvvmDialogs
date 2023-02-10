@@ -49,7 +49,7 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = _dialogService.ShowOpenFolderDialog(owner, settings);
-        Path = result;
+        Path = result?.Path?.LocalPath;
     }
 
     private async Task OpenFolderImplAsync(INotifyPropertyChanged? owner)
@@ -61,6 +61,6 @@ public class MainWindowViewModel : ObservableObject
         };
 
         var result = await _dialogService.ShowOpenFolderDialogAsync(owner, settings);
-        Path = result?.Path?.ToString() ?? "";
+        Path = result?.Path?.LocalPath;
     }
 }

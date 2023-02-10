@@ -6,7 +6,9 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.ActivateNonModalDialog</AssemblyName>
     <RootNamespace>Demo.Avalonia.ActivateNonModalDialog</RootNamespace>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.Desktop" Version="11.0.0-preview5" />
@@ -14,7 +16,7 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0-preview5" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0-preview5" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0-rc.1.22426.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.93">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

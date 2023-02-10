@@ -3,7 +3,7 @@ using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
-public class MyDialogVm : ObservableObject, IModalDialogViewModel
+public class MyDialogVM : ObservableObject, IModalDialogViewModel
 {
     private bool? _dialogResult;
 
