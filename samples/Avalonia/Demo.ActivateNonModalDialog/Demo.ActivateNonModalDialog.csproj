@@ -6,7 +6,6 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.ActivateNonModalDialog</AssemblyName>
     <RootNamespace>Demo.Avalonia.ActivateNonModalDialog</RootNamespace>
-    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
   </PropertyGroup>
 
   <ItemGroup>

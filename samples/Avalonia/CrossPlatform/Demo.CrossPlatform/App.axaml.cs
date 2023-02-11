@@ -20,7 +20,7 @@ public partial class App : Application
 
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
-                viewLocator: new ViewLocator() { ForceSinglePageNavigation = true },
+                viewLocator: new ViewLocator() { ForceSinglePageNavigation = false },
                 logger: loggerFactory.CreateLogger<DialogManager>(),
                 dialogFactory: new DialogFactory().AddFluent(messageBoxType: FluentMessageBoxType.ContentDialog)),
             viewModelFactory: x => Locator.Current.GetService(x)));
