@@ -56,45 +56,96 @@ public class ViewNavigationWrapper : IView
 
     /// <inheritdoc />
     public object RefObj => Ref!;
+
+    /// <inheritdoc />
+    public event EventHandler? Loaded
+    {
+        add
+        {
+            if (ViewModel is IViewLoaded vm)
+            {
+                vm.ViewLoaded += value;
+            }
+        }
+        remove
+        {
+            if (ViewModel is IViewLoaded vm)
+            {
+                vm.ViewLoaded -= value;
+            }
+        }
+    }
+
+    private void RaiseLoaded()
+    {
+        if (ViewModel is IViewLoaded vm)
+        {
+            vm.RaiseViewLoaded();
+        }
+    }
     
     /// <inheritdoc />
-    public event EventHandler? Loaded;
+    public event EventHandler<CancelEventArgs>? Closing
+    {
+        add
+        {
+            if (ViewModel is IViewClosing vm)
+            {
+                vm.ViewClosing += value;
+            }
+        }
+        remove
+        {
+            if (ViewModel is IViewClosing vm)
+            {
+                vm.ViewClosing -= value;
+            }
+        }
+    }
     
-    // /// <summary>
-    // /// Invokes the <see cref="Loaded" /> event.
-    // /// </summary>
-    // internal void RaiseLoaded() => Loaded?.Invoke(this, EventArgs.Empty);
+    private void RaiseClosing(CancelEventArgs e)
+    {
+        if (ViewModel is IViewClosing vm)
+        {
+            vm.RaiseViewClosing(e);
+        }
+    }
     
     /// <inheritdoc />
-    public event EventHandler<CancelEventArgs>? Closing;
-    
-    // /// <summary>
-    // /// Invokes the <see cref="Closing" /> event.
-    // /// </summary>
-    // internal CancelEventArgs RaiseClosing()
-    // {
-    //     var args = new CancelEventArgs();
-    //     Closing?.Invoke(this, args);
-    //     return args;
-    // }
-    
-    /// <inheritdoc />
-    public event EventHandler? Closed;
-    
-    // /// <summary>
-    // /// Invokes the <see cref="Closed" /> event.
-    // /// </summary>
-    // internal void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
-   
+    public event EventHandler? Closed
+    {
+        add
+        {
+            if (ViewModel is IViewClosed vm)
+            {
+                vm.ViewClosed += value;
+            }
+        }
+        remove
+        {
+            if (ViewModel is IViewClosed vm)
+            {
+                vm.ViewClosed -= value;
+            }
+        }
+    }    
     /// <inheritdoc />
     public INotifyPropertyChanged ViewModel { get; private set; }
+    
+    private void RaiseClosed()
+    {
+        if (ViewModel is IViewClosed vm)
+        {
+            vm.RaiseViewClosed();
+        }
+    }
 
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
         var task = _navigation.ShowDialogAsync(ViewModel, ViewType, owner.ViewModel);
         Ref = _navigation.CurrentView!;
-        Loaded?.Invoke(this, EventArgs.Empty);
+        RaiseLoaded();
         await task.ConfigureAwait(true);
     }
 
@@ -103,7 +154,7 @@ public class ViewNavigationWrapper : IView
     {
         _navigation.Show(ViewModel, ViewType);  
         Ref = _navigation.CurrentView!;
-        Loaded?.Invoke(this, EventArgs.Empty);
+        RaiseLoaded();
     }
 
     /// <inheritdoc />
@@ -114,7 +165,7 @@ public class ViewNavigationWrapper : IView
             if (_navigation.Activate(ViewModel, ViewType))
             {
                 Ref = _navigation.CurrentView!;
-                Loaded?.Invoke(this, EventArgs.Empty);
+                RaiseLoaded();
             }
         } 
     }
@@ -124,10 +175,10 @@ public class ViewNavigationWrapper : IView
     {
         _navigation.Close(ViewModel, ViewType);
         var args = new CancelEventArgs();
-        Closing?.Invoke(this, args);
+        RaiseClosing(args);
         if (!args.Cancel)
         {
-            Closed?.Invoke(this, EventArgs.Empty);
+            RaiseClosed();
         }
     }
     

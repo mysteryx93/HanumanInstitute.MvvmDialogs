@@ -34,6 +34,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
         _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator?.ForceSinglePageNavigation == true;
         if (_useNavigation)
         {
+            ForwardViewEvents = false;
             _navigationManager = new NavigationManager();
             _navigationManager.Launch(customNavigationRoot);
         }

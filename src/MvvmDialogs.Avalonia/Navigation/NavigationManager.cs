@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Interactivity;
 using ReactiveUI;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
@@ -32,11 +33,28 @@ public class NavigationManager : ReactiveObject, INavigationManager
         {
             appSingle.MainView = customNavigationRoot ?? new NavigationRoot();
             appSingle.MainView.DataContext = this;
+            appSingle.MainView.Loaded += (_, _) =>
+            {
+                TopLevel.GetTopLevel(appSingle.MainView)!.BackRequested += TopLevel_BackRequested;
+            };
         }
         else if (app is IClassicDesktopStyleApplicationLifetime appDesktop)
         {
             appDesktop.MainWindow = customNavigationRoot as Window ?? new NavigationRootWindow();
             appDesktop.MainWindow.DataContext = this;
+        }
+    }
+    
+    /// <summary>
+    /// Handle the mobile back button.
+    /// </summary>
+    private void TopLevel_BackRequested(object? sender, RoutedEventArgs e)
+    {
+        if (CurrentView != null && _history.Count > 1)
+        {
+            var current = CurrentViewModel!;
+            CurrentView.AsWrapper(this).Close();
+            e.Handled = !object.ReferenceEquals(CurrentViewModel, current);
         }
     }
 
@@ -47,6 +65,9 @@ public class NavigationManager : ReactiveObject, INavigationManager
         set => this.RaiseAndSetIfChanged(ref _currentView, value);
     }
     private UserControl? _currentView;
+
+    /// <inheritdoc />
+    public INotifyPropertyChanged? CurrentViewModel => (INotifyPropertyChanged?)CurrentView?.DataContext;
 
     /// <inheritdoc />
     public UserControl? GetViewForViewModel(INotifyPropertyChanged viewModel) =>
@@ -114,14 +135,6 @@ public class NavigationManager : ReactiveObject, INavigationManager
                     }
                 }
                 CurrentView = prevView;
-            }
-            else if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktopApp)
-            {
-                desktopApp.Shutdown();
-            }
-            else if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
-            {
-                viewApp.MainView = null;
             }
         }
     }

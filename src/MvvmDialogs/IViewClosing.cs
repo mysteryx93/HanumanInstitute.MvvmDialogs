@@ -6,12 +6,17 @@
 public interface IViewClosing
 {
     /// <summary>
-    /// Called when the view is closing. If e.Cancel is set to true, <see cref="OnClosingAsync"/> will be called.
+    /// Occurs when the view is closing. If e.Cancel is set to true, <see cref="OnViewClosingAsync"/> will be called.
     /// </summary>
-    void OnClosing(CancelEventArgs e);
+    event EventHandler<CancelEventArgs> ViewClosing;
 
     /// <summary>
-    /// Called when e.Cancel is set to true in <see cref="OnClosing"/>. If e.Cancel is set back to false, the window will be closed.
+    /// Raises the Closing event.
     /// </summary>
-    Task OnClosingAsync(CancelEventArgs e);
+    void RaiseViewClosing(CancelEventArgs e);
+
+    /// <summary>
+    /// Called when e.Cancel is set to true in <see cref="ViewClosing"/>. If e.Cancel is set back to false, the window will be closed.
+    /// </summary>
+    Task OnViewClosingAsync(CancelEventArgs e);
 }

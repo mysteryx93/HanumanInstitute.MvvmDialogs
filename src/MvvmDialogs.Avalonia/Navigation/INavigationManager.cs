@@ -21,6 +21,10 @@ public interface INavigationManager
     /// </summary>
     UserControl? CurrentView { get; set; }
     /// <summary>
+    /// Gets the view model of the current view.
+    /// </summary>
+    INotifyPropertyChanged? CurrentViewModel { get; }
+    /// <summary>
     /// Returns a View for specified ViewModel type. It will only work if such a View has been created before.
     /// </summary>
     /// <param name="viewModel">The ViewModel to display in the View.</param>

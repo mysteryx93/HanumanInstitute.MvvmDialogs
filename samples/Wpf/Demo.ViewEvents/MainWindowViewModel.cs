@@ -31,7 +31,7 @@ public class MainWindowViewModel : ObservableObject, IViewLoaded, IViewClosing, 
         e.Cancel = true;
     }
 
-    public async Task OnClosingAsync(CancelEventArgs e)
+    public async Task OnViewClosingAsync(CancelEventArgs e)
     {
         var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton.YesNo);
         e.Cancel = quit != true;

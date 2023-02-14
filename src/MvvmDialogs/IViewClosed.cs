@@ -6,7 +6,12 @@
 public interface IViewClosed
 {
     /// <summary>
-    /// Called when the view is closed.
+    /// Occurs when the view is closed.
     /// </summary>
-    void OnClosed();
+    event EventHandler ViewClosed;
+
+    /// <summary>
+    /// Raises the Closed event.
+    /// </summary>
+    void RaiseViewClosed();
 }

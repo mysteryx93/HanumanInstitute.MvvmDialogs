@@ -6,7 +6,12 @@
 public interface IViewLoaded
 {
     /// <summary>
-    /// Called when the view is loaded.
+    /// Occurs when the view is loaded.
     /// </summary>
-    void OnLoaded();
+    event EventHandler ViewLoaded;
+
+    /// <summary>
+    /// Raises the Loaded event.
+    /// </summary>
+    void RaiseViewLoaded();
 }

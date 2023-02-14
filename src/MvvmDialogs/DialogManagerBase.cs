@@ -25,7 +25,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// A ILogger to capture MvvmDialogs logs.
     /// </summary>
     public ILogger<IDialogManager>? Logger { get; }
-
+    
     /// <summary>
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
@@ -38,6 +38,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
         DialogFactory = dialogFactory;
         Logger = logger;
     }
+
+    /// <summary>
+    /// Gets or sets whether to raise ViewModel view events when dialog events occur.
+    /// Must be set to False for view navigation because it would re-trigger the same event in loop.
+    /// </summary>
+    protected bool ForwardViewEvents { get; set; } = true;
 
     /// <inheritdoc />
     public virtual void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
@@ -150,26 +156,32 @@ public abstract class DialogManagerBase<T> : IDialogManager
         {
             activable.RequestActivate += (_, _) => Dispatch(dialog.Activate);
         }
-        if (viewModel is IViewLoaded loaded)
-        {
-            dialog.Loaded += (_, _) => loaded.OnLoaded();
-        }
         if (viewModel is IViewClosing closing)
         {
-            dialog.Closing += (_, e) => Window_Closing(dialog, e, closing);
+            dialog.Closing += (_, e) => View_Closing(dialog, e, closing);
         }
-        if (viewModel is IViewClosed closed)
+        if (ForwardViewEvents)
         {
-            dialog.Closed += (_, _) => closed.OnClosed();
+            if (viewModel is IViewLoaded loaded)
+            {
+                dialog.Loaded += (_, _) => loaded.RaiseViewLoaded();
+            }
+            if (viewModel is IViewClosed closed)
+            {
+                dialog.Closed += (_, _) => closed.RaiseViewClosed();
+            }
         }
     }
 
-    private async void Window_Closing(IView dialog, CancelEventArgs e, IViewClosing closing)
+    private async void View_Closing(IView dialog, CancelEventArgs e, IViewClosing closing)
     {
         if (dialog.ClosingConfirmed) { return; }
 
         // ReSharper disable once MethodHasAsyncOverload
-        closing.OnClosing(e);
+        if (ForwardViewEvents)
+        {
+            closing.RaiseViewClosing(e);
+        }
         if (e.Cancel)
         {
             dialog.IsEnabled = false;
@@ -177,7 +189,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
             // caller returns and window stays open
             await Task.Yield();
 
-            await closing.OnClosingAsync(e).ConfigureAwait(true);
+            await closing.OnViewClosingAsync(e).ConfigureAwait(true);
             if (!e.Cancel)
             {
                 dialog.ClosingConfirmed = true;

@@ -30,5 +30,5 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    public void OnClosed() => ViewClosed?.Invoke(this, EventArgs.Empty);
+    public void RaiseViewClosed() => ViewClosed?.Invoke(this, EventArgs.Empty);
 }
