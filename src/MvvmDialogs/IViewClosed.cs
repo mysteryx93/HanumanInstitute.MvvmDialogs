@@ -8,10 +8,10 @@ public interface IViewClosed
     /// <summary>
     /// Occurs when the view is closed.
     /// </summary>
-    event EventHandler ViewClosed;
+    event EventHandler Closed;
 
     /// <summary>
     /// Raises the Closed event.
     /// </summary>
-    void RaiseViewClosed();
+    void RaiseClosed();
 }

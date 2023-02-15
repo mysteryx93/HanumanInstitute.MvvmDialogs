@@ -8,10 +8,10 @@ public interface IViewLoaded
     /// <summary>
     /// Occurs when the view is loaded.
     /// </summary>
-    event EventHandler ViewLoaded;
+    event EventHandler Loaded;
 
     /// <summary>
     /// Raises the Loaded event.
     /// </summary>
-    void RaiseViewLoaded();
+    void RaiseLoaded();
 }

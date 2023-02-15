@@ -64,14 +64,14 @@ public class ViewNavigationWrapper : IView
         {
             if (ViewModel is IViewLoaded vm)
             {
-                vm.ViewLoaded += value;
+                vm.Loaded += value;
             }
         }
         remove
         {
             if (ViewModel is IViewLoaded vm)
             {
-                vm.ViewLoaded -= value;
+                vm.Loaded -= value;
             }
         }
     }
@@ -80,7 +80,7 @@ public class ViewNavigationWrapper : IView
     {
         if (ViewModel is IViewLoaded vm)
         {
-            vm.RaiseViewLoaded();
+            vm.RaiseLoaded();
         }
     }
     
@@ -91,14 +91,14 @@ public class ViewNavigationWrapper : IView
         {
             if (ViewModel is IViewClosing vm)
             {
-                vm.ViewClosing += value;
+                vm.Closing += value;
             }
         }
         remove
         {
             if (ViewModel is IViewClosing vm)
             {
-                vm.ViewClosing -= value;
+                vm.Closing -= value;
             }
         }
     }
@@ -107,7 +107,7 @@ public class ViewNavigationWrapper : IView
     {
         if (ViewModel is IViewClosing vm)
         {
-            vm.RaiseViewClosing(e);
+            vm.RaiseClosing(e);
         }
     }
     
@@ -118,14 +118,14 @@ public class ViewNavigationWrapper : IView
         {
             if (ViewModel is IViewClosed vm)
             {
-                vm.ViewClosed += value;
+                vm.Closed += value;
             }
         }
         remove
         {
             if (ViewModel is IViewClosed vm)
             {
-                vm.ViewClosed -= value;
+                vm.Closed -= value;
             }
         }
     }    
@@ -136,7 +136,7 @@ public class ViewNavigationWrapper : IView
     {
         if (ViewModel is IViewClosed vm)
         {
-            vm.RaiseViewClosed();
+            vm.RaiseClosed();
         }
     }
 

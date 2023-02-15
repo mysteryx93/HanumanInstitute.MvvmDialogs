@@ -14,23 +14,23 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
     {
         this._dialogService = dialogService;
 
-        this.ViewLoaded += (_, _) => Text = "Loaded!";
-        this.ViewClosing += (_, e) => e.Cancel = true;
-        this.ViewClosed += async (_, _) => await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
+        this.Loaded += (_, _) => Text = "Loaded!";
+        this.Closing += (_, e) => e.Cancel = true;
+        this.Closed += async (_, _) => await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
     }
 
     /// <inheritdoc />
-    public event EventHandler? ViewLoaded;
+    public event EventHandler? Loaded;
     /// <inheritdoc />
-    public event EventHandler<CancelEventArgs> ViewClosing;
+    public event EventHandler<CancelEventArgs> Closing;
     /// <inheritdoc />
-    public event EventHandler? ViewClosed;
+    public event EventHandler? Closed;
     /// <inheritdoc />
-    public void RaiseViewLoaded() => ViewLoaded?.Invoke(this, EventArgs.Empty);
+    public void RaiseLoaded() => Loaded?.Invoke(this, EventArgs.Empty);
     /// <inheritdoc />
-    public void RaiseViewClosing(CancelEventArgs e) => ViewClosing?.Invoke(this, e);
+    public void RaiseClosing(CancelEventArgs e) => Closing?.Invoke(this, e);
     /// <inheritdoc />
-    public void RaiseViewClosed() => ViewClosed?.Invoke(this, EventArgs.Empty);
+    public void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
 
     public string Text
     {
@@ -39,7 +39,7 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
     }
     private string _text = string.Empty;
 
-    public async Task OnViewClosingAsync(CancelEventArgs e)
+    public async Task OnClosingAsync(CancelEventArgs e)
     {
         var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton.YesNo);
         e.Cancel = quit != true;

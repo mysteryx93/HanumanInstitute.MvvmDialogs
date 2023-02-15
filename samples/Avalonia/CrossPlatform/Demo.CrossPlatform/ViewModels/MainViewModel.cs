@@ -44,12 +44,12 @@ public class MainViewModel : ViewModelBase
         {
             if (DialogViewModel != null)
             {
-                DialogViewModel.ViewClosed -= Dialog_ViewClosed;
+                DialogViewModel.Closed -= Dialog_ViewClosed;
             }
             this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
             if (DialogViewModel != null)
             {
-                DialogViewModel.ViewClosed += Dialog_ViewClosed;
+                DialogViewModel.Closed += Dialog_ViewClosed;
             }
         }
     }

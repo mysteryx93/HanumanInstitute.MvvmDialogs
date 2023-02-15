@@ -164,11 +164,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
         {
             if (viewModel is IViewLoaded loaded)
             {
-                dialog.Loaded += (_, _) => loaded.RaiseViewLoaded();
+                dialog.Loaded += (_, _) => loaded.RaiseLoaded();
             }
             if (viewModel is IViewClosed closed)
             {
-                dialog.Closed += (_, _) => closed.RaiseViewClosed();
+                dialog.Closed += (_, _) => closed.RaiseClosed();
             }
         }
     }
@@ -180,7 +180,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
         // ReSharper disable once MethodHasAsyncOverload
         if (ForwardViewEvents)
         {
-            closing.RaiseViewClosing(e);
+            closing.RaiseClosing(e);
         }
         if (e.Cancel)
         {
@@ -189,7 +189,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
             // caller returns and window stays open
             await Task.Yield();
 
-            await closing.OnViewClosingAsync(e).ConfigureAwait(true);
+            await closing.OnClosingAsync(e).ConfigureAwait(true);
             if (!e.Cancel)
             {
                 dialog.ClosingConfirmed = true;

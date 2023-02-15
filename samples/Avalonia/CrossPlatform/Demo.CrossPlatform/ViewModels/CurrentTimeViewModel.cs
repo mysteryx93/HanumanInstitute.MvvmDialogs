@@ -21,7 +21,7 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
 
     public bool? DialogResult { get; } = true;
     public event EventHandler? RequestClose;
-    public event EventHandler? ViewClosed;
+    public event EventHandler? Closed;
 
     public ICommand Close { get; }
 
@@ -30,5 +30,5 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    public void RaiseViewClosed() => ViewClosed?.Invoke(this, EventArgs.Empty);
+    public void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
 }
