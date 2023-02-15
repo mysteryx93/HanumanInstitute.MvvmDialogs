@@ -45,4 +45,5 @@ public class App : Application
     }
 
     public static MainWindowVm MainWindow => Locator.Current.GetService<MainWindowVm>()!;
+    public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }

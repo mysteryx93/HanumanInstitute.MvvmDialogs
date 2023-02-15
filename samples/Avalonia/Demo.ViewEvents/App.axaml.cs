@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
@@ -32,12 +31,8 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         GC.KeepAlive(typeof(DialogService));
-        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            DialogService.Show(null, MainWindow);
-
-            desktop.MainWindow = desktop.Windows[0];
-        }
+        
+        DialogService.Show(null, MainWindow);
 
         base.OnFrameworkInitializationCompleted();
     }

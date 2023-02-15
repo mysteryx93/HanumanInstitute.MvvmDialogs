@@ -45,4 +45,5 @@ public class App : Application
 
     public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
     public static CurrentTimeDialogViewModel CurrentTimeDialog => Locator.Current.GetService<CurrentTimeDialogViewModel>()!;
+    public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }
