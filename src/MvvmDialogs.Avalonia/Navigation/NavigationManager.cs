@@ -50,8 +50,15 @@ public class NavigationManager : ReactiveObject, INavigationManager
     /// </summary>
     private void TopLevel_BackRequested(object? sender, RoutedEventArgs e)
     {
-        if (CurrentView != null && _history.Count > 1)
+        if (CancellableActions.Any)
         {
+            // Cancel message boxes
+            CancellableActions.CancelLast();
+            e.Handled = true;
+        }
+        else if (CurrentView != null && _history.Count > 1)
+        {
+            // Cancel normal views
             var current = CurrentViewModel!;
             CurrentView.AsWrapper(this).Close();
             e.Handled = !object.ReferenceEquals(CurrentViewModel, current);

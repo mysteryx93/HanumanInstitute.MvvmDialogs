@@ -1,10 +1,11 @@
 ﻿using DynamicData;
+using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
 internal class FluentApi : IFluentApi
 {
-    public Task<ContentDialogResult> ShowContentDialog(ContentControl? owner, ContentDialogSettings settings)
+    public async Task<ContentDialogResult> ShowContentDialog(ContentControl? owner, ContentDialogSettings settings)
     {
         var dialog = new ContentDialog()
         {
@@ -18,10 +19,16 @@ internal class FluentApi : IFluentApi
             IsSecondaryButtonEnabled = settings.IsSecondaryButtonEnabled,
             FullSizeDesired = settings.FullSizeDesired
         };
-        return dialog.ShowAsync();
+
+        // Allow the dialog to be closed by mobile back navigation.
+        void Cancel() => dialog.Hide();
+        CancellableActions.Add(Cancel);
+        var result = await dialog.ShowAsync().ConfigureAwait(true);
+        CancellableActions.Remove(Cancel);
+        return result;
     }
 
-    public Task<object> ShowTaskDialog(ContentControl? owner, TaskDialogSettings settings)
+    public async Task<object> ShowTaskDialog(ContentControl? owner, TaskDialogSettings settings)
     {
         var dialog = new TaskDialog()
         {
@@ -40,6 +47,12 @@ internal class FluentApi : IFluentApi
         {
             dialog.XamlRoot = TopLevel.GetTopLevel(owner);
         }
-        return dialog.ShowAsync();
+
+        // Allow the dialog to be closed by mobile back navigation.
+        void Cancel() => dialog.Hide();
+        CancellableActions.Add(Cancel);
+        var result = await dialog.ShowAsync().ConfigureAwait(true);
+        CancellableActions.Remove(Cancel);
+        return result;
     }
 }

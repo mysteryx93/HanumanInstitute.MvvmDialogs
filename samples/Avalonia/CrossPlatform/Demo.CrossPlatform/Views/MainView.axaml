@@ -29,6 +29,7 @@
                 <Button Content="Open Folders" Command="{Binding OpenFolders}" />
                 <Button Content="Save File" Command="{Binding SaveFile}" />
                 <Button Content="MessageBox" Command="{Binding MessageBox}" />
+                <Button Content="3 Message Boxes" Command="{Binding MessageBoxMultiple}" />
             </StackPanel>
         </ScrollViewer>
         <TextBlock Grid.Column="1" Text="{Binding Output}" />

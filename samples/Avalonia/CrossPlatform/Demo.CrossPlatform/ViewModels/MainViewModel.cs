@@ -30,6 +30,7 @@ public class MainViewModel : ViewModelBase
         OpenFolders = ReactiveCommand.CreateFromTask(OpenFoldersImplAsync);
         SaveFile = ReactiveCommand.CreateFromTask(SaveFileImplAsync);
         MessageBox = ReactiveCommand.CreateFromTask(MessageBoxImplAsync);
+        MessageBoxMultiple = ReactiveCommand.CreateFromTask(MessageBoxMultipleImplAsync);
     }
     
     [Reactive]
@@ -65,6 +66,7 @@ public class MainViewModel : ViewModelBase
     public RxCommandUnit OpenFolders { get; }
     public RxCommandUnit SaveFile { get; }
     public RxCommandUnit MessageBox { get; }
+    public RxCommandUnit MessageBoxMultiple { get; }
 
     private void ShowImpl()
     {
@@ -120,5 +122,18 @@ public class MainViewModel : ViewModelBase
     {
         var result = await _dialogService.ShowMessageBoxAsync(this, "Do you want it?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);
         Output = result.ToString();
+    }
+
+    private async Task MessageBoxMultipleImplAsync()
+    {
+        var t1 = _dialogService.ShowMessageBoxAsync(this, "First message box", "Go", MessageBoxButton.YesNo, MessageBoxImage.Exclamation).ConfigureAwait(false);
+        await Task.Delay(1000).ConfigureAwait(false);
+        var t2 = _dialogService.ShowMessageBoxAsync(this, "Second message box", "Again", MessageBoxButton.YesNo, MessageBoxImage.Exclamation).ConfigureAwait(false);
+        await Task.Delay(1000).ConfigureAwait(false);
+        var t3 = _dialogService.ShowMessageBoxAsync(this, "Third message box", "Once More!", MessageBoxButton.YesNo, MessageBoxImage.Exclamation).ConfigureAwait(false);
+        var r1 = await t1;
+        var r2 = await t2;
+        var r3 = await t3;
+        Output = r1 + Environment.NewLine + r2 + Environment.NewLine + r3;
     }
 }
