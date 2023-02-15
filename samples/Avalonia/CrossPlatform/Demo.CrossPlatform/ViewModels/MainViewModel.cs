@@ -18,12 +18,11 @@ public class MainViewModel : ViewModelBase
 
         var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x == null);
         Show = ReactiveCommand.Create(ShowImpl, canShow);
-
-        ShowDialog = ReactiveCommand.CreateFromTask(ShowDialogImplAsync, canShow);
-
         var canActivate = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x != null);
         Activate = ReactiveCommand.Create(ActivateImpl, canActivate);
         Close = ReactiveCommand.Create(CloseImpl, canActivate);
+        ShowDialog = ReactiveCommand.CreateFromTask(ShowDialogImplAsync);
+        DialogConfirmClose = ReactiveCommand.CreateFromTask(DialogConfirmCloseImplAsync);
         OpenFile = ReactiveCommand.CreateFromTask(OpenFileImplAsync);
         OpenFiles = ReactiveCommand.CreateFromTask(OpenFilesImplAsync);
         OpenFolder = ReactiveCommand.CreateFromTask(OpenFolderImplAsync);
@@ -60,6 +59,7 @@ public class MainViewModel : ViewModelBase
     public RxCommandUnit ShowDialog { get; }
     public RxCommandUnit Close { get; }
     public RxCommandUnit Activate { get; }
+    public RxCommandUnit DialogConfirmClose { get; }
     public RxCommandUnit OpenFile { get; }
     public RxCommandUnit OpenFiles { get; }
     public RxCommandUnit OpenFolder { get; }
@@ -74,18 +74,24 @@ public class MainViewModel : ViewModelBase
         _dialogService.Show(this, DialogViewModel);
     }
     
-    private async Task ShowDialogImplAsync()
-    {
-        var vm = _dialogService.CreateViewModel<CurrentTimeViewModel>();
-        await _dialogService.ShowDialogAsync(this, vm);
-    }
-
     private void ActivateImpl() => _dialogService.Activate(DialogViewModel!);
 
     private void CloseImpl()
     {
         _dialogService.Close(DialogViewModel!);
         DialogViewModel = null;
+    }
+    
+    private async Task ShowDialogImplAsync()
+    {
+        var vm = _dialogService.CreateViewModel<CurrentTimeViewModel>();
+        await _dialogService.ShowDialogAsync(this, vm);
+    }
+
+    private async Task DialogConfirmCloseImplAsync()
+    {
+        var vm = _dialogService.CreateViewModel<ConfirmCloseViewModel>();
+        await _dialogService.ShowDialogAsync(this, vm);
     }
 
     private async Task OpenFileImplAsync()

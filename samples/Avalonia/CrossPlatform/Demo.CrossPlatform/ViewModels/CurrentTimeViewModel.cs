@@ -1,5 +1,4 @@
 ﻿using System.Reactive.Linq;
-using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
@@ -23,12 +22,12 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
     public event EventHandler? RequestClose;
     public event EventHandler? Closed;
 
-    public ICommand Close { get; }
+    public RxCommandUnit Close { get; }
 
     private void CloseImpl()
     {
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    public void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
+    public void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
 }

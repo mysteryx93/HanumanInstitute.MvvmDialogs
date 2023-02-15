@@ -1,6 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
-using System.ComponentModel;
 using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
@@ -10,12 +9,12 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 /// </summary>
 public class ViewNavigationWrapperTests
 {
-    public INotifyPropertyChanged ViewModel => _viewModel ??= new FirstViewModel();
-    private INotifyPropertyChanged _viewModel;
+    public FirstViewModel ViewModel => _viewModel ??= new FirstViewModel();
+    private FirstViewModel _viewModel;
 
     public ViewNavigationWrapper CreateView(bool existing)
     {
-        var result = new ViewNavigationWrapper(NavigationManager);
+        var result = new ViewNavigationWrapper(NavigationManager, DialogManager.View_Closing);
         if (existing)
         {
             result.InitializeExisting(ViewModel, new FirstView());
@@ -82,15 +81,13 @@ public class ViewNavigationWrapperTests
     public void Show_NoOwner_RefSetAndEnabledVisible(bool existing)
     {
         var view = CreateView(existing);
-        var loadedRaised = false;
-        view.Loaded += (_, _) => loadedRaised = true;
         
         view.Show(null);
         
         Assert.NotNull(view.Ref);
         Assert.True(view.IsEnabled);
         Assert.True(view.IsVisible);
-        Assert.True(loadedRaised);
+        Assert.Equal(1, ViewModel.LoadedCount);
     }
     
     [Theory]
@@ -100,16 +97,15 @@ public class ViewNavigationWrapperTests
     {
         var owner = CreateView(existing);
         var view = CreateView(existing);
-        var loadedRaised = false;
-        view.Loaded += (_, _) => loadedRaised = true;
 
         owner.Show(null);
+        ViewModel.ResetCounters();
         _ = view.ShowDialogAsync(owner);
 
         Assert.NotNull(view.Ref);
         Assert.True(view.IsEnabled);
         Assert.True(view.IsVisible);
-        Assert.True(loadedRaised);
+        Assert.Equal(1, ViewModel.LoadedCount);
     }
     
     [Theory]
@@ -118,16 +114,12 @@ public class ViewNavigationWrapperTests
     public void Show_Close_ClosingAndClosedRaised(bool existing)
     {
         var view = CreateView(existing);
-        var closingRaised = false;
-        var closedRaised = false;
-        view.Closing += (_, _) => closingRaised = true;
-        view.Closed += (_, _) => closedRaised = true;
         
         view.Show(null);
         view.Close();
         
-        Assert.True(closingRaised);
-        Assert.True(closedRaised);
+        Assert.Equal(1, ViewModel.ClosingCount);
+        Assert.Equal(1, ViewModel.ClosedCount);
     }
     
     [Theory]
@@ -136,13 +128,11 @@ public class ViewNavigationWrapperTests
     public void Activate_NotFound_DoNotShow(bool existing)
     {
         var view = CreateView(existing);
-        var loadedRaised = false;
-        view.Loaded += (_, _) => loadedRaised = true;
         
         view.Activate();
 
         Assert.Null(NavigationManager.CurrentView);
-        Assert.False(loadedRaised);
+        Assert.Equal(0, ViewModel.LoadedCount);
     }
     
     [Theory]
@@ -150,18 +140,19 @@ public class ViewNavigationWrapperTests
     [InlineData(true)]
     public void Activate_FromHistory_ShowAndRaiseLoaded(bool existing)
     {
+        var vm1 = ViewModel;
         var view1 = CreateView(existing);
-        _viewModel = new FirstViewModel(); 
+        var vm2 = new FirstViewModel();
+        _viewModel = vm2;
         var view2 = CreateView(existing);
-        var loadedRaised = false;
         
         view1.Show(null);
         view2.Show(view1);
-        view1.Loaded += (_, _) => loadedRaised = true;
+        vm1.ResetCounters();
         view1.Activate();
 
         Assert.Equal(view1.Ref, NavigationManager.CurrentView);
-        Assert.True(loadedRaised);
+        Assert.Equal(1, vm1.LoadedCount);
     }
     
     [Theory]
@@ -170,13 +161,12 @@ public class ViewNavigationWrapperTests
     public void Activate_AlreadyVisible_DoNotRaiseLoaded(bool existing)
     {
         var view = CreateView(existing);
-        var loadedRaised = false;
         view.Show(null);
-        view.Loaded += (_, _) => loadedRaised = true;
+        ViewModel.ResetCounters();
         
         view.Activate();
 
         Assert.Equal(view.Ref, NavigationManager.CurrentView);
-        Assert.False(loadedRaised);
+        Assert.Equal(0, ViewModel.LoadedCount);
     }
 }

@@ -31,4 +31,15 @@
     <ProjectReference Include="..\..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
     <ProjectReference Include="..\..\..\..\src\MvvmDialogs\MvvmDialogs.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\ConfirmCloseView.axaml.cs">
+      <DependentUpon>ConfirmCloseView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ConfirmCloseWindow.axaml.cs">
+      <DependentUpon>ConfirmCloseWindow.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
 </Project>

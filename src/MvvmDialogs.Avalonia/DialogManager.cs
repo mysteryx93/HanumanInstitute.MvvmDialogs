@@ -35,7 +35,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
         if (_useNavigation)
         {
             ForwardViewEvents = false;
-            _navigationManager = new NavigationManager();
+            _navigationManager = new NavigationManager(View_Closing);
             _navigationManager.Launch(customNavigationRoot);
         }
     }
@@ -49,11 +49,15 @@ public class DialogManager : DialogManagerBase<ContentControl>
     protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
     {
         var wrapper = _useNavigation ?
-            (IView)new ViewNavigationWrapper(_navigationManager!) :
+            (IView)new ViewNavigationWrapper(_navigationManager!, View_Closing) :
             new ViewWrapper();
         wrapper.Initialize(viewModel, viewType);
         return wrapper;
     }
+
+    /// <inheritdoc />
+    protected override IView AsWrapper(ContentControl view) =>
+        view is Window w ? w.AsWrapper() : ((UserControl)view).AsWrapper(_navigationManager!, View_Closing);
 
     private static IEnumerable<Window> Windows =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Windows ?? Array.Empty<Window>();
@@ -63,7 +67,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
     {
         if (_useNavigation)
         {
-            return _navigationManager!.GetViewForViewModel(viewModel).AsWrapper(_navigationManager);
+            return _navigationManager!.GetViewForViewModel(viewModel).AsWrapper(_navigationManager, View_Closing);
         }
         else
         {

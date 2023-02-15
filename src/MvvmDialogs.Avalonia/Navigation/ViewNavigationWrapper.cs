@@ -9,14 +9,17 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 public class ViewNavigationWrapper : IView
 {
     private readonly INavigationManager _navigation;
+    private readonly ViewClosingHandler? _closingHandler;
 
     /// <summary>
     /// Initializes a new instance of the ViewNavigationWrapper class. 
     /// </summary>
     /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
-    public ViewNavigationWrapper(INavigationManager navigationManager)
+    /// <param name="closingHandler">A handler for the Closing event. Not that the Closing event is unsupported in this class and we thus support a single listener.</param>
+    public ViewNavigationWrapper(INavigationManager navigationManager, ViewClosingHandler? closingHandler)
     {
         _navigation = navigationManager;
+        _closingHandler = closingHandler;
     }
 
     /// <inheritdoc />
@@ -57,86 +60,37 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public object RefObj => Ref!;
 
+    /// <summary>
+    /// Unused event.
+    /// </summary>
+    public event EventHandler? Loaded;
+
+    /// <summary>
+    /// Unused event.
+    /// </summary>
+    public event EventHandler<CancelEventArgs>? Closing;
+    
+    /// <summary>
+    /// Unused event.
+    /// </summary>
+    public event EventHandler? Closed;
+    
     /// <inheritdoc />
-    public event EventHandler? Loaded
-    {
-        add
-        {
-            if (ViewModel is IViewLoaded vm)
-            {
-                vm.Loaded += value;
-            }
-        }
-        remove
-        {
-            if (ViewModel is IViewLoaded vm)
-            {
-                vm.Loaded -= value;
-            }
-        }
-    }
+    public INotifyPropertyChanged ViewModel { get; private set; }
 
     private void RaiseLoaded()
     {
         if (ViewModel is IViewLoaded vm)
         {
-            vm.RaiseLoaded();
+            vm.OnLoaded();
         }
     }
-    
-    /// <inheritdoc />
-    public event EventHandler<CancelEventArgs>? Closing
-    {
-        add
-        {
-            if (ViewModel is IViewClosing vm)
-            {
-                vm.Closing += value;
-            }
-        }
-        remove
-        {
-            if (ViewModel is IViewClosing vm)
-            {
-                vm.Closing -= value;
-            }
-        }
-    }
-    
-    private void RaiseClosing(CancelEventArgs e)
-    {
-        if (ViewModel is IViewClosing vm)
-        {
-            vm.RaiseClosing(e);
-        }
-    }
-    
-    /// <inheritdoc />
-    public event EventHandler? Closed
-    {
-        add
-        {
-            if (ViewModel is IViewClosed vm)
-            {
-                vm.Closed += value;
-            }
-        }
-        remove
-        {
-            if (ViewModel is IViewClosed vm)
-            {
-                vm.Closed -= value;
-            }
-        }
-    }    
-    /// <inheritdoc />
-    public INotifyPropertyChanged ViewModel { get; private set; }
-    
+
     private void RaiseClosed()
     {
         if (ViewModel is IViewClosed vm)
         {
-            vm.RaiseClosed();
+            vm.OnClosed();
         }
     }
 
@@ -173,11 +127,14 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public void Close()
     {
-        _navigation.Close(ViewModel, ViewType);
         var args = new CancelEventArgs();
-        RaiseClosing(args);
+        if (!ClosingConfirmed)
+        {
+            _closingHandler?.Invoke(this, args);
+        }
         if (!args.Cancel)
         {
+            _navigation.Close(ViewModel, ViewType);
             RaiseClosed();
         }
     }
@@ -196,7 +153,7 @@ public class ViewNavigationWrapper : IView
     }
 
     /// <inheritdoc />
-    public bool IsVisible => Ref != null && object.ReferenceEquals(Ref, _navigation.CurrentView);
+    public bool IsVisible => Ref != null && ReferenceEquals(Ref, _navigation.CurrentView);
     
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }

@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Demo.CrossPlatform.Views;
 
-public partial class CurrentTimeWindow : Window
+public partial class ConfirmCloseWindow : Window
 {
-    public CurrentTimeWindow()
+    public ConfirmCloseWindow()
     {
         InitializeComponent();
 #if DEBUG

@@ -46,14 +46,15 @@ public static class UiExtensions
     /// Creates a ViewNavigationWrapper around specified user control.
     /// </summary>
     /// <param name="view">The UserControl to get a wrapper for.</param>
-    /// <param name="navigationManager"></param>
+    /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
+    /// <param name="closingHandler">A handler for the Closing event. Not that the Closing event is unsupported in this class and we thus support a single listener.</param>
     /// <returns>A ViewNavigationWrapper referencing the user control.</returns>
     [return: NotNullIfNotNull("view")]
-    public static ViewNavigationWrapper? AsWrapper(this UserControl? view, INavigationManager navigationManager)
+    public static ViewNavigationWrapper? AsWrapper(this UserControl? view, INavigationManager navigationManager, ViewClosingHandler? closingHandler)
     {
         if (view != null)
         {
-            var result = new ViewNavigationWrapper(navigationManager);
+            var result = new ViewNavigationWrapper(navigationManager, closingHandler);
             result.InitializeExisting((INotifyPropertyChanged)view.DataContext!, view);
             return result;
         }

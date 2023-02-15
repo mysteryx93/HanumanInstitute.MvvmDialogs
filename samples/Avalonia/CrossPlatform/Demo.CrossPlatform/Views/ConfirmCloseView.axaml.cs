@@ -3,14 +3,11 @@ using Avalonia.Markup.Xaml;
 
 namespace Demo.CrossPlatform.Views;
 
-public partial class CurrentTimeWindow : Window
+public partial class ConfirmCloseView : UserControl
 {
-    public CurrentTimeWindow()
+    public ConfirmCloseView()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void InitializeComponent()

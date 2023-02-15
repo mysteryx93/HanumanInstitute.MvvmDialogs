@@ -129,6 +129,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
     protected abstract IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType);
 
     /// <summary>
+    /// Creates a wrapper around a View.
+    /// </summary>
+    /// <param name="view">The view to create a wrapper for.</param>
+    protected abstract IView AsWrapper(T view);
+
+    /// <summary>
     /// Dispatches an action to the UI thread.
     /// </summary>
     /// <param name="action">The action to execute on the UI thread.</param>
@@ -156,32 +162,30 @@ public abstract class DialogManagerBase<T> : IDialogManager
         {
             activable.RequestActivate += (_, _) => Dispatch(dialog.Activate);
         }
-        if (viewModel is IViewClosing closing)
+        if (viewModel is IViewClosing)
         {
-            dialog.Closing += (_, e) => View_Closing(dialog, e, closing);
+            dialog.Closing += (_, e) => View_Closing(dialog, e);
         }
         if (ForwardViewEvents)
         {
             if (viewModel is IViewLoaded loaded)
             {
-                dialog.Loaded += (_, _) => loaded.RaiseLoaded();
+                dialog.Loaded += (_, _) => loaded.OnLoaded();
             }
             if (viewModel is IViewClosed closed)
             {
-                dialog.Closed += (_, _) => closed.RaiseClosed();
+                dialog.Closed += (_, _) => closed.OnClosed();
             }
         }
     }
-
-    private async void View_Closing(IView dialog, CancelEventArgs e, IViewClosing closing)
+    
+    public async void View_Closing(IView dialog, CancelEventArgs e)
     {
-        if (dialog.ClosingConfirmed) { return; }
+        var closing = dialog.ViewModel as IViewClosing;
+        if (closing == null || dialog.ClosingConfirmed) { return; }
 
         // ReSharper disable once MethodHasAsyncOverload
-        if (ForwardViewEvents)
-        {
-            closing.RaiseClosing(e);
-        }
+        closing.OnClosing(e);
         if (e.Cancel)
         {
             dialog.IsEnabled = false;

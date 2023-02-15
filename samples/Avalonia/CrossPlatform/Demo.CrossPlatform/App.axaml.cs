@@ -20,7 +20,7 @@ public partial class App : Application
 
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
-                viewLocator: new ViewLocator() { ForceSinglePageNavigation = true },
+                viewLocator: new ViewLocator() { ForceSinglePageNavigation = false },
                 logger: loggerFactory.CreateLogger<DialogManager>(),
                 dialogFactory: new DialogFactory().AddFluent(messageBoxType: FluentMessageBoxType.ContentDialog)),
             viewModelFactory: x => Locator.Current.GetService(x)));
@@ -31,6 +31,9 @@ public partial class App : Application
         SplatRegistrations.Register<CurrentTimeWindow>();
         SplatRegistrations.Register<CurrentTimeView>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
+        SplatRegistrations.Register<ConfirmCloseWindow>();
+        SplatRegistrations.Register<ConfirmCloseView>();
+        SplatRegistrations.Register<ConfirmCloseViewModel>();
         SplatRegistrations.SetupIOC();
     }
     
@@ -43,5 +46,6 @@ public partial class App : Application
     
     public static MainViewModel MainViewModel => Locator.Current.GetService<MainViewModel>()!;
     public static CurrentTimeViewModel CurrentTimeViewModel => Locator.Current.GetService<CurrentTimeViewModel>()!;
+    public static ConfirmCloseViewModel ConfirmCloseViewModel => Locator.Current.GetService<ConfirmCloseViewModel>()!;
     private static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }

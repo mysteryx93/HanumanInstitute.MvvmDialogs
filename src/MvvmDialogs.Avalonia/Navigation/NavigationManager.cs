@@ -15,6 +15,12 @@ public class NavigationManager : ReactiveObject, INavigationManager
     private readonly List<INotifyPropertyChanged> _history = new();
     private readonly ViewCache _viewCache = new();
     private readonly List<DialogTask> _dialogs = new();
+    private readonly ViewClosingHandler? _closingHandler;
+
+    public NavigationManager(ViewClosingHandler? closingHandler)
+    {
+        _closingHandler = closingHandler;
+    }
 
     /// <summary>
     /// Returns the navigation history.
@@ -60,7 +66,7 @@ public class NavigationManager : ReactiveObject, INavigationManager
         {
             // Cancel normal views
             var current = CurrentViewModel!;
-            CurrentView.AsWrapper(this).Close();
+            CurrentView.AsWrapper(this, _closingHandler).Close();
             e.Handled = !object.ReferenceEquals(CurrentViewModel, current);
         }
     }

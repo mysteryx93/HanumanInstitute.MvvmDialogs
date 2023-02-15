@@ -23,6 +23,7 @@
                 <Button Content="Activate" Command="{Binding Activate}" />
                 <Button Content="Close" Command="{Binding Close}" />
                 <Button Content="Show Dialog" Command="{Binding ShowDialog}" />
+                <Button Content="Dialog Confirm Close" Command="{Binding DialogConfirmClose}" />
                 <Button Content="Open File" Command="{Binding OpenFile}" />
                 <Button Content="Open Files" Command="{Binding OpenFiles}" />
                 <Button Content="Open Folder" Command="{Binding OpenFolder}" />

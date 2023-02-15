@@ -11,14 +11,20 @@ public class FirstViewModel : ReactiveObject, ICloseable, IActivable, IViewLoade
     public void OnRequestClose() => RequestClose?.Invoke(this, EventArgs.Empty);
 
     public void OnRequestActivate() => RequestActivate?.Invoke(this, EventArgs.Empty);
-    
-    public event EventHandler Loaded;
-    public void RaiseLoaded() => Loaded?.Invoke(this, EventArgs.Empty);
-    
-    public event EventHandler<CancelEventArgs> Closing;
-    public void RaiseClosing(CancelEventArgs e) => Closing?.Invoke(this, e);
-    public Task OnClosingAsync(CancelEventArgs e) => Task.CompletedTask;
-    
-    public event EventHandler Closed;
-    public void RaiseClosed() => Closed?.Invoke(this, EventArgs.Empty);
+
+    public int LoadedCount { get; private set; }
+    public int ClosingCount { get; private set; }
+    public int ClosedCount { get; private set; }
+
+    public void ResetCounters()
+    {
+        LoadedCount = 0;
+        ClosingCount = 0;
+        ClosedCount = 0;
+    }
+
+    public virtual void OnLoaded() => LoadedCount++;
+    public virtual void OnClosing(CancelEventArgs e) => ClosingCount++;
+    public virtual Task OnClosingAsync(CancelEventArgs e) => Task.CompletedTask;
+    public virtual void OnClosed() => ClosedCount++;
 }
