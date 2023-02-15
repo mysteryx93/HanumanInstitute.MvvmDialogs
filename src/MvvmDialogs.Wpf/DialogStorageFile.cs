@@ -19,13 +19,7 @@ public class DialogStorageFile : DialogStorageItem, IDialogStorageFile
     }
     
     /// <inheritdoc />
-    public bool CanOpenRead => true;
-
-    /// <inheritdoc />
     public Task<Stream> OpenReadAsync() => Task.Run<Stream>(() => File.OpenRead(_info.FullName));
-
-    /// <inheritdoc />
-    public bool CanOpenWrite => true;
 
     /// <inheritdoc />
     public Task<Stream> OpenWriteAsync() => Task.Run<Stream>(() => File.OpenWrite(_info.FullName));

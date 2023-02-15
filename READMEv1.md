@@ -15,7 +15,7 @@
 
 UI Frameworks currently supported:
 - WPF <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Wpf/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Wpf.svg"></a> (Windows Presentation Foundation)
-- [Avalonia](https://avaloniaui.net/) <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Avalonia/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Avalonia.svg"></a> (mature cross-platform UI framework with WPF-like syntax, including mobile/browser support)
+- [Avalonia](https://avaloniaui.net/) <a href="https://www.nuget.org/packages/HanumanInstitute.MvvmDialogs.Avalonia/"><img src="https://img.shields.io/nuget/v/HanumanInstitute.MvvmDialogs.Avalonia.svg"></a> (mature cross-platform UI framework with WPF-like syntax)
 
 UI Frameworks that can easily be added through community efforts:
 - WinUI 3 (promising Android/iOS support but won't support Linux)
@@ -51,8 +51,6 @@ The library has built in support for the following dialogs:
 - Open file dialog
 - Save file dialog
 - Open folder dialog
-
-v2 adds supports for 'magic' mobile navigation with the same API. 
 
 ## Generic Usage
 
@@ -160,9 +158,7 @@ public partial class App
 }
 ```
 
-To associate view models with views, the default naming convention is to replace "ViewModel" with "View".
-
-To specify your own convention, create `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Wpf/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits `IViewLocator`.
+Optinally, create `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Wpf/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits `IViewLocator`.
 
 ```c#
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -237,9 +233,7 @@ public class App : Application
     }
 ```
 
-To associate view models with views, the default naming convention (as of v2) is to replace folder "ViewModels" with "Views", and then change suffix from "ViewModel" to "Window" for desktop mode and "View" for mobile/navigation mode. Very often, Window simply contains the View.
-
-To specify your own convention, replace `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Avalonia/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits both `IDataTemplate` (for Avalonia) and `IViewLocator` (for MvvmDialogs). You can use `UseSinglePageNavigation` to know whether the app is running in desktop or navigation mode.
+Replace `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Avalonia/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits both `IDataTemplate` (for Avalonia) and `IViewLocator` (for MvvmDialogs).
 
 ```c#
 using HanumanInstitute.MvvmDialogs.Avalonia;
@@ -259,20 +253,10 @@ public class ViewLocator : ViewLocatorBase
 
 For the moment there are no application-wide settings used for Avalonia.
 
-### Mobile/Web Applications
-
-Avalonia11 supports Android, iOS and Web Assembly. To support it, MvvmDialogs v2 went through considerable structural changes that resulted in very minor API changes.
-
-For mobile devices and web browsers, the application is composed of a single root view, and you navigate between views. You can also force this mode on desktop by setting `viewLocator: new ViewLocatorBase() { ForceSinglePageNavigation = true }` in the `DialogManager` constructor.
-
-The philosophy is this. We maintain a navigation history of view models only, and a weak cache of views. Views can be garbage collected and recreated when needed from the view models. You get the same navigation functionalities as a desktop app, but in a navigation mode. All the magic is done automatically, which means that your view model doesn't need to know whether it runs on mobile or desktop, and can support both modes.
-
-Mobile back button is also supported automatically.
-
 ### Avalonia.MessageBox
 
 Avalonia has no built-in support for message boxes. This extension handles message box requests
-using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia) library. Only supports desktop mode.
+using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia) library.
 
 1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.MessageBox`
 2. Register the MessageBox handler on IDialogService like this:
@@ -280,8 +264,6 @@ using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Aval
 ```c#
 new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBox()))
 ```
-
-TODO: Support [DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) for mobile support.
 
 ### Avalonia.Fluent
 
@@ -298,55 +280,6 @@ It will add `IDialogService.ShowContentDialogAsync` and `IDialogService.ShowTask
 
 Additionally, `AddFluent` takes a parameter specifying whether to handle `IDialogService.ShowMessageBoxAsync` calls with ContentDialog or with TaskDialog. 
 
-Note: As of FluentAvalonia v2, TaskDialogs (desktop only) requires a reference to ` FluentAvalonia.UI.Windowing` in your .Desktop project, and this line in App.axaml 
-
-    <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
-
-TODO: Clarify how to include that line only for desktop and exclude for mobile/web.
-
-## Framework Dialogs
-
-`IDialogService` provides the following standard framework dialog methods:
-
-- `bool? ShowMessageBoxAsync`
-- `IDialogStorageFile? ShowOpenFileDialogAsync`
-- `IDialogStorageFile? ShowSaveFileDialogAsync`
-- `IDialogStorageFolder? ShowOpenFolderDialogAsync`
-- `IReadOnlyList<IDialogStorageFile> ShowOpenFilesDialogAsync`
-- `IReadOnlyList<IDialogStorageFolder> ShowOpenFoldersDialogAsync`
-
-As of v2, files and folders are returned as `IDialogStorageFile` and `IDialogStorageFolder` instead of `string`. To get the path as a string like before (on desktop), simply add `.LocalPath`. Note that mobile and web have different path formats. 
-
-For extra dialog options, see Custom Framework Dialogs section. 
-
-## Cross-Platform File Access
-
-To access files and folders across desktop, mobile and web, `IDialogStorageFile` and `IDialogStorageFolder` provide various standard methods. Instead of having direct access to files, you'll often use bookmarks, which are references to those files. `IBookmarkFileSystem` is a new service exposed to help work with bookmarks.
-
-### IDialogStorageItem (both File and Folder)
-
-- `string Name`: Gets the name of the item including the file name extension if there is one.
-- `Uri? Path`: Gets the full file-system path of the item, if the item has a path.
-- `string LocalPath`: Gets a local operating-system representation of a file name.
-- `Task<DialogStorageItemProperties> GetBasicPropertiesAsync()`: Gets the basic properties of the current item: Size, DateCreated, and DateModified.
-- `bool CanBookmark`: Returns true is item can be bookmarked and reused later.
-- `Task<string?> SaveBookmarkAsync()`: Saves items to a bookmark.
-- `Task<IDialogStorageFolder?> GetParentAsync()`: Gets the parent folder of the current storage item.
-
-### IDialogStorageFile
-- `Task<Stream> OpenReadAsync()`: Opens a stream for read access.
-- `Task<Stream> OpenWriteAsync()`: Opens stream for writing to the file.
-
-### IDialogStorageFolder
-- `Task<IEnumerable<IDialogStorageItem>> GetItemsAsync()`: Gets the files and subfolders in the current folder.
-
-### IBookmarkFileSystem
-- `Task<IDialogStorageFile?> OpenFileBookmarkAsync`: Open IDialogStorageFile from the bookmark ID.
-- `Task<IDialogStorageFolder?> OpenFolderBookmarkAsync`: Open <see cref="IDialogStorageFolder"/> from the bookmark ID.
-- `Task ReleaseFileBookmarkAsync`: Releases the bookmark with specified key.
-- `Task ReleaseFolderBookmarkAsync`: Releases the bookmark with specified key.
-
-To use `IBookmarkFileSystem`, you'll need to register `BookmarkFileSystem` in your Dependency Injection Container (or use `BookmarkFileSystem` directly).
 
 ## IModalDialogViewModel / ICloseable / IActivable
 
@@ -369,13 +302,13 @@ Closed cannot even call a command via an XAML behavior! Yet you need it to unreg
 As a simple solution, you can implement `IViewLoaded`, `IViewClosing` and/or `IViewClosed` from your ViewModel with no code required in your View.
 
 **IViewLoaded**  
-`void OnLoaded();` Called when the view is loaded.
+`void OnLoaded();` Called after the view is displayed.
 
 **IViewClosed**  
-`void RaiseClosed();` Called when the view is closed.
+`void OnClosed();` Called after the view is closed.
 
 **IViewClosing**  
-`void RaiseClosing(CancelEventArgs e);` Called when closing the view.  
+`void OnClosing(CancelEventArgs e);` Called when closing the view.  
 `Task OnClosingAsync(CancelEventArgs e);` Called if `e.Cancel` has been set to True in `OnClosing`
 
 Setting `e.Cancel = true` in `OnClosing` will...
@@ -407,7 +340,11 @@ Initializing your main window in Avalonia in `App.axaml.cs`
 public override void OnFrameworkInitializationCompleted()
 {
     GC.KeepAlive(typeof(DialogService));
-    DialogService.Show(null, MainWindow);
+    if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+    {
+        DialogService.Show(null, MainWindow);
+        desktop.MainWindow = desktop.Windows[0];
+    }
     base.OnFrameworkInitializationCompleted();
 }
 
@@ -420,7 +357,7 @@ public static IDialogService DialogService => Locator.Current.GetService<IDialog
 To display custom dialogs that are not of type `Window` or `ContentDialog`,
 your dialog class must implement [IView](src/MvvmDialogs/IView.cs)
 ([sample](samples/Wpf/Demo.ModalCustomDialog/AddTextCustomDialog.cs)).
-The usage will be the same as a standard `Window`.
+The usage will the same as a standard `Window`.
 
 ## Custom Framework Dialogs
 
