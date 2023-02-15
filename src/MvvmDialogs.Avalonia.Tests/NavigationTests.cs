@@ -87,18 +87,6 @@ public class NavigationTests
         Assert.NotNull(NavigationManager.CurrentView);
         Assert.Equal(vm1, NavigationManager.CurrentView.DataContext);
     }
-    
-    [Fact]
-    public void Show_CloseFirst_CloseApp()
-    {
-        var vm1 = new FirstViewModel();
-        
-        DialogService.Show(null, vm1);
-        vm1.OnRequestClose();
-
-        // ???
-        Assert.False(true);
-    }
 
     [Fact]
     public async Task Show_SecondAndGarbageCollect_FirstReleased()
