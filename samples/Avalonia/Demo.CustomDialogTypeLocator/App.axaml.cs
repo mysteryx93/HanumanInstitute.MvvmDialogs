@@ -26,7 +26,7 @@ public class App : Application
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowVm>();
-        SplatRegistrations.Register<MyDialogVm>();
+        SplatRegistrations.Register<MyDialogVM>();
         SplatRegistrations.SetupIOC();
     }
 

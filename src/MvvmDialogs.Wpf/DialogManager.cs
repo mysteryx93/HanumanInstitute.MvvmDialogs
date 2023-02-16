@@ -58,6 +58,9 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             return wrapper;
         }
 
+        /// <inheritdoc />
+        protected override IView AsWrapper(Window view) => view.AsWrapper();
+
         private static IEnumerable<Window> Windows =>
             Application.Current.Windows.Cast<Window>();
 

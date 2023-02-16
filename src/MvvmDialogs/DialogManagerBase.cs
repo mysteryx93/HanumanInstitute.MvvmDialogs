@@ -25,7 +25,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// A ILogger to capture MvvmDialogs logs.
     /// </summary>
     public ILogger<IDialogManager>? Logger { get; }
-    
+
     /// <summary>
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
@@ -178,7 +178,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
             }
         }
     }
-    
+
     public async void View_Closing(IView dialog, CancelEventArgs e)
     {
         var closing = dialog.ViewModel as IViewClosing;

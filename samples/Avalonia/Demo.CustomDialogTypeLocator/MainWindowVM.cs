@@ -22,7 +22,7 @@ public class MainWindowVm : ViewModelBase
 
     private async Task ShowDialogAsync()
     {
-        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVm>();
+        var dialogViewModel = _dialogService.CreateViewModel<MyDialogVM>();
         await _dialogService.ShowDialogAsync(this, dialogViewModel);
     }
 }

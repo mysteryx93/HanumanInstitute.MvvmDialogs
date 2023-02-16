@@ -3,7 +3,7 @@ using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.Avalonia.CustomDialogTypeLocator.ComponentA;
 
-public class MyDialogVm : ViewModelBase, IModalDialogViewModel
+public class MyDialogVM : ViewModelBase, IModalDialogViewModel
 {
     private bool? _dialogResult;
 

@@ -12,26 +12,10 @@
     Height="200"
     d:DataContext="{x:Static local:App.MainWindow}">
 
-    <UniformGrid Columns="2" Rows="3">
+    <UniformGrid Rows="3">
         <Button
             Command="{Binding ShowMessageBoxWithMessageCommand}">
-            <TextBlock Text="Show message box with message" />
-        </Button>
-        <Button
-            Command="{Binding ShowMessageBoxWithCaptionCommand}">
-            <TextBlock Text="Show message box with caption" />
-        </Button>
-        <Button
-            Command="{Binding ShowMessageBoxWithButtonCommand}">
-            <TextBlock Text="Show message box with buttons" />
-        </Button>
-        <Button
-            Command="{Binding ShowMessageBoxWithIconCommand}">
-            <TextBlock Text="Show message box with icon" />
-        </Button>
-        <Button
-            Command="{Binding ShowMessageBoxWithDefaultResultCommand}">
-            <TextBlock Text="Show message box with default result" />
+            <TextBlock Text="Show Task Dialog" />
         </Button>
         <TextBlock TextWrapping="Wrap"
                    Text="{Binding Confirmation}" />

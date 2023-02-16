@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using FluentAvalonia.UI.Controls;
@@ -13,20 +13,12 @@ public class MainWindowViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     public ICommand ShowMessageBoxWithMessageCommand { get; }
-    public ICommand ShowMessageBoxWithCaptionCommand { get; }
-    public ICommand ShowMessageBoxWithButtonCommand { get; }
-    public ICommand ShowMessageBoxWithIconCommand { get; }
-    public ICommand ShowMessageBoxWithDefaultResultCommand { get; }
 
     public MainWindowViewModel(IDialogService dialogService)
     {
         this._dialogService = dialogService;
 
         ShowMessageBoxWithMessageCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithMessage);
-        ShowMessageBoxWithCaptionCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithCaption);
-        ShowMessageBoxWithButtonCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithButton);
-        ShowMessageBoxWithIconCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithIcon);
-        ShowMessageBoxWithDefaultResultCommand = ReactiveCommand.CreateFromTask(ShowMessageBoxWithDefaultResult);
     }
 
     private string _confirmation = string.Empty;
@@ -49,54 +41,8 @@ public class MainWindowViewModel : ViewModelBase
             }
         };
         var result = await _dialogService.ShowTaskDialogAsync(this, settings);
-        
+
         UpdateResult(result == TaskDialogStandardResult.Yes);
-    }
-
-    private async Task ShowMessageBoxWithCaption()
-    {
-        var result = await _dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption");
-
-        UpdateResult(result);
-    }
-
-    private async Task ShowMessageBoxWithButton()
-    {
-        var result = await _dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
-            MessageBoxButton.OkCancel);
-
-        UpdateResult(result);
-    }
-
-    private async Task ShowMessageBoxWithIcon()
-    {
-        var result = await _dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
-            MessageBoxButton.OkCancel,
-            MessageBoxImage.Information);
-
-        UpdateResult(result);
-    }
-
-    private async Task ShowMessageBoxWithDefaultResult()
-    {
-        var result = await _dialogService.ShowMessageBoxAsync(
-            this,
-            "This is the text.",
-            "This Is The Caption",
-            MessageBoxButton.OkCancel,
-            MessageBoxImage.Information,
-            null);
-
-        UpdateResult(result);
     }
 
     private void UpdateResult(bool? result) =>

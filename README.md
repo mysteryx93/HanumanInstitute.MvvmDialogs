@@ -28,6 +28,8 @@ UI Frameworks that can easily be added through community efforts:
 - [Generic Usage](#generic-usage)
 - [WPF Usage](#wpf-usage)
 - [Avalonia Usage](#avalonia-usage)
+- [Framework Dialogs](#framework-dialogs)
+- [Cross-Platform File Access](#cross-platform-file-access)
 - [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel--icloseable--iactivable)
 - [IViewLoaded / IViewClosing / IViewClosed](#iviewloaded--iviewclosing--iviewclosed)
 - [Custom Windows](#custom-windows)
