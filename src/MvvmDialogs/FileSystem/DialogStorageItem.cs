@@ -1,7 +1,7 @@
 ﻿using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.PathInfo;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc />
 public abstract class DialogStorageItem : IDialogStorageItem

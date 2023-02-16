@@ -22,16 +22,16 @@ public class DirectoryInfo : IDirectoryInfo
     /// <param name="pathInfo">The System.IO.DirectoryInfo to wrap onto.</param>
     public DirectoryInfo(System.IO.DirectoryInfo pathInfo) =>
         _info = pathInfo;
-    
+
     /// <inheritdoc />
     public string Name => _info.Name;
 
     /// <inheritdoc />
     public string FullName => _info.FullName;
-    
+
     /// <inheritdoc />
     public IDirectoryInfo? Parent => _info.Parent != null ? new DirectoryInfo(_info.Parent) : null;
-    
+
     /// <inheritdoc />
     public bool Exists => _info.Exists;
 
@@ -46,7 +46,7 @@ public class DirectoryInfo : IDirectoryInfo
 
     /// <inheritdoc />
     public IEnumerable<IPathInfo> EnumeratePathInfos(string searchPattern) => EnumeratePathInfos(searchPattern, SearchOption.TopDirectoryOnly);
-    
+
     /// <inheritdoc />
     public IEnumerable<IPathInfo> EnumeratePathInfos(string searchPattern, SearchOption searchOption) => _info.EnumerateFileSystemInfos(searchPattern, searchOption)
         .Select<FileSystemInfo, IPathInfo>(x => x is System.IO.FileInfo f ? new FileInfo(f) : new DirectoryInfo((System.IO.DirectoryInfo)x));

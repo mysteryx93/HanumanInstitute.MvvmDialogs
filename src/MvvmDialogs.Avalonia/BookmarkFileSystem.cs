@@ -25,11 +25,11 @@ public class BookmarkFileSystem : IBookmarkFileSystem
         if (storage != null)
         {
             var result = await storage.OpenFileBookmarkAsync(bookmark).ConfigureAwait(false);
-            return result != null ? new DialogStorageFile(result) : null;
+            return result != null ? new AvaloniaDialogStorageFile(result) : null;
         }
         return null;
     }
-    
+
     /// <inheritdoc />
     public async Task<IDialogStorageFolder?> OpenFolderBookmarkAsync(string bookmark)
     {
@@ -37,11 +37,11 @@ public class BookmarkFileSystem : IBookmarkFileSystem
         if (storage != null)
         {
             var result = await storage.OpenFolderBookmarkAsync(bookmark).ConfigureAwait(false);
-            return result != null ? new DialogStorageFolder(result) : null;
+            return result != null ? new AvaloniaDialogStorageFolder(result) : null;
         }
         return null;
     }
-    
+
     /// <inheritdoc />
     public async Task ReleaseFileBookmarkAsync(string bookmark)
     {
@@ -55,7 +55,7 @@ public class BookmarkFileSystem : IBookmarkFileSystem
             }
         }
     }
-    
+
     /// <inheritdoc />
     public async Task ReleaseFolderBookmarkAsync(string bookmark)
     {

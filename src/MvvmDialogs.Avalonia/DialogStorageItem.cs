@@ -4,7 +4,7 @@ using HanumanInstitute.MvvmDialogs.FileSystem;
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <inheritdoc />
-public class DialogStorageItem : IDialogStorageItem
+public class AvaloniaDialogStorageItem : IDialogStorageItem
 {
     private readonly IStorageItem _item;
 
@@ -12,7 +12,7 @@ public class DialogStorageItem : IDialogStorageItem
     /// Initializes a new instance of DialogStorageItem as a bridge to specified Avalonia IStorageItem.
     /// </summary>
     /// <param name="item">An Avalonia IStorageItem from which to get the values.</param>
-    public DialogStorageItem(IStorageItem item)
+    public AvaloniaDialogStorageItem(IStorageItem item)
     {
         _item = item;
     }
@@ -43,7 +43,7 @@ public class DialogStorageItem : IDialogStorageItem
     public async Task<IDialogStorageFolder?> GetParentAsync()
     {
         var result = await _item.GetParentAsync().ConfigureAwait(true);
-        return result != null ? new DialogStorageFolder(result) : null;
+        return result != null ? new AvaloniaDialogStorageFolder(result) : null;
     }
 
     /// <inheritdoc />

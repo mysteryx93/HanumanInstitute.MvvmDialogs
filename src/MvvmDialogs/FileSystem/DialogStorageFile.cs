@@ -2,13 +2,13 @@
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.PathInfo;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc cref="IDialogStorageFile"/>
 public class DialogStorageFile : DialogStorageItem, IDialogStorageFile
 {
     private readonly IFileInfo _info;
-    
+
     /// <summary>
     /// Initializes a new instance of DialogStorageFile to expose a path.
     /// </summary>
@@ -17,7 +17,7 @@ public class DialogStorageFile : DialogStorageItem, IDialogStorageFile
     {
         _info = (IFileInfo)InfoBase;
     }
-    
+
     /// <inheritdoc />
     public Task<Stream> OpenReadAsync() => Task.Run<Stream>(() => File.OpenRead(_info.FullName));
 

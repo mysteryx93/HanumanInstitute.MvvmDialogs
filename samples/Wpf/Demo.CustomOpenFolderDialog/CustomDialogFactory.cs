@@ -13,7 +13,7 @@ namespace Demo.Wpf.CustomOpenFolderDialog;
 
 public class CustomDialogFactory : DialogFactoryBase
 {
-    private IPathInfoFactory _infoFactory;
+    private readonly IPathInfoFactory _infoFactory;
 
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.

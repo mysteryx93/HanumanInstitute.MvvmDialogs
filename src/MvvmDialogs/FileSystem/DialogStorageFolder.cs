@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.PathInfo;
 
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc cref="IDialogStorageFolder"/>
 public class DialogStorageFolder : DialogStorageItem, IDialogStorageFolder

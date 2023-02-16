@@ -2,19 +2,20 @@
 using System.Linq;
 using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.FileSystem;
+using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <inheritdoc cref="IDialogStorageFolder"/>
-public class DialogStorageFolder : DialogStorageItem, IDialogStorageFolder
+public class AvaloniaDialogStorageFolder : AvaloniaDialogStorageItem, IDialogStorageFolder
 {
     private readonly IStorageFolder _item;
-    
+
     /// <summary>
     /// Initializes a new instance of DialogStorageFolder as a bridge to specified Avalonia IStorageFolder.
     /// </summary>
     /// <param name="item">An Avalonia IStorageFolder from which to get the values.</param>
-    public DialogStorageFolder(IStorageFolder item) : base(item)
+    public AvaloniaDialogStorageFolder(IStorageFolder item) : base(item)
     {
         _item = item;
     }
@@ -23,6 +24,6 @@ public class DialogStorageFolder : DialogStorageItem, IDialogStorageFolder
     public async Task<IEnumerable<IDialogStorageItem>> GetItemsAsync()
     {
         var list = await _item.GetItemsAsync();
-        return list.Select(x => x is IStorageFile f ? (IDialogStorageItem)new DialogStorageFile(f) : new DialogStorageFolder((IStorageFolder)x));
+        return list.Select(x => x is IStorageFile f ? (IDialogStorageItem)new AvaloniaDialogStorageFile(f) : new AvaloniaDialogStorageFolder((IStorageFolder)x));
     }
 }

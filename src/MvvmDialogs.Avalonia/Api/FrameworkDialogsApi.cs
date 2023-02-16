@@ -12,21 +12,21 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var result = await GetStorage(owner).OpenFilePickerAsync(options).ConfigureAwait(true);
-        return result.Select(x => new DialogStorageFile(x)).ToList();
+        return result.Select(x => new AvaloniaDialogStorageFile(x)).ToList();
     }
 
     public async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(ContentControl? owner, FilePickerSaveOptions options)
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var result = await GetStorage(owner).SaveFilePickerAsync(options).ConfigureAwait(true);
-        return result != null ? new DialogStorageFile(result) : null;
+        return result != null ? new AvaloniaDialogStorageFile(result) : null;
     }
 
     public async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(ContentControl? owner, FolderPickerOpenOptions options)
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var result = await GetStorage(owner).OpenFolderPickerAsync(options).ConfigureAwait(true);
-        return result.Select(x => new DialogStorageFolder(x)).ToList();
+        return result.Select(x => new AvaloniaDialogStorageFolder(x)).ToList();
     }
 
     private static IStorageProvider GetStorage(ContentControl owner) => TopLevel.GetTopLevel(owner)?.StorageProvider ?? 
