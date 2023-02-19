@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
-using ReactiveUI;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -69,7 +68,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
         Activator.CreateInstance(Locate(viewModel))!;
 
     /// <inheritdoc />
-    public virtual bool Match(object? data) => data is ReactiveObject;
+    public virtual bool Match(object? data) => data is INotifyPropertyChanged;
 
     /// <summary>
     /// Gets whether the application runs in single-page navigation mode.

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using ReactiveUI;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <inheritdoc cref="INavigationManager"/>
-public class NavigationManager : ReactiveObject, INavigationManager
+public class NavigationManager : INotifyPropertyChanged, INavigationManager
 {
     /// <summary>
     /// Navigation history contains only ViewModels to avoid keeping all constructed user controls in memory. The Views can be reconstructed from the ViewModels.
@@ -67,7 +67,7 @@ public class NavigationManager : ReactiveObject, INavigationManager
             // Cancel normal views
             var current = CurrentViewModel!;
             CurrentView.AsWrapper(this, _closingHandler).Close();
-            e.Handled = !object.ReferenceEquals(CurrentViewModel, current);
+            e.Handled = !ReferenceEquals(CurrentViewModel, current);
         }
     }
 
@@ -75,7 +75,7 @@ public class NavigationManager : ReactiveObject, INavigationManager
     public UserControl? CurrentView
     {
         get => _currentView;
-        set => this.RaiseAndSetIfChanged(ref _currentView, value);
+        set => SetField(ref _currentView, value);
     }
     private UserControl? _currentView;
 
@@ -170,4 +170,20 @@ public class NavigationManager : ReactiveObject, INavigationManager
     // public Control? GetMainView() =>
     //     (Application.Current?.ApplicationLifetime as ISingleViewApplicationLifetime)?.MainView;
     //
+    
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+            return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

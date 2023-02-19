@@ -1,5 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.PathInfo;
+﻿using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.FileSystem;
 

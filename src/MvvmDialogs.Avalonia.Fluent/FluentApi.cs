@@ -1,5 +1,4 @@
-﻿using DynamicData;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+﻿using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
@@ -42,7 +41,10 @@ internal class FluentApi : IFluentApi
             Footer = settings.Footer,
             ShowProgressBar = settings.ShowProgressBar
         };
-        dialog.Buttons.AddRange(settings.Buttons);
+        foreach (var button in settings.Buttons)
+        {
+            dialog.Buttons.Add(button);
+        }
         if (owner != null)
         {
             dialog.XamlRoot = TopLevel.GetTopLevel(owner);

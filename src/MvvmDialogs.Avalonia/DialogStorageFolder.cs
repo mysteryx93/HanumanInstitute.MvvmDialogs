@@ -2,7 +2,6 @@
 using System.Linq;
 using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
