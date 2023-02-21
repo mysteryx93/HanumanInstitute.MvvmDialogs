@@ -283,8 +283,6 @@ using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Aval
 new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBox()))
 ```
 
-TODO: Support [DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) for mobile support.
-
 ### Avalonia.Fluent
 
 [FluentAvalonia](https://github.com/amwx/FluentAvalonia/) brings more of Fluent design and WinUI controls into Avalonia.
@@ -580,7 +578,9 @@ Here are the differences:
 
 ## Contributions Are Welcomed
 
-Todo:
+TODO:
+- Support [DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) for mobile support.
+- Support [Aura.UI](https://github.com/PieroCastillo/Aura.UI) message boxes
 - Implement for WinUI 3 (I'll leave this task to someone who is going to use it)
 - Implement for UWP (this thing is dead... not worth implementing IMO)
 - Implement for Blazor?
