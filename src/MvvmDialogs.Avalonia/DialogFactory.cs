@@ -105,7 +105,7 @@ public class DialogFactory : DialogFactoryBase
         filters.Select(
             x => new FilePickerFileType(x.NameToString(x.ExtensionsToString()))
             {
-                Patterns = x.Extensions?.Select(y => y.TrimStart('.')).ToList(),
+                Patterns = x.Extensions?.Select(y => "*." + y.TrimStart('.')).ToList(),
                 MimeTypes = x.MimeTypes,
                 AppleUniformTypeIdentifiers = x.AppleUniformTypeIdentifiers
             }).ToList();

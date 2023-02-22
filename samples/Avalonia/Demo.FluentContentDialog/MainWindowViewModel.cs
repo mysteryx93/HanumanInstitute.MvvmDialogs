@@ -3,7 +3,6 @@ using System.Windows.Input;
 using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 
 namespace Demo.Avalonia.FluentContentDialog;
