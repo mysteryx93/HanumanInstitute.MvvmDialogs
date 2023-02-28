@@ -19,7 +19,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
 
     /// <inheritdoc />
     public DialogManager(
-        ViewLocatorBase? viewLocator = null,
+        IViewLocator? viewLocator = null,
         IDialogFactory? dialogFactory = null,
         ILogger<DialogManager>? logger = null,
         IDispatcher? dispatcher = null,
@@ -31,7 +31,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
             logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
-        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator?.ForceSinglePageNavigation == true;
+        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || (viewLocator as IViewLocatorNavigation)?.ForceSinglePageNavigation == true;
         if (_useNavigation)
         {
             ForwardViewEvents = false;

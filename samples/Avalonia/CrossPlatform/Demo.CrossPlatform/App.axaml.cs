@@ -1,4 +1,3 @@
-using Avalonia;
 using Avalonia.Markup.Xaml;
 using Demo.CrossPlatform.ViewModels;
 using Demo.CrossPlatform.Views;
@@ -18,21 +17,20 @@ public partial class App : Application
         var build = Locator.CurrentMutable;
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
+        ViewLocator = new StrongViewLocator() { ForceSinglePageNavigation = false }
+            .Register<MainViewModel, MainView, MainWindow>()
+            .Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>()
+            .Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();
+        
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
-                viewLocator: new ViewLocator() { ForceSinglePageNavigation = false },
+                viewLocator: ViewLocator,
                 logger: loggerFactory.CreateLogger<DialogManager>(),
                 dialogFactory: new DialogFactory().AddFluent(messageBoxType: FluentMessageBoxType.ContentDialog)),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
-        SplatRegistrations.Register<MainWindow>();
-        SplatRegistrations.Register<MainView>();
         SplatRegistrations.Register<MainViewModel>();
-        SplatRegistrations.Register<CurrentTimeWindow>();
-        SplatRegistrations.Register<CurrentTimeView>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
-        SplatRegistrations.Register<ConfirmCloseWindow>();
-        SplatRegistrations.Register<ConfirmCloseView>();
         SplatRegistrations.Register<ConfirmCloseViewModel>();
         SplatRegistrations.SetupIOC();
     }
@@ -48,4 +46,5 @@ public partial class App : Application
     public static CurrentTimeViewModel CurrentTimeViewModel => Locator.Current.GetService<CurrentTimeViewModel>()!;
     public static ConfirmCloseViewModel ConfirmCloseViewModel => Locator.Current.GetService<ConfirmCloseViewModel>()!;
     private static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
+    public static StrongViewLocator ViewLocator { get; private set; } = default!;
 }
