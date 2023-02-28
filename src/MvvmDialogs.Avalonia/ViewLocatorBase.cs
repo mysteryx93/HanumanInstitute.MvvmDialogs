@@ -45,7 +45,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator, IViewLocatorNavigati
     }
 
     /// <inheritdoc />
-    public virtual Type Locate(object viewModel)
+    public virtual ViewDefinition Locate(object viewModel)
     {
         var name = GetViewName(viewModel);
         // var type = Type.GetType(name, x => Assembly.GetEntryAssembly(), null, false);
@@ -58,12 +58,12 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator, IViewLocatorNavigati
                                      "You can customize it to map your view models to your views.";
             throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
-        return viewType;
+        return new ViewDefinition(viewType, () => Activator.CreateInstance(viewType)!);
     }
 
     /// <inheritdoc />
     public virtual object Create(object viewModel) =>
-        Activator.CreateInstance(Locate(viewModel))!;
+        Locate(viewModel).Create();
 
     /// <inheritdoc />
     public virtual bool Match(object? data) => data is INotifyPropertyChanged;

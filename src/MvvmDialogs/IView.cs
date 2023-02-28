@@ -13,8 +13,8 @@ public interface IView
     /// Initializes the <see cref="IView"/> from specified view model and view type.
     /// </summary>
     /// <param name="viewModel">The view model to display.</param>
-    /// <param name="viewType">The data type of the view.</param>
-    void Initialize(INotifyPropertyChanged viewModel, Type viewType);
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
+    void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef);
 
     /// <summary>
     /// Initializes the <see cref="IView"/> from specified view model and existing view.

@@ -41,17 +41,17 @@ public class DialogManager : DialogManagerBase<ContentControl>
     }
 
     /// <summary>
-    /// 
+    /// If using single-page navigation mode, returns the navigation manager.
     /// </summary>
     public INavigationManager? NavigationManager => _navigationManager;
 
     /// <inheritdoc />
-    protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
+    protected override IView CreateWrapper(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         var wrapper = _useNavigation ?
             (IView)new ViewNavigationWrapper(_navigationManager!, View_Closing) :
             new ViewWrapper();
-        wrapper.Initialize(viewModel, viewType);
+        wrapper.Initialize(viewModel, viewDef);
         return wrapper;
     }
 

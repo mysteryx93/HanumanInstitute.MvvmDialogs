@@ -87,9 +87,9 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
         _viewCache.GetViewForViewModel(viewModel);
 
     /// <inheritdoc />
-    public void Show(INotifyPropertyChanged viewModel, Type viewType)
+    public void Show(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
-        CurrentView = _viewCache.GetView(viewModel, viewType);
+        CurrentView = _viewCache.GetView(viewModel, viewDef);
         _history.Remove(viewModel);
         if (_dialogs.Any())
         {
@@ -104,9 +104,9 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
     }
 
     /// <inheritdoc />
-    public Task ShowDialogAsync(INotifyPropertyChanged viewModel, Type viewType, INotifyPropertyChanged ownerViewModel)
+    public Task ShowDialogAsync(INotifyPropertyChanged viewModel, ViewDefinition viewDef, INotifyPropertyChanged ownerViewModel)
     {
-        var view = _viewCache.GetView(viewModel, viewType);
+        var view = _viewCache.GetView(viewModel, viewDef);
         CurrentView = view;
 
         if (_dialogs.Any(x => object.ReferenceEquals(x.ViewModel, viewModel)))
@@ -120,7 +120,7 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
     }
 
     /// <inheritdoc />
-    public void Close(INotifyPropertyChanged viewModel, Type viewType)
+    public void Close(INotifyPropertyChanged viewModel)
     {
         // Remove from history, whether or not it is currently visible.
         _history.Remove(viewModel);
@@ -153,7 +153,7 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
     }
 
     /// <inheritdoc />
-    public bool Activate(INotifyPropertyChanged viewModel, Type viewType)
+    public bool Activate(INotifyPropertyChanged viewModel)
     {
         if (_history.Contains(viewModel))
         {

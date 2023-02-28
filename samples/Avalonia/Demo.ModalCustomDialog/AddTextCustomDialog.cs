@@ -9,7 +9,7 @@ namespace Demo.Avalonia.ModalCustomDialog;
 
 public class AddTextCustomDialog : IView
 {
-    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         ViewModel = viewModel;
     }

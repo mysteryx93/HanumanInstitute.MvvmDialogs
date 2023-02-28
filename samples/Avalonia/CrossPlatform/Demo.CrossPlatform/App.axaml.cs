@@ -18,9 +18,9 @@ public partial class App : Application
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
         ViewLocator = new StrongViewLocator() { ForceSinglePageNavigation = false }
-            .Register<MainViewModel, MainView, MainWindow>()
-            .Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>()
-            .Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();
+            .Register<MainViewModel>(() => new MainView(), () => new MainWindow())
+            .Register<CurrentTimeViewModel>(() => new CurrentTimeView(), () => new CurrentTimeWindow())
+            .Register<ConfirmCloseViewModel>(() => new ConfirmCloseView(), () => new ConfirmCloseWindow());
         
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(

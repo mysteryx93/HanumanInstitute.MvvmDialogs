@@ -27,7 +27,7 @@ public class ViewCache
             }
             else
             {
-                var newView = CreateView(item.ViewType);
+                var newView = (UserControl)item.ViewDef.Create();
                 item.View = new WeakReference<UserControl>(newView);
                 newView.DataContext = viewModel;
                 return newView;
@@ -41,28 +41,26 @@ public class ViewCache
     /// Returns an instance of specified viewType. A single instance will be returned per type, and it will be cached with a weak reference. 
     /// </summary>
     /// <param name="viewModel">The view model associated with the view.</param>
-    /// <param name="viewType">The type of the view displaying the view model.</param>
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <returns>The View instance.</returns>
-    public UserControl GetView(INotifyPropertyChanged viewModel, Type viewType)
+    public UserControl GetView(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         var item = _cache.FirstOrDefault(x => x.ViewModelType == viewModel.GetType());
         if (item is null)
         {
-            item = new ViewCacheItem(viewModel.GetType(), viewType, CreateView(viewType));
+            item = new ViewCacheItem(viewModel.GetType(), viewDef, (UserControl)viewDef.Create());
             _cache.Add(item);
         }
-        item.ViewType = viewType;
+        item.ViewDef = viewDef;
         
         if (item.View.TryGetTarget(out var result))
         {
             result.DataContext = viewModel;
             return result;
         }
-        var newView = CreateView(viewType);
+        var newView = (UserControl)viewDef.Create();
         item.View = new WeakReference<UserControl>(newView);
         newView.DataContext = viewModel;
         return newView;
     }
-
-    private UserControl CreateView(Type viewType) => (UserControl)Activator.CreateInstance(viewType)!;
 }

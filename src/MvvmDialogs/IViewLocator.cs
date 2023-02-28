@@ -10,7 +10,7 @@ public interface IViewLocator
     /// </summary>
     /// <param name="viewModel">The view model to get the view type for.</param>
     /// <exception cref="TypeLoadException">View not found for view model.</exception>
-    Type Locate(object viewModel);
+    ViewDefinition Locate(object viewModel);
 
     /// <summary>
     /// Creates a view based on the specified view model.

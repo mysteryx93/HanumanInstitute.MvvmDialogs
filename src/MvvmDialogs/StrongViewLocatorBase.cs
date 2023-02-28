@@ -10,22 +10,22 @@ public abstract class StrongViewLocatorBase : IViewLocator
     /// <summary>
     /// The list of registered ViewModel-View combinations.
     /// </summary>
-    protected readonly Dictionary<Type, Type> Registrations = new();
+    protected readonly Dictionary<Type, ViewDefinition> Registrations = new();
 
     /// <summary>
     /// Registers specified views as being associated with specified view model type.
     /// If multiple views are registered, they can be selected based on factors such as platform, such as Desktop vs Mobile vs Web. 
     /// </summary>
-    /// <param name="view">The view associated with the view model.</param>
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-    protected void RegisterBase<TViewModel>(Type view)
+    protected void RegisterBase<TViewModel>(ViewDefinition viewDef)
         where TViewModel : INotifyPropertyChanged
     {
-        Registrations.Add(typeof(TViewModel), view);
+        Registrations.Add(typeof(TViewModel), viewDef);
     }
 
     /// <inheritdoc />
-    public virtual Type Locate(object viewModel)
+    public virtual ViewDefinition Locate(object viewModel)
     {
         if (Registrations.TryGetValue(viewModel.GetType(), out var view))
         {
@@ -41,5 +41,5 @@ public abstract class StrongViewLocatorBase : IViewLocator
 
     /// <inheritdoc />
     public virtual object Create(object viewModel) =>
-        Activator.CreateInstance(Locate(viewModel))!;
+        Locate(viewModel).Create();
 }

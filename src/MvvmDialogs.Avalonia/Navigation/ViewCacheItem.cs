@@ -5,10 +5,10 @@
 /// </summary>
 internal class ViewCacheItem
 {
-    public ViewCacheItem(Type viewModelType, Type viewType, UserControl view)
+    public ViewCacheItem(Type viewModelType, ViewDefinition viewDef, UserControl view)
     {
         ViewModelType = viewModelType;
-        ViewType = viewType;
+        ViewDef = viewDef;
         View = new WeakReference<UserControl>(view);
     }
     
@@ -17,9 +17,9 @@ internal class ViewCacheItem
     /// </summary>
     public Type ViewModelType { get; }
     /// <summary>
-    /// The data type of the View associated with the ViewModel.
+    /// An action to create a view of desired type.
     /// </summary>
-    public Type ViewType { get; set; }
+    public ViewDefinition ViewDef { get; set; }
     /// <summary>
     /// A weak reference to a View instance.
     /// </summary>

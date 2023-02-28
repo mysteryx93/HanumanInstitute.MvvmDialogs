@@ -11,7 +11,7 @@ public class CurrentTimeCustomDialog : IView
 {
     private readonly CurrentTimeDialog _dialog = new();
 
-    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         ViewModel = viewModel;
     }

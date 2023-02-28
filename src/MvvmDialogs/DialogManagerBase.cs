@@ -51,10 +51,10 @@ public abstract class DialogManagerBase<T> : IDialogManager
         Dispatch(
             () =>
             {
-                var viewType = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel?.GetType());
+                var viewDef = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef, viewModel.GetType(), ownerViewModel?.GetType());
 
-                var dialog = CreateDialog(viewModel, viewType);
+                var dialog = CreateDialog(viewModel, viewDef);
                 dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
             });
     }
@@ -65,13 +65,13 @@ public abstract class DialogManagerBase<T> : IDialogManager
         await await DispatchAsync(
             async () =>
             {
-                var viewType = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel.GetType());
+                var viewDef = ViewLocator.Locate(viewModel);
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef, viewModel.GetType(), ownerViewModel.GetType());
 
-                var dialog = CreateDialog(viewModel, viewType);
+                var dialog = CreateDialog(viewModel, viewDef);
                 await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
 
-                Logger?.LogInformation("View: {View}; Result: {Result}", viewType, viewModel.DialogResult);
+                Logger?.LogInformation("View: {View}; Result: {Result}", viewDef, viewModel.DialogResult);
             });
     }
 
@@ -96,21 +96,21 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// Creates a new IWindow from the configured IDialogFactory.
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
-    /// <param name="viewType">The type of view to show.</param>
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <returns>The new IWindow.</returns>
     /// <exception cref="TypeLoadException">Could not load view for view model.</exception>
-    protected IView CreateDialog(INotifyPropertyChanged viewModel, Type viewType)
+    protected IView CreateDialog(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         // ReSharper disable once SuspiciousTypeConversion.Global
         IView? dialog;
-        if (typeof(IView).IsAssignableFrom(viewType))
+        if (viewDef.TypeDerivesFrom<IView>())
         {
-            dialog = (IView)Activator.CreateInstance(viewType)!;
-            dialog.Initialize(viewModel, viewType);
+            dialog = (IView)viewDef.Create();
+            dialog.Initialize(viewModel, viewDef);
         }
-        else if (typeof(T).IsAssignableFrom(viewType))
+        else if (viewDef.TypeDerivesFrom<T>())
         {
-            dialog = CreateWrapper(viewModel, viewType);
+            dialog = CreateWrapper(viewModel, viewDef);
         }
         else
         {
@@ -125,8 +125,8 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// Creates a wrapper around a View.
     /// </summary>
     /// <param name="viewModel">The view model of the View.</param>
-    /// <param name="viewType">The data type of the View.</param>
-    protected abstract IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType);
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
+    protected abstract IView CreateWrapper(INotifyPropertyChanged viewModel, ViewDefinition viewDef);
 
     /// <summary>
     /// Creates a wrapper around a View.

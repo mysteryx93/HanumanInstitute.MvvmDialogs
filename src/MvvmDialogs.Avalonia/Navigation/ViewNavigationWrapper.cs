@@ -23,33 +23,22 @@ public class ViewNavigationWrapper : IView
     }
 
     /// <inheritdoc />
-    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         ViewModel = viewModel;
-        ViewType = viewType;
+        ViewDef = viewDef;
     }
     
     /// <inheritdoc />
     public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
     {
         ViewModel = viewModel;
-        ViewType = view.GetType();
+        ViewDef = new ViewDefinition(view.GetType(), () => (UserControl)view);
         Ref = (UserControl)view;
     }
-      
-    // /// <summary>
-    // /// Sets the <see cref="INavigationManager"/> associated with this wrapper. Must be called before use. 
-    // /// </summary>
-    // /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
-    // /// <returns>Returns this class instance.</returns>
-    // public ViewNavigationWrapper SetNavigation(INavigationManager navigationManager)
-    // {
-    //     _navigation = navigationManager;
-    //     return this;
-    // }
     
-    public Type ViewType { get; set; }
-
+    private ViewDefinition ViewDef { get; set; }
+    
     public IView? Owner { get; set; }
 
     /// <summary>
@@ -97,7 +86,7 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
-        var task = _navigation.ShowDialogAsync(ViewModel, ViewType, owner.ViewModel);
+        var task = _navigation.ShowDialogAsync(ViewModel, ViewDef, owner.ViewModel);
         Ref = _navigation.CurrentView!;
         RaiseLoaded();
         await task.ConfigureAwait(true);
@@ -106,7 +95,7 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public void Show(IView? owner)
     {
-        _navigation.Show(ViewModel, ViewType);  
+        _navigation.Show(ViewModel, ViewDef);  
         Ref = _navigation.CurrentView!;
         RaiseLoaded();
     }
@@ -116,7 +105,7 @@ public class ViewNavigationWrapper : IView
     {
         if (!ReferenceEquals(_navigation.CurrentView?.DataContext, ViewModel))
         {
-            if (_navigation.Activate(ViewModel, ViewType))
+            if (_navigation.Activate(ViewModel))
             {
                 Ref = _navigation.CurrentView!;
                 RaiseLoaded();
@@ -134,7 +123,7 @@ public class ViewNavigationWrapper : IView
         }
         if (!args.Cancel)
         {
-            _navigation.Close(ViewModel, ViewType);
+            _navigation.Close(ViewModel);
             RaiseClosed();
         }
     }

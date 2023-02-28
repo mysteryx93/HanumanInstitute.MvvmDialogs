@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls.Templates;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -12,12 +11,12 @@ public class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, IViewLoca
     /// <summary>
     /// Registers specified views as being associated with specified view model type.
     /// </summary>
-    /// <param name="view">The view associated with the view model.</param>
+    /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-    public StrongViewLocator Register<TViewModel>([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type view)
+    public StrongViewLocator Register<TViewModel>(ViewDefinition viewDef)
         where TViewModel : INotifyPropertyChanged
     {
-        RegisterBase<TViewModel>(view);
+        RegisterBase<TViewModel>(viewDef);
         return this;
     }
 
