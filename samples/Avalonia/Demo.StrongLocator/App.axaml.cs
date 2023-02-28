@@ -21,8 +21,8 @@ public class App : Application
         // To test assembly trimming, publish the application by running this command in the terminal in the project folder 
         // dotnet publish -r win-x64 -c Release --self-contained=true -p:PublishSingleFile=true
         ViewLocator = new StrongViewLocator()
-            .Register<MainWindowViewModel>(new ViewDefinition(typeof(MainWindow), () => new MainWindow()))
-            .Register<AddTextDialogViewModel>(new ViewDefinition(typeof(AddTextDialog), () => new AddTextDialog()));
+            .Register<MainWindowViewModel, MainWindow>()
+            .Register<AddTextDialogViewModel, AddTextDialog>();
 
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
