@@ -7,11 +7,9 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// <summary>
 /// Base implementation of Avalonia ViewLocator. Override GetViewName to customize paths.
 /// </summary>
-public class ViewLocatorBase : IDataTemplate, IViewLocator
+public class ViewLocatorBase : IDataTemplate, IViewLocator, IViewLocatorNavigation
 {
-    /// <summary>
-    /// Gets or sets whether to force single-page navigation. Setting this to true can allow running in single-page mode on desktop.
-    /// </summary>
+    /// <inheritdoc />
     public bool ForceSinglePageNavigation { get; set; }
 
     /// <summary>
@@ -70,8 +68,6 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator
     /// <inheritdoc />
     public virtual bool Match(object? data) => data is INotifyPropertyChanged;
 
-    /// <summary>
-    /// Gets whether the application runs in single-page navigation mode.
-    /// </summary>
+    /// <inheritdoc />
     public bool UseSinglePageNavigation => Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || ForceSinglePageNavigation;
 }

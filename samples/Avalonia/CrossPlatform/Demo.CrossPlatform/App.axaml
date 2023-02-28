@@ -5,7 +5,7 @@
              xmlns:styling="clr-namespace:FluentAvalonia.Styling;assembly=FluentAvalonia"
              x:Class="Demo.CrossPlatform.App">
     <Application.DataTemplates>
-        <!-- <crossPlatform:ViewLocator/> -->
+        <!-- <x:Static Member='local:App.ViewLocator' /> -->
     </Application.DataTemplates>
 
     <Application.Styles>

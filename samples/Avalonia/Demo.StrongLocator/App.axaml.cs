@@ -17,6 +17,9 @@ public class App : Application
         var build = Locator.CurrentMutable;
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
+        // This demo uses StrongViewLocator to avoid reflection.
+        // To test assembly trimming, publish the application by running this command in the terminal in the project folder 
+        // dotnet publish -r win-x64 -c Release --self-contained=true -p:PublishSingleFile=true
         ViewLocator = new StrongViewLocator()
             .Register<MainWindowViewModel, MainWindow>()
             .Register<AddTextDialogViewModel, AddTextDialog>();

@@ -3,7 +3,7 @@
              xmlns:local="clr-namespace:Demo.Avalonia.StrongLocator"
              x:Class="Demo.Avalonia.StrongLocator.App">
     <Application.DataTemplates>
-        <local:App.ViewLocator/>
+        <!-- <local:App.ViewLocator/> -->
     </Application.DataTemplates>
 
     <Application.Styles>

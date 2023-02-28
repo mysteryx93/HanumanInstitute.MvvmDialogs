@@ -28,6 +28,7 @@ UI Frameworks that can easily be added through community efforts:
 - [Generic Usage](#generic-usage)
 - [WPF Usage](#wpf-usage)
 - [Avalonia Usage](#avalonia-usage)
+- [StrongViewLocator](#strongviewlocator)
 - [Framework Dialogs](#framework-dialogs)
 - [Cross-Platform File Access](#cross-platform-file-access)
 - [IModalDialogViewModel / ICloseable / IActivable](#imodaldialogviewmodel--icloseable--iactivable)
@@ -164,7 +165,7 @@ public partial class App
 
 To associate view models with views, the default naming convention is to replace "ViewModel" with "View".
 
-To specify your own convention, create `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Wpf/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits `IViewLocator`.
+To specify your own convention, create `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Wpf/ViewLocatorBase.cs). You can also use the `StrongViewLocator` to avoid using reflection. Alternatively, you can create your custom class that inherits `IViewLocator`.
 
 ```c#
 using HanumanInstitute.MvvmDialogs.Wpf;
@@ -241,7 +242,7 @@ public class App : Application
 
 To associate view models with views, the default naming convention (as of v2) is to replace folder "ViewModels" with "Views", and then change suffix from "ViewModel" to "Window" for desktop mode and "View" for mobile/navigation mode. Very often, Window simply contains the View.
 
-To specify your own convention, replace `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Avalonia/ViewLocatorBase.cs). Alternatively, you can create your custom class that inherits both `IDataTemplate` (for Avalonia) and `IViewLocator` (for MvvmDialogs). You can use `UseSinglePageNavigation` to know whether the app is running in desktop or navigation mode.
+To specify your own convention, replace `ViewLocator.cs` with this, inheriting from [ViewLocatorBase](src/MvvmDialogs.Avalonia/ViewLocatorBase.cs). You can also use the `StrongViewLocator` to avoid using reflection. Alternatively, you can create your custom class that inherits `IDataTemplate` (for Avalonia), `IViewLocator` and `IViewLocatorNavigation` (for MvvmDialogs). You can use `UseSinglePageNavigation` to know whether the app is running in desktop or navigation mode.
 
 ```c#
 using HanumanInstitute.MvvmDialogs.Avalonia;
@@ -303,6 +304,21 @@ Note: As of FluentAvalonia v2, TaskDialogs (desktop only) requires a reference t
     <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
 
 TODO: Clarify how to include that line only for desktop and exclude for mobile/web.
+
+## StrongViewLocator
+
+Instead of resolving views via reflection and naming conventions, you can also configure ViewModel-View pairs manually using the `StrongViewLocator`.
+
+This will be necessary if you want to use Assembly Trimming, otherwise it will trim your View classes for a lack of hard references.
+
+Create your View Locator like this, then pass it to your Dialog Manager as explained above.
+
+```c#
+var viewLocator = new StrongViewLocator()
+  .Register<MainViewModel, MainView, MainWindow>()
+  .Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>()
+  .Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();
+```
 
 ## Framework Dialogs
 
@@ -585,6 +601,9 @@ TODO:
 - Implement for UWP (this thing is dead... not worth implementing IMO)
 - Implement for Blazor?
 - Automated builds?
+- Fix close confirmation in navigation view
+- Ensure that non-visible views can be released from memory
+- When showing multiple MessageBox simultaneously, show them one after the other instead of one over the other
 
 ### Author
 

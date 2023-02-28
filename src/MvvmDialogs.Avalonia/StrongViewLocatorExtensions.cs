@@ -42,7 +42,8 @@ public static class StrongViewExtensions
     /// <param name="navigationView">The UserControl view associated with the view model for navigation mode.</param>
     /// <param name="desktopWindow">The Window view associated with the view model for desktop applications.</param>
     /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-    public static StrongViewLocator Register<TViewModel>(this StrongViewLocator locator, Type navigationView, Type desktopWindow)
+    public static StrongViewLocator Register<TViewModel>(this StrongViewLocator locator, 
+        Type navigationView, Type desktopWindow)
         where TViewModel : INotifyPropertyChanged
     {
         return locator.Register<TViewModel>(locator.UseSinglePageNavigation ? navigationView : desktopWindow);
