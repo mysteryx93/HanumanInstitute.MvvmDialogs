@@ -24,13 +24,13 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <inheritdoc />
         public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
         {
-            var viewType = ViewLocator.Locate(viewModel);
-            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewType, viewModel.GetType(), ownerViewModel.GetType());
+            var viewDef = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
 
-            var dialog = CreateDialog(viewModel, viewType);
+            var dialog = CreateDialog(viewModel, viewDef);
             dialog.AsSync().ShowDialog(FindViewByViewModelOrThrow(ownerViewModel)!);
 
-            Logger?.LogInformation("View: {View}; Result: {Result}", viewType?.GetType(), viewModel.DialogResult);
+            Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType.GetType(), viewModel.DialogResult);
         }
 
         /// <inheritdoc />
@@ -51,10 +51,10 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        protected override IView CreateWrapper(INotifyPropertyChanged viewModel, Type viewType)
+        protected override IView CreateWrapper(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
         {
             var wrapper = new ViewWrapper();
-            wrapper.Initialize(viewModel, viewType);
+            wrapper.Initialize(viewModel, viewDef);
             return wrapper;
         }
 

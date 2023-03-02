@@ -5,8 +5,8 @@
     <TargetFrameworks>net7.0-windows</TargetFrameworks>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
-    <RootNamespace>Demo.Wpf.CustomDialogTypeLocator</RootNamespace>
-    <AssemblyName>Demo.Wpf.CustomDialogTypeLocator</AssemblyName>
+    <RootNamespace>Demo.Wpf.StrongLocator</RootNamespace>
+    <AssemblyName>Demo.Wpf.StrongLocator</AssemblyName>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
   </ItemGroup>
 

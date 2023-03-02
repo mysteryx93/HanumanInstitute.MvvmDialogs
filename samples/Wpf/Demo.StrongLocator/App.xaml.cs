@@ -4,9 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
-using Demo.Wpf.CustomDialogTypeLocator.ComponentA;
 
-namespace Demo.Wpf.CustomDialogTypeLocator;
+namespace Demo.Wpf.ModalDialog;
 
 public partial class App
 {
@@ -14,15 +13,19 @@ public partial class App
     {
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
+        var locator = new StrongViewLocator()
+            .Register<MainWindowViewModel, MainWindow>()
+            .Register<AddTextDialogViewModel, AddTextDialog>();
+
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
                 .AddSingleton<IDialogService>(new DialogService(
                     new DialogManager(
-                        viewLocator: new ViewLocator(),
+                        viewLocator: locator,
                         logger: loggerFactory.CreateLogger<DialogManager>()),
                     viewModelFactory: x => Ioc.Default.GetService(x)))
-                .AddTransient<MainWindowVM>()
-                .AddTransient<MyDialogVM>()
+                .AddTransient<MainWindowViewModel>()
+                .AddTransient<AddTextDialogViewModel>()
                 .BuildServiceProvider());
     }
 }

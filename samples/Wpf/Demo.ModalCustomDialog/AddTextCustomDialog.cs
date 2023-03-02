@@ -12,7 +12,7 @@ public class AddTextCustomDialog : IView, IViewSync
 
     public object RefObj => this;
 
-    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         ViewModel = viewModel;
     }

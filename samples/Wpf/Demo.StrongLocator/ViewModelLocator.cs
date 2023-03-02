@@ -1,6 +1,6 @@
 using CommunityToolkit.Mvvm.DependencyInjection;
 
-namespace Demo.Wpf.CustomDialogTypeLocator;
+namespace Demo.Wpf.ModalDialog;
 
 /// <summary>
 /// This class contains static references to all the view models in the
@@ -8,5 +8,5 @@ namespace Demo.Wpf.CustomDialogTypeLocator;
 /// </summary>
 public class ViewModelLocator
 {
-    public MainWindowVM MainWindow => Ioc.Default.GetRequiredService<MainWindowVM>();
+    public MainWindowViewModel MainWindow => Ioc.Default.GetRequiredService<MainWindowViewModel>();
 }

@@ -52,7 +52,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
             () =>
             {
                 var viewDef = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef, viewModel.GetType(), ownerViewModel?.GetType());
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel?.GetType());
 
                 var dialog = CreateDialog(viewModel, viewDef);
                 dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
@@ -66,12 +66,12 @@ public abstract class DialogManagerBase<T> : IDialogManager
             async () =>
             {
                 var viewDef = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef, viewModel.GetType(), ownerViewModel.GetType());
+                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
 
                 var dialog = CreateDialog(viewModel, viewDef);
                 await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
 
-                Logger?.LogInformation("View: {View}; Result: {Result}", viewDef, viewModel.DialogResult);
+                Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType, viewModel.DialogResult);
             });
     }
 
@@ -181,8 +181,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
 
     public async void View_Closing(IView dialog, CancelEventArgs e)
     {
-        var closing = dialog.ViewModel as IViewClosing;
-        if (closing == null || dialog.ClosingConfirmed) { return; }
+        if (dialog.ViewModel is not IViewClosing closing || dialog.ClosingConfirmed) { return; }
 
         // ReSharper disable once MethodHasAsyncOverload
         closing.OnClosing(e);

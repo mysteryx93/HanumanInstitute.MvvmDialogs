@@ -21,7 +21,7 @@ public class ViewNavigationWrapperTests
         }
         else
         {
-            result.Initialize(ViewModel, typeof(FirstView));
+            result.Initialize(ViewModel, new ViewDefinition(typeof(FirstView), () => new FirstView()));
         }
         return result;
     }

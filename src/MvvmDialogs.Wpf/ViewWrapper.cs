@@ -12,10 +12,10 @@ public class ViewWrapper : IView, IViewSync
     /// Initializes a new instance of the <see cref="ViewWrapper"/> class.
     /// </summary>
     /// <param name="viewModel"></param>
-    /// <param name="viewType"></param>
-    public void Initialize(INotifyPropertyChanged viewModel, Type viewType)
+    /// <param name="viewDef"></param>
+    public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
-        Ref = (Window)Activator.CreateInstance(viewType)!;
+        Ref = (Window)viewDef.Create();
         ViewModel = viewModel;
     }
 

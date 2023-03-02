@@ -18,7 +18,7 @@ public class ViewLocatorBase : IViewLocator
     /// Creates a view based on the specified view model.
     /// </summary>
     /// <param name="viewModel">The view model to create a view for.</param>
-    public virtual Type Locate(object viewModel)
+    public virtual ViewDefinition Locate(object viewModel)
     {
         var name = GetViewName(viewModel);
         //var type = Assembly.GetEntryAssembly()?.GetType(name);
@@ -32,10 +32,10 @@ public class ViewLocatorBase : IViewLocator
                                      "view models to your views. See online documentation for more info.";
             throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
-        return viewType;
+        return new ViewDefinition(viewType, () => Activator.CreateInstance(viewType)!);
     }
 
     /// <inheritdoc />
     public virtual object Create(object viewModel) =>
-        Activator.CreateInstance(Locate(viewModel))!;
+        Locate(viewModel).Create();
 }

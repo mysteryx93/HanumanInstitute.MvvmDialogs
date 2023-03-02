@@ -1,4 +1,4 @@
-﻿namespace Demo.Wpf.CustomDialogTypeLocator;
+﻿namespace Demo.Wpf.ModalDialog;
 
 public partial class MainWindow
 {

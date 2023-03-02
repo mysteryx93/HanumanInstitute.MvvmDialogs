@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.SaveFileDialog", "samp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CloseNonModalDialog", "samples\Wpf\Demo.CloseNonModalDialog\Demo.CloseNonModalDialog.csproj", "{CABB5675-02EF-42A7-A2C9-E4F37D66D12B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CustomDialogTypeLocator", "samples\Wpf\Demo.CustomDialogTypeLocator\Demo.CustomDialogTypeLocator.csproj", "{87DE982D-A97E-4D4A-84A4-0971A3710E41}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmDialogs.Avalonia", "src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj", "{0848A1AE-3147-432C-B473-44EE2CBA2E57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmDialogs", "src\MvvmDialogs\MvvmDialogs.csproj", "{E14F830F-2A00-46D0-B25B-B3D675E86B02}"
@@ -85,19 +83,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.ViewEvents", "samples\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossPlatform", "CrossPlatform", "{B90D3DCC-669D-4583-8BA0-682EB1F93BD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvvmDialogs.Avalonia.Tests", "src\MvvmDialogs.Avalonia.Tests\MvvmDialogs.Avalonia.Tests.csproj", "{AD2BE2F7-5D94-4E1C-AA4F-5F69B160B4CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvvmDialogs.Avalonia.Tests", "src\MvvmDialogs.Avalonia.Tests\MvvmDialogs.Avalonia.Tests.csproj", "{AD2BE2F7-5D94-4E1C-AA4F-5F69B160B4CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CrossPlatform", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform\Demo.CrossPlatform.csproj", "{24D92E73-9429-48AD-A805-25CE7AF84D50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform\Demo.CrossPlatform.csproj", "{24D92E73-9429-48AD-A805-25CE7AF84D50}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CrossPlatform.Android", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Android\Demo.CrossPlatform.Android.csproj", "{497C1B3B-3326-45DB-BC0B-76C3EDAA26E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Android", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Android\Demo.CrossPlatform.Android.csproj", "{497C1B3B-3326-45DB-BC0B-76C3EDAA26E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CrossPlatform.iOS", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.iOS\Demo.CrossPlatform.iOS.csproj", "{08A1F54A-676B-4A9A-BE41-9BE1A21EC2C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.iOS", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.iOS\Demo.CrossPlatform.iOS.csproj", "{08A1F54A-676B-4A9A-BE41-9BE1A21EC2C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CrossPlatform.Desktop", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Desktop\Demo.CrossPlatform.Desktop.csproj", "{DB400AC5-91AB-4621-9E12-6EF27BFE9D2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Desktop", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Desktop\Demo.CrossPlatform.Desktop.csproj", "{DB400AC5-91AB-4621-9E12-6EF27BFE9D2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.CrossPlatform.Web", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Web\Demo.CrossPlatform.Web.csproj", "{A8ADB3BE-683C-44FD-9C59-53F5B6B60A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Web", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Web\Demo.CrossPlatform.Web.csproj", "{A8ADB3BE-683C-44FD-9C59-53F5B6B60A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.StrongLocator", "samples\Avalonia\Demo.StrongLocator\Demo.StrongLocator.csproj", "{F03BD8DB-9247-4977-A4AB-C98FE071294A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.StrongLocator", "samples\Avalonia\Demo.StrongLocator\Demo.StrongLocator.csproj", "{F03BD8DB-9247-4977-A4AB-C98FE071294A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.StrongLocator", "samples\Wpf\Demo.StrongLocator\Demo.StrongLocator.csproj", "{3D577143-DEEA-42A4-B261-9A0846E537EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -293,26 +293,6 @@ Global
 		{CABB5675-02EF-42A7-A2C9-E4F37D66D12B}.Release|x64.Build.0 = Release|Any CPU
 		{CABB5675-02EF-42A7-A2C9-E4F37D66D12B}.Release|x86.ActiveCfg = Release|Any CPU
 		{CABB5675-02EF-42A7-A2C9-E4F37D66D12B}.Release|x86.Build.0 = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|ARM.Build.0 = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|x64.Build.0 = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Debug|x86.Build.0 = Debug|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|Any CPU.Build.0 = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|ARM.ActiveCfg = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|ARM.Build.0 = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|ARM64.Build.0 = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|x64.ActiveCfg = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|x64.Build.0 = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|x86.ActiveCfg = Release|Any CPU
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41}.Release|x86.Build.0 = Release|Any CPU
 		{0848A1AE-3147-432C-B473-44EE2CBA2E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0848A1AE-3147-432C-B473-44EE2CBA2E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0848A1AE-3147-432C-B473-44EE2CBA2E57}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -973,6 +953,26 @@ Global
 		{F03BD8DB-9247-4977-A4AB-C98FE071294A}.Release|x64.Build.0 = Release|Any CPU
 		{F03BD8DB-9247-4977-A4AB-C98FE071294A}.Release|x86.ActiveCfg = Release|Any CPU
 		{F03BD8DB-9247-4977-A4AB-C98FE071294A}.Release|x86.Build.0 = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|ARM.Build.0 = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|ARM.ActiveCfg = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|ARM.Build.0 = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|ARM64.Build.0 = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|x64.Build.0 = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{3D577143-DEEA-42A4-B261-9A0846E537EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -988,7 +988,6 @@ Global
 		{33BC9402-331E-47B5-8EE8-4F15AF463D12} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
 		{62E90DFE-FF71-4558-A33E-361BFE60BF9D} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
 		{CABB5675-02EF-42A7-A2C9-E4F37D66D12B} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
-		{87DE982D-A97E-4D4A-84A4-0971A3710E41} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
 		{0848A1AE-3147-432C-B473-44EE2CBA2E57} = {958591BB-32C1-48C4-B5FA-11A2C5686814}
 		{E14F830F-2A00-46D0-B25B-B3D675E86B02} = {958591BB-32C1-48C4-B5FA-11A2C5686814}
 		{32D9C89C-9D88-40F9-A05D-CD95F05F38D0} = {958591BB-32C1-48C4-B5FA-11A2C5686814}
@@ -1024,6 +1023,7 @@ Global
 		{DB400AC5-91AB-4621-9E12-6EF27BFE9D2B} = {B90D3DCC-669D-4583-8BA0-682EB1F93BD2}
 		{A8ADB3BE-683C-44FD-9C59-53F5B6B60A26} = {B90D3DCC-669D-4583-8BA0-682EB1F93BD2}
 		{F03BD8DB-9247-4977-A4AB-C98FE071294A} = {0CAFC532-721B-4CD0-B4CA-AF10F07BFD76}
+		{3D577143-DEEA-42A4-B261-9A0846E537EF} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983A22B3-AE5B-4B67-A798-F6A6697B82A8}

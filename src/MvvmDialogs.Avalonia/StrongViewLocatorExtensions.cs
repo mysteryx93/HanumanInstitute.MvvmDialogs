@@ -18,7 +18,7 @@ public static class StrongViewExtensions
         return locator.Register<TViewModel>(
             new ViewDefinition(typeof(TView), () => new TView()));
     }
-    
+
     /// <summary>
     /// Registers specified views as being associated with specified view model type.
     /// DesktopWindow or NavigationView will be selected based on runtime needs.  
@@ -32,8 +32,8 @@ public static class StrongViewExtensions
         where TNavView : UserControl, new()
         where TDeskView : Window, new()
     {
-        return locator.Register<TViewModel>(locator.UseSinglePageNavigation ? 
-            new ViewDefinition(typeof(TNavView), () => new TNavView()) : 
+        return locator.Register<TViewModel>(locator.UseSinglePageNavigation ?
+            new ViewDefinition(typeof(TNavView), () => new TNavView()) :
             new ViewDefinition(typeof(TDeskView), () => new TDeskView()));
     }
 }
