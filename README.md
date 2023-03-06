@@ -608,8 +608,9 @@ TODO:
 - Implement for WinUI 3 (I'll leave this task to someone who is going to use it)
 - Implement for UWP (this thing is dead... not worth implementing IMO)
 - Implement for Blazor?
-- Automated builds?
 - Ensure that non-visible views can be released from memory
+- Adapt this [StaticViewLocatorGenerator](https://github.com/zkSNACKs/WalletWasabi/blob/1b8d142d0ec6892f13f6c50c3fec5d7ceb7f06ce/WalletWasabi.Fluent.Generators/StaticViewLocatorGenerator.cs#L12) ([usage here](https://github.com/zkSNACKs/WalletWasabi/blob/1b8d142d0ec6892f13f6c50c3fec5d7ceb7f06ce/WalletWasabi.Fluent/ViewLocator.cs#L7))
+  to replace the default naming convention ViewLocator with Source Generator instead of Reflection
 
 ### Author
 
