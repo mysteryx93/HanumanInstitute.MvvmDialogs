@@ -210,6 +210,11 @@ Gets or sets whether to display on the default desktop of the interactive window
 
 Gets or sets whether to display on the currently active desktop even if a user is not logged on to the computer. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
 
+#### bool AllowConcurrentDialogs
+
+Gets or sets whether multiple dialogs can be shown at the same time.
+If false (default), it will wait for the previous dialog to close before showing the next one.
+
 
 ## Avalonia Usage
 
@@ -258,9 +263,12 @@ public class ViewLocator : ViewLocatorBase
 }
 ```
 
-#### AppDialogSettings
+### AppDialogSettings
 
-For the moment there are no application-wide settings used for Avalonia.
+#### bool AllowConcurrentDialogs
+
+Gets or sets whether multiple dialogs can be shown at the same time.
+If false (default), it will wait for the previous dialog to close before showing the next one.
 
 ### Mobile/Web Applications
 
@@ -601,9 +609,7 @@ TODO:
 - Implement for UWP (this thing is dead... not worth implementing IMO)
 - Implement for Blazor?
 - Automated builds?
-- Fix close confirmation in navigation view
 - Ensure that non-visible views can be released from memory
-- When showing multiple MessageBox simultaneously, show them one after the other instead of one over the other
 
 ### Author
 
