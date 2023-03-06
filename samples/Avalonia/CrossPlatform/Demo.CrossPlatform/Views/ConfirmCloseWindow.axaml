@@ -7,8 +7,6 @@
         x:Class="Demo.CrossPlatform.Views.ConfirmCloseWindow"
         Title="Current Time"
         WindowStartupLocation="CenterOwner"
-        Width="200"
-        Height="100"
-        CanResize="False">
+        Width="400" Height="300" CanResize="False">
     <views:ConfirmCloseView />
 </Window>

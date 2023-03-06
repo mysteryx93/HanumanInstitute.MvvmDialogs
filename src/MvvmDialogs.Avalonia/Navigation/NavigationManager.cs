@@ -17,6 +17,10 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
     private readonly List<DialogTask> _dialogs = new();
     private readonly ViewClosingHandler? _closingHandler;
 
+    /// <summary>
+    /// Initializes a new instance of the NavigationManager class.
+    /// </summary>
+    /// <param name="closingHandler">A handler for the Closing event. Note that the Closing event is unsupported by the <see cref="ViewNavigationWrapper"/> and we thus support a single listener.</param>
     public NavigationManager(ViewClosingHandler? closingHandler)
     {
         _closingHandler = closingHandler;
@@ -66,8 +70,9 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
         {
             // Cancel normal views
             var current = CurrentViewModel!;
-            CurrentView.AsWrapper(this, _closingHandler).Close();
-            e.Handled = !ReferenceEquals(CurrentViewModel, current);
+            var view = CurrentView.AsWrapper(this, _closingHandler);
+            view.Close();
+            e.Handled = !ReferenceEquals(CurrentViewModel, current) || !view.ClosingConfirmed;
         }
     }
 

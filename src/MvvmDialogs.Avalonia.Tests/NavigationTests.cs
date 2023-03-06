@@ -271,4 +271,74 @@ public class NavigationTests
         Assert.Same(vm2, NavigationManager.History[1]);
         Assert.Same(vm4, NavigationManager.History[2]);
     }
+
+    [Fact]
+    public void Close_Normal_ClosingClosedRaised()
+    {
+        var vm1 = new FirstViewModel();
+        var vm2 = new SecondViewModel();
+        
+        DialogService.Show(null, vm1);
+        var _ = DialogService.ShowDialogAsync(vm1, vm2);
+        vm2.OnRequestClose();
+        
+        Assert.Equal(1, vm2.ClosingRaised);
+        Assert.Equal(0, vm2.ClosingAsyncRaised);
+        Assert.Equal(1, vm2.ClosedRaised);
+    }
+    
+    [Fact]
+    public async Task Close_Cancelled_ClosingAsyncRaised()
+    {
+        var vm1 = new FirstViewModel();
+        var vm2 = new SecondViewModel();
+        vm2.ClosingCancel = true;
+        
+        DialogService.Show(null, vm1);
+        var _ = DialogService.ShowDialogAsync(vm1, vm2);
+        vm2.OnRequestClose();
+        
+        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        Assert.Equal(1, vm2.ClosingRaised);
+        Assert.Equal(1, vm2.ClosingAsyncRaised);
+        Assert.Equal(0, vm2.ClosedRaised);
+    }
+    
+    [Fact]
+    public async Task Close_CancelledAndReset_ClosedRaised()
+    {
+        var vm1 = new FirstViewModel();
+        var vm2 = new SecondViewModel();
+        vm2.ClosingCancel = true;
+        vm2.ClosingAsyncCancel = false;
+        
+        DialogService.Show(null, vm1);
+        var _ = DialogService.ShowDialogAsync(vm1, vm2);
+        vm2.OnRequestClose();
+        
+        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        Assert.Equal(1, vm2.ClosingRaised);
+        Assert.Equal(1, vm2.ClosingAsyncRaised);
+        Assert.Equal(1, vm2.ClosedRaised);
+    }
+    
+    [Fact]
+    public async Task Close_3Times_RaiseClosingOnce()
+    {
+        var vm1 = new FirstViewModel();
+        var vm2 = new SecondViewModel();
+        vm2.ClosingCancel = true;
+        vm2.ClosingAsyncCancel = true;
+        
+        DialogService.Show(null, vm1);
+        var _ = DialogService.ShowDialogAsync(vm1, vm2);
+        vm2.OnRequestClose();
+        vm2.OnRequestClose();
+        vm2.OnRequestClose();
+        
+        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        Assert.Equal(1, vm2.ClosingRaised);
+        Assert.Equal(1, vm2.ClosingAsyncRaised);
+        Assert.Equal(0, vm2.ClosedRaised);
+    }
 }

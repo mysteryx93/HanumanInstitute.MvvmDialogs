@@ -179,28 +179,47 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
     }
 
+    private bool _isViewClosing;
+
     public async void View_Closing(IView dialog, CancelEventArgs e)
     {
-        if (dialog.ViewModel is not IViewClosing closing || dialog.ClosingConfirmed) { return; }
-
-        // ReSharper disable once MethodHasAsyncOverload
-        closing.OnClosing(e);
-        if (e.Cancel)
+        if (dialog.ViewModel is not IViewClosing closing || dialog.ClosingConfirmed)
         {
-            dialog.IsEnabled = false;
+            dialog.ClosingConfirmed = true;
+            return;
+        }
+        // Prevent re-closing while prompting. 
+        if (_isViewClosing)
+        {
+            e.Cancel = true;
+            return;
+        }
 
-            // caller returns and window stays open
-            await Task.Yield();
+        _isViewClosing = true;
+        try
+        {
+            // ReSharper disable once MethodHasAsyncOverload
+            closing.OnClosing(e);
+            if (e.Cancel)
+            {
+                // caller returns and window stays open
+                await Task.Yield();
 
-            await closing.OnClosingAsync(e).ConfigureAwait(true);
-            if (!e.Cancel)
+                await closing.OnClosingAsync(e).ConfigureAwait(true);
+                if (!e.Cancel)
+                {
+                    dialog.ClosingConfirmed = true;
+                    dialog.Close();
+                }
+            }
+            else
             {
                 dialog.ClosingConfirmed = true;
-                dialog.Close();
             }
-
-            // doesn't matter if it's closed
-            dialog.IsEnabled = true;
+        }
+        finally
+        {
+            _isViewClosing = false;
         }
     }
 

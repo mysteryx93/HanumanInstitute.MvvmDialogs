@@ -15,7 +15,7 @@ public class ViewNavigationWrapper : IView
     /// Initializes a new instance of the ViewNavigationWrapper class. 
     /// </summary>
     /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
-    /// <param name="closingHandler">A handler for the Closing event. Not that the Closing event is unsupported in this class and we thus support a single listener.</param>
+    /// <param name="closingHandler">A handler for the Closing event. Note that the Closing event is unsupported in this class and we thus support a single listener.</param>
     public ViewNavigationWrapper(INavigationManager navigationManager, ViewClosingHandler? closingHandler)
     {
         _navigation = navigationManager;
@@ -121,8 +121,9 @@ public class ViewNavigationWrapper : IView
         {
             _closingHandler?.Invoke(this, args);
         }
-        if (!args.Cancel)
+        if (!args.Cancel && ClosingConfirmed)
         {
+            _isClosed = true;
             _navigation.Close(ViewModel);
             RaiseClosed();
         }
@@ -146,4 +147,6 @@ public class ViewNavigationWrapper : IView
     
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }
+
+    private bool _isClosed;
 }

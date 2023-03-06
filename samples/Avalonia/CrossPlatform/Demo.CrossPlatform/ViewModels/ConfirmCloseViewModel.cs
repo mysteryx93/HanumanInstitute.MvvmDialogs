@@ -42,6 +42,6 @@ public class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IView
     public async Task OnClosingAsync(CancelEventArgs e)
     {
         var result = await _dialogService.ShowMessageBoxAsync(this, "Do you want to close it?", "Confirmation", MessageBoxButton.YesNo);
-        e.Cancel = result == true;
+        e.Cancel = result == false;
     }
 }

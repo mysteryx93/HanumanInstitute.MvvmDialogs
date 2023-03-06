@@ -32,7 +32,7 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
     
     public async void OnClosed()
     {
-        await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
+       await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
     }
 
     public string Text
