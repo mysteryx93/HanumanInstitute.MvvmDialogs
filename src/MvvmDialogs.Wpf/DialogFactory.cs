@@ -148,7 +148,7 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new MessageBoxApiSettings()
         {
-            MessageBoxText = settings.Text,
+            MessageBoxText = settings.Content,
             Caption = settings.Title,
             Buttons = SyncButton(settings.Button),
             Icon = SyncIcon(settings.Icon),

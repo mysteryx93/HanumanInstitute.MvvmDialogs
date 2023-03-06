@@ -44,7 +44,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
         var apiSettings = new MessageBoxApiSettings()
         {
             Title = settings.Title,
-            Text = settings.Text,
+            Text = settings.Content,
             Buttons = SyncButton(settings.Button),
             Icon = SyncIcon(settings.Icon),
             EnterDefaultButton = SyncDefaultEnter(settings.Button, settings.DefaultValue),
@@ -54,7 +54,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
         var ownerRef = owner.GetRef();
         if (ownerRef is Window ownerWin)
         {
-            var result = await _api.ShowMessageBox(ownerWin, apiSettings);
+            var result = await _api.ShowMessageBoxAsync(ownerWin, apiSettings);
             return result switch
             {
                 ButtonResult.Yes => true,

@@ -52,7 +52,7 @@ public class FluentDialogFactory : DialogFactoryBase
         var apiSettings = new ContentDialogSettings()
         {
             Title = settings.Title,
-            Content = settings.Text,
+            Content = settings.Content,
             DefaultButton = ContentDialogButton.Primary
         };
         var yes = ContentDialogResult.Primary;
@@ -89,7 +89,7 @@ public class FluentDialogFactory : DialogFactoryBase
         var apiSettings = new TaskDialogSettings()
         {
             Title = settings.Title,
-            Content = settings.Text,
+            Content = settings.Content,
             Buttons = SyncButton(settings.Button, settings.DefaultValue),
 
             // Icon = SyncIcon(settings.Icon)

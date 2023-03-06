@@ -4,7 +4,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 
 internal class MessageBoxApi : IMessageBoxApi
 {
-    public Task<ButtonResult> ShowMessageBox(Window? owner, MessageBoxApiSettings settings) =>
+    public Task<ButtonResult> ShowMessageBoxAsync(Window? owner, MessageBoxApiSettings settings) =>
         MessageBoxManager.GetMessageBoxStandardWindow(new MessageBoxStandardParams() {
             ContentTitle = settings.Title,
             ContentMessage = settings.Text,

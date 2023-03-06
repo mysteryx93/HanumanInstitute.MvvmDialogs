@@ -80,7 +80,7 @@ public static class DialogServiceExtensions
     {
         var settings = new MessageBoxSettings
         {
-            Text = text,
+            Content = text,
             Title = title,
             Button = button,
             Icon = icon,
