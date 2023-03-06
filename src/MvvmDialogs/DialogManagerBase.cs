@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System.Threading;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable SuspiciousTypeConversion.Global
@@ -223,6 +224,8 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
     }
 
+    private readonly SemaphoreSlim _semaphoreShow = new(1);
+
     /// <inheritdoc />
     public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(
         INotifyPropertyChanged? ownerViewModel,
@@ -231,38 +234,53 @@ public abstract class DialogManagerBase<T> : IDialogManager
         Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase
     {
-        Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
+        if (!appSettings.AllowConcurrentDialogs)
+        {
+            await _semaphoreShow.WaitAsync();
+        }
+        
+        try
+        {
+            Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-        var result = await await DispatchAsync(
-            async () =>
-            {
-                IView? owner;
-                var isDummyOwner = false;
-                if (ownerViewModel != null)
+            var result = await await DispatchAsync(
+                async () =>
                 {
-                    owner = FindViewByViewModel(ownerViewModel) ??
-                                throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-                }
-                else
-                {
-                    // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
-                    owner = GetMainWindow();
-                    if (owner == null || !owner.IsVisible)
+                    IView? owner;
+                    var isDummyOwner = false;
+                    if (ownerViewModel != null)
                     {
-                        owner = GetDummyWindow();
-                        isDummyOwner = true;
+                        owner = FindViewByViewModel(ownerViewModel) ??
+                                throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
                     }
-                }
-                var result = await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
-                if (isDummyOwner)
-                {
-                    owner!.Close();
-                }
-                return result;
-            }).ConfigureAwait(true);
+                    else
+                    {
+                        // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
+                        owner = GetMainWindow();
+                        if (owner == null || !owner.IsVisible)
+                        {
+                            owner = GetDummyWindow();
+                            isDummyOwner = true;
+                        }
+                    }
+                    var result = await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+                    if (isDummyOwner)
+                    {
+                        owner!.Close();
+                    }
+                    return result;
+                }).ConfigureAwait(true);
 
-        Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
-        return result;
+            Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
+            return result;
+        }
+        finally
+        {
+            if (!appSettings.AllowConcurrentDialogs)
+            {
+                _semaphoreShow.Release();
+            }
+        }
     }
 
     /// <inheritdoc />
