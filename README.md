@@ -599,6 +599,7 @@ Here are the differences:
 - Default naming convention, for `ViewModels/MainViewModel`, FantasticFiasco looks for `Views/Main`. This version looks for `Views/MainView`.
 - Maps view models to views using Avalonia's ViewLocator design that is easily customizable.
 - Logging is done using standard ILogging interface
+- Supports view navigation on mobile devices with Avalonia! 
 
 ## Contributions Are Welcomed
 
