@@ -362,6 +362,8 @@ public static async Task<string?> AskTextAsync(this IDialogService service,
 }
 ```
 
+[See sample project here](https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs/tree/master/samples/Avalonia/Demo.DialogHost)
+
 ## StrongViewLocator
 
 Instead of resolving views via reflection and naming conventions, you can also configure ViewModel-View pairs manually using the `StrongViewLocator`.
