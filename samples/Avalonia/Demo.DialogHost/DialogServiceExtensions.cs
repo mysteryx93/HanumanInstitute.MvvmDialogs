@@ -29,28 +29,16 @@ public static class DialogServiceExtensions
             ClosingHandler = closingHandler,
             CloseOnClickAway = true
         };
-        await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel,
-            settings,
-            appSettings ?? service.AppSettings).ConfigureAwait(true);
+        await service.ShowDialogHostAsync(ownerViewModel, settings, appSettings).ConfigureAwait(true);
     }
     
-    public static async Task<string?> AskTextAsync(
-        this IDialogService service,
-        INotifyPropertyChanged ownerViewModel,
-        AppDialogSettingsBase? appSettings = null)
+    public static async Task<string?> AskTextAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel, AppDialogSettingsBase? appSettings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
         var vm = service.CreateViewModel<TextBoxViewModel>();
-        var settings = new DialogHostSettings()
-        {
-            ContentViewModel = vm
-        };
-        var result = await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel,
-            settings,
-            appSettings ?? service.AppSettings).ConfigureAwait(true);
-        return (string?)result;
+        var settings = new DialogHostSettings();
+        settings.ContentViewModel = vm;
+        return (string?)await service.ShowDialogHostAsync(ownerViewModel, settings, appSettings).ConfigureAwait(true);
     }
 }

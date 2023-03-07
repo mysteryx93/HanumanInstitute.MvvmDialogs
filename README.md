@@ -307,11 +307,58 @@ It will add `IDialogService.ShowContentDialogAsync` and `IDialogService.ShowTask
 
 Additionally, `AddFluent` takes a parameter specifying whether to handle `IDialogService.ShowMessageBoxAsync` calls with ContentDialog or with TaskDialog. 
 
-Note: As of FluentAvalonia v2, TaskDialogs (desktop only) requires a reference to ` FluentAvalonia.UI.Windowing` in your .Desktop project, and this line in App.axaml 
 
-    <StyleInclude Source="avares://FluentAvalonia.UI.Windowing/Styles/FAWindowingStyles.axaml" />
+### Avalonia.AuraUI
 
-TODO: Clarify how to include that line only for desktop and exclude for mobile/web.
+This extension handles message box requests using [Aura.UI](https://github.com/PieroCastillo/Aura.UI) library.
+
+1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.AuraUI`
+2. Register the MessageBox handler on IDialogService like this:
+
+```c#
+new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBoxAuraUI()))
+```
+
+Note: Aura.UI does not yet support Avalonia11 and is thus only available for MvvmDialogs v1.4.1
+
+### Avalonia.DialogHost
+
+[DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) allows displaying views as popup overlays. FluentAvalonia brings WinUI3's ContentDialog that has title, content and button. On the other hand, DialogHost purely shows your view while giving you full control.
+
+1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.DialogHost`
+2. Register the handlers on IDialogService like this:
+
+```c#
+new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddDialogHost()))
+```
+
+It will add `IDialogService.ShowDialogHostAsync` that takes the following settings.
+
+**ContentViewModel**: The view model of the view to show. The view will be resolved through Avalonia's ViewLocator.
+
+**ClosingHandler**: A handler that will be called when the view is closing, allowing to cancel the close.
+
+**CloseOnClickAway**: Whether to close the view when clicking elsewhere in the parent container.
+
+**CloseOnClickAwayParameter**: The close value to set when closing by clicking away.
+
+You can then create extension methods for your views like this
+
+```c#
+public static async Task<string?> AskTextAsync(this IDialogService service, 
+    INotifyPropertyChanged ownerViewModel, AppDialogSettingsBase? appSettings = null)
+{
+    if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
+
+    var vm = service.CreateViewModel<TextBoxViewModel>();
+    var settings = new DialogHostSettings()
+    {
+        ContentViewModel = vm,
+        CloseOnClickAway = true
+    };
+    return (string?)await service.ShowDialogHostAsync(ownerViewModel, settings, appSettings);
+}
+```
 
 ## StrongViewLocator
 

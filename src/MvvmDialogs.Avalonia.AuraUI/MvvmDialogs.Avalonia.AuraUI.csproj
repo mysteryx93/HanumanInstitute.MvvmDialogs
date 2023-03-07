@@ -14,6 +14,7 @@
       <GenerateDocumentationFile>True</GenerateDocumentationFile>
       <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
       <PackageIcon>icon_64x64.png</PackageIcon>
+      <Version>1.4.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
