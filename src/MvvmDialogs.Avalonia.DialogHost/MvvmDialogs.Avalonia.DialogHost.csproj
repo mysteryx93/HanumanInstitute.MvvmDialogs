@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <TargetFramework>net5.0</TargetFramework>
+      <LangVersion>default</LangVersion>
+      <Nullable>enable</Nullable>
+      <OutputType>Library</OutputType>
+      <AssemblyTitle>MvvmDialogs with DialogHost.Avalonia</AssemblyTitle>
+      <Title>MvvmDialogs with DialogHost.Avalonia</Title>
+      <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+      <PackageId>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</PackageId>
+      <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</AssemblyName>
+      <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</RootNamespace>
+      <GenerateDocumentationFile>True</GenerateDocumentationFile>
+      <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+      <PackageIcon>icon_64x64.png</PackageIcon>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Avalonia" Version="11.0.0-preview5" />
+      <PackageReference Include="DialogHost.Avalonia" Version="0.7.0-preview4" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
+      <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\icon_64x64.png">
+        <Pack>True</Pack>
+        <PackagePath>/</PackagePath>
+        <Link>icon_64x64.png</Link>
+      </None>
+    </ItemGroup>
+</Project>
