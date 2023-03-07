@@ -8,7 +8,7 @@
       <AssemblyTitle>MvvmDialogs with MessageBox.Avalonia</AssemblyTitle>
       <Title>MvvmDialogs with MessageBox.Avalonia</Title>
       <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
-      <PackageId>HanumanInstitute.MvvmDialogs.Avalonia.MessageBox</PackageId>
+      <PackageId>HanumanInstitute.MvvmDialogs.Avalonia.AuraUI</PackageId>
       <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia.AuraUI</AssemblyName>
       <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia.AuraUI</RootNamespace>
       <GenerateDocumentationFile>True</GenerateDocumentationFile>
