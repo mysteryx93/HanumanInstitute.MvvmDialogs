@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Avalonia.Media;
 using DialogHostAvalonia;
 using DialogHostAvalonia.Positioners;
 
@@ -29,4 +30,16 @@ public class DialogHostSettings : DialogSettingsBase
     /// A class allowing to customize the positioning of the dialog.
     /// </summary>
     public IDialogPopupPositioner? PopupPositioner { get; set; }
+    /// <summary>
+    /// The background of the overlay.
+    /// </summary>
+    public IBrush? OverlayBackground { get; set; }
+    /// <summary>
+    /// The margin of the dialog view.
+    /// </summary>
+    public Thickness? DialogMargin { get; set; }
+    /// <summary>
+    /// Whether to disable the popup animation.
+    /// </summary>
+    public bool DisableOpeningAnimation { get; set; } = true;
 }
