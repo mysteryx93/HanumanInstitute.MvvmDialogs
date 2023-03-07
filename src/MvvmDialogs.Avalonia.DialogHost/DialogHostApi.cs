@@ -24,6 +24,7 @@ internal class DialogHostApi : IDialogHostApi
             }
             host.CloseOnClickAway = settings.CloseOnClickAway;
             host.CloseOnClickAwayParameter = settings.CloseOnClickAwayParameter;
+            host.PopupPositioner = settings.PopupPositioner;
         }
 
         var closingHandler = settings.ClosingHandler ?? ((_, _) => { });

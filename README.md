@@ -342,6 +342,8 @@ It will add `IDialogService.ShowDialogHostAsync` that takes the following settin
 
 **CloseOnClickAwayParameter**: The close value to set when closing by clicking away.
 
+**PopupPositioner**: A class allowing to customize the positioning of the dialog.
+
 You can then create extension methods for your views like this
 
 ```c#

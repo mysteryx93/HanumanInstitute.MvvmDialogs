@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using DialogHostAvalonia;
+using DialogHostAvalonia.Positioners;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 
@@ -24,4 +25,8 @@ public class DialogHostSettings : DialogSettingsBase
     /// The close value to set when closing by clicking away.
     /// </summary>
     public object? CloseOnClickAwayParameter { get; set; }
+    /// <summary>
+    /// A class allowing to customize the positioning of the dialog.
+    /// </summary>
+    public IDialogPopupPositioner? PopupPositioner { get; set; }
 }
