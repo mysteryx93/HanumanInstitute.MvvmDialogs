@@ -36,7 +36,7 @@ public static class DialogServiceExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
 
-        var vm = service.CreateViewModel<TextBoxViewModel>();
+        var vm = service.CreateViewModel<AskTextBoxViewModel>();
         var settings = new DialogHostSettings();
         settings.ContentViewModel = vm;
         return (string?)await service.ShowDialogHostAsync(ownerViewModel, settings, appSettings).ConfigureAwait(true);

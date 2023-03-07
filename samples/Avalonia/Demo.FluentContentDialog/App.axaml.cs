@@ -26,6 +26,7 @@ public class App : Application
             viewModelFactory: x => Locator.Current.GetService(x)));
 
         SplatRegistrations.Register<MainWindowViewModel>();
+        SplatRegistrations.Register<AskTextBoxViewModel>();
         SplatRegistrations.SetupIOC();
     }
 
@@ -44,5 +45,6 @@ public class App : Application
     }
 
     public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static AskTextBoxViewModel AskTextBox => Locator.Current.GetService<AskTextBoxViewModel>()!;
     public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }

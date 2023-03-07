@@ -655,8 +655,6 @@ Here are the differences:
 ## Contributions Are Welcomed
 
 TODO:
-- Support [DialogHost.Avalonia](https://github.com/AvaloniaUtils/DialogHost.Avalonia) for mobile support.
-- Support [Aura.UI](https://github.com/PieroCastillo/Aura.UI) message boxes
 - Implement for WinUI 3 (I'll leave this task to someone who is going to use it)
 - Implement for UWP (this thing is dead... not worth implementing IMO)
 - Implement for Blazor?

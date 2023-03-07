@@ -26,7 +26,7 @@ public class App : Application
 
         SplatRegistrations.Register<MainViewModel>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
-        SplatRegistrations.Register<TextBoxViewModel>();
+        SplatRegistrations.Register<AskTextBoxViewModel>();
         SplatRegistrations.SetupIOC();
     }
 
@@ -40,6 +40,6 @@ public class App : Application
 
     public static MainViewModel Main => Locator.Current.GetService<MainViewModel>()!;
     public static CurrentTimeViewModel CurrentTime => Locator.Current.GetService<CurrentTimeViewModel>()!;
-    public static TextBoxViewModel TextBox => Locator.Current.GetService<TextBoxViewModel>()!;
+    public static AskTextBoxViewModel AskTextBox => Locator.Current.GetService<AskTextBoxViewModel>()!;
     public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;
 }

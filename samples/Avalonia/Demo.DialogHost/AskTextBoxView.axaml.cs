@@ -3,9 +3,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Demo.Avalonia.DialogHost;
 
-public partial class TextBoxView : UserControl
+public partial class AskTextBoxView : UserControl
 {
-    public TextBoxView()
+    public AskTextBoxView()
     {
         InitializeComponent();
     }

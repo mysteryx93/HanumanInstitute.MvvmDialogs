@@ -5,8 +5,8 @@
              xmlns:local="clr-namespace:Demo.Avalonia.DialogHost"
              xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              mc:Ignorable="d" d:DesignWidth="300" d:DesignHeight="130"
-             x:Class="Demo.Avalonia.DialogHost.TextBoxView" Padding="10"
-             d:DataContext="{x:Static local:App.TextBox}">
+             x:Class="Demo.Avalonia.DialogHost.AskTextBoxView" Padding="10"
+             d:DataContext="{x:Static local:App.AskTextBox}">
     <StackPanel Orientation="Vertical">
         <TextBlock Text="{Binding Title}" />
         <TextBox Height="24" Margin="0,10,0,20" Text="{Binding Text}" />

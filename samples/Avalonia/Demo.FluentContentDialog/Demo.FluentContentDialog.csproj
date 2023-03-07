@@ -19,6 +19,7 @@
     <PackageReference Include="FluentAvalonia.UI.Windowing" Version="2.0.0-preview5" />
     <PackageReference Include="FluentAvaloniaUI" Version="2.0.0-preview5" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.4.25" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.1.93">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,5 +29,11 @@
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.Fluent\MvvmDialogs.Avalonia.Fluent.csproj" />
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="AskTextBoxView.axaml.cs">
+      <DependentUpon>AskTextBoxView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
