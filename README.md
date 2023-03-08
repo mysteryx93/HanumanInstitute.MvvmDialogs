@@ -55,7 +55,9 @@ The library has built in support for the following dialogs:
 - Save file dialog
 - Open folder dialog
 
-v2 adds supports for 'magic' mobile navigation with the same API. 
+v2 adds supports for 'magic' mobile navigation with the same API.
+
+[Here's a tutorial for building modern cross-platform applications.](https://github.com/mysteryx93/Modern.Net-Tutorial)
 
 ## Generic Usage
 
