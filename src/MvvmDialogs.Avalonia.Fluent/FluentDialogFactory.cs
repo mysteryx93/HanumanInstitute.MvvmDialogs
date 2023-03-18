@@ -125,7 +125,7 @@ public class FluentDialogFactory : DialogFactoryBase
         };
 
     private static TaskDialogButton GetButton(string text, bool? value, bool? defaultValue) =>
-        new TaskDialogButton(text, value)
+        new(text, value)
         {
             IsDefault = defaultValue == value
         };

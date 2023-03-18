@@ -1,6 +1,7 @@
 ﻿// ReSharper disable VirtualMemberCallInConstructor
 
 using System.Collections.Generic;
+using Avalonia.Controls.ApplicationLifetimes;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -91,15 +92,19 @@ public class ViewWrapper : IView
     /// <inheritdoc />
     public Task ShowDialogAsync(IView owner)
     {
-        return Ref.ShowDialog<bool?>((Window)owner.RefObj);
+        var window = (Window)owner.RefObj;
+        SetMainWindowIfEmpty(window);
+        return Ref.ShowDialog<bool?>(window);
     }
 
     /// <inheritdoc />
     public void Show(IView? owner)
     {
-        if (owner?.RefObj != null)
+        var own = owner?.RefObj as Window;
+        SetMainWindowIfEmpty(Ref);
+        if (own != null)
         {
-            Ref.Show((Window)owner.RefObj);
+            Ref.Show(own);
         }
         else
         {
@@ -125,4 +130,12 @@ public class ViewWrapper : IView
 
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }
+
+    private void SetMainWindowIfEmpty(Window? window)
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: null } desktop)
+        {
+            desktop.MainWindow = window;
+        }
+    }
 }

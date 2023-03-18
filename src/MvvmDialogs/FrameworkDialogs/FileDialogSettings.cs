@@ -22,7 +22,7 @@ public abstract class FileDialogSettings : DialogSettingsBase
     /// to the descriptions unless it contains '('.
     /// If you do not wish to display extensions, end the name with '()' and it will be trimmed away.
     /// </remarks>
-    public List<FileFilter> Filters { get; set; } = new List<FileFilter>();
+    public List<FileFilter> Filters { get; set; } = new();
 
     /// <summary>
     /// Gets or sets the initial directory that is displayed by a file dialog.

@@ -26,6 +26,6 @@ public partial class App
         var dialogService = Ioc.Default.GetRequiredService<IDialogService>();
         var vm = dialogService.CreateViewModel<MainWindowViewModel>();
         dialogService.Show(null, vm);
-        Application.Current.MainWindow = Application.Current.Windows[0];
+        //Application.Current.MainWindow = Application.Current.Windows[0];
     }
 }
