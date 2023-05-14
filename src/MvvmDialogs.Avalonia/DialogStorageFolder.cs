@@ -20,9 +20,9 @@ public class AvaloniaDialogStorageFolder : AvaloniaDialogStorageItem, IDialogSto
     }
 
     /// <inheritdoc />
-    public async Task<IEnumerable<IDialogStorageItem>> GetItemsAsync()
+    public IAsyncEnumerable<IDialogStorageItem> GetItemsAsync()
     {
-        var list = await _item.GetItemsAsync();
+        var list = _item.GetItemsAsync();
         return list.Select(x => x is IStorageFile f ? (IDialogStorageItem)new AvaloniaDialogStorageFile(f) : new AvaloniaDialogStorageFolder((IStorageFolder)x));
     }
 }

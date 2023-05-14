@@ -132,7 +132,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
     private Task<T> DispatchWithResult<T>(Func<T> action)
     {
         var tcs = new TaskCompletionSource<T>();
-        _ = _dispatcher.InvokeAsync(
+        _dispatcher.Post(
             () =>
             {
                 tcs.SetResult(action());

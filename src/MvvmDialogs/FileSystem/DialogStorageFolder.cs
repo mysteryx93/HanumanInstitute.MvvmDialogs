@@ -21,12 +21,18 @@ public class DialogStorageFolder : DialogStorageItem, IDialogStorageFolder
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<IDialogStorageItem>> GetItemsAsync() => GetItemsAsync(string.Empty, SearchOption.TopDirectoryOnly);
+    public IAsyncEnumerable<IDialogStorageItem> GetItemsAsync() => GetItemsAsync(string.Empty, SearchOption.TopDirectoryOnly);
 
-    private Task<IEnumerable<IDialogStorageItem>> GetItemsAsync(string searchPattern) => GetItemsAsync(searchPattern, SearchOption.TopDirectoryOnly);
+    private IAsyncEnumerable<IDialogStorageItem> GetItemsAsync(string searchPattern) => GetItemsAsync(searchPattern, SearchOption.TopDirectoryOnly);
 
-    private Task<IEnumerable<IDialogStorageItem>> GetItemsAsync(string searchPattern, SearchOption searchOption) => Task.Run(
-        () =>
-            _info.EnumeratePathInfos(searchPattern, searchOption)
-                .Select(x => x is IFileInfo f ? (IDialogStorageItem)new DialogStorageFile(f) : new DialogStorageFolder((IDirectoryInfo)x)));
+    private async IAsyncEnumerable<IDialogStorageItem> GetItemsAsync(string searchPattern, SearchOption searchOption)
+    {
+        var items = _info.EnumeratePathInfos(searchPattern, searchOption)
+            .Select(x => x is IFileInfo f ? (IDialogStorageItem)new DialogStorageFile(f) : new DialogStorageFolder((IDirectoryInfo)x));
+
+        foreach (var item in items)
+        {
+            yield return item;
+        }
+    }
 }

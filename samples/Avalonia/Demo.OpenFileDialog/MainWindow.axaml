@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <ListBox
-            Items="{Binding Paths, Mode=OneWay}" />
+            ItemsSource="{Binding Paths, Mode=OneWay}" />
         <Button
             Grid.Column="1" Height="32" Margin="0, 10, 0, 0" VerticalAlignment="Top"
             Content="Open single..."
