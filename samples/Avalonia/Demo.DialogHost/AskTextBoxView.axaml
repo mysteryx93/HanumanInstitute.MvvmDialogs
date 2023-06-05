@@ -17,8 +17,10 @@
                     <Setter Property="Margin" Value="10,0,0,0" />
                 </Style>
             </StackPanel.Styles>
-            <Button Content="Ok" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}" CommandParameter="{Binding Text}" />
-            <Button Content="Cancel" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}" />
+            <!-- <Button Content="Ok" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}" CommandParameter="{Binding Text}" /> -->
+            <!-- <Button Content="Cancel" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=dialogHost:DialogHost}, Path=CloseDialogCommand}" /> -->
+            <Button Content="Ok" Command="{Binding Ok}" />
+            <Button Content="Cancel" Command="{Binding Cancel}" />
         </StackPanel>
     </StackPanel>
 </UserControl>
