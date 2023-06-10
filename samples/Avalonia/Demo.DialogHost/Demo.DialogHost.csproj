@@ -12,6 +12,10 @@
     <Compile Remove="Models\**" />
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Models\**" />
+    <Compile Update="MessageView.axaml.cs">
+      <DependentUpon>MessageBox.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
@@ -32,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.DialogHost\MvvmDialogs.Avalonia.DialogHost.csproj" />
+    <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
   </ItemGroup>
   <ItemGroup>

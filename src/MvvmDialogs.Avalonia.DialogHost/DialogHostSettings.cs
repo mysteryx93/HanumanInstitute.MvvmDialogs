@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Avalonia.Media;
+﻿using Avalonia.Media;
 using DialogHostAvalonia;
 using DialogHostAvalonia.Positioners;
 
@@ -11,9 +10,25 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 public class DialogHostSettings : DialogSettingsBase
 {
     /// <summary>
+    /// Initializes a new instance of the DialogHostSettings class.
+    /// </summary>
+    public DialogHostSettings()
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the DialogHostSettings class.
+    /// </summary>
+    /// <param name="content">The view model of the view to show. The view will be resolved through Avalonia's ViewLocator.</param>
+    public DialogHostSettings(object? content)
+    {
+        Content = content;
+    }
+    
+    /// <summary>
     /// The view model of the view to show. The view will be resolved through Avalonia's ViewLocator.
     /// </summary>
-    public INotifyPropertyChanged? ContentViewModel { get; set; }
+    public object? Content { get; set; }
     /// <summary>
     /// A handler that will be called when the view is closing, allowing to cancel the close.
     /// </summary>

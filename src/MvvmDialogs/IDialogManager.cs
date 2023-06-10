@@ -57,4 +57,11 @@ public interface IDialogManager
     /// </summary>
     /// <returns>A dummy window.</returns>
     IView? GetDummyWindow();
+
+    /// <summary>
+    /// Handles window events. By default, ICloseable and IActivable are handled.
+    /// </summary>
+    /// <param name="viewModel">The view model of the new dialog.</param>
+    /// <param name="dialog">The dialog being shown.</param>
+    public void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog);
 }

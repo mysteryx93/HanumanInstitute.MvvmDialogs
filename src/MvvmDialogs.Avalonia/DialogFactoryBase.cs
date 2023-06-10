@@ -8,16 +8,19 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// </summary>
 public abstract class DialogFactoryBase : IDialogFactory
 {
+    /// <inheritdoc />
+    public IDialogManager? DialogManager { get; set; }
+    
     /// <summary>
     /// If the dialog is not handled by this class, calls this other handler next.
     /// </summary>
-    protected readonly IDialogFactory? Chain;
+    public IDialogFactory? Chain { get; }
 
     /// <summary>
     /// A reference to the top of the IDialogFactory chain, used to display message boxes.
     /// </summary>
-    protected IDialogFactory ChainTop { get; set; }
-
+    public IDialogFactory ChainTop { get; private set; }
+    
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
@@ -43,6 +46,13 @@ public abstract class DialogFactoryBase : IDialogFactory
         return Chain != null ? await Chain.ShowDialogAsync(owner, settings, app).ConfigureAwait(true) :
             throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
     }
+
+    /// <summary>
+    /// Returns the <see cref="IDialogManager"/> set on the root factory.
+    /// </summary>
+    /// <returns>The <see cref="IDialogManager"/>.</returns>
+    public IDialogManager GetDialogManager() =>
+        ChainTop.DialogManager ?? throw new NullReferenceException("Missing IDialogManager reference in root DialogFactory.");
 
     // /// <summary>
     // /// Opens a framework dialog with specified owner.

@@ -24,7 +24,7 @@ public static class DialogServiceExtensions
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (settings == null) throw new ArgumentNullException(nameof(settings));
-        if (settings.ContentViewModel == null) throw new ArgumentNullException(nameof(settings.ContentViewModel));
+        if (settings.Content == null) throw new ArgumentNullException(nameof(settings.Content));
 
         return await service.DialogManager.ShowFrameworkDialogAsync(
             ownerViewModel, settings, appSettings ?? service.AppSettings).ConfigureAwait(true);

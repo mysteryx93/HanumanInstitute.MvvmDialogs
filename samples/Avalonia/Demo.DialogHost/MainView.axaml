@@ -8,17 +8,29 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Demo - DialogHost"
-        Width="300"
+        Width="440"
         Height="300"
         d:DataContext="{x:Static local:App.Main}">
     <UniformGrid Rows="3">
         <Button
-            Command="{Binding ShowDialogHost}">
-            <TextBlock Text="Show current time using DialogHost" />
+            Command="{Binding ShowViewModel}">
+            <TextBlock Text="Confirm close in DialogHost" />
         </Button>
         <Button
-            Command="{Binding AskTextDialogHost}">
-            <TextBlock Text="Ask for text using DialogHost" />
+            Command="{Binding ConfirmClose}">
+            <TextBlock Text="Confirm close in ViewModel" />
+        </Button>
+        <Button
+            Command="{Binding AskText}">
+            <TextBlock Text="Ask for text" />
+        </Button>
+        <Button
+            Command="{Binding ShowMessage}">
+            <TextBlock Text="Show message" />
+        </Button>
+        <Button
+            Command="{Binding ShowControl}">
+            <TextBlock Text="Show control" />
         </Button>
         <TextBlock Text="{Binding TextOutput}" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </UniformGrid>

@@ -37,6 +37,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     {
         ViewLocator = viewLocator;
         DialogFactory = dialogFactory;
+        DialogFactory.DialogManager = this;
         Logger = logger;
     }
 
@@ -153,7 +154,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <param name="dialog">The dialog being shown.</param>
-    protected virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
+    public virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
     {
         if (viewModel is ICloseable closable)
         {
@@ -263,6 +264,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
                             isDummyOwner = true;
                         }
                     }
+                    
                     var result = await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
                     if (isDummyOwner)
                     {

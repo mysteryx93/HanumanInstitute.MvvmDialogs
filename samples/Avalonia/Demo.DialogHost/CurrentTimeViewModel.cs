@@ -1,12 +1,17 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
+using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 
 namespace Demo.Avalonia.DialogHost;
 
-public class CurrentTimeViewModel : ViewModelBase
+public class CurrentTimeViewModel : ViewModelBase, IViewClosing
 {
     public DateTime CurrentTime => DateTime.Now;
+    
+    public bool ConfirmClose { get; set; }
     
     public bool StayOpen { get; set; }
 
@@ -15,4 +20,14 @@ public class CurrentTimeViewModel : ViewModelBase
         {
             this.RaisePropertyChanged(nameof(CurrentTime));
         });
+    
+    public void OnClosing(CancelEventArgs e)
+    {
+        if (ConfirmClose)
+        {
+            e.Cancel = StayOpen;
+        }
+    }
+
+    public Task OnClosingAsync(CancelEventArgs e) => Task.CompletedTask;
 }
