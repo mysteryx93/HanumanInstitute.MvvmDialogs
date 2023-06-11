@@ -8,10 +8,14 @@ namespace HanumanInstitute.MvvmDialogs.Wpf;
 /// </summary>
 public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
 {
-    /// <summary>
-    /// If the dialog is not handled by this class, calls this other handler next.
-    /// </summary>
-    protected readonly IDialogFactory? Chain;
+    /// <inheritdoc />
+    public IDialogManager? DialogManager { get; set; }
+
+    /// <inheritdoc />
+    public IDialogFactory? Chain { get; }
+
+    /// <inheritdoc />
+    public IDialogFactory ChainTop { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
@@ -20,6 +24,15 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     protected DialogFactoryBase(IDialogFactory? chain)
     {
         Chain = chain;
+        ChainTop = this;
+
+        // Set ChainTop recursively.
+        var item = chain;
+        while (item is DialogFactoryBase f)
+        {
+            f.ChainTop = this;
+            item = f.Chain;
+        }
     }
 
     /// <inheritdoc />

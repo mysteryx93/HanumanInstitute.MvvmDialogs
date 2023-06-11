@@ -10,17 +10,13 @@ public abstract class DialogFactoryBase : IDialogFactory
 {
     /// <inheritdoc />
     public IDialogManager? DialogManager { get; set; }
-    
-    /// <summary>
-    /// If the dialog is not handled by this class, calls this other handler next.
-    /// </summary>
+
+    /// <inheritdoc />
     public IDialogFactory? Chain { get; }
 
-    /// <summary>
-    /// A reference to the top of the IDialogFactory chain, used to display message boxes.
-    /// </summary>
+    /// <inheritdoc />
     public IDialogFactory ChainTop { get; private set; }
-    
+
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
