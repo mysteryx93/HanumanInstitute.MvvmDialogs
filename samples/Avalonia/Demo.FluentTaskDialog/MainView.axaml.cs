@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Demo.Avalonia.FluentTaskDialog;
 
-public partial class MainWindow : Window
+public partial class MainView : Window
 {
-    public MainWindow()
+    public MainView()
     {
         InitializeComponent();
 #if DEBUG

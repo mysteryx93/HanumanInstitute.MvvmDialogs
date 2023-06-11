@@ -9,7 +9,6 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 /// </summary>
 public class FluentDialogFactory : DialogFactoryBase
 {
-    private readonly IFluentApi _api;
     private readonly FluentMessageBoxType _messageBoxType;
 
     /// <summary>
@@ -18,20 +17,8 @@ public class FluentDialogFactory : DialogFactoryBase
     /// <param name="messageBoxType">Specifies how MessageBox dialogs will be handled.</param>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
     public FluentDialogFactory(FluentMessageBoxType messageBoxType = FluentMessageBoxType.TaskDialog, IDialogFactory? chain = null)
-        : this(messageBoxType, chain, null)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of a FrameworkDialog.
-    /// </summary>
-    /// <param name="messageBoxType">Specifies how MessageBox dialogs will be handled.</param>
-    /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
-    /// <param name="api">An interface exposing Avalonia messagebox dialogs API.</param>
-    internal FluentDialogFactory(FluentMessageBoxType messageBoxType, IDialogFactory? chain, IFluentApi? api)
         : base(chain)
     {
-        _api = api ?? new FluentApi();
         _messageBoxType = messageBoxType;
     }
 
@@ -39,15 +26,41 @@ public class FluentDialogFactory : DialogFactoryBase
     public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
         settings switch
         {
-            ContentDialogSettings s => await _api.ShowContentDialog(owner.GetRef(), s).ConfigureAwait(true),
-            TaskDialogSettings s => await _api.ShowTaskDialog(owner.GetRef(), s).ConfigureAwait(true),
-            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.ContentDialog => await ShowMessageBoxContentDialogAsync(owner.GetRef(), s, appSettings)
+            ContentDialogSettings s => await ShowContentDialogAsync(owner, s).ConfigureAwait(true),
+            TaskDialogSettings s => await ShowTaskDialogAsync(owner, s).ConfigureAwait(true),
+            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.ContentDialog => await ShowMessageBoxContentDialogAsync(owner, s, appSettings)
                 .ConfigureAwait(true),
-            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.TaskDialog => await ShowMessageBoxTaskDialogAsync(owner.GetRef(), s, appSettings).ConfigureAwait(true),
+            MessageBoxSettings s when _messageBoxType == FluentMessageBoxType.TaskDialog => await ShowMessageBoxTaskDialogAsync(owner, s, appSettings).ConfigureAwait(true),
             _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
         };
 
-    private async Task<bool?> ShowMessageBoxContentDialogAsync(ContentControl? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<ContentDialogResult> ShowContentDialogAsync(IView? owner, ContentDialogSettings settings)
+    {
+        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        var view = new FluentContentView(settings);
+        if (view.ViewModel != null)
+        {
+            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
+        }
+        
+        await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        return view.DialogResult;
+    }
+    
+    private async Task<object> ShowTaskDialogAsync(IView? owner, TaskDialogSettings settings)
+    {
+        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        var view = new FluentTaskView(settings);
+        if (view.ViewModel != null)
+        {
+            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
+        }
+        
+        await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        return view.DialogResult;
+    }
+    
+    private async Task<bool?> ShowMessageBoxContentDialogAsync(IView? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     {
         var apiSettings = new ContentDialogSettings()
         {
@@ -80,11 +93,11 @@ public class FluentDialogFactory : DialogFactoryBase
             apiSettings.CloseButtonText = "Cancel";
         }
 
-        var result = await _api.ShowContentDialog(owner, apiSettings).ConfigureAwait(true);
+        var result = await ShowContentDialogAsync(owner, apiSettings).ConfigureAwait(true);
         return result == yes ? true : result == no ? false : null;
     }
 
-    private async Task<bool?> ShowMessageBoxTaskDialogAsync(ContentControl? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<bool?> ShowMessageBoxTaskDialogAsync(IView? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     {
         var apiSettings = new TaskDialogSettings()
         {
@@ -95,7 +108,7 @@ public class FluentDialogFactory : DialogFactoryBase
             // Icon = SyncIcon(settings.Icon)
         };
 
-        var result = await _api.ShowTaskDialog(owner, apiSettings).ConfigureAwait(true);
+        var result = await ShowTaskDialogAsync(owner, apiSettings).ConfigureAwait(true);
         return result as bool?; // It can be TaskDialogStandardResult.None if we press Escape
     }
 

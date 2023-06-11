@@ -8,8 +8,8 @@
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Title="Demo - Message Box"
-    Width="300"
-    Height="200"
+    Width="400"
+    Height="300"
     d:DataContext="{x:Static fluentContentDialog:App.MainWindow}">
 
     <UniformGrid Columns="2" Rows="3">

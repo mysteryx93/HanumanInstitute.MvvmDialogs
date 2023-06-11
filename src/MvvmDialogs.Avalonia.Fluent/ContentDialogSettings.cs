@@ -7,6 +7,20 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 public class ContentDialogSettings : DialogSettingsBase
 {
     /// <summary>
+    /// Initializes a new instance of the ContentDialogSettings class.
+    /// </summary>
+    public ContentDialogSettings() {}
+
+    /// <summary>
+    /// Initializes a new instance of the ContentDialogSettings class with specified content.
+    /// </summary>
+    /// <param name="content">The content of the dialog. Can be a ViewModel, Control, or any content.</param>
+    public ContentDialogSettings(object? content)
+    {
+        Content = content;
+    }
+    
+    /// <summary>
     /// Gets or sets the content of the dialog.
     /// </summary>
     public object? Content { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Collections.Generic;
+using System.Reactive;
 using System.Threading.Tasks;
 using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
@@ -6,9 +7,9 @@ using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace Demo.Avalonia.FluentContentDialog;
+namespace Demo.Avalonia.FluentTaskDialog;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     public ReactiveCommand<Unit, Unit> ShowMessageBox { get; }
@@ -16,7 +17,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ShowViewModel { get; }
     public ReactiveCommand<Unit, Unit> ShowControl { get; }
 
-    public MainWindowViewModel(IDialogService dialogService)
+    public MainViewModel(IDialogService dialogService)
     {
         this._dialogService = dialogService;
 
@@ -31,17 +32,19 @@ public class MainWindowViewModel : ViewModelBase
 
     private async Task ShowMessageBoxImplAsync()
     {
-        ContentDialogSettings settings = new()
+        TaskDialogSettings settings = new()
         {
             Content = "This is the text.",
             Title = "This Is The Caption",
-            PrimaryButtonText = "OK",
-            SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Secondary
+            Buttons = new List<TaskDialogButton>()
+            {
+                TaskDialogButton.OKButton,
+                TaskDialogButton.CancelButton
+            }
         };
-        var result = await _dialogService.ShowContentDialogAsync(this, settings);
+        var result = await _dialogService.ShowTaskDialogAsync(this, settings);
 
-        UpdateResult(result == ContentDialogResult.Primary);
+        UpdateResult(result == TaskDialogStandardResult.OK);
     }
 
     private void UpdateResult(bool? result) =>
@@ -51,16 +54,18 @@ public class MainWindowViewModel : ViewModelBase
     {
         var vm = _dialogService.CreateViewModel<AskTextBoxViewModel>();
         vm.Title = "Title within the View";
-        ContentDialogSettings settings = new()
+        TaskDialogSettings settings = new()
         {
             Content = vm,
             Title = "Please enter some text",
-            PrimaryButtonText = "OK",
-            SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
+            Buttons = new List<TaskDialogButton>()
+            {
+                TaskDialogButton.OKButton,
+                TaskDialogButton.CancelButton
+            }
         };
-        var result = await _dialogService.ShowContentDialogAsync(this, settings);
-        if (result == ContentDialogResult.Primary)
+        var result = await _dialogService.ShowTaskDialogAsync(this, settings);
+        if (result == TaskDialogStandardResult.OK)
         {
             TextOutput = vm.Text;
         }
@@ -70,18 +75,25 @@ public class MainWindowViewModel : ViewModelBase
     {
         var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
         dialogViewModel.ConfirmClose = true;
-        await _dialogService.ShowContentDialogAsync(this, new ContentDialogSettings(dialogViewModel)
+        await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(dialogViewModel)
         {
-            PrimaryButtonText = "OK"
+            Buttons = new List<TaskDialogButton>()
+            {
+                TaskDialogButton.OKButton
+            }
+
         }).ConfigureAwait(true);
     }
 
     private async Task ShowControlImplAsync()
     {
         var content = new MessageView();
-        var result = await _dialogService.ShowContentDialogAsync(this, new ContentDialogSettings(content)
+        var result = await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(content)
         {
-            PrimaryButtonText = "OK"
+            Buttons = new List<TaskDialogButton>()
+            {
+                TaskDialogButton.OKButton
+            }
         }).ConfigureAwait(true);
         TextOutput = result.ToString();
     }

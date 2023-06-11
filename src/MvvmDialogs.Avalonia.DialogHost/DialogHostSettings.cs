@@ -26,7 +26,7 @@ public class DialogHostSettings : DialogSettingsBase
     }
     
     /// <summary>
-    /// The view model of the view to show. The view will be resolved through Avalonia's ViewLocator.
+    /// The view model of the view to show, or any content or user control. The view will be resolved through Avalonia's ViewLocator.
     /// </summary>
     public object? Content { get; set; }
     /// <summary>

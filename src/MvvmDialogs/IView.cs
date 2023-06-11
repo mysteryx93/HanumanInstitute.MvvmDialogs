@@ -46,7 +46,7 @@ public interface IView
     /// <summary>
     /// Gets or sets the data context for an element when it participates in data binding.
     /// </summary>
-    INotifyPropertyChanged ViewModel { get; }
+    INotifyPropertyChanged? ViewModel { get; }
 
     /// <summary>
     /// Opens a window and returns without waiting for the newly opened window to close.

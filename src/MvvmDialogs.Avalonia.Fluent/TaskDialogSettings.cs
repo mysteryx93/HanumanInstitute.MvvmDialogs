@@ -9,6 +9,20 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 public class TaskDialogSettings : DialogSettingsBase
 {
     /// <summary>
+    /// Initializes a new instance of the TaskDialogSettings class.
+    /// </summary>
+    public TaskDialogSettings() {}
+
+    /// <summary>
+    /// Initializes a new instance of the TaskDialogSettings class with specified content.
+    /// </summary>
+    /// <param name="content">The content of the dialog. Can be a ViewModel, Control, or any content.</param>
+    public TaskDialogSettings(object? content)
+    {
+        Content = content;
+    }
+    
+    /// <summary>
     /// Gets or sets the dialog header text
     /// </summary>
     public string Header { get; set; } = string.Empty;

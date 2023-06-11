@@ -1,16 +1,16 @@
 ﻿<Window
-    x:Class="Demo.Avalonia.FluentContentDialog.MainWindow"
+    x:Class="Demo.Avalonia.FluentTaskDialog.MainView"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:fluentContentDialog="clr-namespace:Demo.Avalonia.FluentContentDialog"
+    xmlns:local="clr-namespace:Demo.Avalonia.FluentTaskDialog"
     mc:Ignorable="d"
     WindowStartupLocation="CenterScreen"
     Title="Demo - Message Box"
     Width="400"
     Height="300"
-    d:DataContext="{x:Static fluentContentDialog:App.MainWindow}">
+    d:DataContext="{x:Static local:App.Main}">
 
     <UniformGrid Rows="3">
         <Button

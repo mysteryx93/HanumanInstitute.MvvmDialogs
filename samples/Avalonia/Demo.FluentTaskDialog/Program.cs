@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using FluentAvalonia.UI.Windowing;
 
 namespace Demo.Avalonia.FluentTaskDialog;
 
@@ -19,6 +18,5 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
-            .UseReactiveUI()
-            .UseFAWindowing();
+            .UseReactiveUI();
 }

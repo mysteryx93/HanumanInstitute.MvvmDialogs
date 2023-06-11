@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Avalonia.VisualTree;
+using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 
@@ -103,7 +104,10 @@ public class DialogHostView : IView
         try
         {
             host.DialogOpened += Host_DialogOpened;
+            void Cancel() => Close();
+            CancellableActions.Add(Cancel);
             DialogResult = await DialogHostAvalonia.DialogHost.Show(Settings.Content!, host, closingHandler).ConfigureAwait(true);
+            CancellableActions.Remove(Cancel);
             Closed?.Invoke(this, EventArgs.Empty);
         }
         finally
