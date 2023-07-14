@@ -34,7 +34,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
-        public object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+        public object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, Func<object?, string>? resultToString = null)
             where TSettings : DialogSettingsBase
         {
             Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
@@ -44,7 +44,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             {
                 owner = FindViewByViewModelOrThrow(ownerViewModel);
             }
-            var result = DialogFactory.AsSync().ShowDialog(owner, settings, appSettings);
+            var result = DialogFactory.AsSync().ShowDialog(owner, settings);
 
             Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings?.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
             return result;

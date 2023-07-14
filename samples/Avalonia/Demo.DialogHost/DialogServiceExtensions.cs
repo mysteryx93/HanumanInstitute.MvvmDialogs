@@ -12,11 +12,11 @@ namespace HanumanInstitute.MvvmDialogs;
 /// </summary>
 public static class DialogServiceExtensions
 {
-    public static async Task<string?> AskTextAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel, AppDialogSettingsBase? appSettings = null)
+    public static async Task<string?> AskTextAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel)
     {
         var vm = service.CreateViewModel<AskTextBoxViewModel>();
         var settings = new DialogHostSettings(vm);
-        await service.ShowDialogHostAsync(ownerViewModel, settings, appSettings).ConfigureAwait(true);
+        await service.ShowDialogHostAsync(ownerViewModel, settings).ConfigureAwait(true);
         return vm.DialogResult == true ? vm.Text : null;
     }
 }

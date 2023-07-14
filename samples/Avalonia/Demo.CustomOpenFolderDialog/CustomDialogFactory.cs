@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Avalonia.Win32;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
@@ -9,6 +8,7 @@ using Avalonia.Controls;
 using System.Collections.Generic;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.PathInfo;
+using Avalonia.Platform;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog;
 
@@ -27,19 +27,19 @@ public class CustomDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings),
-            _ => base.ShowDialogAsync(owner, settings, appSettings)
+            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s),
+            _ => base.ShowDialogAsync(owner, settings)
         };
 
-    private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings)
     {
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
         var window = TopLevel.GetTopLevel(owner.GetRef());
-        var platformImpl = window?.PlatformImpl as WindowImpl;
+        var platformImpl = window?.PlatformImpl as IWindowImpl;
         if (platformImpl == null)
         {
             throw new NullReferenceException("Cannot obtain HWND handle for owner.");

@@ -15,15 +15,15 @@ public class DialogHostDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings) =>
         settings switch
         {
             // MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            DialogHostSettings s => await ShowDialogHostAsync(owner, s, appSettings), 
-            _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
+            DialogHostSettings s => await ShowDialogHostAsync(owner, s), 
+            _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
-    private async Task<object?> ShowDialogHostAsync(IView? owner, DialogHostSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<object?> ShowDialogHostAsync(IView? owner, DialogHostSettings settings)
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var view = new DialogHostView(settings);

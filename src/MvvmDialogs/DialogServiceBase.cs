@@ -11,21 +11,14 @@ public abstract class DialogServiceBase : IDialogService
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogServiceBase"/> class.
     /// </summary>
-    /// <param name="appSettings">Set application-wide settings.</param>
     /// <param name="dialogManager">Class responsible to manage UI interactions.</param>
     /// <param name="viewModelFactory">Function used to create view model instances. This function is used only by <see cref="IDialogService.CreateViewModel"/> and is not used internally.</param>
-    protected DialogServiceBase(AppDialogSettingsBase appSettings, IDialogManager dialogManager,
+    protected DialogServiceBase(IDialogManager dialogManager,
         Func<Type, object?>? viewModelFactory)
     {
-        AppSettings = appSettings;
         DialogManager = dialogManager;
         ViewModelFactory = viewModelFactory;
     }
-
-    /// <summary>
-    /// Set application-wide settings.
-    /// </summary>
-    public AppDialogSettingsBase AppSettings { get; }
 
     /// <summary>
     /// Factory responsible for creating dialogs.

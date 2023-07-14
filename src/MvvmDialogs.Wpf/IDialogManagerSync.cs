@@ -20,10 +20,9 @@ public interface IDialogManagerSync
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings to pass to the <see cref="IDialogFactory"/></param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <param name="resultToString">A function to convert the result into a string for logging. If null, ToString will be used.</param>
     /// <typeparam name="TSettings">The settings type used to determine which dialog to show.</typeparam>
     /// <returns>The dialog result.</returns>
-    object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+    object? ShowFrameworkDialog<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase;
 }

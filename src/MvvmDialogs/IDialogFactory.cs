@@ -10,10 +10,9 @@ public interface IDialogFactory
     /// </summary>
     /// <param name="owner">Handle to the window that owns the dialog.</param>
     /// <param name="settings">The settings for the framework dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <typeparam name="TSettings">The type of settings to use for this dialog.</typeparam>
     /// <returns>Return data specific to the dialog.</returns>
-    Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings);
+    Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings);
 
     /// <summary>
     /// Gets or sets a reference to the <see cref="IDialogManager"/>. Will only be set to the root factory in the chain.

@@ -36,10 +36,9 @@ public abstract class DialogFactoryBase : IDialogFactory
     }
 
     /// <inheritdoc />
-    public virtual async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings)
+    public virtual async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings)
     {
-        if (appSettings is not AppDialogSettings app) throw new ArgumentException($"{nameof(appSettings)} must be of type {nameof(AppDialogSettings)}");
-        return Chain != null ? await Chain.ShowDialogAsync(owner, settings, app).ConfigureAwait(true) :
+        return Chain != null ? await Chain.ShowDialogAsync(owner, settings).ConfigureAwait(true) :
             throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
     }
 

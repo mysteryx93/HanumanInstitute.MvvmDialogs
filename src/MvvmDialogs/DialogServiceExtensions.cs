@@ -24,7 +24,6 @@ public static class DialogServiceExtensions
     /// <param name="icon">A <see cref="MessageBoxImage"/> value that specifies the icon to display.
     /// Default value is <see cref="MessageBoxImage.None"/>.</param>
     /// <param name="defaultResult">Specifies the value of the button selected by default. Default value is true.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>A value that specifies which message box button is clicked by the user. True=OK/Yes, False=No, Null=Cancel</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static Task<bool?> ShowMessageBoxAsync(
@@ -34,8 +33,7 @@ public static class DialogServiceExtensions
         string title = "",
         MessageBoxButton button = MessageBoxButton.Ok,
         MessageBoxImage icon = MessageBoxImage.None,
-        bool? defaultResult = true,
-        AppDialogSettingsBase? appSettings = null)
+        bool? defaultResult = true)
     {
         var settings = new MessageBoxSettings
         {
@@ -46,7 +44,7 @@ public static class DialogServiceExtensions
             DefaultValue = defaultResult
         };
 
-        return ShowMessageBoxAsync(service, ownerViewModel, settings, appSettings ?? service.AppSettings);
+        return ShowMessageBoxAsync(service, ownerViewModel, settings);
     }
 
     /// <summary>
@@ -56,14 +54,13 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the message box dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>A value that specifies which message box button is clicked by the user. True=OK/Yes, False=No, Null=Cancel</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<bool?> ShowMessageBoxAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        MessageBoxSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        MessageBoxSettings? settings = null)
     {
         return (bool?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new MessageBoxSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true);
+            ownerViewModel, settings ?? new MessageBoxSettings()).ConfigureAwait(true);
     }
     
     /// <summary>
@@ -72,15 +69,14 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the open file dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<IDialogStorageFile?> ShowOpenFileDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        OpenFileDialogSettings? settings = null)
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= false;
-        var result = await ShowOpenFilesDialogAsync(service, ownerViewModel, settings, appSettings).ConfigureAwait(true);
+        var result = await ShowOpenFilesDialogAsync(service, ownerViewModel, settings).ConfigureAwait(true);
         return result.Count > 0 ? result[0] : null;
     }
 
@@ -90,16 +86,15 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the open file dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The list of files selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFilesDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        OpenFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        OpenFileDialogSettings? settings = null)
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
         return (IReadOnlyList<IDialogStorageFile>)(await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings, appSettings ?? service.AppSettings, x => string.Join(", ", x)).ConfigureAwait(true))!;
+            ownerViewModel, settings, x => string.Join(", ", x)).ConfigureAwait(true))!;
     }
 
     /// <summary>
@@ -108,14 +103,13 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the save file dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The path to the file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        SaveFileDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        SaveFileDialogSettings? settings = null)
     {
         return (IDialogStorageFile?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new SaveFileDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true);
+            ownerViewModel, settings ?? new SaveFileDialogSettings()).ConfigureAwait(true);
     }
 
     /// <summary>
@@ -124,14 +118,13 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the folder browser dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFoldersDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        OpenFolderDialogSettings? settings = null)
     {
         return (IReadOnlyList<IDialogStorageFolder>)(await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings(), appSettings ?? service.AppSettings).ConfigureAwait(true))!;
+            ownerViewModel, settings ?? new OpenFolderDialogSettings()).ConfigureAwait(true))!;
     }
 
     /// <summary>
@@ -140,15 +133,14 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the folder browser dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<IDialogStorageFolder?> ShowOpenFolderDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
-        OpenFolderDialogSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        OpenFolderDialogSettings? settings = null)
     {
         settings ??= new OpenFolderDialogSettings();
         settings.AllowMultiple ??= false;
-        var result = await ShowOpenFoldersDialogAsync(service, ownerViewModel, settings, appSettings).ConfigureAwait(true);
+        var result = await ShowOpenFoldersDialogAsync(service, ownerViewModel, settings).ConfigureAwait(true);
         return result?.FirstOrDefault();
     }
 }

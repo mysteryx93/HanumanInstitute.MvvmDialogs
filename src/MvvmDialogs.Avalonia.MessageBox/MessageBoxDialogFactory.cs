@@ -12,6 +12,11 @@ public class MessageBoxDialogFactory : DialogFactoryBase
     private readonly IMessageBoxApi _api;
 
     /// <summary>
+    /// Gets or sets the message box type to show.
+    /// </summary>
+    public MessageBoxMode Mode { get; set; }
+
+    /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
@@ -32,14 +37,14 @@ public class MessageBoxDialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings) =>
         settings switch
         {
-            MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
+            MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s).ConfigureAwait(true),
+            _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
-    private async Task<bool?> ShowMessageBoxDialogAsync(IView? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<bool?> ShowMessageBoxDialogAsync(IView? owner, MessageBoxSettings settings)
     {
         var apiSettings = new MessageBoxApiSettings()
         {
@@ -54,7 +59,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
         var ownerRef = owner.GetRef();
         if (ownerRef is Window ownerWin)
         {
-            var result = await _api.ShowMessageBoxAsync(ownerWin, apiSettings);
+            var result = await _api.ShowMessageBoxAsync(ownerWin, apiSettings, Mode);
             return result switch
             {
                 ButtonResult.Yes => true,

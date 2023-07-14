@@ -12,7 +12,11 @@ public static class DialogFactoryExtensions
     /// Registers MessageBox handlers in the dialog factory chain.
     /// </summary>
     /// <param name="factory">The dialog factory to add handlers for.</param>
+    /// <param name="mode">The message box type to show.</param>
     /// <returns>A new dialog factory that will fallback to the previous one.</returns>
-    public static IDialogFactory AddMessageBox(this IDialogFactory factory) =>
-        new MessageBoxDialogFactory(factory);
+    public static IDialogFactory AddMessageBox(this IDialogFactory factory, MessageBoxMode mode = MessageBoxMode.Window) =>
+        new MessageBoxDialogFactory(factory)
+        {
+            Mode = mode
+        };
 }

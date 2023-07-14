@@ -36,21 +36,19 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     }
 
     /// <inheritdoc />
-    public Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings)
+    public Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings)
     {
         if (owner is not null and not ViewWrapper) throw new ArgumentException($"{nameof(owner)} must be of type {nameof(ViewWrapper)}");
-        if (appSettings is not AppDialogSettings app) throw new ArgumentException($"{nameof(appSettings)} must be of type {nameof(AppDialogSettings)}");
 
-        return ShowDialogAsync((ViewWrapper?)owner, settings, app);
+        return ShowDialogAsync((ViewWrapper?)owner, settings);
     }
 
     /// <inheritdoc />
-    public object? ShowDialog<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings)
+    public object? ShowDialog<TSettings>(IView? owner, TSettings settings)
     {
         if (owner is not null and not ViewWrapper) throw new ArgumentException($"{nameof(owner)} must be of type {nameof(ViewWrapper)}");
-        if (appSettings is not AppDialogSettings app) throw new ArgumentException($"{nameof(appSettings)} must be of type {nameof(AppDialogSettings)}");
 
-        return ShowDialog((ViewWrapper?)owner, settings, app);
+        return ShowDialog((ViewWrapper?)owner, settings);
     }
 
     /// <summary>
@@ -58,10 +56,9 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     /// </summary>
     /// <param name="owner">Handle to the window that owns the dialog.</param>
     /// <param name="settings">The settings for the framework dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <returns>Return data specific to the dialog.</returns>
-    public virtual Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
-        Chain != null ? Chain.ShowDialogAsync(owner, settings, appSettings) :
+    public virtual Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings) =>
+        Chain != null ? Chain.ShowDialogAsync(owner, settings) :
             throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
 
     /// <summary>
@@ -69,9 +66,8 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     /// </summary>
     /// <param name="owner">Handle to the window that owns the dialog.</param>
     /// <param name="settings">The settings for the framework dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <returns>Return data specific to the dialog.</returns>
-    public virtual object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
-        Chain != null ? Chain.AsSync().ShowDialog(owner, settings, appSettings) :
+    public virtual object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings) =>
+        Chain != null ? Chain.AsSync().ShowDialog(owner, settings) :
             throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
 }

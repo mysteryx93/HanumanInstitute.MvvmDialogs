@@ -39,16 +39,16 @@ public class DialogFactory : DialogFactoryBase
     }
 
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            OpenFileDialogSettings s => await ShowOpenFileDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            SaveFileDialogSettings s => await ShowSaveFileDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            _ => await base.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true)
+            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s).ConfigureAwait(true),
+            OpenFileDialogSettings s => await ShowOpenFileDialogAsync(owner, s).ConfigureAwait(true),
+            SaveFileDialogSettings s => await ShowSaveFileDialogAsync(owner, s).ConfigureAwait(true),
+            _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
-    private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings)
     {
         var apiSettings = new FolderPickerOpenOptions()
         {
@@ -59,7 +59,7 @@ public class DialogFactory : DialogFactoryBase
         return await _api.ShowOpenFolderDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
     }
 
-    private async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(IView? owner, OpenFileDialogSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(IView? owner, OpenFileDialogSettings settings)
     {
         var apiSettings = new FilePickerOpenOptions()
         {
@@ -73,7 +73,7 @@ public class DialogFactory : DialogFactoryBase
         return await _api.ShowOpenFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true) ?? Array.Empty<IDialogStorageFile>();
     }
 
-    private async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(IView? owner, SaveFileDialogSettings settings, AppDialogSettingsBase appSettings)
+    private async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(IView? owner, SaveFileDialogSettings settings)
     {
         var apiSettings = new FilePickerSaveOptions()
         {

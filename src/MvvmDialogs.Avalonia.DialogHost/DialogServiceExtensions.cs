@@ -16,17 +16,16 @@ public static class DialogServiceExtensions
     /// <param name="service">The IDialogService on which to attach the extension method.</param>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings for the content dialog.</param>
-    /// <param name="appSettings">Overrides application-wide settings configured on <see cref="IDialogService"/>.</param>
     /// <returns>The dialog button that was pressed.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     public static async Task<object?> ShowDialogHostAsync(this IDialogService service, INotifyPropertyChanged ownerViewModel,
-        DialogHostSettings? settings = null, AppDialogSettingsBase? appSettings = null)
+        DialogHostSettings? settings = null)
     {
         if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
         if (settings == null) throw new ArgumentNullException(nameof(settings));
         if (settings.Content == null) throw new ArgumentNullException(nameof(settings.Content));
 
         return await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings, appSettings ?? service.AppSettings).ConfigureAwait(true);
+            ownerViewModel, settings).ConfigureAwait(true);
     }
 }

@@ -10,7 +10,6 @@ public interface IDialogFactorySync
     /// </summary>
     /// <param name="owner">Handle to the window that owns the dialog.</param>
     /// <param name="settings">The settings for the framework dialog.</param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <returns>Return data specific to the dialog.</returns>
-    object? ShowDialog<TSettings>(IView? owner, TSettings settings, AppDialogSettingsBase appSettings);
+    object? ShowDialog<TSettings>(IView? owner, TSettings settings);
 }

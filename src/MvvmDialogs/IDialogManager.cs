@@ -11,6 +11,11 @@ public interface IDialogManager
     /// Gets the ILogger that captures MvvmDialogs logs.
     /// </summary>
     ILogger<IDialogManager>? Logger { get; }
+    
+    /// <summary>
+    /// Whether to allow multiple framework dialogs to be displayed at once.
+    /// </summary>
+    public bool AllowConcurrentDialogs { get; set; }
 
     /// <summary>
     /// Shows a new window of specified type.
@@ -32,11 +37,10 @@ public interface IDialogManager
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
     /// <param name="settings">The settings to pass to the <see cref="IDialogFactory"/></param>
-    /// <param name="appSettings">Application-wide settings configured on the DialogService.</param>
     /// <param name="resultToString">A function to convert the result into a string for logging. If null, ToString will be used.</param>
     /// <typeparam name="TSettings">The settings type used to determine which dialog to show.</typeparam>
     /// <returns>The dialog result.</returns>
-    Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, AppDialogSettingsBase appSettings, Func<object?, string>? resultToString = null)
+    Task<object?> ShowFrameworkDialogAsync<TSettings>(INotifyPropertyChanged? ownerViewModel, TSettings settings, Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase;
 
     /// <summary>

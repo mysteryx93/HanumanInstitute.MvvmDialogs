@@ -44,29 +44,44 @@ public class DialogFactory : DialogFactoryBase
         _api = api ?? new FrameworkDialogsApi(_pathInfo);
     }
 
+    /// <summary>
+    /// Gets or sets whether message boxes are displayed right-to-left (RightAlign+RtlReading).
+    /// </summary>
+    public bool MessageBoxRightToLeft { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether to display on the default desktop of the interactive window station. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
+    /// </summary>
+    public bool MessageBoxDefaultDesktopOnly { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether to display on the currently active desktop even if a user is not logged on to the computer. Specifies that the message box is displayed from a .NET Windows Service application in order to notify the user of an event.
+    /// </summary>
+    public bool MessageBoxServiceNotification { get; set; }
+
     /// <inheritdoc />
-    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override async Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFolderDialog(owner, s, appSettings)).ConfigureAwait(true),
-            OpenFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFileDialog(owner, s, appSettings)).ConfigureAwait(true),
-            SaveFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowSaveFileDialog(owner, s, appSettings)).ConfigureAwait(true),
-            MessageBoxSettings s => await UiExtensions.RunUiAsync(() => ShowMessageBox(owner, s, appSettings)).ConfigureAwait(true),
-            _ => base.ShowDialogAsync(owner, settings, appSettings)
+            OpenFolderDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFolderDialog(owner, s)).ConfigureAwait(true),
+            OpenFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFileDialog(owner, s)).ConfigureAwait(true),
+            SaveFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowSaveFileDialog(owner, s)).ConfigureAwait(true),
+            MessageBoxSettings s => await UiExtensions.RunUiAsync(() => ShowMessageBox(owner, s)).ConfigureAwait(true),
+            _ => base.ShowDialogAsync(owner, settings)
         };
 
     /// <inheritdoc />
-    public override object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings, AppDialogSettings appSettings) =>
+    public override object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings) =>
         settings switch
         {
-            OpenFolderDialogSettings s => ShowOpenFolderDialog(owner, s, appSettings),
-            OpenFileDialogSettings s => ShowOpenFileDialog(owner, s, appSettings),
-            SaveFileDialogSettings s => ShowSaveFileDialog(owner, s, appSettings),
-            MessageBoxSettings s => ShowMessageBox(owner, s, appSettings),
-            _ => base.ShowDialog(owner, settings, appSettings)
+            OpenFolderDialogSettings s => ShowOpenFolderDialog(owner, s),
+            OpenFileDialogSettings s => ShowOpenFileDialog(owner, s),
+            SaveFileDialogSettings s => ShowSaveFileDialog(owner, s),
+            MessageBoxSettings s => ShowMessageBox(owner, s),
+            _ => base.ShowDialog(owner, settings)
         };
 
-    private IReadOnlyList<IDialogStorageFolder> ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings)
+    private IReadOnlyList<IDialogStorageFolder> ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings)
     {
         var apiSettings = new OpenFolderApiSettings()
         {
@@ -78,7 +93,7 @@ public class DialogFactory : DialogFactoryBase
         return _api.ShowOpenFolderDialog(owner?.Ref, apiSettings);
     }
 
-    private IReadOnlyList<IDialogStorageFile> ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings, AppDialogSettings appSettings)
+    private IReadOnlyList<IDialogStorageFile> ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings)
     {
         var apiSettings = new OpenFileApiSettings()
         {
@@ -92,7 +107,7 @@ public class DialogFactory : DialogFactoryBase
         return _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<IDialogStorageFile>();
     }
 
-    private IDialogStorageFile? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings, AppDialogSettings appSettings)
+    private IDialogStorageFile? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings)
     {
         var apiSettings = new SaveFileApiSettings()
         {
@@ -144,7 +159,7 @@ public class DialogFactory : DialogFactoryBase
         return result.ToString();
     }
 
-    private bool? ShowMessageBox(ViewWrapper? owner, MessageBoxSettings settings, AppDialogSettings appSettings)
+    private bool? ShowMessageBox(ViewWrapper? owner, MessageBoxSettings settings)
     {
         var apiSettings = new MessageBoxApiSettings()
         {
@@ -153,7 +168,7 @@ public class DialogFactory : DialogFactoryBase
             Buttons = SyncButton(settings.Button),
             Icon = SyncIcon(settings.Icon),
             DefaultButton = SyncDefault(settings.Button, settings.DefaultValue),
-            Options = SyncOptions(appSettings)
+            Options = SyncOptions()
         };
 
         var button = _api.ShowMessageBox(owner?.Ref, apiSettings);
@@ -205,11 +220,11 @@ public class DialogFactory : DialogFactoryBase
             _ => Win32Result.None
         };
 
-    private Win32Options SyncOptions(AppDialogSettings appSettings) =>
-        EvalOption(appSettings.MessageBoxDefaultDesktopOnly, Win32Options.DefaultDesktopOnly) |
-        EvalOption(appSettings.MessageBoxRightToLeft, Win32Options.RightAlign) |
-        EvalOption(appSettings.MessageBoxRightToLeft, Win32Options.RtlReading) |
-        EvalOption(appSettings.MessageBoxServiceNotification, Win32Options.ServiceNotification);
+    private Win32Options SyncOptions() =>
+        EvalOption(MessageBoxDefaultDesktopOnly, Win32Options.DefaultDesktopOnly) |
+        EvalOption(MessageBoxRightToLeft, Win32Options.RightAlign) |
+        EvalOption(MessageBoxRightToLeft, Win32Options.RtlReading) |
+        EvalOption(MessageBoxServiceNotification, Win32Options.ServiceNotification);
 
     private static Win32Options EvalOption(bool cond, Win32Options option) =>
         cond ? option : Win32Options.None;

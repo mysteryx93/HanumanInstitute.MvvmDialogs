@@ -22,10 +22,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// </summary>
     protected IDialogFactory DialogFactory { get; }
 
-    /// <summary>
-    /// A ILogger to capture MvvmDialogs logs.
-    /// </summary>
+    /// <inheritdoc />
     public ILogger<IDialogManager>? Logger { get; }
+
+    /// <inheritdoc />
+    public bool AllowConcurrentDialogs { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the DisplayManager class.
@@ -231,15 +232,14 @@ public abstract class DialogManagerBase<T> : IDialogManager
     public virtual async Task<object?> ShowFrameworkDialogAsync<TSettings>(
         INotifyPropertyChanged? ownerViewModel,
         TSettings settings,
-        AppDialogSettingsBase appSettings,
         Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase
     {
-        if (!appSettings.AllowConcurrentDialogs)
+        if (!AllowConcurrentDialogs)
         {
             await _semaphoreShow.WaitAsync();
         }
-        
+
         try
         {
             Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
@@ -264,8 +264,8 @@ public abstract class DialogManagerBase<T> : IDialogManager
                             isDummyOwner = true;
                         }
                     }
-                    
-                    var result = await DialogFactory.ShowDialogAsync(owner, settings, appSettings).ConfigureAwait(true);
+
+                    var result = await DialogFactory.ShowDialogAsync(owner, settings).ConfigureAwait(true);
                     if (isDummyOwner)
                     {
                         owner!.Close();
@@ -278,7 +278,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
         finally
         {
-            if (!appSettings.AllowConcurrentDialogs)
+            if (!AllowConcurrentDialogs)
             {
                 _semaphoreShow.Release();
             }
