@@ -39,20 +39,18 @@ public class CustomDialogFactory : DialogFactoryBase
         if (owner == null) throw new ArgumentNullException(nameof(owner));
 
         var window = TopLevel.GetTopLevel(owner.GetRef());
-        var platformImpl = window?.PlatformImpl as IWindowImpl;
-        if (platformImpl == null)
+        var handle = window?.TryGetPlatformHandle()?.Handle;
+        if (handle == null)
         {
             throw new NullReferenceException("Cannot obtain HWND handle for owner.");
         }
-
-        var handle = platformImpl.Handle.Handle;
 
         var dialog = new VistaFolderBrowserDialog
         {
             Description = settings.Title,
             SelectedPath = settings.InitialDirectory
         };
-        var result = await UiExtensions.RunUiAsync(() => dialog.ShowDialog(handle));
+        var result = await UiExtensions.RunUiAsync(() => dialog.ShowDialog(handle.Value));
 
         return result == true ? new IDialogStorageFolder[] { new DialogStorageFolder(_infoFactory.GetDirectoryInfo(dialog.SelectedPath!)) } :
             Array.Empty<IDialogStorageFolder>();
