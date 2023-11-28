@@ -32,8 +32,16 @@ public class ViewLocatorBase : IViewLocator
                                      "view models to your views. See online documentation for more info.";
             throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
-        return new ViewDefinition(viewType, () => Activator.CreateInstance(viewType)!);
+        return new ViewDefinition(viewType, () => CreateViewInstance(viewType));
     }
+
+    /// <summary>
+    /// The method used to create the view instance from it's <see cref="Type"/>.
+    /// Uses <see cref="Activator.CreateInstance(Type)"/> by default.
+    /// </summary>
+    /// <param name="viewType">The type to create a view for.</param>
+    /// <returns>The created view.</returns>
+    protected virtual object CreateViewInstance(Type viewType) => Activator.CreateInstance(viewType)!;
 
     /// <inheritdoc />
     public virtual object Create(object viewModel) =>
