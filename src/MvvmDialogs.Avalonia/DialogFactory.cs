@@ -78,8 +78,10 @@ public class DialogFactory : DialogFactoryBase
         var apiSettings = new FilePickerSaveOptions()
         {
             DefaultExtension = settings.DefaultExtension,
-            FileTypeChoices = SyncFilters(settings.Filters)
+            FileTypeChoices = SyncFilters(settings.Filters),
+            SuggestedFileName = settings.InitialFile
         };
+        
         AddSharedSettings(apiSettings, settings);
 
         var result = await _api.ShowSaveFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
@@ -98,6 +100,7 @@ public class DialogFactory : DialogFactoryBase
         // d.Directory = s.InitialDirectory;
         // d.InitialFileName = s.InitialFile;
         // d.Filters = SyncFilters(s.Filters);
+        // d.SuggestedStartLocation = s.InitialDirectory;
         d.Title = s.Title;
     }
 
