@@ -46,6 +46,9 @@ public class DialogManager : DialogManagerBase<ContentControl>
     public INavigationManager? NavigationManager => _navigationManager;
 
     /// <inheritdoc />
+    protected override bool IsDesignMode => Design.IsDesignMode;
+
+    /// <inheritdoc />
     protected override IView CreateWrapper(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
         var wrapper = _useNavigation ?

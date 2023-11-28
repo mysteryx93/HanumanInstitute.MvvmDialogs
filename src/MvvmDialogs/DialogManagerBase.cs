@@ -29,6 +29,11 @@ public abstract class DialogManagerBase<T> : IDialogManager
     public bool AllowConcurrentDialogs { get; set; }
 
     /// <summary>
+    /// Returns whether the code is running in design mode.
+    /// </summary>
+    protected abstract bool IsDesignMode { get; }
+
+    /// <summary>
     /// Initializes a new instance of the DisplayManager class.
     /// </summary>
     /// <param name="viewLocator">Locator responsible for finding a dialog type matching a view model.</param>
@@ -51,6 +56,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <inheritdoc />
     public virtual void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
+        if (IsDesignMode) { return; }
         Dispatch(
             () =>
             {
@@ -65,6 +71,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// <inheritdoc />
     public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
+        if (IsDesignMode) { return; }
         await await DispatchAsync(
             async () =>
             {
@@ -235,6 +242,8 @@ public abstract class DialogManagerBase<T> : IDialogManager
         Func<object?, string>? resultToString = null)
         where TSettings : DialogSettingsBase
     {
+        if (IsDesignMode) { return null; }
+        
         if (!AllowConcurrentDialogs)
         {
             await _semaphoreShow.WaitAsync();

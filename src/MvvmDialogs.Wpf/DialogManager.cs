@@ -22,6 +22,9 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         }
 
         /// <inheritdoc />
+        protected override bool IsDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
+
+        /// <inheritdoc />
         public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
         {
             var viewDef = ViewLocator.Locate(viewModel);
