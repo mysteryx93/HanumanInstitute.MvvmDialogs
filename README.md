@@ -22,6 +22,11 @@ UI Frameworks that can easily be added through community efforts:
 - Blazor (full app in web browser)
 - UWP (Universal Windows Platform, this thing is dead)
 
+```
+Dec 16th 2023: Currently available for hire for Avalonia projects, or as .NET Blazor, Azure, Back-End Developer.
+```
+[Contact me on LinkedIn.](https://www.linkedin.com/in/etienne-charland-168a9841/)
+
 ## Table of contents
 
 - [Introduction](#introduction)
