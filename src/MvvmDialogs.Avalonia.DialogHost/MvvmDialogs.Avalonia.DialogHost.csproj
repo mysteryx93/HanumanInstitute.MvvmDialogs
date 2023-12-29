@@ -17,8 +17,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.0.0" />
-      <PackageReference Include="DialogHost.Avalonia" Version="0.7.5" />
+      <PackageReference Include="Avalonia" Version="11.0.6" />
+      <PackageReference Include="DialogHost.Avalonia" Version="0.7.7" />
     </ItemGroup>
 
     <ItemGroup>

@@ -93,7 +93,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.iOS", "s
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Desktop", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Desktop\Demo.CrossPlatform.Desktop.csproj", "{DB400AC5-91AB-4621-9E12-6EF27BFE9D2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Web", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Web\Demo.CrossPlatform.Web.csproj", "{A8ADB3BE-683C-44FD-9C59-53F5B6B60A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.CrossPlatform.Browser", "samples\Avalonia\CrossPlatform\Demo.CrossPlatform.Browser\Demo.CrossPlatform.Browser.csproj", "{A8ADB3BE-683C-44FD-9C59-53F5B6B60A26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo.StrongLocator", "samples\Avalonia\Demo.StrongLocator\Demo.StrongLocator.csproj", "{F03BD8DB-9247-4977-A4AB-C98FE071294A}"
 EndProject

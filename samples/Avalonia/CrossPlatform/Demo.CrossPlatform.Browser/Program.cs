@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Versioning;
+using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
 using Avalonia.ReactiveUI;
@@ -8,9 +9,9 @@ using Demo.CrossPlatform;
 
 internal partial class Program
 {
-    private static void Main(string[] args) => BuildAvaloniaApp()
+    private static async Task Main(string[] args) => await BuildAvaloniaApp()
         .UseReactiveUI()
-        .SetupBrowserApp("out");
+        .StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>();
