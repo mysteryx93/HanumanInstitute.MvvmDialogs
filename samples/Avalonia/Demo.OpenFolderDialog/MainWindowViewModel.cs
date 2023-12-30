@@ -2,9 +2,9 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
-using IOPath = System.IO.Path;
 
 namespace Demo.Avalonia.OpenFolderDialog;
 
@@ -34,7 +34,7 @@ public class MainWindowViewModel : ViewModelBase
         var settings = new OpenFolderDialogSettings
         {
             Title = "This is a description",
-            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+            SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
         };
 
         var result = await _dialogService.ShowOpenFolderDialogAsync(this, settings);

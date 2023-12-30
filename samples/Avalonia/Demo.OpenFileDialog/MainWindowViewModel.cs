@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
-using IOPath = System.IO.Path;
 
 namespace Demo.Avalonia.OpenFileDialog;
 
@@ -49,25 +50,25 @@ public class MainWindowViewModel : ViewModelBase
         }
     }
 
-    private OpenFileDialogSettings GetSettings(bool multiple) => new OpenFileDialogSettings
+    private OpenFileDialogSettings GetSettings(bool multiple) => new()
     {
         Title = multiple ? "Open multiple files" : "Open single file",
-        InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+        SuggestedStartLocation = new DesktopDialogStorageFolder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
         Filters = new List<FileFilter>()
         {
-            new FileFilter(
+            new(
                 "Text Documents",
                 new[]
                 {
                     "txt", "md"
                 }),
-            new FileFilter(
+            new(
                 "Binaries",
                 new[]
                 {
                     ".exe", ".dll"
                 }),
-            new FileFilter("All Files", "*")
+            new("All Files", "*")
         }
     };
 }

@@ -42,12 +42,12 @@ public class FluentDialogFactory : DialogFactoryBase
         {
             GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
-        
+
         await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
-    
-    private async Task<object> ShowTaskDialogAsync(IView? owner, TaskDialogSettings settings)
+
+    private async Task<object?> ShowTaskDialogAsync(IView? owner, TaskDialogSettings settings)
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var view = new FluentTaskView(settings);
@@ -55,11 +55,11 @@ public class FluentDialogFactory : DialogFactoryBase
         {
             GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
-        
+
         await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
-    
+
     private async Task<bool?> ShowMessageBoxContentDialogAsync(IView? owner, MessageBoxSettings settings)
     {
         var apiSettings = new ContentDialogSettings()

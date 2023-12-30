@@ -1,7 +1,6 @@
 ﻿using System;
 using Avalonia;
 using Avalonia.ReactiveUI;
-using FluentAvalonia.UI.Windowing;
 
 namespace Demo.Avalonia.ViewEvents;
 

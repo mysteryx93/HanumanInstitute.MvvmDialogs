@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
@@ -35,7 +36,7 @@ public class MainWindowViewModel : ObservableObject
         var settings = new OpenFolderDialogSettings
         {
             Title = "This is a description",
-            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!
+            SuggestedStartLocation = new DesktopDialogStorageFolder(IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
         };
 
         var result = await _dialogService.ShowOpenFolderDialogAsync(this, settings);

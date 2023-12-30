@@ -7,25 +7,15 @@ using Ookii.Dialogs.WinForms;
 using Avalonia.Controls;
 using System.Collections.Generic;
 using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.PathInfo;
-using Avalonia.Platform;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog;
 
-public class CustomDialogFactory : DialogFactoryBase
+/// <summary>
+/// Initializes a new instance of a FrameworkDialog.
+/// </summary>
+/// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
+public class CustomDialogFactory(IDialogFactory? chain = null) : DialogFactoryBase(chain)
 {
-    private readonly IPathInfoFactory _infoFactory;
-
-    /// <summary>
-    /// Initializes a new instance of a FrameworkDialog.
-    /// </summary>
-    /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
-    public CustomDialogFactory(IPathInfoFactory infoFactory, IDialogFactory? chain = null)
-        : base(chain)
-    {
-        _infoFactory = infoFactory;
-    }
-
     /// <inheritdoc />
     public override async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings) =>
         settings switch
@@ -36,23 +26,17 @@ public class CustomDialogFactory : DialogFactoryBase
 
     private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings)
     {
-        if (owner == null) throw new ArgumentNullException(nameof(owner));
+        ArgumentNullException.ThrowIfNull(owner);
 
         var window = TopLevel.GetTopLevel(owner.GetRef());
-        var handle = window?.TryGetPlatformHandle()?.Handle;
-        if (handle == null)
-        {
-            throw new NullReferenceException("Cannot obtain HWND handle for owner.");
-        }
-
+        var handle = (window?.TryGetPlatformHandle()?.Handle) ?? throw new NullReferenceException("Cannot obtain HWND handle for owner.");
         var dialog = new VistaFolderBrowserDialog
         {
             Description = settings.Title,
-            SelectedPath = settings.InitialDirectory
+            SelectedPath = settings.SuggestedStartLocation?.LocalPath
         };
-        var result = await UiExtensions.RunUiAsync(() => dialog.ShowDialog(handle.Value));
+        var result = await UiExtensions.RunUiAsync(() => dialog.ShowDialog(handle));
 
-        return result == true ? new IDialogStorageFolder[] { new DialogStorageFolder(_infoFactory.GetDirectoryInfo(dialog.SelectedPath!)) } :
-            Array.Empty<IDialogStorageFolder>();
+        return result == true ? [new DesktopDialogStorageFolder(dialog.SelectedPath!)] : [];
     }
 }

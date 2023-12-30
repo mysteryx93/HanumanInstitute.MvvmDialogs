@@ -1,11 +1,9 @@
-﻿
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.PathInfo;
+﻿using HanumanInstitute.MvvmDialogs;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog
 {
     public static class DialogFactoryExtensions
     {
-        public static IDialogFactory AddCustomOpenFolder(this IDialogFactory factory) => new CustomDialogFactory(new PathInfoFactory(), factory);
+        public static IDialogFactory AddCustomOpenFolder(this IDialogFactory factory) => new CustomDialogFactory(factory);
     }
 }

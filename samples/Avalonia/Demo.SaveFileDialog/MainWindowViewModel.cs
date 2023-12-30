@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ReactiveUI;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using IOPath = System.IO.Path;
 
 namespace Demo.Avalonia.SaveFileDialog;
 
@@ -35,11 +35,13 @@ public class MainWindowViewModel : ViewModelBase
         var settings = new SaveFileDialogSettings
         {
             Title = "This is the title",
-            InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+            SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
+            SuggestedFileName = "DefaultName",
             Filters = new List<FileFilter>()
             {
-                new FileFilter("Text Documents", new[] { "txt", "md" }),
-                new FileFilter("All Files", "*")
+                new("Text Documents", new[] { "txt", "md" }),
+                new("MP3", new[] { "mp3" }),
+                new("All Files", "*")
             },
             DefaultExtension = "mp3"
         };

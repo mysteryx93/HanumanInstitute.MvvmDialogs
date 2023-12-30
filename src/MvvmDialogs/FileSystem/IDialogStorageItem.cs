@@ -20,7 +20,7 @@ public interface IDialogStorageItem : IDisposable
     /// Android backend might return file path with "content:" scheme.
     /// Browser and iOS backends might return relative uris.
     /// </remarks>
-    Uri? Path { get; }
+    Uri Path { get; }
 
     /// <summary>
     /// Gets a local operating-system representation of a file name.
@@ -30,7 +30,7 @@ public interface IDialogStorageItem : IDisposable
     /// <summary>
     /// Gets the basic properties of the current item.
     /// </summary>
-    Task<DialogStorageItemProperties> GetBasicPropertiesAsync();
+    Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync();
 
     /// <summary>
     /// Returns true is item can be bookmarked and reused later.
@@ -49,5 +49,16 @@ public interface IDialogStorageItem : IDisposable
     /// Gets the parent folder of the current storage item.
     /// </summary>
     Task<IDialogStorageFolder?> GetParentAsync();
+    
+    /// <summary>
+    /// Deletes the current storage item and it's contents
+    /// </summary>
+    Task DeleteAsync();
+    
+    /// <summary>
+    /// Moves the current storage item and it's contents to a <see cref="IDialogStorageFolder"/>
+    /// </summary>
+    /// <param name="destination">The <see cref="IDialogStorageFolder"/> to move the item into</param>
+    Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination);
 }
 

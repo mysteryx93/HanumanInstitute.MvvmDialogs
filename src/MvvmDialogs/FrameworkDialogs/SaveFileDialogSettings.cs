@@ -9,5 +9,5 @@ public class SaveFileDialogSettings : FileDialogSettings
     /// Gets or sets the default extension to be used (including the period ".")
     /// if not set by the user or by a filter
     /// </summary>
-    public string DefaultExtension { get; set; } = string.Empty;
+    public string? DefaultExtension { get; set; }
 }

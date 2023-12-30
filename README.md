@@ -403,32 +403,55 @@ For extra dialog options, see Custom Framework Dialogs section.
 
 ## Cross-Platform File Access
 
-To access files and folders across desktop, mobile and web, `IDialogStorageFile` and `IDialogStorageFolder` provide various standard methods. Instead of having direct access to files, you'll often use bookmarks, which are references to those files. `IBookmarkFileSystem` is a new service exposed to help work with bookmarks.
+To access files and folders across desktop, mobile and web, `IDialogStorageFile` and `IDialogStorageFolder` provide various standard methods. Instead of having direct access to files, you'll often use URIs, relative paths and bookmarks.
 
-### IDialogStorageItem (both File and Folder)
+They copy Avalonia's `IStorageFile` and `IStorageFolder` [documented here](https://docs.avaloniaui.net/docs/concepts/services/storage-provider/storage-item). The reasons to copy those interfaces are to allow you to write platform-agnostic code, and to have consistency between WPF and Avalonia. 
 
-- `string Name`: Gets the name of the item including the file name extension if there is one.
-- `Uri? Path`: Gets the full file-system path of the item, if the item has a path.
-- `string LocalPath`: Gets a local operating-system representation of a file name.
-- `Task<DialogStorageItemProperties> GetBasicPropertiesAsync()`: Gets the basic properties of the current item: Size, DateCreated, and DateModified.
-- `bool CanBookmark`: Returns true is item can be bookmarked and reused later.
-- `Task<string?> SaveBookmarkAsync()`: Saves items to a bookmark.
-- `Task<IDialogStorageFolder?> GetParentAsync()`: Gets the parent folder of the current storage item.
+Avalonia provides various methods in `IStorageProvider` to get `IStorageFile` and `IStorageFolder` instances, as [documented here](https://docs.avaloniaui.net/docs/concepts/services/storage-provider/). You can convert them to the `MvvmDialogs` interface using the `ToDialog()` extension method.
 
-### IDialogStorageFile
-- `Task<Stream> OpenReadAsync()`: Opens a stream for read access.
-- `Task<Stream> OpenWriteAsync()`: Opens stream for writing to the file.
+Here's a example of a service that returns the Documents folder.
 
-### IDialogStorageFolder
-- `Task<IEnumerable<IDialogStorageItem>> GetItemsAsync()`: Gets the files and subfolders in the current folder.
+```c#
+public class StorageService : IStorageService
+{
+    protected virtual IStorageProvider Storage => _storage ??= GetTopLevel()?.StorageProvider ?? throw new NullReferenceException("No StorageProvider found.");
+    private IStorageProvider? _storage;
+    
+    public async Task<IDialogStorageFolder?> GetDocumentsFolderAsync()
+    {
+        var result = await Storage.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
+        return result?.ToDialog();
+    }
 
-### IBookmarkFileSystem
-- `Task<IDialogStorageFile?> OpenFileBookmarkAsync`: Open IDialogStorageFile from the bookmark ID.
-- `Task<IDialogStorageFolder?> OpenFolderBookmarkAsync`: Open <see cref="IDialogStorageFolder"/> from the bookmark ID.
-- `Task ReleaseFileBookmarkAsync`: Releases the bookmark with specified key.
-- `Task ReleaseFolderBookmarkAsync`: Releases the bookmark with specified key.
+    private TopLevel? GetTopLevel()
+    {
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            return desktop.MainWindow;
+        }
+        if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
+        {
+            var visualRoot = viewApp.MainView?.GetVisualRoot();
+            return visualRoot as TopLevel;
+        }
+        return null;
+    }
+}
+```
+Using your `StorageService` class, you can show a SaveDialog with default location set to Documents.
+```c#
+var _storage = new StorageService();
 
-To use `IBookmarkFileSystem`, you'll need to register `BookmarkFileSystem` in your Dependency Injection Container (or use `BookmarkFileSystem` directly).
+var settings = new SaveFileDialogSettings
+{
+    SuggestedStartLocation = await _storage.GetDocumentsFolderAsync()
+};
+var file = await _dialogService.ShowSaveFileDialogAsync(this, settings);
+```
+
+On desktop platforms, you can convert a file path to `IDialogStorageFile` using either `HanumanInstitute.MvvmDialogs.FileSystem.DesktopDialogStorageFile` or `Avalonia.Platform.Storage.FileIO.BclStorageFile` which are nearly the same.
+
+`DesktopDialogStorageFile` has these differences: it accepts a string path in the constructor instead of only a `FileInfo`, it is of type `IDialogStorageFile` instead of `IStorageFile`, and it is available in non-Avalonia projects. `IDesktopDialogStorageFactory` is also available for easier unit test mocking. 
 
 ## IModalDialogViewModel / ICloseable / IActivable
 

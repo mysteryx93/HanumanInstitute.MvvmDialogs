@@ -8,6 +8,10 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 public class AvaloniaDialogStorageFile : AvaloniaDialogStorageItem, IDialogStorageFile
 {
     private readonly IStorageFile _item;
+    /// <summary>
+    /// Returns the Avalonia object source that was passed to the constructor. 
+    /// </summary>
+    public IStorageFile Source => _item;
 
     /// <summary>
     /// Initializes a new instance of DialogStorageFile as a bridge to specified Avalonia IStorageFile.

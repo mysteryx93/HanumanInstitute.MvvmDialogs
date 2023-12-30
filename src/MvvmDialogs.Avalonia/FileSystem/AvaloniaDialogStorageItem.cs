@@ -1,10 +1,11 @@
-﻿using Avalonia.Platform.Storage;
+﻿using System.IO;
+using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <inheritdoc />
-public class AvaloniaDialogStorageItem : IDialogStorageItem
+public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
 {
     private readonly IStorageItem _item;
 
@@ -12,7 +13,7 @@ public class AvaloniaDialogStorageItem : IDialogStorageItem
     /// Initializes a new instance of DialogStorageItem as a bridge to specified Avalonia IStorageItem.
     /// </summary>
     /// <param name="item">An Avalonia IStorageItem from which to get the values.</param>
-    public AvaloniaDialogStorageItem(IStorageItem item)
+    protected AvaloniaDialogStorageItem(IStorageItem item)
     {
         _item = item;
     }
@@ -27,10 +28,10 @@ public class AvaloniaDialogStorageItem : IDialogStorageItem
     public string LocalPath => _item.Path.LocalPath;
 
     /// <inheritdoc />
-    public async Task<DialogStorageItemProperties> GetBasicPropertiesAsync()
+    public async Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()
     {
         var result = await _item.GetBasicPropertiesAsync().ConfigureAwait(true);
-        return new DialogStorageItemProperties(result.Size, result.DateCreated, result.DateModified);
+        return new DesktopDialogStorageItemProperties(result.Size, result.DateCreated, result.DateModified);
     }
 
     /// <inheritdoc />
@@ -44,6 +45,25 @@ public class AvaloniaDialogStorageItem : IDialogStorageItem
     {
         var result = await _item.GetParentAsync().ConfigureAwait(true);
         return result != null ? new AvaloniaDialogStorageFolder(result) : null;
+    }
+
+    /// <inheritdoc />
+    public Task DeleteAsync() => _item.DeleteAsync();
+
+    /// <inheritdoc />
+    public async Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination)
+    {
+        var dest = await destination.ToAvaloniaAsync();
+        if (dest == null)
+        {
+            throw new FileNotFoundException($"Cannot open path '${destination.Path}'");
+        }
+        return await _item.MoveAsync(dest) switch
+        {
+            IStorageFile file => file.ToDialog(),
+            IStorageFolder folder => folder.ToDialog(),
+            _ => null
+        };
     }
 
     /// <inheritdoc />

@@ -14,6 +14,7 @@ public interface IDialogStorageFolder : IDialogStorageItem
     /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
     /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
     IAsyncEnumerable<IDialogStorageItem> GetItemsAsync();
+    
     // /// <summary>
     // /// Gets the files and subfolders in the current folder.
     // /// </summary>
@@ -31,4 +32,18 @@ public interface IDialogStorageFolder : IDialogStorageItem
     // /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
     // /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
     // Task<IEnumerable<IDialogStorageItem>> GetItemsAsync(string searchPattern, SearchOption searchOption);
+
+    /// <summary>
+    /// Creates a file with specified name as a child of the current storage folder
+    /// </summary>
+    /// <param name="name">The display name</param>
+    /// <returns>A new <see cref="IDialogStorageFile"/> pointing to the moved file. If not null, the current storage item becomes invalid</returns>
+    Task<IDialogStorageFile?> CreateFileAsync(string name);
+
+    /// <summary>
+    /// Creates a folder with specified name as a child of the current storage folder
+    /// </summary>
+    /// <param name="name">The display name</param>
+    /// <returns>A new <see cref="IDialogStorageFolder"/> pointing to the moved file. If not null, the current storage item becomes invalid</returns>
+    Task<IDialogStorageFolder?> CreateFolderAsync(string name);
 }

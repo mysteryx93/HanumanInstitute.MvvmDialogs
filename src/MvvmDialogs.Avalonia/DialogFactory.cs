@@ -4,7 +4,6 @@ using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -14,14 +13,14 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 public class DialogFactory : DialogFactoryBase
 {
     private readonly IFrameworkDialogsApi _api;
-    private readonly IPathInfoFactory _pathInfo;
+    // private readonly IPathInfoFactory _pathInfo;
 
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
     public DialogFactory(IDialogFactory? chain = null)
-        : this(chain, null, null)
+        : this(chain, null)
     {
     }
 
@@ -30,12 +29,11 @@ public class DialogFactory : DialogFactoryBase
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
     /// <param name="api">An interface exposing Avalonia framework dialogs.</param>
-    /// <param name="pathInfo">Provides information about files and directories.</param>
-    internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api, IPathInfoFactory? pathInfo)
+    internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api)
         : base(chain)
     {
         _api = api ?? new FrameworkDialogsApi();
-        _pathInfo = pathInfo ?? new PathInfoFactory();
+        // _pathInfo = pathInfo ?? new PathInfoFactory();
     }
 
     /// <inheritdoc />
@@ -52,9 +50,9 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new FolderPickerOpenOptions()
         {
-            Title = settings.Title,
-            // Directory = settings.InitialDirectory
+            AllowMultiple = settings.AllowMultiple ?? false
         };
+        await AddSharedSettingsAsync(apiSettings, settings);
 
         return await _api.ShowOpenFolderDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
     }
@@ -68,7 +66,7 @@ public class DialogFactory : DialogFactoryBase
             // d.ShowReadOnly = Settings.ShowReadOnly;
             // d.ReadOnlyChecked = Settings.ReadOnlyChecked;
         };
-        AddSharedSettings(apiSettings, settings);
+        await AddSharedSettingsAsync(apiSettings, settings);
 
         return await _api.ShowOpenFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true) ?? Array.Empty<IDialogStorageFile>();
     }
@@ -77,12 +75,12 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new FilePickerSaveOptions()
         {
-            DefaultExtension = settings.DefaultExtension,
+            DefaultExtension = string.IsNullOrEmpty(settings.DefaultExtension) ? null : settings.DefaultExtension,
             FileTypeChoices = SyncFilters(settings.Filters),
-            SuggestedFileName = settings.InitialFile
+            SuggestedFileName = settings.SuggestedFileName
         };
         
-        AddSharedSettings(apiSettings, settings);
+        await AddSharedSettingsAsync(apiSettings, settings);
 
         var result = await _api.ShowSaveFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
 
@@ -94,17 +92,21 @@ public class DialogFactory : DialogFactoryBase
         return result;
     }
 
-    private void AddSharedSettings(PickerOptions d, FileDialogSettings s)
+    private async Task AddSharedSettingsAsync(PickerOptions d, PickerDialogSettings s)
     {
         // d.DereferenceLinks = s.DereferenceLinks;
         // d.Directory = s.InitialDirectory;
         // d.InitialFileName = s.InitialFile;
         // d.Filters = SyncFilters(s.Filters);
-        // d.SuggestedStartLocation = s.InitialDirectory;
+        if (s.SuggestedStartLocation != null)
+        {
+            d.SuggestedStartLocation = await s.SuggestedStartLocation.ToAvaloniaAsync();
+        }
+        
         d.Title = s.Title;
     }
 
-    private static List<FilePickerFileType> SyncFilters(List<FileFilter> filters) =>
+    private static List<FilePickerFileType> SyncFilters(IList<FileFilter> filters) =>
         filters.Select(
             x => new FilePickerFileType(x.NameToString(x.ExtensionsToString()))
             {

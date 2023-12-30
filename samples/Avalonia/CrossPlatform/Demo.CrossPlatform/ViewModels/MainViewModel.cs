@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using Demo.CrossPlatform.Services;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
@@ -11,10 +12,12 @@ namespace Demo.CrossPlatform.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
+    private readonly IStorageService _storage;
 
-    public MainViewModel(IDialogService dialogService)
+    public MainViewModel(IDialogService dialogService, IStorageService storage)
     {
         this._dialogService = dialogService;
+        this._storage = storage;
 
         var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x == null);
         Show = ReactiveCommand.Create(ShowImpl, canShow);
@@ -45,7 +48,7 @@ public class MainViewModel : ViewModelBase
             {
                 DialogViewModel.Closed -= Dialog_ViewClosed;
             }
-            this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
+            this.RaiseAndSetIfChanged(ref _dialogViewModel, value);
             if (DialogViewModel != null)
             {
                 DialogViewModel.Closed += Dialog_ViewClosed;
@@ -96,31 +99,51 @@ public class MainViewModel : ViewModelBase
 
     private async Task OpenFileImplAsync()
     {
-        var file = await _dialogService.ShowOpenFileDialogAsync(this);
+        var settings = new OpenFileDialogSettings
+        {
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+        };
+        var file = await _dialogService.ShowOpenFileDialogAsync(this, settings);
         Output = file?.Path?.ToString();
     }
 
     private async Task OpenFilesImplAsync()
     {
-        var files = await _dialogService.ShowOpenFilesDialogAsync(this);
+        var settings = new OpenFileDialogSettings
+        {
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+        };
+        var files = await _dialogService.ShowOpenFilesDialogAsync(this, settings);
         Output = string.Join(Environment.NewLine, files.Select(x => x?.Path?.ToString() ?? ""));
     }
 
     private async Task OpenFolderImplAsync()
     {
-        var folder = await _dialogService.ShowOpenFolderDialogAsync(this);
+        var settings = new OpenFolderDialogSettings
+        {
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+        };
+        var folder = await _dialogService.ShowOpenFolderDialogAsync(this, settings);
         Output = folder?.Path?.ToString();
     }
 
     private async Task OpenFoldersImplAsync()
     {
-        var folders = await _dialogService.ShowOpenFoldersDialogAsync(this);
+        var settings = new OpenFolderDialogSettings
+        {
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+        };
+        var folders = await _dialogService.ShowOpenFoldersDialogAsync(this, settings);
         Output = string.Join(Environment.NewLine, folders.Select(x => x?.Path?.ToString() ?? ""));
     }
 
     private async Task SaveFileImplAsync()
     {
-        var file = await _dialogService.ShowSaveFileDialogAsync(this);
+        var settings = new SaveFileDialogSettings
+        {
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+        };
+        var file = await _dialogService.ShowSaveFileDialogAsync(this, settings);
         Output = file?.Path?.ToString();
     }
     

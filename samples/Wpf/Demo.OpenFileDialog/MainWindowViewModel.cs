@@ -7,6 +7,7 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using IOPath = System.IO.Path;
 
@@ -16,7 +17,7 @@ public class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService _dialogService;
 
-    public ObservableCollection<string> Paths { get; private set; } = new();
+    public ObservableCollection<string> Paths { get; private set; } = [];
 
     public MainWindowViewModel(IDialogService dialogService)
     {
@@ -84,14 +85,15 @@ public class MainWindowViewModel : ObservableObject
         }
     }
 
-    private OpenFileDialogSettings GetSettings(bool multiple) => new OpenFileDialogSettings
+    private static OpenFileDialogSettings GetSettings(bool multiple) => new()
     {
         Title = multiple ? "Open multiple files" : "Open single file",
-        InitialDirectory = IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!,
+        SuggestedStartLocation = new DesktopDialogStorageFolder(IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
+        SuggestedFileName = "InitialName",
         Filters = new List<FileFilter>()
             {
-                new FileFilter("Text Documents", "txt"),
-                new FileFilter("All Files", "*")
+                new("Text Documents", "txt"),
+                new("All Files", "*")
             }
     };
 }

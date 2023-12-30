@@ -1,4 +1,5 @@
 using Avalonia.Markup.Xaml;
+using Demo.CrossPlatform.Services;
 using Demo.CrossPlatform.ViewModels;
 using Demo.CrossPlatform.Views;
 using HanumanInstitute.MvvmDialogs;
@@ -28,10 +29,11 @@ public partial class App : Application
                 logger: loggerFactory.CreateLogger<DialogManager>(),
                 dialogFactory: new DialogFactory().AddFluent(messageBoxType: FluentMessageBoxType.ContentDialog)),
             viewModelFactory: x => Locator.Current.GetService(x)));
-
+        
         SplatRegistrations.Register<MainViewModel>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
         SplatRegistrations.Register<ConfirmCloseViewModel>();
+        SplatRegistrations.Register<IStorageService, StorageService>();
         SplatRegistrations.SetupIOC();
     }
     

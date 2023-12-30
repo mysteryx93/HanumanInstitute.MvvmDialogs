@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-
 namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 /// <summary>
 /// Settings for FileDialog.
 /// </summary>
-public abstract class FileDialogSettings : DialogSettingsBase
+public abstract class FileDialogSettings : PickerDialogSettings
 {
     /// <summary>
     /// Gets or sets a value indicating whether a file dialog returns either the location of
@@ -22,17 +21,12 @@ public abstract class FileDialogSettings : DialogSettingsBase
     /// to the descriptions unless it contains '('.
     /// If you do not wish to display extensions, end the name with '()' and it will be trimmed away.
     /// </remarks>
-    public List<FileFilter> Filters { get; set; } = new();
-
-    /// <summary>
-    /// Gets or sets the initial directory that is displayed by a file dialog.
-    /// </summary>
-    public string InitialDirectory { get; set; } = string.Empty;
+    public IList<FileFilter> Filters { get; set; } = new List<FileFilter>();
 
     /// <summary>
     /// Gets or sets the initial file that is displayed by a file dialog.
     /// </summary>
-    public string InitialFile { get; set; } = string.Empty;
+    public string SuggestedFileName { get; set; } = string.Empty;
 
     /// <summary>
     /// Callback to invoke when the user clicks the help button. Setting this will display a help button.

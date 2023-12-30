@@ -29,6 +29,6 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         return result.Select(x => new AvaloniaDialogStorageFolder(x)).ToList();
     }
 
-    private static IStorageProvider GetStorage(ContentControl owner) => TopLevel.GetTopLevel(owner)?.StorageProvider ?? 
+    private static IStorageProvider GetStorage(ContentControl owner) => TopLevel.GetTopLevel(owner)?.StorageProvider ??
                                                                         throw new ArgumentException("Cannot find StorageProvider for specified dialog owner.", nameof(owner));
 }

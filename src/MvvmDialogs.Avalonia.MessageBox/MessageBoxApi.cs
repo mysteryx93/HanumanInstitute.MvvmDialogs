@@ -1,4 +1,4 @@
-﻿using MessageBox.Avalonia.DTO;
+﻿using MsBox.Avalonia.Dto;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 

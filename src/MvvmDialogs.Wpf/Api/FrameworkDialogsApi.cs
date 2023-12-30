@@ -1,18 +1,14 @@
 ﻿using System.Linq;
 using System.Windows.Forms;
 using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.PathInfo;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi
 {
-    private readonly IPathInfoFactory _infoFactory;
-
-    public FrameworkDialogsApi(IPathInfoFactory infoFactory)
+    public FrameworkDialogsApi()
     {
-        _infoFactory = infoFactory;
     }
 
     public MessageBoxResult ShowMessageBox(Window? owner, MessageBoxApiSettings settings) =>
@@ -37,7 +33,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         settings.ApplyTo(dialog);
         var result = dialog.ShowDialog(owner);
         return result == DialogResult.OK ?
-            dialog.FileNames.Select(x => new DialogStorageFile(_infoFactory.GetFileInfo(x))).ToArray() :
+            dialog.FileNames.Select(x => new DesktopDialogStorageFile(x)).ToArray() :
             Array.Empty<IDialogStorageFile>();
     }
 
@@ -47,7 +43,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         settings.ApplyTo(dialog);
         var result = dialog.ShowDialog(owner);
         return result == DialogResult.OK ?
-            new DialogStorageFile(_infoFactory.GetFileInfo(dialog.FileName)) :
+            new DesktopDialogStorageFile(dialog.FileName) :
             null;
     }
 
@@ -57,7 +53,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         settings.ApplyTo(dialog);
         var result = dialog.ShowDialog(owner);
         return result == DialogResult.OK ?
-            new IDialogStorageFolder[] { new DialogStorageFolder(_infoFactory.GetDirectoryInfo(dialog.SelectedPath)) } :
+            new IDialogStorageFolder[] { new DesktopDialogStorageFolder(dialog.SelectedPath) } :
             Array.Empty<IDialogStorageFolder>();
     }
 }

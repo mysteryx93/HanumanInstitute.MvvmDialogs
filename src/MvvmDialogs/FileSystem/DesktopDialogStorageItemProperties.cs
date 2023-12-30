@@ -3,7 +3,7 @@
 /// <summary>
 /// Provides access to the content-related properties of an item (like a file or folder).
 /// </summary>
-public class DialogStorageItemProperties
+public class DesktopDialogStorageItemProperties
 {
     /// <summary>
     /// Initializes a new instance of the DialogStorageItemProperties class.
@@ -11,7 +11,7 @@ public class DialogStorageItemProperties
     /// <param name="size">The size of the file in bytes.</param>
     /// <param name="dateCreated">The date and time that the current folder was created.</param>
     /// <param name="dateModified">The date and time of the last time the file was modified.</param>
-    public DialogStorageItemProperties(
+    public DesktopDialogStorageItemProperties(
         ulong? size = null,
         DateTimeOffset? dateCreated = null,
         DateTimeOffset? dateModified = null)

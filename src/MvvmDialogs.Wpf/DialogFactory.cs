@@ -1,6 +1,5 @@
 ﻿using HanumanInstitute.MvvmDialogs.Wpf.Api;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.PathInfo;
 using System.Text;
 using Win32Button = System.Windows.MessageBoxButton;
 using Win32Image = System.Windows.MessageBoxImage;
@@ -20,14 +19,13 @@ namespace HanumanInstitute.MvvmDialogs.Wpf;
 public class DialogFactory : DialogFactoryBase
 {
     private readonly IFrameworkDialogsApi _api;
-    private readonly IPathInfoFactory _pathInfo;
 
     /// <summary>
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
     public DialogFactory(IDialogFactory? chain = null)
-        : this(chain, null, null)
+        : this(chain, null)
     {
     }
 
@@ -36,12 +34,10 @@ public class DialogFactory : DialogFactoryBase
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
     /// <param name="api">An interface exposing Avalonia framework dialogs.</param>
-    /// <param name="pathInfo">Provides information about files and directories.</param>
-    internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api, IPathInfoFactory? pathInfo)
+    internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api)
         : base(chain)
     {
-        _pathInfo = pathInfo ?? new PathInfoFactory();
-        _api = api ?? new FrameworkDialogsApi(_pathInfo);
+        _api = api ?? new FrameworkDialogsApi();
     }
 
     /// <summary>
@@ -86,7 +82,7 @@ public class DialogFactory : DialogFactoryBase
         var apiSettings = new OpenFolderApiSettings()
         {
             Description = settings.Title,
-            SelectedPath = settings.InitialDirectory,
+            SelectedPath = settings.SuggestedStartLocation?.LocalPath,
             HelpRequest = settings.HelpRequest
         };
 
@@ -111,7 +107,7 @@ public class DialogFactory : DialogFactoryBase
     {
         var apiSettings = new SaveFileApiSettings()
         {
-            DefaultExt = settings.DefaultExtension
+            DefaultExt = settings.DefaultExtension ?? string.Empty
         };
         AddSharedSettings(apiSettings, settings);
 
@@ -120,8 +116,8 @@ public class DialogFactory : DialogFactoryBase
 
     private void AddSharedSettings(FileApiSettings d, FileDialogSettings s)
     {
-        d.InitialDirectory = s.InitialDirectory;
-        d.FileName = s.InitialFile;
+        d.InitialDirectory = s.SuggestedStartLocation?.LocalPath ?? string.Empty;
+        d.FileName = s.SuggestedFileName;
         d.DereferenceLinks = s.DereferenceLinks;
         d.Filter = SyncFilters(s.Filters);
         d.Title = s.Title;
@@ -135,7 +131,7 @@ public class DialogFactory : DialogFactoryBase
     /// </summary>
     /// <param name="filters">The list of filters to encode.</param>
     /// <returns>A string representation of the list compatible with Win32 API.</returns>
-    private static string SyncFilters(List<FileFilter> filters)
+    private static string SyncFilters(IList<FileFilter> filters)
     {
         var result = new StringBuilder();
         foreach (var item in filters)

@@ -6,27 +6,19 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 /// <summary>
 /// An <see cref="IView"/> implementation for FluentContentDialog.
 /// </summary>
-public class FluentTaskView : IView
+/// <param name="settings">The TaskDialog display settings.</param>
+public class FluentTaskView(TaskDialogSettings settings) : IView
 {
-    /// <summary>
-    /// Initializes a new instance of the FluentTaskView.
-    /// </summary>
-    /// <param name="settings">The TaskDialog display settings.</param>
-    public FluentTaskView(TaskDialogSettings settings)
-    {
-        Settings = settings;
-    }
-
     /// <summary>
     /// Gets or sets the display settings.
     /// </summary>
-    public TaskDialogSettings Settings { get; set; }
+    public TaskDialogSettings Settings { get; set; } = settings;
 
     /// <summary>
     /// Gets or sets the dialog result.
     /// </summary>
-    public object DialogResult { get; set; }
-    
+    public object? DialogResult { get; set; }
+
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     { }
@@ -52,7 +44,7 @@ public class FluentTaskView : IView
 
     /// <inheritdoc />
     public void Show(IView? owner) => throw new NotImplementedException();
-    
+
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
@@ -77,7 +69,7 @@ public class FluentTaskView : IView
         {
             dialog.XamlRoot = TopLevel.GetTopLevel(owner.GetRef());
         }
-        
+
         dialog.Loaded += (s, e) => Loaded?.Invoke(s, e);
         dialog.Closing += (s, e) =>
         {
