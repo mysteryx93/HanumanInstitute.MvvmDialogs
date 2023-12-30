@@ -4,7 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 
-namespace Demo.Wpf.ModalDialog;
+namespace Demo.Wpf.StrongLocator;
 
 public class AddTextDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {

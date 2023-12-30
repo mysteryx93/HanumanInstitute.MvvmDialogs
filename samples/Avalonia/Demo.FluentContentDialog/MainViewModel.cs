@@ -8,7 +8,7 @@ using ReactiveUI.Fody.Helpers;
 
 namespace Demo.Avalonia.FluentContentDialog;
 
-public class MainWindowViewModel : ViewModelBase
+public class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     public ReactiveCommand<Unit, Unit> ShowMessageBox { get; }
@@ -16,7 +16,7 @@ public class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ShowViewModel { get; }
     public ReactiveCommand<Unit, Unit> ShowControl { get; }
 
-    public MainWindowViewModel(IDialogService dialogService)
+    public MainViewModel(IDialogService dialogService)
     {
         this._dialogService = dialogService;
 

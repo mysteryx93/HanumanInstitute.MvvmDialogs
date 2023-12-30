@@ -11,14 +11,27 @@ public class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, IViewLoca
     /// <summary>
     /// Registers specified views as being associated with specified view model type.
     /// </summary>
-    /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-    public StrongViewLocator Register<TViewModel>(ViewDefinition viewDef)
+    /// <typeparam name="TView">The view type to associate with the view model.</typeparam>
+    public void Register<TViewModel, TView>()
         where TViewModel : INotifyPropertyChanged
-    {
-        RegisterBase<TViewModel>(viewDef);
-        return this;
-    }
+        where TView : Control, new() =>
+        Register<TViewModel>(new ViewDefinition(typeof(TView), () => new TView()));
+
+    /// <summary>
+    /// Registers specified views as being associated with specified view model type.
+    /// DesktopWindow or NavigationView will be selected based on runtime needs.  
+    /// </summary>
+    /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
+    /// <typeparam name="TNavView">The UserControl view associated with the view model for navigation mode.</typeparam>
+    /// <typeparam name="TDeskView">The Window view associated with the view model for desktop applications.</typeparam>
+    public void Register<TViewModel, TNavView, TDeskView>()
+        where TViewModel : INotifyPropertyChanged
+        where TNavView : UserControl, new()
+        where TDeskView : Window, new() =>
+        Register<TViewModel>(UseSinglePageNavigation ?
+            new ViewDefinition(typeof(TNavView), () => new TNavView()) :
+            new ViewDefinition(typeof(TDeskView), () => new TDeskView()));
 
     /// <summary>
     /// Gets or sets whether to force single-page navigation. Setting this to true can allow running in single-page mode on desktop.

@@ -384,10 +384,15 @@ This will be necessary if you want to use Assembly Trimming, otherwise it will t
 Create your View Locator like this, then pass it to your Dialog Manager as explained above.
 
 ```c#
-var viewLocator = new StrongViewLocator()
-  .Register<MainViewModel, MainView, MainWindow>()
-  .Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>()
-  .Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();
+public class ViewLocator : StrongViewLocator
+{
+    public ViewLocator()
+    {
+        Register<MainViewModel, MainView, MainWindow>()
+        Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>()
+        Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();
+    }
+}
 ```
 
 ## Framework Dialogs

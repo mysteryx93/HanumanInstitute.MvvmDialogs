@@ -5,7 +5,7 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Wpf;
 using Microsoft.Extensions.Logging;
 
-namespace Demo.Wpf.ModalDialog;
+namespace Demo.Wpf.StrongLocator;
 
 public partial class App
 {
@@ -13,15 +13,11 @@ public partial class App
     {
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
-        var locator = new StrongViewLocator()
-            .Register<MainWindowViewModel, MainWindow>()
-            .Register<AddTextDialogViewModel, AddTextDialog>();
-
         Ioc.Default.ConfigureServices(
             new ServiceCollection()
                 .AddSingleton<IDialogService>(new DialogService(
                     new DialogManager(
-                        viewLocator: locator,
+                        viewLocator: new ViewLocator(),
                         logger: loggerFactory.CreateLogger<DialogManager>()),
                     viewModelFactory: x => Ioc.Default.GetService(x)))
                 .AddTransient<MainWindowViewModel>()

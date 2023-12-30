@@ -18,7 +18,7 @@ public abstract class StrongViewLocatorBase : IViewLocator
     /// </summary>
     /// <param name="viewDef">The view definition including its type and how to create one.</param>
     /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-    protected void RegisterBase<TViewModel>(ViewDefinition viewDef)
+    protected void Register<TViewModel>(ViewDefinition viewDef)
         where TViewModel : INotifyPropertyChanged
     {
         Registrations.Add(typeof(TViewModel), viewDef);

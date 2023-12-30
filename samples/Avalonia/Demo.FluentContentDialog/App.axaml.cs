@@ -25,7 +25,7 @@ public class App : Application
                 dialogFactory: new DialogFactory().AddFluent()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
-        SplatRegistrations.Register<MainWindowViewModel>();
+        SplatRegistrations.Register<MainViewModel>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
         SplatRegistrations.Register<AskTextBoxViewModel>();
         SplatRegistrations.SetupIOC();
@@ -36,7 +36,7 @@ public class App : Application
         GC.KeepAlive(typeof(DialogService));
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
+            desktop.MainWindow = new MainView
             {
                 DataContext = MainWindow
             };
@@ -45,7 +45,7 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    public static MainWindowViewModel MainWindow => Locator.Current.GetService<MainWindowViewModel>()!;
+    public static MainViewModel MainWindow => Locator.Current.GetService<MainViewModel>()!;
     public static CurrentTimeViewModel CurrentTime => Locator.Current.GetService<CurrentTimeViewModel>()!;
     public static AskTextBoxViewModel AskTextBox => Locator.Current.GetService<AskTextBoxViewModel>()!;
     public static IDialogService DialogService => Locator.Current.GetService<IDialogService>()!;

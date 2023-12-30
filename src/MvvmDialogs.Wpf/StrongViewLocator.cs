@@ -9,13 +9,12 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <summary>
         /// Registers specified views as being associated with specified view model type.
         /// </summary>
-        /// <param name="viewDef">The view definition including its type and how to create one.</param>
         /// <typeparam name="TViewModel">The type of view model to register.</typeparam>
-        public StrongViewLocator Register<TViewModel>(ViewDefinition viewDef)
+        /// <typeparam name="TView">The view type to associate with the view model.</typeparam>
+        public void Register<TViewModel, TView>()
             where TViewModel : INotifyPropertyChanged
-        {
-            RegisterBase<TViewModel>(viewDef);
-            return this;
-        }
+            where TView : Control, new() =>
+            Register<TViewModel>(
+                new ViewDefinition(typeof(TView), () => new TView()));
     }
 }

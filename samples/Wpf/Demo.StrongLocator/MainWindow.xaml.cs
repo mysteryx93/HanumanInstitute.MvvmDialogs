@@ -1,4 +1,4 @@
-﻿namespace Demo.Wpf.ModalDialog;
+﻿namespace Demo.Wpf.StrongLocator;
 
 public partial class MainWindow
 {
