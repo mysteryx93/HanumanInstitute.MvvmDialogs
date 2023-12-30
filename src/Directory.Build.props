@@ -1,11 +1,11 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <VersionPrefix>2.0.0</VersionPrefix>
+    <VersionPrefix>2.1.0</VersionPrefix>
     <Authors>Etienne Charland</Authors>
     <Company>Hanuman Institute</Company>
     <Product>HanumanInstitute.MvvmDialogs</Product>
-    <Copyright>Copyright © 2009-2023 MVVM Dialogs contributors</Copyright>
+    <Copyright>Copyright © 2009-2024 MVVM Dialogs contributors</Copyright>
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
