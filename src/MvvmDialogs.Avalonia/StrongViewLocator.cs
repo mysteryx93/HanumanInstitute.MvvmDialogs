@@ -6,7 +6,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// <summary>
 /// Strongly-typed View Locator that does not rely on reflection.
 /// </summary>
-public class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, IViewLocatorNavigation
+public abstract class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, IViewLocatorNavigation
 {
     /// <summary>
     /// Registers specified views as being associated with specified view model type.

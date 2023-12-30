@@ -20,13 +20,10 @@ public class App : Application
         // This demo uses StrongViewLocator to avoid reflection.
         // To test assembly trimming, publish the application by running this command in the terminal in the project folder 
         // dotnet publish -r win-x64 -c Release --self-contained=true -p:PublishSingleFile=true
-        ViewLocator = new StrongViewLocator()
-            .Register<MainWindowViewModel, MainWindow>()
-            .Register<AddTextDialogViewModel, AddTextDialog>();
 
         build.RegisterLazySingleton(() => (IDialogService)new DialogService(
             new DialogManager(
-                viewLocator: ViewLocator,
+                viewLocator: new ViewLocator(),
                 logger: loggerFactory.CreateLogger<DialogManager>()),
             viewModelFactory: x => Locator.Current.GetService(x)));
 
