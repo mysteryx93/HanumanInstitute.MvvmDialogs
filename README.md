@@ -290,13 +290,14 @@ Mobile back button is also supported automatically.
 ### Avalonia.MessageBox
 
 Avalonia has no built-in support for message boxes. This extension handles message box requests
-using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia) library. Only supports desktop mode.
+using [MessageBox.Avalonia](https://github.com/AvaloniaCommunity/MessageBox.Avalonia) library. `Mode=Window` only supports desktop mode. `Mode=Popup` is cross-platform.
 
 1. Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia.MessageBox`
 2. Register the MessageBox handler on IDialogService like this:
  
 ```c#
-new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBox()))
+new DialogService(new DialogManager(dialogFactory: 
+    new DialogFactory().AddMessageBox(MessageBoxMode.Popup)))
 ```
 
 ### Avalonia.Fluent
@@ -307,7 +308,8 @@ new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessag
 2. Register the handlers on IDialogService like this:
 
 ```c#
-new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddFluent(FluentMessageBoxType.ContentDialog)))
+new DialogService(new DialogManager(dialogFactory: 
+    new DialogFactory().AddFluent(FluentMessageBoxType.ContentDialog)))
 ```
 
 It will add `IDialogService.ShowContentDialogAsync` and `IDialogService.ShowTaskDialogAsync`.
@@ -323,7 +325,8 @@ This extension handles message box requests using [Aura.UI](https://github.com/P
 2. Register the MessageBox handler on IDialogService like this:
 
 ```c#
-new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddMessageBoxAuraUI()))
+new DialogService(new DialogManager(dialogFactory: 
+    new DialogFactory().AddMessageBoxAuraUI()))
 ```
 
 Note: Aura.UI does not yet support Avalonia11 and is thus only available for MvvmDialogs v1.4.1
@@ -336,7 +339,8 @@ Note: Aura.UI does not yet support Avalonia11 and is thus only available for Mvv
 2. Register the handlers on IDialogService like this:
 
 ```c#
-new DialogService(new DialogManager(dialogFactory: new DialogFactory().AddDialogHost()))
+new DialogService(new DialogManager(dialogFactory: 
+    new DialogFactory().AddDialogHost()))
 ```
 
 It will add `IDialogService.ShowDialogHostAsync` that takes the following settings.
