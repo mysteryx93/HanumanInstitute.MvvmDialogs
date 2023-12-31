@@ -13,7 +13,7 @@ This version introduces some breaking changes.
 Other changes:
 
 - Dialog show calls will now be ignored in design mode to avoid errors
-- Updated `CrossPlatform.Browser` to run (there are still issues with it)
+- Updated `CrossPlatform.Browser` to run
 - ViewLocatorBase now calls `CreateViewInstance` virtual method instead of `Activator.CreateInstance` for easier customization.
 
 Happy New Year!! May 2024 be the best year in a while
