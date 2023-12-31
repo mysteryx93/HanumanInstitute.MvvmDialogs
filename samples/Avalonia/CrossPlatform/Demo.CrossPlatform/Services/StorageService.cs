@@ -15,7 +15,7 @@ public class StorageService : IStorageService
     
     public async Task<IDialogStorageFolder?> GetDownloadsFolderAsync()
     {
-        var result = await Storage.TryGetWellKnownFolderAsync(WellKnownFolder.Documents);
+        var result = await Storage.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
         return result?.ToDialog();
     }
 

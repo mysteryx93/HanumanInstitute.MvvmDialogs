@@ -1,8 +1,11 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Demo.CrossPlatform.Services;
+using Demo.CrossPlatform.Business;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -104,7 +107,37 @@ public class MainViewModel : ViewModelBase
             SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
         };
         var file = await _dialogService.ShowOpenFileDialogAsync(this, settings);
-        Output = file?.Path?.ToString();
+        Output = file?.Path + Environment.NewLine;
+        if (file?.Path != null)
+        {
+            await ScanFileProgressAsync(file);
+        }
+    }
+
+    private async Task ScanFileProgressAsync(IDialogStorageFile file)
+    {
+        using var stream = file.OpenReadAsync();
+        Output += "File opened." + Environment.NewLine;
+        var outputHeader = string.Empty;
+        long length = 0;
+        
+        IProgress<long> progress = new SynchronousProgress<long>(value =>
+        {
+            Output = outputHeader + ((float)value / length).ToString("P1") + Environment.NewLine;
+        });
+
+        await stream.ContinueWith(
+            async t =>
+            {
+                using var ms = new MemoryStream();
+                var streamResult = stream.Result;
+                length = streamResult.Length;
+                Output += "Result size: " + streamResult.Length + " starting copy to memory" + Environment.NewLine;
+                outputHeader = Output;
+                await streamResult.CopyToAsync(ms, progress, default, 1024);
+                Output += "Done" + Environment.NewLine;
+                ms.Position = 0;
+            });
     }
 
     private async Task OpenFilesImplAsync()
