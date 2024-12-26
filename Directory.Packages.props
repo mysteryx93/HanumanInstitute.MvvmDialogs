@@ -1,0 +1,50 @@
+<Project>
+  <PropertyGroup>
+    <!-- Enable central package management, https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management -->
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Aura.UI" Version="0.1.5-dev-04" />
+    <PackageVersion Include="Aura.UI.FluentTheme" Version="0.1.5-dev-04" />
+    <PackageVersion Include="Avalonia" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Android" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Browser" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.iOS" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.3" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.3" />
+    <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2"/>
+    <PackageVersion Include="DialogHost.Avalonia" Version="0.8.1" />
+    <PackageVersion Include="FluentAvaloniaUI" Version="2.2.0" />
+    <PackageVersion Include="HanumanInstitute.MvvmDialogs" Version="2.1.0" />
+    <PackageVersion Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="2.1.0" />
+    <PackageVersion Include="HanumanInstitute.MvvmDialogs.Avalonia.MessageBox" Version="2.1.0" />
+    <PackageVersion Include="HanumanInstitute.MvvmDialogs.Wpf" Version="2.1.0" />
+    <PackageVersion Include="JetBrains.dotMemoryUnit" Version="3.2.20220510" />
+    <PackageVersion Include="MessageBox.Avalonia" Version="3.2.0" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0"/>
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135"/>
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
+    <PackageVersion Include="Ookii.Dialogs.Wpf" Version="5.0.1"/>
+    <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageVersion Include="ReactiveUI.Drawing" Version="20.1.63" />
+    <PackageVersion Include="System.Linq.Async" Version="6.0.1" />
+    <PackageVersion Include="System.Runtime" Version="4.3.1" />
+    <PackageVersion Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <PackageVersion Include="Splat" Version="15.2.22" />
+    <PackageVersion Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3"/>
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.0.0"/>
+  </ItemGroup>
+    <ItemGroup>
+    <GlobalPackageReference Include="Microsoft.Build.CopyOnWrite" Version="1.0.334" />
+  </ItemGroup>
+</Project>

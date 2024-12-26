@@ -18,10 +18,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Aura.UI" Version="0.1.5-dev-04" />
-      <PackageReference Include="Avalonia" Version="11.2.3" />
-      <PackageReference Include="HanumanInstitute.MvvmDialogs" Version="2.1.0" />
-      <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="2.1.0" />
+      <PackageReference Include="Aura.UI"/>
+      <PackageReference Include="Avalonia"/>
+      <PackageReference Include="HanumanInstitute.MvvmDialogs"/>
+      <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia"/>
     </ItemGroup>
 
     <ItemGroup>
