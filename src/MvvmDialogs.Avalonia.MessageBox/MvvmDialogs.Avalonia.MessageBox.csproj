@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFramework>netstandard2.0</TargetFramework>
+      <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
       <LangVersion>default</LangVersion>
       <Nullable>enable</Nullable>
       <OutputType>Library</OutputType>
@@ -17,8 +17,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Avalonia" Version="11.0.6" />
-      <PackageReference Include="MessageBox.Avalonia" Version="3.1.5.1" />
+      <PackageReference Include="Avalonia" Version="11.2.3" />
+      <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
     </ItemGroup>
 
     <ItemGroup>
