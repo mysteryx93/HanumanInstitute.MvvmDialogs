@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFramework>net5.0</TargetFramework>
+      <TargetFramework>net6.0</TargetFramework>
       <LangVersion>default</LangVersion>
       <Nullable>enable</Nullable>
       <OutputType>Library</OutputType>
@@ -18,10 +18,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Aura.UI" Version="0.1.4.2" />
-      <PackageReference Include="Avalonia" Version="0.10.18" />
-      <PackageReference Include="HanumanInstitute.MvvmDialogs" Version="1.4.1" />
-      <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="1.4.1" />
+      <PackageReference Include="Aura.UI"/>
+      <PackageReference Include="Avalonia"/>
+      <PackageReference Include="HanumanInstitute.MvvmDialogs"/>
+      <PackageReference Include="HanumanInstitute.MvvmDialogs.Avalonia"/>
     </ItemGroup>
 
     <ItemGroup>
