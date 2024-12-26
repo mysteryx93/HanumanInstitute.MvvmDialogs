@@ -16,6 +16,8 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>
+    <AssemblyVersion>2.1.0.24361</AssemblyVersion>
+    <FileVersion>2.1.0.24361</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

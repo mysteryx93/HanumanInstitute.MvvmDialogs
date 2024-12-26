@@ -1,11 +1,15 @@
-﻿using System.Runtime.Serialization;
+﻿#if NETSTANDARD2_0_OR_GREATER
+using System.Runtime.Serialization;
+#endif
 
 namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Exception thrown by <see cref="DialogServiceBase"/> when a certain dialog isn't found.
 /// </summary>
+#if NETSTANDARD2_0_OR_GREATER
 [Serializable]
+#endif
 public class DialogNotFoundException : Exception
 {
     /// <summary>
@@ -18,7 +22,7 @@ public class DialogNotFoundException : Exception
         : base(message, innerException)
     {
     }
-
+#if NETSTANDARD2_0_OR_GREATER
     /// <summary>
     /// Initializes a new instance of the <see cref="DialogNotFoundException"/> class.
     /// </summary>
@@ -30,4 +34,5 @@ public class DialogNotFoundException : Exception
         : base(info, context)
     {
     }
+#endif
 }
