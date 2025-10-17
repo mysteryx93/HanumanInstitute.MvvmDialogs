@@ -62,10 +62,10 @@ public static class UiExtensions
         (ViewWrapper?)window;
 
     /// <summary>
-    /// Returns the <see cref="IView"/> RefObj property as an Avalonia ContentControl.
+    /// Returns the <see cref="IView"/> RefObj property as a WPF Window.
     /// </summary>
     /// <param name="view">The IView to get the Ref property for.</param>
-    /// <returns>The ContentControl held within the IView.</returns>
+    /// <returns>The Window held within the IView.</returns>
     public static Window? GetRef(this IView? view)
     {
         if (view is ViewWrapper v)

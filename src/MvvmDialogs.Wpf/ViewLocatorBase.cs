@@ -3,7 +3,7 @@
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
-/// Base implementation of Avalonia ViewLocator. Override GetViewName to customize paths.
+/// Base implementation of WPF ViewLocator. Override GetViewName to customize paths.
 /// </summary>
 public class ViewLocatorBase : IViewLocator
 {
@@ -36,7 +36,7 @@ public class ViewLocatorBase : IViewLocator
     }
 
     /// <summary>
-    /// The method used to create the view instance from it's <see cref="Type"/>.
+    /// The method used to create the view instance from its <see cref="Type"/>.
     /// Uses <see cref="Activator.CreateInstance(Type)"/> by default.
     /// </summary>
     /// <param name="viewType">The type to create a view for.</param>
