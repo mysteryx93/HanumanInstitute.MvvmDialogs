@@ -57,7 +57,8 @@ public interface IView
     /// Opens a window and returns only when the newly opened window is closed.
     /// </summary>
     /// <returns>
-    /// A <see cref="Nullable{Boolean}"/> value that specifies whether the activity was accepted (true) or canceled (false).</returns>
+    /// A task that represents the asynchronous operation.
+    /// </returns>
     Task ShowDialogAsync(IView owner);
 
     /// <summary>

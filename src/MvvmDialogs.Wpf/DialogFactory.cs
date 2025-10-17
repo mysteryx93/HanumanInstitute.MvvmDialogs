@@ -14,7 +14,7 @@ using HanumanInstitute.MvvmDialogs.FileSystem;
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
-/// Handles OpenFileDialog, SaveFileDialog and OpenFolderDialog for Avalonia.
+/// Handles OpenFileDialog, SaveFileDialog and OpenFolderDialog for WPF.
 /// </summary>
 public class DialogFactory : DialogFactoryBase
 {
@@ -33,7 +33,7 @@ public class DialogFactory : DialogFactoryBase
     /// Initializes a new instance of a FrameworkDialog.
     /// </summary>
     /// <param name="chain">If the dialog is not handled by this class, calls this other handler next.</param>
-    /// <param name="api">An interface exposing Avalonia framework dialogs.</param>
+    /// <param name="api">An interface exposing WPF framework dialogs.</param>
     internal DialogFactory(IDialogFactory? chain, IFrameworkDialogsApi? api)
         : base(chain)
     {
