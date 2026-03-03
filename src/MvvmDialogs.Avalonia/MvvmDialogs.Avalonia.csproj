@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>net9.0;net8.0;netstandard2.0</TargetFrameworks>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
@@ -15,8 +15,10 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>
+    <AssemblyVersion>2.1.0.24361</AssemblyVersion>
+    <FileVersion>2.1.0.24361</FileVersion>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />
   </ItemGroup>
@@ -32,9 +34,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.0.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
-    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    <PackageReference Include="System.Linq.Async"/>
   </ItemGroup>
 
   <ItemGroup>

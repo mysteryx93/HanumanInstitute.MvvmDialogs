@@ -1,4 +1,6 @@
-﻿using System.Runtime.Serialization;
+﻿#if NETSTANDARD2_0_OR_GREATER
+using System.Runtime.Serialization;
+#endif
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -6,7 +8,9 @@ namespace HanumanInstitute.MvvmDialogs;
 /// Exception thrown by <see cref="DialogServiceBase"/> when a view isn't registered, but its
 /// DataContext is accessing the dialog service.
 /// </summary>
+#if NETSTANDARD2_0_OR_GREATER
 [Serializable]
+#endif
 public class ViewNotRegisteredException : Exception
 {
     /// <summary>
@@ -27,8 +31,10 @@ public class ViewNotRegisteredException : Exception
     /// exception being thrown.</param>
     /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the
     /// source or destination.</param>
+#if NETSTANDARD2_0_OR_GREATER
     protected ViewNotRegisteredException(SerializationInfo info, StreamingContext context)
         : base(info, context)
     {
     }
+#endif
 }

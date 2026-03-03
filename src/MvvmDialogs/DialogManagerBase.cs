@@ -243,7 +243,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
         where TSettings : DialogSettingsBase
     {
         if (IsDesignMode) { return null; }
-        
+
         if (!AllowConcurrentDialogs)
         {
             await _semaphoreShow.WaitAsync();
