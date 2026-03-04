@@ -164,6 +164,6 @@ public static class DialogServiceExtensions
         OpenFolderDialogSettings? settings = null)
     {
         return ((IReadOnlyList<IDialogStorageFolder>?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings())).FirstOrDefault();
+            ownerViewModel, settings ?? new OpenFolderDialogSettings()))?.FirstOrDefault();
     }
 }

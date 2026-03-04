@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <Company>Hanuman Institute</Company>
+  </PropertyGroup>
+</Project>

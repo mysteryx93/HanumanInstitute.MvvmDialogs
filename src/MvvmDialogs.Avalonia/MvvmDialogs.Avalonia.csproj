@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net9.0;net8.0;netstandard2.0</TargetFrameworks>
-    <LangVersion>default</LangVersion>
-    <Nullable>enable</Nullable>
+    <TargetFrameworks>net10.0;net8.0;netstandard2.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
-    <Title>MVVM Dialogs for Avalonia</Title>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
     <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia</AssemblyName>
@@ -15,8 +11,6 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>
-    <AssemblyVersion>2.1.0.24361</AssemblyVersion>
-    <FileVersion>2.1.0.24361</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -36,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-    <PackageReference Include="System.Linq.Async"/>
+    <PackageReference Include="System.Linq.Async" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,5 +43,4 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-
 </Project>
