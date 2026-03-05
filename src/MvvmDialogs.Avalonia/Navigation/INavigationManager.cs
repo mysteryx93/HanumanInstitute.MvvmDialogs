@@ -10,7 +10,7 @@ public interface INavigationManager
     /// <summary>
     /// Returns the navigation history.
     /// </summary>
-    public IReadOnlyList<INotifyPropertyChanged> History { get; }   
+    public IReadOnlyList<INotifyPropertyChanged> History { get; }
     /// <summary>
     /// Initializes a new instance of the NavigationManager class.
     /// </summary>

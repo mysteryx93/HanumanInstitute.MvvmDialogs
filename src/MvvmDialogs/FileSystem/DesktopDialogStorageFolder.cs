@@ -12,7 +12,7 @@ public class DesktopDialogStorageFolder : DesktopDialogStorageItem, IDialogStora
     /// Returns file system information about the file.
     /// </summary>
     public DirectoryInfo Info => _info;
-    
+
     /// <summary>
     /// Initializes a new instance of DialogStorageFolder to expose a path.
     /// </summary>

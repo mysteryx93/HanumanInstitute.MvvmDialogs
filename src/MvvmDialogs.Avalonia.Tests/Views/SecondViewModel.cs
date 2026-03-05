@@ -7,11 +7,11 @@ public class SecondViewModel : ReactiveObject, ICloseable, IActivable, IModalDia
 {
     public event EventHandler RequestClose;
     public event EventHandler RequestActivate;
-    
+
     public void OnRequestClose() => RequestClose?.Invoke(this, EventArgs.Empty);
 
     public void OnRequestActivate() => RequestActivate?.Invoke(this, EventArgs.Empty);
-    
+
     public bool? DialogResult { get; set; }
 
     public int ClosingRaised { get; set; }
@@ -23,15 +23,15 @@ public class SecondViewModel : ReactiveObject, ICloseable, IActivable, IModalDia
     public void OnClosing(CancelEventArgs e)
     {
         e.Cancel = ClosingCancel;
-        ClosingRaised++;  
-    } 
+        ClosingRaised++;
+    }
 
     public Task OnClosingAsync(CancelEventArgs e)
     {
         e.Cancel = ClosingAsyncCancel;
         ClosingAsyncRaised++;
-        return Task.CompletedTask;  
-    } 
+        return Task.CompletedTask;
+    }
 
     public void OnClosed() => ClosedRaised++;
 }

@@ -73,7 +73,7 @@ public class DialogHostView : IView
         Host = host;
         return host;
     }
-    
+
     /// <summary>
     /// Returns the DialogHost that was last initiated.
     /// </summary>

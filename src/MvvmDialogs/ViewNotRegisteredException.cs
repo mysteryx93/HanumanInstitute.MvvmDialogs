@@ -24,6 +24,7 @@ public class ViewNotRegisteredException : Exception
     {
     }
 
+#if NETSTANDARD2_0_OR_GREATER
     /// <summary>
     /// Initializes a new instance of the <see cref="ViewNotRegisteredException"/> class.
     /// </summary>
@@ -31,7 +32,6 @@ public class ViewNotRegisteredException : Exception
     /// exception being thrown.</param>
     /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the
     /// source or destination.</param>
-#if NETSTANDARD2_0_OR_GREATER
     protected ViewNotRegisteredException(SerializationInfo info, StreamingContext context)
         : base(info, context)
     {

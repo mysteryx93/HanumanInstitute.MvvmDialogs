@@ -2,7 +2,7 @@
 using Android.Content.PM;
 using Avalonia;
 using Avalonia.Android;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 
 namespace Demo.CrossPlatform.Android;
 
@@ -17,6 +17,6 @@ public class MainActivity : AvaloniaMainActivity<App>
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
         return base.CustomizeAppBuilder(builder)
-            .UseReactiveUI();
+            .UseReactiveUI(rxui => { });
     }
 }

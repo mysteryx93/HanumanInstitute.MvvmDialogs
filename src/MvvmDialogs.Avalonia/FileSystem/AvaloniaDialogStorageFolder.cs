@@ -13,7 +13,7 @@ public class AvaloniaDialogStorageFolder : AvaloniaDialogStorageItem, IDialogSto
     /// Returns the Avalonia object source that was passed to the constructor. 
     /// </summary>
     public IStorageFolder Source => _item;
-    
+
     /// <summary>
     /// Initializes a new instance of DialogStorageFolder as a bridge to specified Avalonia IStorageFolder.
     /// </summary>

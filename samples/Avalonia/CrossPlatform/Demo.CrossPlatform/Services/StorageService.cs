@@ -12,7 +12,7 @@ public class StorageService : IStorageService
 {
     protected virtual IStorageProvider Storage => _storage ??= GetTopLevel(Application.Current)?.StorageProvider ?? throw new NullReferenceException("No StorageProvider found.");
     private IStorageProvider? _storage;
-    
+
     public async Task<IDialogStorageFolder?> GetDownloadsFolderAsync()
     {
         var result = await Storage.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);

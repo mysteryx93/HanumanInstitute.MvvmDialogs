@@ -8,5 +8,5 @@ public interface ICloseable
     /// <summary>
     /// When raised from the ViewModel, closes the associated view.
     /// </summary>
-     event EventHandler? RequestClose;
+    event EventHandler? RequestClose;
 }

@@ -1,5 +1,4 @@
 ﻿using Moq;
-using Xunit.Abstractions;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
@@ -30,7 +29,7 @@ public class TestsBase
         action(result);
         return result;
     }
-    
+
     /// <summary>
     /// Initializes a mock of specified type.
     /// </summary>
@@ -43,5 +42,5 @@ public class TestsBase
         var mock = new Mock<T>();
         action(mock);
         return mock;
-    } 
+    }
 }

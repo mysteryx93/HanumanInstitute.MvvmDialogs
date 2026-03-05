@@ -79,7 +79,7 @@ public class DialogFactory : DialogFactoryBase
             FileTypeChoices = SyncFilters(settings.Filters),
             SuggestedFileName = settings.SuggestedFileName
         };
-        
+
         await AddSharedSettingsAsync(apiSettings, settings);
 
         var result = await _api.ShowSaveFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
@@ -102,7 +102,7 @@ public class DialogFactory : DialogFactoryBase
         {
             d.SuggestedStartLocation = await s.SuggestedStartLocation.ToAvaloniaAsync();
         }
-        
+
         d.Title = s.Title;
     }
 

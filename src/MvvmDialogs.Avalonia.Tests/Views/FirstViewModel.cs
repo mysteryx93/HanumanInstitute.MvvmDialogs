@@ -7,7 +7,7 @@ public class FirstViewModel : ReactiveObject, ICloseable, IActivable, IViewLoade
 {
     public event EventHandler RequestClose;
     public event EventHandler RequestActivate;
-    
+
     public void OnRequestClose() => RequestClose?.Invoke(this, EventArgs.Empty);
 
     public void OnRequestActivate() => RequestActivate?.Invoke(this, EventArgs.Empty);

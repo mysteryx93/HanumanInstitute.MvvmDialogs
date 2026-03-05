@@ -29,10 +29,10 @@ public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IVi
         var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton.YesNo);
         e.Cancel = quit != true;
     }
-    
+
     public async void OnClosed()
     {
-       await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
+        await _dialogService.ShowMessageBoxAsync(null, "It's over.", "Closed");
     }
 
     public string Text

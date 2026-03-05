@@ -11,7 +11,7 @@ public interface IDialogManager
     /// Gets the ILogger that captures MvvmDialogs logs.
     /// </summary>
     ILogger<IDialogManager>? Logger { get; }
-    
+
     /// <summary>
     /// Whether to allow multiple framework dialogs to be displayed at once.
     /// </summary>

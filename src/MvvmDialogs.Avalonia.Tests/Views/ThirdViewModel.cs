@@ -6,10 +6,10 @@ public class ThirdViewModel : ReactiveObject, ICloseable, IActivable, IModalDial
 {
     public event EventHandler RequestClose;
     public event EventHandler RequestActivate;
-    
+
     public void OnRequestClose() => RequestClose?.Invoke(this, EventArgs.Empty);
 
     public void OnRequestActivate() => RequestActivate?.Invoke(this, EventArgs.Empty);
-    
+
     public bool? DialogResult { get; set; }
 }

@@ -34,7 +34,7 @@ public static class CancellableActions
             s_list.Remove(action);
         }
     }
-    
+
     /// <summary>
     /// Returns whether there are active dialog actions. 
     /// </summary>
@@ -44,9 +44,9 @@ public static class CancellableActions
         {
             lock (s_list)
             {
-                return s_list.Any();           
+                return s_list.Any();
             }
-        }  
+        }
     }
 
     /// <summary>
@@ -58,9 +58,9 @@ public static class CancellableActions
         {
             lock (s_list)
             {
-                return s_list.Count;           
+                return s_list.Count;
             }
-        }  
+        }
     }
 
     /// <summary>

@@ -37,7 +37,7 @@ public class MainViewModel : ViewModelBase
         MessageBox = ReactiveCommand.CreateFromTask(MessageBoxImplAsync);
         MessageBoxMultiple = ReactiveCommand.CreateFromTask(MessageBoxMultipleImplAsync);
     }
-    
+
     [Reactive]
     public string? Output { get; set; }
 
@@ -79,7 +79,7 @@ public class MainViewModel : ViewModelBase
         DialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
         _dialogService.Show(this, DialogViewModel);
     }
-    
+
     private void ActivateImpl() => _dialogService.Activate(DialogViewModel!);
 
     private void CloseImpl()
@@ -87,7 +87,7 @@ public class MainViewModel : ViewModelBase
         _dialogService.Close(DialogViewModel!);
         DialogViewModel = null;
     }
-    
+
     private async Task ShowDialogImplAsync()
     {
         var vm = _dialogService.CreateViewModel<CurrentTimeViewModel>();
@@ -120,7 +120,7 @@ public class MainViewModel : ViewModelBase
         Output += "File opened." + Environment.NewLine;
         var outputHeader = string.Empty;
         long length = 0;
-        
+
         IProgress<long> progress = new SynchronousProgress<long>(value =>
         {
             Output = outputHeader + ((float)value / length).ToString("P1") + Environment.NewLine;
@@ -179,7 +179,7 @@ public class MainViewModel : ViewModelBase
         var file = await _dialogService.ShowSaveFileDialogAsync(this, settings);
         Output = file?.Path?.ToString();
     }
-    
+
     private async Task MessageBoxImplAsync()
     {
         var result = await _dialogService.ShowMessageBoxAsync(this, "Do you want it?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Exclamation);

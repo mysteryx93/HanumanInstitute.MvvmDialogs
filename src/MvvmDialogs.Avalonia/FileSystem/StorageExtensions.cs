@@ -15,7 +15,7 @@ public static class StorageExtensions
     /// <param name="item">The Avalonia storage object to convert.</param>
     /// <returns>A MvvmDialogs storage object.</returns>
     public static IDialogStorageFile ToDialog(this IStorageFile item) => new AvaloniaDialogStorageFile(item);
-    
+
     /// <summary>
     /// Converts an Avalonia <see cref="IStorageFolder"/> into a MvvmDialogs <see cref="IDialogStorageFolder"/>.
     /// </summary>
@@ -24,7 +24,7 @@ public static class StorageExtensions
     public static IDialogStorageFolder ToDialog(this IStorageFolder item) => new AvaloniaDialogStorageFolder(item);
 
     // internal static IStorageFile Convert(this IDialogStorageFile item) => new DialogStorageFileToAvalonia(item);
-    
+
     internal static async Task<IStorageFolder?> ToAvaloniaAsync(this IDialogStorageFolder item)
     {
         if (item is AvaloniaDialogStorageFolder av)
@@ -38,7 +38,7 @@ public static class StorageExtensions
         }
         return null;
     }
-    
+
     private static IStorageProvider? GetStorageProvider()
     {
         var result = Application.Current?.ApplicationLifetime switch

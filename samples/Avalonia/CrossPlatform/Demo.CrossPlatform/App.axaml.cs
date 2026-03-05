@@ -1,4 +1,4 @@
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Markup.Xaml;
 using Demo.CrossPlatform.Services;
 using Demo.CrossPlatform.ViewModels;
 using HanumanInstitute.MvvmDialogs;
@@ -13,7 +13,7 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        
+
         var build = Locator.CurrentMutable;
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());
 
@@ -23,21 +23,21 @@ public partial class App : Application
                 logger: loggerFactory.CreateLogger<DialogManager>(),
                 dialogFactory: new DialogFactory().AddFluent(messageBoxType: FluentMessageBoxType.ContentDialog)),
             viewModelFactory: x => Locator.Current.GetService(x)));
-        
+
         SplatRegistrations.Register<MainViewModel>();
         SplatRegistrations.Register<CurrentTimeViewModel>();
         SplatRegistrations.Register<ConfirmCloseViewModel>();
         SplatRegistrations.Register<IStorageService, StorageService>();
         SplatRegistrations.SetupIOC();
     }
-    
+
     public override void OnFrameworkInitializationCompleted()
     {
         DialogService.Show(null, MainViewModel);
 
         base.OnFrameworkInitializationCompleted();
     }
-    
+
     public static MainViewModel MainViewModel => Locator.Current.GetService<MainViewModel>()!;
     public static CurrentTimeViewModel CurrentTimeViewModel => Locator.Current.GetService<CurrentTimeViewModel>()!;
     public static ConfirmCloseViewModel ConfirmCloseViewModel => Locator.Current.GetService<ConfirmCloseViewModel>()!;

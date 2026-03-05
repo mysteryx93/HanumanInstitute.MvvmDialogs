@@ -8,5 +8,5 @@ public interface IActivable
     /// <summary>
     /// When raised from the ViewModel, activates the associated view.
     /// </summary>
-     event EventHandler? RequestActivate;
+    event EventHandler? RequestActivate;
 }

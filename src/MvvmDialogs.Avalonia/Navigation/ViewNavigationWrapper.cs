@@ -28,7 +28,7 @@ public class ViewNavigationWrapper : IView
         ViewModel = viewModel;
         ViewDef = viewDef;
     }
-    
+
     /// <inheritdoc />
     public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
     {
@@ -36,9 +36,9 @@ public class ViewNavigationWrapper : IView
         ViewDef = new ViewDefinition(view.GetType(), () => (UserControl)view);
         Ref = (UserControl)view;
     }
-    
+
     private ViewDefinition ViewDef { get; set; }
-    
+
     public IView? Owner { get; set; }
 
     /// <summary>
@@ -58,12 +58,12 @@ public class ViewNavigationWrapper : IView
     /// Unused event.
     /// </summary>
     public event EventHandler<CancelEventArgs>? Closing;
-    
+
     /// <summary>
     /// Unused event.
     /// </summary>
     public event EventHandler? Closed;
-    
+
     /// <inheritdoc />
     public INotifyPropertyChanged ViewModel { get; private set; }
 
@@ -95,7 +95,7 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public void Show(IView? owner)
     {
-        _navigation.Show(ViewModel, ViewDef);  
+        _navigation.Show(ViewModel, ViewDef);
         Ref = _navigation.CurrentView!;
         RaiseLoaded();
     }
@@ -110,7 +110,7 @@ public class ViewNavigationWrapper : IView
                 Ref = _navigation.CurrentView!;
                 RaiseLoaded();
             }
-        } 
+        }
     }
 
     /// <inheritdoc />
@@ -128,7 +128,7 @@ public class ViewNavigationWrapper : IView
             RaiseClosed();
         }
     }
-    
+
     /// <inheritdoc />
     public bool IsEnabled
     {
@@ -137,14 +137,14 @@ public class ViewNavigationWrapper : IView
         {
             if (Ref != null)
             {
-                Ref.IsEnabled = value;   
+                Ref.IsEnabled = value;
             }
         }
     }
 
     /// <inheritdoc />
     public bool IsVisible => Ref != null && ReferenceEquals(Ref, _navigation.CurrentView);
-    
+
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }
 

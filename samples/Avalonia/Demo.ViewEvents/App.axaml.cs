@@ -31,7 +31,7 @@ public class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         GC.KeepAlive(typeof(DialogService));
-        
+
         DialogService.Show(null, MainWindow);
 
         base.OnFrameworkInitializationCompleted();

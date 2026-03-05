@@ -42,7 +42,7 @@ public class FileFilter
     /// Gets or sets the display name of the filter.
     /// </summary>
     public string Name { get; set; } = string.Empty;
-    
+
     /// <summary>
     /// Gets or sets a list of file extensions matched by the filter, excluding the trailing dots (e.g. "txt" or "*" for all files).
     /// </summary>
@@ -77,7 +77,7 @@ public class FileFilter
     public string? ExtensionsToString(char separator = ';')
     {
         if (Extensions == null) { return null; }
-        
+
         var builder = new StringBuilder();
         foreach (var ext in Extensions.Select(x => x.TrimStart('.')))
         {

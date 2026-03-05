@@ -19,7 +19,7 @@ public class DialogHostDialogFactory : DialogFactoryBase
         settings switch
         {
             // MessageBoxSettings s => await ShowMessageBoxDialogAsync(owner, s, appSettings).ConfigureAwait(true),
-            DialogHostSettings s => await ShowDialogHostAsync(owner, s), 
+            DialogHostSettings s => await ShowDialogHostAsync(owner, s),
             _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
@@ -29,13 +29,13 @@ public class DialogHostDialogFactory : DialogFactoryBase
         var view = new DialogHostView(settings);
         if (view.ViewModel != null)
         {
-            GetDialogManager().HandleDialogEvents(view.ViewModel, view);    
+            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
-        
+
         await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
-    
+
     // private Task<bool?> ShowMessageBoxAsync(IView? owner, MessageBoxSettings settings, AppDialogSettingsBase appSettings)
     // {
     //     return Task.FromResult<bool?>(null);

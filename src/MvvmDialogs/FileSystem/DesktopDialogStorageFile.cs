@@ -19,7 +19,7 @@ public class DesktopDialogStorageFile : DesktopDialogStorageItem, IDialogStorage
     {
         _info = info;
     }
-    
+
     /// <summary>
     /// Initializes a new instance of DesktopDialogStorageFile to expose a path.
     /// </summary>

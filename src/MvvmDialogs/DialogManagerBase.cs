@@ -191,6 +191,9 @@ public abstract class DialogManagerBase<T> : IDialogManager
 
     private bool _isViewClosing;
 
+    /// <summary>
+    /// Called when the view is closing.
+    /// </summary>
     public async void View_Closing(IView dialog, CancelEventArgs e)
     {
         if (dialog.ViewModel is not IViewClosing closing || dialog.ClosingConfirmed)

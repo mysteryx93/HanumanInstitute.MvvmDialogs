@@ -49,12 +49,12 @@ public interface IDialogStorageItem : IDisposable
     /// Gets the parent folder of the current storage item.
     /// </summary>
     Task<IDialogStorageFolder?> GetParentAsync();
-    
+
     /// <summary>
     /// Deletes the current storage item and it's contents
     /// </summary>
     Task DeleteAsync();
-    
+
     /// <summary>
     /// Moves the current storage item and it's contents to a <see cref="IDialogStorageFolder"/>
     /// </summary>

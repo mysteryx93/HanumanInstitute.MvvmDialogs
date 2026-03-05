@@ -10,9 +10,9 @@ namespace Demo.Avalonia.FluentTaskDialog;
 public class CurrentTimeViewModel : ViewModelBase, IViewClosing
 {
     public DateTime CurrentTime => DateTime.Now;
-    
+
     public bool ConfirmClose { get; set; }
-    
+
     public bool StayOpen { get; set; }
 
     public CurrentTimeViewModel() =>
@@ -20,7 +20,7 @@ public class CurrentTimeViewModel : ViewModelBase, IViewClosing
         {
             this.RaisePropertyChanged(nameof(CurrentTime));
         });
-    
+
     public void OnClosing(CancelEventArgs e)
     {
         if (ConfirmClose)

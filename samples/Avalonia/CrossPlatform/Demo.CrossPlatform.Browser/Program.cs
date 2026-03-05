@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using Avalonia.ReactiveUI;
+using ReactiveUI.Avalonia;
 using Demo.CrossPlatform;
 
 [assembly: SupportedOSPlatform("browser")]
@@ -10,7 +10,7 @@ using Demo.CrossPlatform;
 internal partial class Program
 {
     private static async Task Main(string[] args) => await BuildAvaloniaApp()
-        .UseReactiveUI()
+        .UseReactiveUI(rxui => { })
         .StartBrowserAppAsync("out");
 
     public static AppBuilder BuildAvaloniaApp()

@@ -14,7 +14,7 @@ public interface IDialogStorageFolder : IDialogStorageItem
     /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission.</exception>
     /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
     IAsyncEnumerable<IDialogStorageItem> GetItemsAsync();
-    
+
     // /// <summary>
     // /// Gets the files and subfolders in the current folder.
     // /// </summary>

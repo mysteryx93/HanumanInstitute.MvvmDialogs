@@ -12,16 +12,16 @@ public class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IView
     private readonly IDialogService _dialogService;
     public event EventHandler? RequestClose;
     public bool? DialogResult => true;
-    
+
     public ConfirmCloseViewModel(IDialogService dialogService)
     {
         _dialogService = dialogService;
         Close = ReactiveCommand.Create(CloseImpl);
     }
-    
+
     [Reactive]
     public string Text { get; set; } = string.Empty;
-    
+
     public RxCommandUnit Close { get; }
 
     public void OnLoaded()
@@ -33,7 +33,7 @@ public class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IView
     {
         e.Cancel = true;
     }
-    
+
     private void CloseImpl()
     {
         RequestClose?.Invoke(this, EventArgs.Empty);

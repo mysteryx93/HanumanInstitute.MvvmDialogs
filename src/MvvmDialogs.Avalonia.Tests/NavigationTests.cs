@@ -1,4 +1,4 @@
-// ReSharper disable MemberCanBePrivate.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
 using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
@@ -20,37 +20,37 @@ public class NavigationTests
 
         Assert.Null(NavigationManager.CurrentView);
     }
-    
+
     [Fact]
     public void Show_First_CurrentViewSet()
     {
         var vm = new FirstViewModel();
-        
+
         DialogService.Show(null, vm);
 
         Assert.NotNull(NavigationManager.CurrentView);
         Assert.Equal(vm, NavigationManager.CurrentView.DataContext);
     }
-    
+
     [Fact]
     public void Show_Second_CurrentViewSet()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         DialogService.Show(null, vm2);
 
         Assert.NotNull(NavigationManager.CurrentView);
         Assert.Equal(vm2, NavigationManager.CurrentView.DataContext);
     }
-    
+
     [Fact]
     public void Show_FirstSecond_HistoryContainsFirstSecond()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         DialogService.Show(null, vm2);
 
@@ -58,13 +58,13 @@ public class NavigationTests
         Assert.Same(vm1, NavigationManager.History[0]);
         Assert.Same(vm2, NavigationManager.History[1]);
     }
-    
+
     [Fact]
     public void Show_FirstSecondFirst_HistoryContainsSecondFirst()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         DialogService.Show(null, vm2);
         DialogService.Show(null, vm1);
@@ -73,13 +73,13 @@ public class NavigationTests
         Assert.Same(vm2, NavigationManager.History[0]);
         Assert.Same(vm1, NavigationManager.History[1]);
     }
-    
+
     [Fact]
     public void Show_CloseSecond_CurrentViewSet()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         DialogService.Show(null, vm2);
         vm2.OnRequestClose();
@@ -93,7 +93,7 @@ public class NavigationTests
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         var view1 = new WeakReference(NavigationManager.CurrentView);
         DialogService.Show(null, vm2);
@@ -104,14 +104,14 @@ public class NavigationTests
         await Task.Delay(100);
         Assert.False(view1.IsAlive);
     }
-    
-    
+
+
     [Fact]
     public void ShowDialogAsync_SecondAndGarbageCollect_FirstReleased()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         var view1 = new WeakReference(NavigationManager.CurrentView);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
@@ -121,35 +121,35 @@ public class NavigationTests
         GC.Collect();
         Assert.False(view1.IsAlive);
     }
-    
+
     [Fact]
     public void Activate_NotShown_DoNothing()
     {
         var vm1 = new FirstViewModel();
-        
+
         vm1.OnRequestActivate();
 
         Assert.Null(NavigationManager.CurrentView);
     }
-    
+
     [Fact]
     public void Activate_AlreadyActive_CurrentViewRemainsSame()
     {
         var vm1 = new FirstViewModel();
-        
+
         DialogService.Show(null, vm1);
         vm1.OnRequestActivate();
 
         Assert.Same(vm1, NavigationManager.CurrentView?.DataContext);
         Assert.Single(NavigationManager.History);
     }
-    
+
     [Fact]
     public void Activate_FirstSecondFirst_CurrentViewFirst()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         DialogService.Show(null, vm2);
         vm1.OnRequestActivate();
@@ -176,10 +176,10 @@ public class NavigationTests
         var task = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
         var result = await task;
-        
+
         Assert.Equal(dialogResult, result);
     }
-    
+
     [Fact]
     public async Task ShowDialogAsync_Second_WaitUntilClosed()
     {
@@ -188,7 +188,7 @@ public class NavigationTests
 
         DialogService.Show(null, vm1);
         var task = DialogService.ShowDialogAsync(vm1, vm2);
-        
+
         await Task.Delay(10);
         Assert.False(task.IsCompleted);
         vm2.OnRequestClose();
@@ -196,7 +196,7 @@ public class NavigationTests
         Assert.True(task.IsCompleted);
         Assert.Same(vm1, NavigationManager.CurrentView?.DataContext);
     }
-    
+
     [Fact]
     public async Task ShowDialogAsync_RecursiveDialogs_WaitUntilClosed()
     {
@@ -207,7 +207,7 @@ public class NavigationTests
         DialogService.Show(null, vm1);
         var t1 = DialogService.ShowDialogAsync(vm1, vm2);
         var t2 = DialogService.ShowDialogAsync(vm2, vm3);
-        
+
         await Task.Delay(10);
         Assert.False(t1.IsCompleted);
         Assert.False(t2.IsCompleted);
@@ -218,7 +218,7 @@ public class NavigationTests
         Assert.True(t2.IsCompleted);
         Assert.Same(vm1, NavigationManager.CurrentView?.DataContext);
     }
-    
+
     [Fact]
     public void ShowDialogAsync_Second_AddToHistory()
     {
@@ -227,12 +227,12 @@ public class NavigationTests
 
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
-        
+
         Assert.Equal(2, NavigationManager.History.Count);
         Assert.Same(vm1, NavigationManager.History[0]);
         Assert.Same(vm2, NavigationManager.History[1]);
     }
-    
+
     [Fact]
     public async Task ShowDialogAsync_OwnerFirst_ShowFirstAfterClose()
     {
@@ -250,7 +250,7 @@ public class NavigationTests
         Assert.Single(NavigationManager.History);
         Assert.Same(vm1, NavigationManager.History[0]);
     }
-    
+
     [Fact]
     public void Show_TwiceWithinDialog_AddOneHistory()
     {
@@ -277,33 +277,33 @@ public class NavigationTests
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
-        
+
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
-        
+
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(0, vm2.ClosingAsyncRaised);
         Assert.Equal(1, vm2.ClosedRaised);
     }
-    
+
     [Fact]
     public async Task Close_Cancelled_ClosingAsyncRaised()
     {
         var vm1 = new FirstViewModel();
         var vm2 = new SecondViewModel();
         vm2.ClosingCancel = true;
-        
+
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
-        
+
         await Task.Delay(1); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);
         Assert.Equal(0, vm2.ClosedRaised);
     }
-    
+
     [Fact]
     public async Task Close_CancelledAndReset_ClosedRaised()
     {
@@ -311,17 +311,17 @@ public class NavigationTests
         var vm2 = new SecondViewModel();
         vm2.ClosingCancel = true;
         vm2.ClosingAsyncCancel = false;
-        
+
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
-        
+
         await Task.Delay(1); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);
         Assert.Equal(1, vm2.ClosedRaised);
     }
-    
+
     [Fact]
     public async Task Close_3Times_RaiseClosingOnce()
     {
@@ -329,13 +329,13 @@ public class NavigationTests
         var vm2 = new SecondViewModel();
         vm2.ClosingCancel = true;
         vm2.ClosingAsyncCancel = true;
-        
+
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
         vm2.OnRequestClose();
         vm2.OnRequestClose();
-        
+
         await Task.Delay(1); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);

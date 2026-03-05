@@ -11,7 +11,7 @@ internal class ViewCacheItem
         ViewDef = viewDef;
         View = new WeakReference<UserControl>(view);
     }
-    
+
     /// <summary>
     /// The data type of the ViewModel.
     /// </summary>

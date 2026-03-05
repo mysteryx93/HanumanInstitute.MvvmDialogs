@@ -43,7 +43,7 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
         var parent = Parent;
         return Task.FromResult<IDialogStorageFolder?>(parent != null ? new DesktopDialogStorageFolder(parent) : null);
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -51,7 +51,7 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
 
     /// <inheritdoc />
     public Task DeleteAsync() => Task.Run(() => InfoBase.Delete());
-    
+
     /// <inheritdoc />
     public abstract Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination);
 

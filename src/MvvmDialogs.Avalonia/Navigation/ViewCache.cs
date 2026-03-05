@@ -36,7 +36,7 @@ public class ViewCache
         return null;
     }
 
-    
+
     /// <summary>
     /// Returns an instance of specified viewType. A single instance will be returned per type, and it will be cached with a weak reference. 
     /// </summary>
@@ -52,7 +52,7 @@ public class ViewCache
             _cache.Add(item);
         }
         item.ViewDef = viewDef;
-        
+
         if (item.View.TryGetTarget(out var result))
         {
             result.DataContext = viewModel;

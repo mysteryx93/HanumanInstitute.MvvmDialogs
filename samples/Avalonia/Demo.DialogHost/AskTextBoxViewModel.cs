@@ -10,7 +10,7 @@ public class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, IClosea
 {
     public event EventHandler? RequestClose;
     public bool? DialogResult { get; set; }
-    
+
     [Reactive]
     public string Title { get; set; } = "Title";
 
@@ -25,7 +25,7 @@ public class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, IClosea
         DialogResult = true;
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
-    
+
     public ReactiveCommand<Unit, Unit> Cancel => _cancel ??= ReactiveCommand.Create(CancelImpl);
     private ReactiveCommand<Unit, Unit>? _cancel;
 

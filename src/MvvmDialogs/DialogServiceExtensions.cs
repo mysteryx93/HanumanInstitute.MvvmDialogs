@@ -62,7 +62,7 @@ public static class DialogServiceExtensions
         return (bool?)await service.DialogManager.ShowFrameworkDialogAsync(
             ownerViewModel, settings ?? new MessageBoxSettings()).ConfigureAwait(true);
     }
-    
+
     /// <summary>
     /// Displays the OpenFileDialog to select a single file.
     /// </summary>

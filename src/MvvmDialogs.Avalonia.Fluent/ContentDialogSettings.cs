@@ -9,7 +9,7 @@ public class ContentDialogSettings : DialogSettingsBase
     /// <summary>
     /// Initializes a new instance of the ContentDialogSettings class.
     /// </summary>
-    public ContentDialogSettings() {}
+    public ContentDialogSettings() { }
 
     /// <summary>
     /// Initializes a new instance of the ContentDialogSettings class with specified content.
@@ -19,7 +19,7 @@ public class ContentDialogSettings : DialogSettingsBase
     {
         Content = content;
     }
-    
+
     /// <summary>
     /// Gets or sets the content of the dialog.
     /// </summary>

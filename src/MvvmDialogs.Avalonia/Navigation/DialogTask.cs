@@ -15,7 +15,7 @@ internal class DialogTask
         ViewModel = viewModel;
         OwnerViewModel = ownerViewModel;
     }
-    
+
     /// <summary>
     /// Gets the view model of the new dialog.
     /// </summary>

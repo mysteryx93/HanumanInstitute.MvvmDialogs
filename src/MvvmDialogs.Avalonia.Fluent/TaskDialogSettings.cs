@@ -11,7 +11,7 @@ public class TaskDialogSettings : DialogSettingsBase
     /// <summary>
     /// Initializes a new instance of the TaskDialogSettings class.
     /// </summary>
-    public TaskDialogSettings() {}
+    public TaskDialogSettings() { }
 
     /// <summary>
     /// Initializes a new instance of the TaskDialogSettings class with specified content.
@@ -21,7 +21,7 @@ public class TaskDialogSettings : DialogSettingsBase
     {
         Content = content;
     }
-    
+
     /// <summary>
     /// Gets or sets the dialog header text
     /// </summary>

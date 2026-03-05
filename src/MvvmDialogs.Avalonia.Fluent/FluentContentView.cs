@@ -26,7 +26,7 @@ public class FluentContentView : IView
     /// Gets or sets the dialog result.
     /// </summary>
     public ContentDialogResult DialogResult { get; set; } = ContentDialogResult.None;
-    
+
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     { }
@@ -52,7 +52,7 @@ public class FluentContentView : IView
 
     /// <inheritdoc />
     public void Show(IView? owner) => throw new NotImplementedException();
-    
+
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
