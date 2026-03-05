@@ -101,7 +101,7 @@ public class NavigationTests
         GC.Collect();
         GC.WaitForPendingFinalizers();
         GC.Collect();
-        await Task.Delay(100);
+        await Task.Delay(100, TestContext.Current.CancellationToken);
         Assert.False(view1.IsAlive);
     }
 
@@ -189,10 +189,10 @@ public class NavigationTests
         DialogService.Show(null, vm1);
         var task = DialogService.ShowDialogAsync(vm1, vm2);
 
-        await Task.Delay(10);
+        await Task.Delay(10, TestContext.Current.CancellationToken);
         Assert.False(task.IsCompleted);
         vm2.OnRequestClose();
-        await Task.Delay(10);
+        await Task.Delay(10, TestContext.Current.CancellationToken);
         Assert.True(task.IsCompleted);
         Assert.Same(vm1, NavigationManager.CurrentView?.DataContext);
     }
@@ -208,12 +208,12 @@ public class NavigationTests
         var t1 = DialogService.ShowDialogAsync(vm1, vm2);
         var t2 = DialogService.ShowDialogAsync(vm2, vm3);
 
-        await Task.Delay(10);
+        await Task.Delay(10, TestContext.Current.CancellationToken);
         Assert.False(t1.IsCompleted);
         Assert.False(t2.IsCompleted);
         vm3.OnRequestClose();
         vm2.OnRequestClose();
-        await Task.Delay(10);
+        await Task.Delay(10, TestContext.Current.CancellationToken);
         Assert.True(t1.IsCompleted);
         Assert.True(t2.IsCompleted);
         Assert.Same(vm1, NavigationManager.CurrentView?.DataContext);
@@ -291,14 +291,16 @@ public class NavigationTests
     public async Task Close_Cancelled_ClosingAsyncRaised()
     {
         var vm1 = new FirstViewModel();
-        var vm2 = new SecondViewModel();
-        vm2.ClosingCancel = true;
+        var vm2 = new SecondViewModel
+        {
+            ClosingCancel = true
+        };
 
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
 
-        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        await Task.Delay(1, TestContext.Current.CancellationToken); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);
         Assert.Equal(0, vm2.ClosedRaised);
@@ -308,15 +310,17 @@ public class NavigationTests
     public async Task Close_CancelledAndReset_ClosedRaised()
     {
         var vm1 = new FirstViewModel();
-        var vm2 = new SecondViewModel();
-        vm2.ClosingCancel = true;
-        vm2.ClosingAsyncCancel = false;
+        var vm2 = new SecondViewModel
+        {
+            ClosingCancel = true,
+            ClosingAsyncCancel = false
+        };
 
         DialogService.Show(null, vm1);
         var _ = DialogService.ShowDialogAsync(vm1, vm2);
         vm2.OnRequestClose();
 
-        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        await Task.Delay(1, TestContext.Current.CancellationToken); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);
         Assert.Equal(1, vm2.ClosedRaised);
@@ -336,7 +340,7 @@ public class NavigationTests
         vm2.OnRequestClose();
         vm2.OnRequestClose();
 
-        await Task.Delay(1); // There's Task.Yield() in View_Closing
+        await Task.Delay(1, TestContext.Current.CancellationToken); // There's Task.Yield() in View_Closing
         Assert.Equal(1, vm2.ClosingRaised);
         Assert.Equal(1, vm2.ClosingAsyncRaised);
         Assert.Equal(0, vm2.ClosedRaised);
