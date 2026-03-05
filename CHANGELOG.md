@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.2 - 2026-03-05
+
+- Updated all dependencies
+- Now compile for .NET 8, .NET 10 and .NET Standard 2.0
+- Enhanced package management in source code
+- Updated demo projects to work with updated libraries
+
 ## 2.1 - 2023-12-30
 
 This version introduces some breaking changes.
