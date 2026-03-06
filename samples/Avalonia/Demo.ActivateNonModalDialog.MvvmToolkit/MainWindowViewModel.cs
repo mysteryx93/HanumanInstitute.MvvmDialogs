@@ -1,8 +1,6 @@
 using System.ComponentModel;
-using System.Reactive.Linq;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
-using ReactiveUI;
 
 namespace Demo.Avalonia.ActivateNonModalDialog;
 
@@ -11,23 +9,28 @@ public class MainWindowViewModel : ViewModelBase
     private readonly IDialogService _dialogService;
 
     private INotifyPropertyChanged? _dialogViewModel;
-    protected INotifyPropertyChanged? DialogViewModel
+    public INotifyPropertyChanged? DialogViewModel
     {
         get => _dialogViewModel;
-        set => this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
+        set
+        {
+            if (SetProperty(ref _dialogViewModel, value))
+            {
+                ShowCommand.NotifyCanExecuteChanged();
+                ActivateCommand.NotifyCanExecuteChanged();
+            }
+        }
     }
-    public ICommand ShowCommand { get; }
-    public ICommand ActivateCommand { get; }
+
+    public RelayCommand ShowCommand { get; }
+    public RelayCommand ActivateCommand { get; }
 
     public MainWindowViewModel(IDialogService dialogService)
     {
         this._dialogService = dialogService;
 
-        var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x == null);
-        ShowCommand = ReactiveCommand.Create(Show, canShow);
-
-        var canActivate = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x != null);
-        ActivateCommand = ReactiveCommand.Create(Activate, canActivate);
+        ShowCommand = new RelayCommand(Show, () => DialogViewModel == null);
+        ActivateCommand = new RelayCommand(Activate, () => DialogViewModel != null);
     }
 
     public void Show()

@@ -1,6 +1,5 @@
-﻿using System;
+using System;
 using Avalonia;
-using ReactiveUI.Avalonia;
 
 namespace Demo.Avalonia.ActivateNonModalDialog;
 
@@ -17,6 +16,5 @@ public class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
-            .LogToTrace()
-            .UseReactiveUI(rxui => { });
+            .LogToTrace();
 }
