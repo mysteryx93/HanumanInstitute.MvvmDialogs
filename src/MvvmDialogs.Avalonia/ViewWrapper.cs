@@ -1,4 +1,4 @@
-﻿// ReSharper disable VirtualMemberCallInConstructor
+// ReSharper disable VirtualMemberCallInConstructor
 
 using System.Collections.Generic;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -32,7 +32,7 @@ public class ViewWrapper : IView
     /// <summary>
     /// Gets the Window reference held by this class.
     /// </summary>
-    public Window Ref { get; private set; } = default!;
+    public Window Ref { get; private set; } = null!;
 
     /// <summary>
     /// Gets the Window reference held by this class.
