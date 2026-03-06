@@ -17,7 +17,7 @@
     <PackageVersion Include="ReactiveUI.Avalonia" Version="11.4.7" />
     <PackageVersion Include="ReactiveUI" Version="23.1.8" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageVersion Include="coverlet.collector" Version="8.0.0"/>
+    <PackageVersion Include="coverlet.collector" Version="8.0.0" />
     <PackageVersion Include="DialogHost.Avalonia" Version="0.10.4" />
     <PackageVersion Include="FluentAvaloniaUI" Version="2.5.0" />
     <PackageVersion Include="HanumanInstitute.MvvmDialogs" Version="2.2.0" />
@@ -29,23 +29,24 @@
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.3" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3"/>
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.3.0" />
-    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142"/>
+    <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="NUnit" Version="4.5.0" />
-    <PackageVersion Include="NUnit.Analyzers" Version="4.11.2"/>
+    <PackageVersion Include="NUnit.Analyzers" Version="4.11.2" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.1.0" />
     <PackageVersion Include="Ookii.Dialogs.WinForms" Version="4.0.0" />
-    <PackageVersion Include="Ookii.Dialogs.Wpf" Version="5.0.1"/>
+    <PackageVersion Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageVersion Include="ReactiveUI.Drawing" Version="23.1.8" />
     <PackageVersion Include="System.Linq.Async" Version="7.0.0" />
     <PackageVersion Include="Splat" Version="19.3.1" />
-    <PackageVersion Include="Splat.DependencyInjection.SourceGenerator" Version="2.2.2"/>
+    <PackageVersion Include="Splat.DependencyInjection.SourceGenerator" Version="2.2.2" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.3" />
     <PackageVersion Include="TestStack.White.ScreenObjects" Version="0.13.3" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5"/>
+    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.Build.CopyOnWrite" Version="1.0.334" />
