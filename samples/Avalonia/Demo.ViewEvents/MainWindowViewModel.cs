@@ -5,14 +5,9 @@ using ReactiveUI;
 
 namespace Demo.Avalonia.ViewEvents;
 
-public class MainWindowViewModel : ViewModelBase, IViewLoaded, IViewClosing, IViewClosed
+public class MainWindowViewModel(IDialogService dialogService) : ViewModelBase, IViewLoaded, IViewClosing, IViewClosed
 {
-    private readonly IDialogService _dialogService;
-
-    public MainWindowViewModel(IDialogService dialogService)
-    {
-        this._dialogService = dialogService;
-    }
+    private readonly IDialogService _dialogService = dialogService;
 
     public void OnLoaded()
     {

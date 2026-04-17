@@ -12,10 +12,10 @@ public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel,
     public bool? DialogResult { get; set; }
 
     [Reactive]
-    public string Title { get; set; } = "Title";
+    public partial string Title { get; set; } = "Title";
 
     [Reactive]
-    public string Text { get; set; } = string.Empty;
+    public partial string Text { get; set; } = string.Empty;
 
     public ReactiveCommand<Unit, Unit> Ok => _ok ??= ReactiveCommand.Create(OkImpl);
     private ReactiveCommand<Unit, Unit>? _ok;

@@ -28,7 +28,7 @@ public partial class MainViewModel : ViewModelBase
     }
 
     [Reactive]
-    public string? TextOutput { get; set; }
+    public partial string? TextOutput { get; set; }
 
     private async Task ShowMessageBoxImplAsync()
     {

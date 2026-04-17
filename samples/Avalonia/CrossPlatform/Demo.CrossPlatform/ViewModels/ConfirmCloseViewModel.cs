@@ -20,7 +20,7 @@ public partial class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewMode
     }
 
     [Reactive]
-    public string Text { get; set; } = string.Empty;
+    public partial string Text { get; set; } = string.Empty;
 
     public RxCommandUnit Close { get; }
 
