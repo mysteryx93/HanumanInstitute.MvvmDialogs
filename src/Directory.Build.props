@@ -16,7 +16,6 @@
     <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog
       folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker
       android ios mobile xamarin</PackageTags>
-    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
   </PropertyGroup>
 
 </Project>

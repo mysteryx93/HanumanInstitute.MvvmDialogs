@@ -10,7 +10,7 @@
         Title="Demo - DialogHost"
         Width="440"
         Height="300"
-        d:DataContext="{x:Static local:App.Main}">
+        d:DataContext="{x:Static local:App.Main}" x:DataType="local:MainViewModel">
     <UniformGrid Rows="3">
         <Button
             Command="{Binding ShowViewModel}">

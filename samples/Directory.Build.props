@@ -3,6 +3,5 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <Company>Hanuman Institute</Company>
-    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
   </PropertyGroup>
 </Project>
