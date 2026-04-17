@@ -10,7 +10,7 @@
     WindowStartupLocation="CenterOwner"
     SizeToContent="WidthAndHeight"
     CanResize="False"
-    d:DataContext="{x:Static local:App.AddTextDialog}">
+    d:DataContext="{x:Static local:App.AddTextDialog}" x:DataType="local:AddTextCustomDialogViewModel">
 
     <StackPanel>
         <TextBox Text="{Binding Text}" />

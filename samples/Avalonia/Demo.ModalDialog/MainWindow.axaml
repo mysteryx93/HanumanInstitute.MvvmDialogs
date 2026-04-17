@@ -10,7 +10,7 @@
     Title="Demo - Modal Dialog"
     Width="300"
     Height="200"
-    DataContext="{x:Static local:App.MainWindow}">
+    DataContext="{x:Static local:App.MainWindow}" x:DataType="local:MainWindowViewModel">
 
     <Grid>
         <Grid.RowDefinitions>

@@ -9,7 +9,7 @@
     Title="Demo - Non-Modal Custom Dialog"
     Width="300"
     Height="200"
-    DataContext="{x:Static local:App.MainWindow}">
+    DataContext="{x:Static local:App.MainWindow}" x:DataType="local:MainWindowViewModel">
 
     <UniformGrid Rows="2">
         <Button
