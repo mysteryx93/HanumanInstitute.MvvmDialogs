@@ -107,6 +107,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.ActivateNonModalDialog.MvvmToolkit", "samples\Avalonia\Demo.ActivateNonModalDialog.MvvmToolkit\Demo.ActivateNonModalDialog.MvvmToolkit.csproj", "{84D06F7E-6381-7653-27C1-4FF4A0232C92}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1001,6 +1003,26 @@ Global
 		{86D96E8C-F62A-4563-AFEF-1907F9280D7D}.Release|x64.Build.0 = Release|Any CPU
 		{86D96E8C-F62A-4563-AFEF-1907F9280D7D}.Release|x86.ActiveCfg = Release|Any CPU
 		{86D96E8C-F62A-4563-AFEF-1907F9280D7D}.Release|x86.Build.0 = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|ARM.Build.0 = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|x64.Build.0 = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Debug|x86.Build.0 = Debug|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|ARM.ActiveCfg = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|ARM.Build.0 = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|ARM64.Build.0 = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|x64.ActiveCfg = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|x64.Build.0 = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|x86.ActiveCfg = Release|Any CPU
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -1053,6 +1075,7 @@ Global
 		{3D577143-DEEA-42A4-B261-9A0846E537EF} = {0A8EF671-0277-4F7A-B03D-C6E227020E86}
 		{C9971FF8-3695-457F-8A78-CBDD098617D7} = {958591BB-32C1-48C4-B5FA-11A2C5686814}
 		{86D96E8C-F62A-4563-AFEF-1907F9280D7D} = {0CAFC532-721B-4CD0-B4CA-AF10F07BFD76}
+		{84D06F7E-6381-7653-27C1-4FF4A0232C92} = {0CAFC532-721B-4CD0-B4CA-AF10F07BFD76}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {983A22B3-AE5B-4B67-A798-F6A6697B82A8}
