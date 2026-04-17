@@ -32,8 +32,8 @@ public class StorageService : IStorageService
         }
         if (app?.ApplicationLifetime is ISingleViewApplicationLifetime viewApp)
         {
-            var visualRoot = viewApp.MainView?.GetVisualRoot();
-            return visualRoot as TopLevel;
+            var presentationSource = viewApp.MainView?.GetPresentationSource();
+            return presentationSource?.RootVisual as TopLevel;
         }
         return null;
     }
