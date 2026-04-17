@@ -1,8 +1,8 @@
-﻿using ReactiveUI.Fody.Helpers;
+﻿using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentTaskDialog;
 
-public class AskTextBoxViewModel : ViewModelBase
+public partial class AskTextBoxViewModel : ViewModelBase
 {
     [Reactive]
     public string Title { get; set; } = "Title";

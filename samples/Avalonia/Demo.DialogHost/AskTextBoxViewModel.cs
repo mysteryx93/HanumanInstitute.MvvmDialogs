@@ -2,11 +2,11 @@
 using System.Reactive;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
 
-public class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
+public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {
     public event EventHandler? RequestClose;
     public bool? DialogResult { get; set; }

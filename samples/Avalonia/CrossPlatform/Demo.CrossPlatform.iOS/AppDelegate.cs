@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.iOS;
-using Avalonia.ReactiveUI;
 using Foundation;
+using ReactiveUI.Avalonia;
 
 namespace Demo.CrossPlatform.iOS;
 
@@ -13,6 +13,6 @@ public partial class AppDelegate : AvaloniaAppDelegate<App>
 {
     protected override AppBuilder CustomizeAppBuilder(AppBuilder builder)
     {
-        return builder.UseReactiveUI();
+        return builder.UseReactiveUI(rxgui => { });
     }
 }
