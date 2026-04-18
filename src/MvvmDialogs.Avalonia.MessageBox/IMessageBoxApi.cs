@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 
 internal interface IMessageBoxApi
 {
