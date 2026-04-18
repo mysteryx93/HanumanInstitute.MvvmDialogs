@@ -32,7 +32,7 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
     /// <summary>
     /// Gets a reference to the displayed TaskDialog.
     /// </summary>
-    public TaskDialog? Ref { get; private set; }
+    public FATaskDialog? Ref { get; private set; }
     /// <inheritdoc />
     public object RefObj => Ref!;
     /// <inheritdoc />
@@ -48,7 +48,7 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
-        var dialog = new TaskDialog()
+        var dialog = new FATaskDialog()
         {
             Title = Settings.Title,
             Header = Settings.Header,

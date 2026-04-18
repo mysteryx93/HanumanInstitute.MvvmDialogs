@@ -25,7 +25,7 @@ public class FluentContentView : IView
     /// <summary>
     /// Gets or sets the dialog result.
     /// </summary>
-    public ContentDialogResult DialogResult { get; set; } = ContentDialogResult.None;
+    public FAContentDialogResult DialogResult { get; set; } = FAContentDialogResult.None;
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
@@ -40,7 +40,7 @@ public class FluentContentView : IView
     /// <summary>
     /// Gets a reference to the displayed ContentDialog.
     /// </summary>
-    public ContentDialog? Ref { get; private set; }
+    public FAContentDialog? Ref { get; private set; }
     /// <inheritdoc />
     public object RefObj => Ref!;
     /// <inheritdoc />
@@ -56,7 +56,7 @@ public class FluentContentView : IView
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
-        var dialog = new ContentDialog()
+        var dialog = new FAContentDialog()
         {
             Title = Settings.Title,
             Content = Settings.Content,

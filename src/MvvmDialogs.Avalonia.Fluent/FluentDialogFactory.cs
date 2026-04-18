@@ -34,9 +34,9 @@ public class FluentDialogFactory : DialogFactoryBase
             _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
-    private async Task<ContentDialogResult> ShowContentDialogAsync(IView? owner, ContentDialogSettings settings)
+    private async Task<FAContentDialogResult> ShowContentDialogAsync(IView? owner, ContentDialogSettings settings)
     {
-        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        ArgumentNullException.ThrowIfNull(owner);
         var view = new FluentContentView(settings);
         if (view.ViewModel != null)
         {
@@ -49,7 +49,7 @@ public class FluentDialogFactory : DialogFactoryBase
 
     private async Task<object?> ShowTaskDialogAsync(IView? owner, TaskDialogSettings settings)
     {
-        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        ArgumentNullException.ThrowIfNull(owner);
         var view = new FluentTaskView(settings);
         if (view.ViewModel != null)
         {
@@ -66,15 +66,15 @@ public class FluentDialogFactory : DialogFactoryBase
         {
             Title = settings.Title,
             Content = settings.Content,
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
-        var yes = ContentDialogResult.Primary;
-        var no = ContentDialogResult.Secondary;
+        var yes = FAContentDialogResult.Primary;
+        var no = FAContentDialogResult.Secondary;
         if (settings.Button == MessageBoxButton.Ok)
         {
             apiSettings.CloseButtonText = "OK";
-            apiSettings.DefaultButton = ContentDialogButton.Close;
-            yes = ContentDialogResult.None;
+            apiSettings.DefaultButton = FAContentDialogButton.Close;
+            yes = FAContentDialogResult.None;
         }
         else if (settings.Button == MessageBoxButton.OkCancel)
         {
@@ -112,32 +112,32 @@ public class FluentDialogFactory : DialogFactoryBase
         return result as bool?; // It can be TaskDialogStandardResult.None if we press Escape
     }
 
-    private static TaskDialogButton[] SyncButton(MessageBoxButton value, bool? defaultValue) =>
+    private static FATaskDialogButton[] SyncButton(MessageBoxButton value, bool? defaultValue) =>
         (value) switch
         {
-            MessageBoxButton.YesNo => new[]
-            {
+            MessageBoxButton.YesNo =>
+            [
                 GetButton("Yes", true, defaultValue),
                 GetButton("No", false, defaultValue)
-            },
-            MessageBoxButton.OkCancel => new[]
-            {
+            ],
+            MessageBoxButton.OkCancel =>
+            [
                 GetButton("OK", true, defaultValue),
                 GetButton("Cancel", null, defaultValue)
-            },
-            MessageBoxButton.YesNoCancel => new[]
-            {
+            ],
+            MessageBoxButton.YesNoCancel =>
+            [
                 GetButton("Yes", true, defaultValue),
                 GetButton("No", false, defaultValue),
                 GetButton("Cancel", null, defaultValue)
-            },
-            _ => new[]
-            {
+            ],
+            _ =>
+            [
                 GetButton("OK", true, true)
-            }
+            ]
         };
 
-    private static TaskDialogButton GetButton(string text, bool? value, bool? defaultValue) =>
+    private static FATaskDialogButton GetButton(string text, bool? value, bool? defaultValue) =>
         new(text, value)
         {
             IsDefault = defaultValue == value

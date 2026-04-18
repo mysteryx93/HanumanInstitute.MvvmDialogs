@@ -37,19 +37,19 @@ public class TaskDialogSettings : DialogSettingsBase
     /// <summary>
     /// Gets or sets the dialog Icon
     /// </summary>
-    public IconSource? IconSource { get; set; }
+    public FAIconSource? IconSource { get; set; }
     /// <summary>
     /// Gets the list of buttons that display at the bottom of the TaskDialog
     /// </summary>
-    public IList<TaskDialogButton> Buttons { get; set; } = new List<TaskDialogButton>();
+    public IList<FATaskDialogButton> Buttons { get; set; } = [];
     /// <summary>
     /// Gets the list of Commands displayed in the TaskDialog
     /// </summary>
-    public IList<TaskDialogCommand> Commands { get; set; } = new List<TaskDialogCommand>();
+    public IList<FATaskDialogCommand> Commands { get; set; } = [];
     /// <summary>
     /// Gets or sets the visibility of the Footer area
     /// </summary>
-    public TaskDialogFooterVisibility FooterVisibility { get; set; }
+    public FATaskDialogFooterVisibility FooterVisibility { get; set; }
     /// <summary>
     /// Gets or sets whether the footer is visible
     /// </summary>

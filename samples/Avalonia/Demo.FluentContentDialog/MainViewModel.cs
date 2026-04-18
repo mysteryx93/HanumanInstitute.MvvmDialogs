@@ -37,11 +37,11 @@ public partial class MainViewModel : ViewModelBase
             Title = "This Is The Caption",
             PrimaryButtonText = "OK",
             SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Secondary
+            DefaultButton = FAContentDialogButton.Secondary
         };
         var result = await _dialogService.ShowContentDialogAsync(this, settings);
 
-        UpdateResult(result == ContentDialogResult.Primary);
+        UpdateResult(result == FAContentDialogResult.Primary);
     }
 
     private void UpdateResult(bool? result) =>
@@ -57,10 +57,10 @@ public partial class MainViewModel : ViewModelBase
             Title = "Please enter some text",
             PrimaryButtonText = "OK",
             SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         var result = await _dialogService.ShowContentDialogAsync(this, settings);
-        if (result == ContentDialogResult.Primary)
+        if (result == FAContentDialogResult.Primary)
         {
             TextOutput = vm.Text;
         }
