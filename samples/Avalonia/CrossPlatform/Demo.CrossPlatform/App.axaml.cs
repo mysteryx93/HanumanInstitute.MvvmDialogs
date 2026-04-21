@@ -14,6 +14,10 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        // Uncomment the following lines to enable the new DevTools (part of Avalonia Plus).
+        //#if DEBUG
+        //this.AttachDeveloperTools();
+        //#endif
 
         var build = Locator.CurrentMutable;
         var loggerFactory = LoggerFactory.Create(builder => builder.AddFilter(logLevel => true).AddDebug());

@@ -8,9 +8,6 @@ public partial class CurrentTimeWindow : Window
     public CurrentTimeWindow()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void InitializeComponent()

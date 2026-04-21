@@ -13,13 +13,12 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia"/>
-    <PackageReference Include="Avalonia.Desktop"/>
-    <PackageReference Include="ReactiveUI.Avalonia"/>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="ReactiveUI.Avalonia" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics"/>
-    <PackageReference Include="Avalonia.Themes.Fluent"/>
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug"/>
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

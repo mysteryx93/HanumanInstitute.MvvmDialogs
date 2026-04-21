@@ -20,7 +20,7 @@
 
     <ItemGroup>
       <PackageReference Include="Avalonia" />
-      <PackageReference Include="Dragonhouse.Avalonia.MessageBox" />
+      <PackageReference Include="MessageBox.Avalonia" />
     </ItemGroup>
 
     <ItemGroup>
