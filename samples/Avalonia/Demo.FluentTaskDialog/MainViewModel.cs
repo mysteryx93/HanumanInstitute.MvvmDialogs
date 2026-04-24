@@ -5,11 +5,11 @@ using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentTaskDialog;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     public ReactiveCommand<Unit, Unit> ShowMessageBox { get; }
@@ -28,7 +28,7 @@ public class MainViewModel : ViewModelBase
     }
 
     [Reactive]
-    public string? TextOutput { get; set; }
+    public partial string? TextOutput { get; set; }
 
     private async Task ShowMessageBoxImplAsync()
     {
@@ -36,15 +36,15 @@ public class MainViewModel : ViewModelBase
         {
             Content = "This is the text.",
             Title = "This Is The Caption",
-            Buttons = new List<TaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>()
             {
-                TaskDialogButton.OKButton,
-                TaskDialogButton.CancelButton
+                FATaskDialogButton.OKButton,
+                FATaskDialogButton.CancelButton
             }
         };
         var result = await _dialogService.ShowTaskDialogAsync(this, settings);
 
-        UpdateResult(result == TaskDialogStandardResult.OK);
+        UpdateResult(result == FATaskDialogStandardResult.OK);
     }
 
     private void UpdateResult(bool? result) =>
@@ -58,14 +58,14 @@ public class MainViewModel : ViewModelBase
         {
             Content = vm,
             Title = "Please enter some text",
-            Buttons = new List<TaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>()
             {
-                TaskDialogButton.OKButton,
-                TaskDialogButton.CancelButton
+                FATaskDialogButton.OKButton,
+                FATaskDialogButton.CancelButton
             }
         };
         var result = await _dialogService.ShowTaskDialogAsync(this, settings);
-        if (result == TaskDialogStandardResult.OK)
+        if (result == FATaskDialogStandardResult.OK)
         {
             TextOutput = vm.Text;
         }
@@ -77,9 +77,9 @@ public class MainViewModel : ViewModelBase
         dialogViewModel.ConfirmClose = true;
         await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(dialogViewModel)
         {
-            Buttons = new List<TaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>()
             {
-                TaskDialogButton.OKButton
+                FATaskDialogButton.OKButton
             }
 
         }).ConfigureAwait(true);
@@ -90,9 +90,9 @@ public class MainViewModel : ViewModelBase
         var content = new MessageView();
         var result = await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(content)
         {
-            Buttons = new List<TaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>()
             {
-                TaskDialogButton.OKButton
+                FATaskDialogButton.OKButton
             }
         }).ConfigureAwait(true);
         TextOutput = result.ToString();

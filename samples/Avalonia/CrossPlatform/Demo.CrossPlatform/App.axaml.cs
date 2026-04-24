@@ -1,4 +1,5 @@
-﻿using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Markup.Xaml;
 using Demo.CrossPlatform.Services;
 using Demo.CrossPlatform.ViewModels;
 using HanumanInstitute.MvvmDialogs;
@@ -34,7 +35,6 @@ public partial class App : Application
     public override void OnFrameworkInitializationCompleted()
     {
         DialogService.Show(null, MainViewModel);
-
         base.OnFrameworkInitializationCompleted();
     }
 

@@ -39,7 +39,7 @@ public class ContentDialogSettings : DialogSettingsBase
     /// <summary>
     /// Gets or sets a value that indicates which button on the dialog is the default action.
     /// </summary>
-    public ContentDialogButton DefaultButton { get; set; } = ContentDialogButton.None;
+    public FAContentDialogButton DefaultButton { get; set; } = FAContentDialogButton.None;
     /// <summary>
     /// Gets or sets whether the dialog's primary button is enabled.
     /// </summary>

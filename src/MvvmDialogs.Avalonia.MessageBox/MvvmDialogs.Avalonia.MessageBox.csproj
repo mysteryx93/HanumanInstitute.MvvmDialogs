@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFrameworks>net10.0;net8.0;netstandard2.0</TargetFrameworks>
+      <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
       <LangVersion>default</LangVersion>
       <Nullable>enable</Nullable>
       <OutputType>Library</OutputType>
@@ -20,7 +20,7 @@
 
     <ItemGroup>
       <PackageReference Include="Avalonia" />
-      <PackageReference Include="MessageBox.Avalonia"/>
+      <PackageReference Include="MessageBox.Avalonia" />
     </ItemGroup>
 
     <ItemGroup>

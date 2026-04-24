@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
 
@@ -29,7 +29,7 @@ public class MainViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> ConfirmClose { get; }
 
     [Reactive]
-    public string? TextOutput { get; set; }
+    public partial string? TextOutput { get; set; }
 
     private async Task ShowViewModelImplAsync()
     {

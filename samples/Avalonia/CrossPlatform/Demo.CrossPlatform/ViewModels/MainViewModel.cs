@@ -8,11 +8,11 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.CrossPlatform.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     private readonly IStorageService _storage;
@@ -39,7 +39,7 @@ public class MainViewModel : ViewModelBase
     }
 
     [Reactive]
-    public string? Output { get; set; }
+    public partial string? Output { get; set; }
 
     private CurrentTimeViewModel? _dialogViewModel;
     protected CurrentTimeViewModel? DialogViewModel

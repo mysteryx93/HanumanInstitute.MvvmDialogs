@@ -2,20 +2,20 @@
 using System.Reactive;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
 
-public class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
+public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {
     public event EventHandler? RequestClose;
     public bool? DialogResult { get; set; }
 
     [Reactive]
-    public string Title { get; set; } = "Title";
+    public partial string Title { get; set; } = "Title";
 
     [Reactive]
-    public string Text { get; set; } = string.Empty;
+    public partial string Text { get; set; } = string.Empty;
 
     public ReactiveCommand<Unit, Unit> Ok => _ok ??= ReactiveCommand.Create(OkImpl);
     private ReactiveCommand<Unit, Unit>? _ok;

@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.CrossPlatform.ViewModels;
 
-public class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IViewClosing, IViewLoaded, ICloseable
+public partial class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IViewClosing, IViewLoaded, ICloseable
 {
     private readonly IDialogService _dialogService;
     public event EventHandler? RequestClose;
@@ -20,7 +20,7 @@ public class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewModel, IView
     }
 
     [Reactive]
-    public string Text { get; set; } = string.Empty;
+    public partial string Text { get; set; } = string.Empty;
 
     public RxCommandUnit Close { get; }
 

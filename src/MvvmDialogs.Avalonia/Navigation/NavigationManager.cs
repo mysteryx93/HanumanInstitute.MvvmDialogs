@@ -7,7 +7,11 @@ using Avalonia.Interactivity;
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <inheritdoc cref="INavigationManager"/>
-public class NavigationManager : INotifyPropertyChanged, INavigationManager
+/// <summary>
+/// Initializes a new instance of the NavigationManager class.
+/// </summary>
+/// <param name="closingHandler">A handler for the Closing event. Note that the Closing event is unsupported by the <see cref="ViewNavigationWrapper"/> and we thus support a single listener.</param>
+public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyPropertyChanged, INavigationManager
 {
     /// <summary>
     /// Navigation history contains only ViewModels to avoid keeping all constructed user controls in memory. The Views can be reconstructed from the ViewModels.
@@ -15,16 +19,7 @@ public class NavigationManager : INotifyPropertyChanged, INavigationManager
     private readonly List<INotifyPropertyChanged> _history = new();
     private readonly ViewCache _viewCache = new();
     private readonly List<DialogTask> _dialogs = new();
-    private readonly ViewClosingHandler? _closingHandler;
-
-    /// <summary>
-    /// Initializes a new instance of the NavigationManager class.
-    /// </summary>
-    /// <param name="closingHandler">A handler for the Closing event. Note that the Closing event is unsupported by the <see cref="ViewNavigationWrapper"/> and we thus support a single listener.</param>
-    public NavigationManager(ViewClosingHandler? closingHandler)
-    {
-        _closingHandler = closingHandler;
-    }
+    private readonly ViewClosingHandler? _closingHandler = closingHandler;
 
     /// <summary>
     /// Returns the navigation history.

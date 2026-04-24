@@ -9,7 +9,7 @@
     mc:Ignorable="d"
     Width="200"
     Height="100"
-    d:DataContext="{x:Static local:App.CurrentTime}">
+    d:DataContext="{x:Static local:App.CurrentTime}" x:DataType="local:CurrentTimeViewModel">
     <Grid>
         <TextBlock
             HorizontalAlignment="Center"

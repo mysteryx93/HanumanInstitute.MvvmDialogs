@@ -4,11 +4,11 @@ using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentContentDialog;
 
-public class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     public ReactiveCommand<Unit, Unit> ShowMessageBox { get; }
@@ -27,7 +27,7 @@ public class MainViewModel : ViewModelBase
     }
 
     [Reactive]
-    public string? TextOutput { get; set; }
+    public partial string? TextOutput { get; set; }
 
     private async Task ShowMessageBoxImplAsync()
     {
@@ -37,11 +37,11 @@ public class MainViewModel : ViewModelBase
             Title = "This Is The Caption",
             PrimaryButtonText = "OK",
             SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Secondary
+            DefaultButton = FAContentDialogButton.Secondary
         };
         var result = await _dialogService.ShowContentDialogAsync(this, settings);
 
-        UpdateResult(result == ContentDialogResult.Primary);
+        UpdateResult(result == FAContentDialogResult.Primary);
     }
 
     private void UpdateResult(bool? result) =>
@@ -57,10 +57,10 @@ public class MainViewModel : ViewModelBase
             Title = "Please enter some text",
             PrimaryButtonText = "OK",
             SecondaryButtonText = "Cancel",
-            DefaultButton = ContentDialogButton.Primary
+            DefaultButton = FAContentDialogButton.Primary
         };
         var result = await _dialogService.ShowContentDialogAsync(this, settings);
-        if (result == ContentDialogResult.Primary)
+        if (result == FAContentDialogResult.Primary)
         {
             TextOutput = vm.Text;
         }

@@ -11,8 +11,11 @@
     <NeutralLanguage>en-US</NeutralLanguage>
     <RepositoryUrl>https://github.com/mysteryx93/HanumanInstitute.MvvmDialogs</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Description>Library simplifying the concept of opening dialogs from a view model when using MVVM in WPF</Description>
-    <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker android ios mobile xamarin</PackageTags>
+    <Description>Library simplifying the concept of opening dialogs from a view model when using
+      MVVM in WPF</Description>
+    <PackageTags>wpf avalonia mvvm dialog window messagebox openfiledialog savefiledialog
+      folderbrowserdialog messagedialog contentdialog fileopenpicker filesavepicker folderpicker
+      android ios mobile xamarin</PackageTags>
   </PropertyGroup>
 
 </Project>

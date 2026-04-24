@@ -13,7 +13,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia;
 /// </summary>
 public class DialogManager : DialogManagerBase<ContentControl>
 {
-    private readonly INavigationManager? _navigationManager;
+    private readonly NavigationManager? _navigationManager;
     private readonly IDispatcher _dispatcher;
     private readonly bool _useNavigation;
 
@@ -101,7 +101,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
         {
             Height = 1,
             Width = 1,
-            SystemDecorations = SystemDecorations.None,
+            WindowDecorations = WindowDecorations.None,
             ShowInTaskbar = false,
             CanResize = false,
             WindowStartupLocation = WindowStartupLocation.CenterScreen,

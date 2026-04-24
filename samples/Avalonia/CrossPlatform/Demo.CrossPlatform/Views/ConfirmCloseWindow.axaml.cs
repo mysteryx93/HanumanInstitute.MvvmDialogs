@@ -8,9 +8,6 @@ public partial class ConfirmCloseWindow : Window
     public ConfirmCloseWindow()
     {
         InitializeComponent();
-#if DEBUG
-        this.AttachDevTools();
-#endif
     }
 
     private void InitializeComponent()
