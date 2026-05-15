@@ -8,6 +8,7 @@
     <RootNamespace>Demo.Avalonia.MessageBox</RootNamespace>
     <AssemblyVersion>1.0.0.24361</AssemblyVersion>
     <FileVersion>1.0.0.24361</FileVersion>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
@@ -16,7 +17,9 @@
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
     <PackageReference Include="ReactiveUI.Avalonia" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <!--Condition
+    below is needed to remove Avalonia.Diagnostics package from build output in Release
+    configuration.-->
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator">
@@ -25,7 +28,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
+    <ProjectReference
+      Include="..\..\..\src\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
     <ProjectReference Include="..\..\..\src\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
   </ItemGroup>
 </Project>
