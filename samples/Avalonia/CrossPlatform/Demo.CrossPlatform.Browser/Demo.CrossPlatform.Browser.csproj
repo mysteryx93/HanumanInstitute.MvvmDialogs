@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
     <OutputType>Exe</OutputType>
     <RootNamespace>Demo.CrossPlatform.Web</RootNamespace>
+    <Features>runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net11.0-windows</TargetFramework>
     <LangVersion>latest</LangVersion>
     <UseWPF>true</UseWPF>
     <RootNamespace>Demo.Wpf.NonModalDialog</RootNamespace>
     <AssemblyName>Demo.Wpf.NonModalDialog</AssemblyName>
     <Nullable>enable</Nullable>
+    <Features>runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>
