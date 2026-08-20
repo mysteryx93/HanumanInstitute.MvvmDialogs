@@ -4,20 +4,21 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Avalonia" Version="12.1.0" />
-    <PackageVersion Include="Avalonia.Android" Version="12.1.0" />
-    <PackageVersion Include="Avalonia.Browser" Version="12.1.0" />
-    <PackageVersion Include="Avalonia.Desktop" Version="12.1.0" />
+    <PackageVersion Include="Avalonia" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Android" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Browser" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Desktop" Version="12.1.1" />
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.3.14" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.1.0" />
-    <PackageVersion Include="Avalonia.iOS" Version="12.1.0" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.0" />
-    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.0.3" />
-    <PackageVersion Include="ReactiveUI" Version="23.2.28" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.iOS" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="12.1.1" />
+    <PackageVersion Include="Avalonia.Wayland" Version="12.1.1" />
+    <PackageVersion Include="ReactiveUI.Avalonia" Version="12.1.1" />
+    <PackageVersion Include="ReactiveUI" Version="24.1.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
-    <PackageVersion Include="DialogHost.Avalonia" Version="0.12.2" />
-    <PackageVersion Include="FluentAvaloniaUI" Version="3.0.1" />
+    <PackageVersion Include="DialogHost.Avalonia" Version="0.12.3" />
+    <PackageVersion Include="FluentAvaloniaUI" Version="3.0.2" />
     <PackageVersion Include="HanumanInstitute.MvvmDialogs" Version="2.2.0" />
     <PackageVersion Include="HanumanInstitute.MvvmDialogs.Avalonia" Version="2.2.0" />
     <PackageVersion Include="HanumanInstitute.MvvmDialogs.Avalonia.MessageBox" Version="2.2.0" />
@@ -25,10 +26,10 @@
     <PackageVersion Include="JetBrains.dotMemoryUnit" Version="3.2.20220510" />
     <PackageVersion Include="MessageBox.Avalonia" Version="12.0.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.6" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Debug" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <PackageVersion Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.142" />
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="NUnit" Version="4.5.0" />
@@ -38,14 +39,14 @@
     <PackageVersion Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
     <PackageVersion Include="ReactiveUI.Fody" Version="19.5.41" />
     <PackageVersion Include="ReactiveUI.Drawing" Version="23.1.8" />
-    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.1.0" />
+    <PackageVersion Include="ReactiveUI.SourceGenerators" Version="3.2.0" />
     <PackageVersion Include="System.Linq.Async" Version="7.0.0" />
     <PackageVersion Include="Splat" Version="19.3.1" />
     <PackageVersion Include="Splat.DependencyInjection.SourceGenerator" Version="2.3.0" />
-    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.9" />
+    <PackageVersion Include="System.Linq.AsyncEnumerable" Version="10.0.11" />
     <PackageVersion Include="TestStack.White.ScreenObjects" Version="0.13.3" />
-    <PackageVersion Include="xunit.v3" Version="3.2.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.Build.CopyOnWrite" Version="1.0.334" />
