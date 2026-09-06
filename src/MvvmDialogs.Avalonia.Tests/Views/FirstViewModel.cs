@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using ReactiveUI;
+﻿using ReactiveUI;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
 

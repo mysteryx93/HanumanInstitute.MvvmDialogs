@@ -1,5 +1,4 @@
-﻿using ReactiveUI;
-using ReactiveUI.SourceGenerators;
+﻿using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentContentDialog;
 

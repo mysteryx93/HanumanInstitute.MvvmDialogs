@@ -49,9 +49,9 @@ public class CurrentTimeCustomDialog : IView
         }
         remove
         {
-            if (value != null)
+            if (value != null && _closingHandlers.TryGetValue(value, out var handler))
             {
-                _dialog.Closing += _closingHandlers[value];
+                _dialog.Closing -= handler;
                 _closingHandlers.Remove(value);
             }
         }

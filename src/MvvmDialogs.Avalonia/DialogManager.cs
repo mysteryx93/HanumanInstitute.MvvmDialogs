@@ -134,11 +134,18 @@ public class DialogManager : DialogManagerBase<ContentControl>
     /// </summary>
     private Task<T> DispatchWithResult<T>(Func<T> action)
     {
-        var tcs = new TaskCompletionSource<T>();
+        var tcs = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
         _dispatcher.Post(
             () =>
             {
-                tcs.SetResult(action());
+                try
+                {
+                    tcs.SetResult(action());
+                }
+                catch (Exception ex)
+                {
+                    tcs.SetException(ex);
+                }
             },
             DispatcherPriority.Render);
         return tcs.Task;

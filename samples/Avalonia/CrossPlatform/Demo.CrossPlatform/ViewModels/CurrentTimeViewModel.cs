@@ -6,10 +6,12 @@ namespace Demo.CrossPlatform.ViewModels;
 
 public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, ICloseable, IViewClosed
 {
+    private readonly IDisposable _clock;
+
     public CurrentTimeViewModel()
     {
-        Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)).Subscribe(
-            (_) =>
+        _clock = Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)).Subscribe(
+            _ =>
             {
                 this.RaisePropertyChanged(nameof(CurrentTime));
             });
@@ -29,5 +31,9 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    public void OnClosed() => Closed?.Invoke(this, EventArgs.Empty);
+    public void OnClosed()
+    {
+        _clock.Dispose();
+        Closed?.Invoke(this, EventArgs.Empty);
+    }
 }

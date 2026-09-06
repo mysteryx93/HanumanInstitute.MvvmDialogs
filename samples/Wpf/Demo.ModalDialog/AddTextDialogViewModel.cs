@@ -1,10 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-
-namespace Demo.Wpf.ModalDialog;
+﻿namespace Demo.Wpf.ModalDialog;
 
 public class AddTextDialogViewModel : ObservableObject, IModalDialogViewModel, ICloseable
 {

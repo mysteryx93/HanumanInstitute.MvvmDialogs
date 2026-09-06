@@ -1,14 +1,15 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:dialogHost="clr-namespace:Demo.Avalonia.DialogHost"
+             xmlns:local="clr-namespace:Demo.Avalonia.DialogHost"
+             xmlns:dialogHost="clr-namespace:DialogHostAvalonia;assembly=DialogHost.Avalonia"
              x:Class="Demo.Avalonia.DialogHost.App">
     <Application.DataTemplates>
-        <dialogHost:ViewLocator/>
+        <local:ViewLocator/>
     </Application.DataTemplates>
 
     <Application.Styles>
         <FluentTheme />
-        <StyleInclude Source="avares://DialogHost.Avalonia/Styles.xaml"/>
+        <dialogHost:DialogHostStyles/>
         <Style Selector="Button">
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />

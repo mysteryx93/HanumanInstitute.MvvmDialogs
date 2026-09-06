@@ -1,5 +1,5 @@
-﻿using System.ComponentModel;
-using System.Reactive.Linq;
+﻿using System.Reactive.Linq;
+using System;
 using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
@@ -9,11 +9,17 @@ namespace Demo.Avalonia.CloseNonModalDialog;
 public class MainWindowViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
-    private INotifyPropertyChanged? _dialogViewModel;
-    public INotifyPropertyChanged? DialogViewModel
+    private CurrentTimeDialogViewModel? _dialogViewModel;
+    public CurrentTimeDialogViewModel? DialogViewModel
     {
         get => _dialogViewModel;
-        set => this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
+        set
+        {
+            if (ReferenceEquals(_dialogViewModel, value)) return;
+            if (_dialogViewModel != null) _dialogViewModel.Closed -= DialogViewModel_Closed;
+            this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
+            if (_dialogViewModel != null) _dialogViewModel.Closed += DialogViewModel_Closed;
+        }
     }
     public ICommand ShowCommand { get; }
     public ICommand CloseCommand { get; }
@@ -41,4 +47,6 @@ public class MainWindowViewModel : ViewModelBase
         _dialogService.Close(DialogViewModel!);
         DialogViewModel = null;
     }
+
+    private void DialogViewModel_Closed(object? sender, EventArgs e) => DialogViewModel = null;
 }

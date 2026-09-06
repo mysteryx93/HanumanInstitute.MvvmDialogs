@@ -1,5 +1,3 @@
-using CommunityToolkit.Mvvm.DependencyInjection;
-
 namespace Demo.Wpf.StrongLocator;
 
 /// <summary>

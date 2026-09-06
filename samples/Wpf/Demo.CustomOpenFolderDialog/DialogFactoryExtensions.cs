@@ -1,6 +1,4 @@
 ﻿
-using HanumanInstitute.MvvmDialogs;
-
 namespace Demo.Wpf.CustomOpenFolderDialog
 {
     public static class DialogFactoryExtensions

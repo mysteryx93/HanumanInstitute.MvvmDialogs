@@ -1,12 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-
-namespace Demo.Wpf.MessageBox;
+﻿namespace Demo.Wpf.MessageBox;
 
 public class MainWindowViewModel : ObservableObject
 {

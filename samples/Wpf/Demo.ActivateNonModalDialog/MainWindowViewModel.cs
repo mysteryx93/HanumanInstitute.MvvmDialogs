@@ -1,15 +1,10 @@
-﻿using System.ComponentModel;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-
-namespace Demo.Wpf.ActivateNonModalDialog;
+﻿namespace Demo.Wpf.ActivateNonModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {
     private readonly IDialogService _dialogService;
 
-    private INotifyPropertyChanged? _dialogViewModel;
+    private CurrentTimeDialogViewModel? _dialogViewModel;
 
     public MainWindowViewModel(IDialogService dialogService)
     {
@@ -25,11 +20,8 @@ public class MainWindowViewModel : ObservableObject
 
     private void Show()
     {
-        _dialogViewModel = _dialogService.CreateViewModel<CurrentTimeDialogViewModel>();
+        SetDialogViewModel(_dialogService.CreateViewModel<CurrentTimeDialogViewModel>());
         _dialogService.Show(this, _dialogViewModel);
-
-        ShowCommand.NotifyCanExecuteChanged();
-        ActivateCommand.NotifyCanExecuteChanged();
     }
 
     private bool CanShow()
@@ -46,4 +38,15 @@ public class MainWindowViewModel : ObservableObject
     {
         return _dialogViewModel != null;
     }
+
+    private void SetDialogViewModel(CurrentTimeDialogViewModel? value)
+    {
+        if (_dialogViewModel != null) _dialogViewModel.Closed -= DialogViewModel_Closed;
+        _dialogViewModel = value;
+        if (_dialogViewModel != null) _dialogViewModel.Closed += DialogViewModel_Closed;
+        ShowCommand.NotifyCanExecuteChanged();
+        ActivateCommand.NotifyCanExecuteChanged();
+    }
+
+    private void DialogViewModel_Closed(object? sender, EventArgs e) => SetDialogViewModel(null);
 }

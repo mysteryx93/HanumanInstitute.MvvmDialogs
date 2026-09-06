@@ -96,8 +96,18 @@ public static class UiExtensions
     /// <returns>The result of the action.</returns>
     public static Task<T> RunUiAsync<T>(Func<T> action)
     {
-        TaskCompletionSource<T> completion = new();
-        Dispatcher.UIThread.Post(new Action(() => completion.SetResult(action())));
+        var completion = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
+        Dispatcher.UIThread.Post(() =>
+        {
+            try
+            {
+                completion.SetResult(action());
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
+        });
         return completion.Task;
     }
 }

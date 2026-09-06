@@ -1,14 +1,9 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿namespace Demo.Wpf.CloseNonModalDialog;
 
-namespace Demo.Wpf.CloseNonModalDialog;
-
-public class CurrentTimeDialogViewModel : ObservableObject
+public class CurrentTimeDialogViewModel : ObservableObject, IViewClosed
 {
-    // ReSharper disable once NotAccessedField.Local
+    public event EventHandler? Closed;
+
     private DispatcherTimer? _timer;
 
     public CurrentTimeDialogViewModel()
@@ -22,6 +17,7 @@ public class CurrentTimeDialogViewModel : ObservableObject
 
     private void StartClock()
     {
+        StopClock();
         _timer = new DispatcherTimer(
             TimeSpan.FromSeconds(1),
             DispatcherPriority.Normal,
@@ -29,8 +25,26 @@ public class CurrentTimeDialogViewModel : ObservableObject
             Dispatcher.CurrentDispatcher);
     }
 
+    private void StopClock()
+    {
+        if (_timer is null)
+        {
+            return;
+        }
+
+        _timer.Stop();
+        _timer.Tick -= OnTick;
+        _timer = null;
+    }
+
     private void OnTick(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(CurrentTime));
+    }
+
+    public void OnClosed()
+    {
+        StopClock();
+        Closed?.Invoke(this, EventArgs.Empty);
     }
 }

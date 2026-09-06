@@ -1,12 +1,4 @@
-﻿using System;
-using Android.App;
-using Android.Content.PM;
-using Android.Runtime;
-using Avalonia;
-using Avalonia.Android;
-using ReactiveUI.Avalonia;
-
-namespace Demo.CrossPlatform.Android;
+﻿namespace Demo.CrossPlatform.Android;
 
 [Application]
 public class MainApplication : AvaloniaAndroidApplication<App>

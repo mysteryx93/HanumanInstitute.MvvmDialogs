@@ -27,12 +27,21 @@ public class DialogHostDialogFactory : DialogFactoryBase
     {
         if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
         var view = new DialogHostView(settings);
+        IDisposable? events = null;
         if (view.ViewModel != null)
         {
-            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
+            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
 
-        await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        try
+        {
+            await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        }
+        catch
+        {
+            events?.Dispose();
+            throw;
+        }
         return view.DialogResult;
     }
 

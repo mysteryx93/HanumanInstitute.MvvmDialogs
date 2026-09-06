@@ -1,42 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections.Generic;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// Provides a list of cancellable dialog actions such as messageboxes or popups. Useful for mobile back navigation.
-/// This class is static (application-wide) because it would be difficult to connect the context between NavigationManager and the MessageBox API.  
+/// This class is static (application-wide) because it would be difficult to connect the context between NavigationManager and the MessageBox API.
 /// </summary>
 public static class CancellableActions
 {
-    private static readonly List<Action> s_list = new();
-
-    /// <summary>
-    /// Adds a cancellable dialog action to the list.
-    /// </summary>
-    /// <param name="action">An action to cancel the dialog.</param>
-    public static void Add(Action action)
+    private sealed class Registration(Action cancel)
     {
-        lock (s_list)
-        {
-            s_list.Add(action);
-        }
+        public Action Cancel { get; } = cancel;
     }
 
+    private static readonly List<Registration> s_list = [];
+    
     /// <summary>
-    /// Removes a cancellable action from the list. You must call this when the dialog is completed.
+    /// Registers <paramref name="cancel"/> for back-navigation while <paramref name="action"/> runs,
+    /// and always removes it when the action completes or throws.
     /// </summary>
-    /// <param name="action">The same action that was previously added.</param>
-    public static void Remove(Action action)
+    /// <param name="action">The dialog operation to run.</param>
+    /// <param name="cancel">An action that cancels the dialog.</param>
+    /// <typeparam name="T">The result type of the dialog operation.</typeparam>
+    /// <returns>The result of <paramref name="action"/>.</returns>
+    public static async Task<T> RunAsync<T>(Func<Task<T>> action, Action cancel)
     {
+        var registration = new Registration(cancel);
         lock (s_list)
         {
-            s_list.Remove(action);
+            s_list.Add(registration);
+        }
+        try
+        {
+            return await action().ConfigureAwait(true);
+        }
+        finally
+        {
+            lock (s_list)
+            {
+                s_list.Remove(registration);
+            }
         }
     }
-
+    
     /// <summary>
-    /// Returns whether there are active dialog actions. 
+    /// Returns whether there are active dialog actions.
     /// </summary>
     public static bool Any
     {
@@ -44,13 +52,13 @@ public static class CancellableActions
         {
             lock (s_list)
             {
-                return s_list.Any();
+                return s_list.Count > 0;
             }
         }
     }
 
     /// <summary>
-    /// Returns how many dialog actions are active. 
+    /// Returns how many dialog actions are active.
     /// </summary>
     public static int Count
     {
@@ -66,18 +74,20 @@ public static class CancellableActions
     /// <summary>
     /// Cancels the last dialog operation in the list.
     /// </summary>
-    /// <returns>True if a dialog operation was cancelled; otherwise false.</returns>
+    /// <returns>True if a dialog operation was canceled; otherwise false.</returns>
     public static bool CancelLast()
     {
+        Action? action = null;
         lock (s_list)
         {
-            if (s_list.Any())
+            if (s_list.Count > 0)
             {
-                s_list.Last().Invoke();
-                s_list.RemoveAt(s_list.Count - 1);
-                return true;
+                var last = s_list.Count - 1;
+                action = s_list[last].Cancel;
+                s_list.RemoveAt(last);
             }
         }
-        return false;
+        action?.Invoke();
+        return action != null;
     }
 }

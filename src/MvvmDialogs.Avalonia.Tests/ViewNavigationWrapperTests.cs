@@ -82,12 +82,15 @@ public class ViewNavigationWrapperTests
     {
         var view = CreateView(existing);
 
+        var loaded = 0;
+        view.Loaded += (_, _) => loaded++;
         view.Show(null);
 
         Assert.NotNull(view.Ref);
         Assert.True(view.IsEnabled);
         Assert.True(view.IsVisible);
         Assert.Equal(1, ViewModel.LoadedCount);
+        Assert.Equal(1, loaded);
     }
 
     [Theory]
@@ -115,11 +118,14 @@ public class ViewNavigationWrapperTests
     {
         var view = CreateView(existing);
 
+        var closed = 0;
+        view.Closed += (_, _) => closed++;
         view.Show(null);
         view.Close();
 
         Assert.Equal(1, ViewModel.ClosingCount);
         Assert.Equal(1, ViewModel.ClosedCount);
+        Assert.Equal(1, closed);
     }
 
     [Theory]

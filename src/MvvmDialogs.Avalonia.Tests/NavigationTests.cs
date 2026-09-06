@@ -1,15 +1,14 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
+using System.Runtime.CompilerServices;
 using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 public class NavigationTests
 {
-    public IDialogService DialogService => _dialogService ??= new DialogService(DialogManager);
-    private IDialogService _dialogService;
+    public IDialogService DialogService => field ??= new DialogService(DialogManager);
 
-    public DialogManager DialogManager => _dialogManager ??= new DialogManager(new ViewLocatorBase() { ForceSinglePageNavigation = true });
-    private DialogManager _dialogManager;
+    public DialogManager DialogManager => field ??= new DialogManager(new ViewLocatorBase() { ForceSinglePageNavigation = true }, dispatcher: new ImmediateDispatcher());
 
     public INavigationManager NavigationManager => DialogManager.NavigationManager!;
 
@@ -91,12 +90,18 @@ public class NavigationTests
     [Fact]
     public async Task Show_SecondAndGarbageCollect_FirstReleased()
     {
-        var vm1 = new FirstViewModel();
-        var vm2 = new SecondViewModel();
+        var view1 = Act();
 
-        DialogService.Show(null, vm1);
-        var view1 = new WeakReference(NavigationManager.CurrentView);
-        DialogService.Show(null, vm2);
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        WeakReference Act()
+        {
+            var vm1 = new FirstViewModel();
+            var vm2 = new SecondViewModel();
+            DialogService.Show(null, vm1);
+            var result = new WeakReference(NavigationManager.CurrentView);
+            DialogService.Show(null, vm2);
+            return result;
+        }
 
         GC.Collect();
         GC.WaitForPendingFinalizers();
@@ -105,16 +110,21 @@ public class NavigationTests
         Assert.False(view1.IsAlive);
     }
 
-
     [Fact]
     public void ShowDialogAsync_SecondAndGarbageCollect_FirstReleased()
     {
-        var vm1 = new FirstViewModel();
-        var vm2 = new SecondViewModel();
+        var view1 = Act();
 
-        DialogService.Show(null, vm1);
-        var view1 = new WeakReference(NavigationManager.CurrentView);
-        var _ = DialogService.ShowDialogAsync(vm1, vm2);
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        WeakReference Act()
+        {
+            var vm1 = new FirstViewModel();
+            var vm2 = new SecondViewModel();
+            DialogService.Show(null, vm1);
+            var result = new WeakReference(NavigationManager.CurrentView);
+            _ = DialogService.ShowDialogAsync(vm1, vm2);
+            return result;
+        }
 
         GC.Collect();
         GC.WaitForPendingFinalizers();

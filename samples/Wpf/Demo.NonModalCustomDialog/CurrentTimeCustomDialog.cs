@@ -1,10 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
-
-namespace Demo.Wpf.NonModalCustomDialog;
+﻿namespace Demo.Wpf.NonModalCustomDialog;
 
 public class CurrentTimeCustomDialog : IView, IViewSync
 {

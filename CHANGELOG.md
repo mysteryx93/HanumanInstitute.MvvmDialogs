@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.4 - 2026-09-04
+
+This update fixes some memory management issues and addresses some other minor issues.
+
+### Fixed
+
+- In Navigation mode, views in WeakCache are no longer pinned and can be released if memory is needed.
+- Prevented dialogs and view models from being retained after closing or after a show operation fails.
+- Corrected event unsubscription in the WPF and Avalonia view wrappers.
+- Ensured temporary owner windows and cancellable-dialog registrations are cleaned up when dialog operations fail.
+- Made UI-thread dispatch tasks report exceptions instead of waiting indefinitely.
+- Prevented duplicate or stale mobile back-navigation handlers.
+- Ensured navigation views raise their `Loaded` and `Closed` events.
+- Updated the demos to stop their clocks when dialogs close.
+
+### Changed
+
+- Replaced manual `CancellableActions.Add`/`Remove` registration with `RunAsync`, including safe concurrent cancellation and identity-based cleanup.
+- `IDialogManager.HandleDialogEvents` now returns an `IDisposable` registration for explicit cleanup.
+
+## 2.3 - 2026-04-24
+
+- Updated to Avalonia v12
+
 ## 2.2 - 2026-03-05
 
 - Updated all dependencies

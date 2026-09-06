@@ -1,3 +1,4 @@
+global using System.ComponentModel;
 global using Xunit;
 global using HanumanInstitute.MvvmDialogs;
 global using HanumanInstitute.MvvmDialogs.Avalonia;

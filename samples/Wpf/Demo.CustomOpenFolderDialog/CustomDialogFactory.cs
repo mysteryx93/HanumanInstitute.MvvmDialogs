@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Interop;
-using HanumanInstitute.MvvmDialogs;
+﻿using System.Windows.Interop;
 using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
 using Ookii.Dialogs.Wpf;
 
 namespace Demo.Wpf.CustomOpenFolderDialog;

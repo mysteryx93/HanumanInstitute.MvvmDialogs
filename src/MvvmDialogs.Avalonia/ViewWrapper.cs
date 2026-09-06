@@ -64,9 +64,9 @@ public class ViewWrapper : IView
         }
         remove
         {
-            if (value != null)
+            if (value != null && _closingHandlers.TryGetValue(value, out var handler))
             {
-                Ref.Closing += _closingHandlers[value];
+                Ref.Closing -= handler;
                 _closingHandlers.Remove(value);
             }
         }
