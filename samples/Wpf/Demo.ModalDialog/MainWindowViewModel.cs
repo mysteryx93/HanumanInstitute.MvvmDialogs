@@ -1,11 +1,3 @@
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-
 namespace Demo.Wpf.ModalDialog;
 
 public class MainWindowViewModel : ObservableObject

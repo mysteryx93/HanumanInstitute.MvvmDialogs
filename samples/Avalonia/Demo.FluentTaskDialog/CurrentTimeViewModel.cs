@@ -7,7 +7,7 @@ using ReactiveUI;
 
 namespace Demo.Avalonia.FluentTaskDialog;
 
-public class CurrentTimeViewModel : ViewModelBase, IViewClosing
+public class CurrentTimeViewModel : ViewModelBase, IViewClosing, IViewClosed
 {
     public DateTime CurrentTime => DateTime.Now;
 
@@ -15,11 +15,15 @@ public class CurrentTimeViewModel : ViewModelBase, IViewClosing
 
     public bool StayOpen { get; set; }
 
+    private readonly IDisposable _clock;
+
     public CurrentTimeViewModel() =>
-        Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)).Subscribe((_) =>
+        _clock = Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)).Subscribe(_ =>
         {
             this.RaisePropertyChanged(nameof(CurrentTime));
         });
+
+    public void OnClosed() => _clock.Dispose();
 
     public void OnClosing(CancelEventArgs e)
     {

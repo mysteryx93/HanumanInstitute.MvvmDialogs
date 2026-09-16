@@ -1,9 +1,4 @@
-﻿using Avalonia;
-using Avalonia.iOS;
-using Foundation;
-using ReactiveUI.Avalonia;
-
-namespace Demo.CrossPlatform.iOS;
+﻿namespace Demo.CrossPlatform.iOS;
 
 // The UIApplicationDelegate for the application. This class is responsible for launching the 
 // User Interface of the application, as well as listening (and optionally responding) to 

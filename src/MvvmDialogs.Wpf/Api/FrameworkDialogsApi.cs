@@ -7,10 +7,6 @@ namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 /// <inheritdoc />
 internal class FrameworkDialogsApi : IFrameworkDialogsApi
 {
-    public FrameworkDialogsApi()
-    {
-    }
-
     public MessageBoxResult ShowMessageBox(Window? owner, MessageBoxApiSettings settings) =>
         owner != null ?
             System.Windows.MessageBox.Show(

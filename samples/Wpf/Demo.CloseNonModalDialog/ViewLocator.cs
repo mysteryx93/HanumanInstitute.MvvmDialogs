@@ -1,5 +1,3 @@
-using HanumanInstitute.MvvmDialogs.Wpf;
-
 namespace Demo.Wpf.CloseNonModalDialog;
 
 /// <summary>

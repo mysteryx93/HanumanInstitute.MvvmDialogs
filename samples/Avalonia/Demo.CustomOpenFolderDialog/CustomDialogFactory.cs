@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Threading.Tasks;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using HanumanInstitute.MvvmDialogs.Avalonia;
-using Ookii.Dialogs.WinForms;
-using Avalonia.Controls;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Avalonia.Controls;
+using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 using HanumanInstitute.MvvmDialogs.FileSystem;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using Ookii.Dialogs.WinForms;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog;
 

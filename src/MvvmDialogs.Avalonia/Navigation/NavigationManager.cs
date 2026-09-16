@@ -16,10 +16,11 @@ public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyProp
     /// <summary>
     /// Navigation history contains only ViewModels to avoid keeping all constructed user controls in memory. The Views can be reconstructed from the ViewModels.
     /// </summary>
-    private readonly List<INotifyPropertyChanged> _history = new();
+    private readonly List<INotifyPropertyChanged> _history = [];
     private readonly ViewCache _viewCache = new();
-    private readonly List<DialogTask> _dialogs = new();
-    private readonly ViewClosingHandler? _closingHandler = closingHandler;
+    private readonly List<DialogTask> _dialogs = [];
+    private Control? _mainView;
+    private TopLevel? _backRequestedSource;
 
     /// <summary>
     /// Returns the navigation history.
@@ -38,15 +39,48 @@ public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyProp
         {
             appSingle.MainView = customNavigationRoot ?? new NavigationRoot();
             appSingle.MainView.DataContext = this;
-            appSingle.MainView.Loaded += (_, _) =>
-            {
-                TopLevel.GetTopLevel(appSingle.MainView)!.BackRequested += TopLevel_BackRequested;
-            };
+            AttachBackRequested(appSingle.MainView);
         }
         else if (app is IClassicDesktopStyleApplicationLifetime appDesktop)
         {
             appDesktop.MainWindow = customNavigationRoot as Window ?? new NavigationRootWindow();
             appDesktop.MainWindow.DataContext = this;
+        }
+    }
+
+    private void AttachBackRequested(Control mainView)
+    {
+        if (_mainView != null)
+        {
+            _mainView.Loaded -= MainView_Loaded;
+        }
+        DetachBackRequested();
+        _mainView = mainView;
+        _mainView.Loaded += MainView_Loaded;
+        if (_mainView.IsLoaded)
+        {
+            MainView_Loaded(_mainView, new RoutedEventArgs());
+        }
+    }
+
+    private void MainView_Loaded(object? sender, RoutedEventArgs e)
+    {
+        var topLevel = TopLevel.GetTopLevel(sender as Visual);
+        if (topLevel == null || topLevel == _backRequestedSource)
+        {
+            return;
+        }
+        DetachBackRequested();
+        _backRequestedSource = topLevel;
+        _backRequestedSource.BackRequested += TopLevel_BackRequested;
+    }
+
+    private void DetachBackRequested()
+    {
+        if (_backRequestedSource != null)
+        {
+            _backRequestedSource.BackRequested -= TopLevel_BackRequested;
+            _backRequestedSource = null;
         }
     }
 
@@ -65,7 +99,7 @@ public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyProp
         {
             // Cancel normal views
             var current = CurrentViewModel!;
-            var view = CurrentView.AsWrapper(this, _closingHandler);
+            var view = CurrentView.AsWrapper(this, closingHandler);
             view.Close();
             e.Handled = !ReferenceEquals(CurrentViewModel, current) || !view.ClosingConfirmed;
         }

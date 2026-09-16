@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 using CommunityToolkit.Mvvm.Input;
 using HanumanInstitute.MvvmDialogs;
 
@@ -8,14 +8,28 @@ public class MainWindowViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
 
-    private INotifyPropertyChanged? _dialogViewModel;
-    public INotifyPropertyChanged? DialogViewModel
+    private CurrentTimeDialogViewModel? _dialogViewModel;
+    public CurrentTimeDialogViewModel? DialogViewModel
     {
         get => _dialogViewModel;
         set
         {
+            if (ReferenceEquals(_dialogViewModel, value))
+            {
+                return;
+            }
+
+            if (_dialogViewModel != null)
+            {
+                _dialogViewModel.Closed -= DialogViewModel_Closed;
+            }
+
             if (SetProperty(ref _dialogViewModel, value))
             {
+                if (_dialogViewModel != null)
+                {
+                    _dialogViewModel.Closed += DialogViewModel_Closed;
+                }
                 ShowCommand.NotifyCanExecuteChanged();
                 ActivateCommand.NotifyCanExecuteChanged();
             }
@@ -40,4 +54,6 @@ public class MainWindowViewModel : ViewModelBase
     }
 
     public void Activate() => _dialogService.Activate(DialogViewModel!);
+
+    private void DialogViewModel_Closed(object? sender, EventArgs e) => DialogViewModel = null;
 }

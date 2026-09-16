@@ -31,7 +31,16 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
 
             var dialog = CreateDialog(viewModel, viewDef);
-            dialog.AsSync().ShowDialog(FindViewByViewModelOrThrow(ownerViewModel)!);
+            var events = HandleDialogEvents(viewModel, dialog);
+            try
+            {
+                dialog.AsSync().ShowDialog(FindViewByViewModelOrThrow(ownerViewModel)!);
+            }
+            catch
+            {
+                events.Dispose();
+                throw;
+            }
 
             Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType.GetType(), viewModel.DialogResult);
         }

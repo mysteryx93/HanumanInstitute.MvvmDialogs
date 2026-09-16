@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Markup.Xaml;
 using Demo.CrossPlatform.Services;
 using Demo.CrossPlatform.ViewModels;
 using HanumanInstitute.MvvmDialogs;

@@ -1,6 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Provides extension methods for WPF.
@@ -15,8 +13,18 @@ public static class UiExtensions
     /// <returns>The result of the action.</returns>
     public static Task<T> RunUiAsync<T>(Func<T> action)
     {
-        TaskCompletionSource<T> completion = new();
-        Application.Current.Dispatcher.BeginInvoke(new Action(() => completion.SetResult(action())));
+        var completion = new TaskCompletionSource<T>(TaskCreationOptions.RunContinuationsAsynchronously);
+        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+        {
+            try
+            {
+                completion.SetResult(action());
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
+        }));
         return completion.Task;
     }
 
@@ -26,11 +34,18 @@ public static class UiExtensions
     /// <param name="action">The action to run asynchronously.</param>
     public static Task RunUiAsync(Action action)
     {
-        TaskCompletionSource<bool> completion = new();
+        var completion = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         Application.Current.Dispatcher.BeginInvoke(new Action(() =>
         {
-            action();
-            completion.SetResult(true);
+            try
+            {
+                action();
+                completion.SetResult(true);
+            }
+            catch (Exception ex)
+            {
+                completion.SetException(ex);
+            }
         }));
         return completion.Task;
     }

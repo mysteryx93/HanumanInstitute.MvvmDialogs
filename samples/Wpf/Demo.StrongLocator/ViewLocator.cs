@@ -1,6 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.Wpf;
-
-namespace Demo.Wpf.StrongLocator;
+﻿namespace Demo.Wpf.StrongLocator;
 
 /// <summary>
 /// Maps view models to views in Avalonia.

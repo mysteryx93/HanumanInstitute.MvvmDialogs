@@ -67,5 +67,9 @@ public interface IDialogManager
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <param name="dialog">The dialog being shown.</param>
-    void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog);
+    /// <returns>
+    /// A handle that detaches view-model event handlers. Dispose it if showing the dialog fails
+    /// before <see cref="IView.Closed"/> is raised; otherwise leave it so close still unsubscribes.
+    /// </returns>
+    IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog);
 }

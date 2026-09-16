@@ -1,6 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Adds support for sync methods to IDialogManager.

@@ -83,11 +83,14 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
         dialog.Closed += (s, e) => Closed?.Invoke(s, e);
 
         // Allow the dialog to be closed by mobile back navigation.
-        void Cancel() => dialog.Hide();
-        CancellableActions.Add(Cancel);
-        DialogResult = await dialog.ShowAsync().ConfigureAwait(true);
-        CancellableActions.Remove(Cancel);
-        Ref = null;
+        try
+        {
+            DialogResult = await CancellableActions.RunAsync(() => dialog.ShowAsync(), dialog.Hide).ConfigureAwait(true);
+        }
+        finally
+        {
+            Ref = null;
+        }
     }
 
     /// <inheritdoc />

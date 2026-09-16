@@ -64,7 +64,16 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel?.GetType());
 
                 var dialog = CreateDialog(viewModel, viewDef);
-                dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
+                var events = HandleDialogEvents(viewModel, dialog);
+                try
+                {
+                    dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
+                }
+                catch
+                {
+                    events.Dispose();
+                    throw;
+                }
             });
     }
 
@@ -79,7 +88,16 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
 
                 var dialog = CreateDialog(viewModel, viewDef);
-                await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
+                var events = HandleDialogEvents(viewModel, dialog);
+                try
+                {
+                    await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
+                }
+                catch
+                {
+                    events.Dispose();
+                    throw;
+                }
 
                 Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType, viewModel.DialogResult);
             });
@@ -127,7 +145,6 @@ public abstract class DialogManagerBase<T> : IDialogManager
             throw new TypeLoadException($"Only dialogs of type {typeof(T)} or {typeof(IView)} are supported.");
         }
 
-        HandleDialogEvents(viewModel, dialog);
         return dialog;
     }
 
@@ -162,15 +179,24 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// </summary>
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <param name="dialog">The dialog being shown.</param>
-    public virtual void HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
+    /// <returns>
+    /// A handle that detaches view-model event handlers. Dispose it if showing the dialog fails
+    /// before <see cref="IView.Closed"/> is raised.
+    /// </returns>
+    public virtual IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
     {
+        var cleanup = new EventCleanup();
         if (viewModel is ICloseable closable)
         {
-            closable.RequestClose += (_, _) => Dispatch(dialog.Close);
+            void CloseHandler(object? sender, EventArgs e) => Dispatch(dialog.Close);
+            closable.RequestClose += CloseHandler;
+            cleanup.Add(() => closable.RequestClose -= CloseHandler);
         }
         if (viewModel is IActivable activable)
         {
-            activable.RequestActivate += (_, _) => Dispatch(dialog.Activate);
+            void ActivateHandler(object? sender, EventArgs e) => Dispatch(dialog.Activate);
+            activable.RequestActivate += ActivateHandler;
+            cleanup.Add(() => activable.RequestActivate -= ActivateHandler);
         }
         if (viewModel is IViewClosing)
         {
@@ -187,6 +213,26 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 dialog.Closed += (_, _) => closed.OnClosed();
             }
         }
+
+        if (!cleanup.IsEmpty)
+        {
+            void ClosedHandler(object? sender, EventArgs e) => cleanup.Dispose();
+            dialog.Closed += ClosedHandler;
+            cleanup.Add(() => dialog.Closed -= ClosedHandler);
+        }
+
+        return cleanup;
+    }
+
+    private sealed class EventCleanup : IDisposable
+    {
+        private Action? _detach;
+
+        public bool IsEmpty => _detach == null;
+
+        public void Add(Action detach) => _detach += detach;
+
+        public void Dispose() => Interlocked.Exchange(ref _detach, null)?.Invoke();
     }
 
     private bool _isViewClosing;
@@ -259,30 +305,35 @@ public abstract class DialogManagerBase<T> : IDialogManager
             var result = await await DispatchAsync(
                 async () =>
                 {
-                    IView? owner;
+                    IView? owner = null;
                     var isDummyOwner = false;
-                    if (ownerViewModel != null)
+                    try
                     {
-                        owner = FindViewByViewModel(ownerViewModel) ??
-                                throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
-                    }
-                    else
-                    {
-                        // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
-                        owner = GetMainWindow();
-                        if (owner == null || !owner.IsVisible)
+                        if (ownerViewModel != null)
                         {
-                            owner = GetDummyWindow();
-                            isDummyOwner = true;
+                            owner = FindViewByViewModel(ownerViewModel) ??
+                                    throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                        }
+                        else
+                        {
+                            // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
+                            owner = GetMainWindow();
+                            if (owner == null || !owner.IsVisible)
+                            {
+                                owner = GetDummyWindow();
+                                isDummyOwner = true;
+                            }
+                        }
+
+                        return await DialogFactory.ShowDialogAsync(owner, settings).ConfigureAwait(true);
+                    }
+                    finally
+                    {
+                        if (isDummyOwner)
+                        {
+                            owner?.Close();
                         }
                     }
-
-                    var result = await DialogFactory.ShowDialogAsync(owner, settings).ConfigureAwait(true);
-                    if (isDummyOwner)
-                    {
-                        owner!.Close();
-                    }
-                    return result;
                 }).ConfigureAwait(true);
 
             Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());

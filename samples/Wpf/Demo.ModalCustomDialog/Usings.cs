@@ -1,0 +1,13 @@
+﻿global using System;
+global using System.ComponentModel;
+global using HanumanInstitute.MvvmDialogs;
+global using HanumanInstitute.MvvmDialogs.Wpf;
+global using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+global using System.Threading.Tasks;
+global using System.Windows.Input;
+global using System.Windows.Threading;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using CommunityToolkit.Mvvm.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.Logging;

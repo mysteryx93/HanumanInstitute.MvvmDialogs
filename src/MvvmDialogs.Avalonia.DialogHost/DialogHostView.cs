@@ -104,10 +104,9 @@ public class DialogHostView : IView
         try
         {
             host.DialogOpened += Host_DialogOpened;
-            void Cancel() => Close();
-            CancellableActions.Add(Cancel);
-            DialogResult = await DialogHostAvalonia.DialogHost.Show(Settings.Content!, host, closingHandler).ConfigureAwait(true);
-            CancellableActions.Remove(Cancel);
+            DialogResult = await CancellableActions.RunAsync(
+                () => DialogHostAvalonia.DialogHost.Show(Settings.Content!, host, closingHandler),
+                Close).ConfigureAwait(true);
             Closed?.Invoke(this, EventArgs.Empty);
         }
         finally

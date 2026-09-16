@@ -5,7 +5,6 @@ using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
-using IOPath = System.IO.Path;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog;
 
@@ -35,7 +34,7 @@ public class MainWindowViewModel : ViewModelBase
         var settings = new OpenFolderDialogSettings
         {
             Title = "This is a description",
-            SuggestedStartLocation = new DesktopDialogStorageFolder(IOPath.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
+            SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!)
         };
 
         var result = await _dialogService.ShowOpenFolderDialogAsync(this, settings);

@@ -38,12 +38,21 @@ public class FluentDialogFactory : DialogFactoryBase
     {
         ArgumentNullException.ThrowIfNull(owner);
         var view = new FluentContentView(settings);
+        IDisposable? events = null;
         if (view.ViewModel != null)
         {
-            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
+            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
 
-        await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        try
+        {
+            await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        }
+        catch
+        {
+            events?.Dispose();
+            throw;
+        }
         return view.DialogResult;
     }
 
@@ -51,12 +60,21 @@ public class FluentDialogFactory : DialogFactoryBase
     {
         ArgumentNullException.ThrowIfNull(owner);
         var view = new FluentTaskView(settings);
+        IDisposable? events = null;
         if (view.ViewModel != null)
         {
-            GetDialogManager().HandleDialogEvents(view.ViewModel, view);
+            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
         }
 
-        await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        try
+        {
+            await view.ShowDialogAsync(owner).ConfigureAwait(true);
+        }
+        catch
+        {
+            events?.Dispose();
+            throw;
+        }
         return view.DialogResult;
     }
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using HanumanInstitute.MvvmDialogs;
-
-namespace Demo.Wpf.NonModalDialog;
+﻿namespace Demo.Wpf.NonModalDialog;
 
 public class MainWindowViewModel : ObservableObject
 {

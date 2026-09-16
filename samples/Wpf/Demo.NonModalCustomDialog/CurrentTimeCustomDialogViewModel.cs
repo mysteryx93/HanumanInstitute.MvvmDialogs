@@ -1,14 +1,7 @@
-﻿using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿namespace Demo.Wpf.NonModalCustomDialog;
 
-namespace Demo.Wpf.NonModalCustomDialog;
-
-public class CurrentTimeCustomDialogViewModel : ObservableObject
+public class CurrentTimeCustomDialogViewModel : ObservableObject, IViewClosed
 {
-    // ReSharper disable once NotAccessedField.Local
     private DispatcherTimer? _timer;
 
     public CurrentTimeCustomDialogViewModel()
@@ -22,6 +15,7 @@ public class CurrentTimeCustomDialogViewModel : ObservableObject
 
     private void StartClock()
     {
+        StopClock();
         _timer = new DispatcherTimer(
             TimeSpan.FromSeconds(1),
             DispatcherPriority.Normal,
@@ -29,8 +23,22 @@ public class CurrentTimeCustomDialogViewModel : ObservableObject
             Dispatcher.CurrentDispatcher);
     }
 
+    private void StopClock()
+    {
+        if (_timer is null)
+        {
+            return;
+        }
+
+        _timer.Stop();
+        _timer.Tick -= OnTick;
+        _timer = null;
+    }
+
     private void OnTick(object? sender, EventArgs e)
     {
         OnPropertyChanged(nameof(CurrentTime));
     }
+
+    public void OnClosed() => StopClock();
 }

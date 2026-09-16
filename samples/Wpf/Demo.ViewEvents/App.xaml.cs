@@ -1,9 +1,4 @@
 ﻿using System.Windows;
-using CommunityToolkit.Mvvm.DependencyInjection;
-using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Demo.Wpf.ViewEvents;
 
