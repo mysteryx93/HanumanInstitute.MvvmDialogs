@@ -8,7 +8,7 @@
     <RootNamespace>Demo.Wpf.OpenFileDialog</RootNamespace>
     <AssemblyName>Demo.Wpf.OpenFileDialog</AssemblyName>
     <Nullable>enable</Nullable>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

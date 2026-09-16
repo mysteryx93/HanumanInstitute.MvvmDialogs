@@ -9,7 +9,7 @@
     <AssemblyVersion>1.0.0.24361</AssemblyVersion>
     <FileVersion>1.0.0.24361</FileVersion>
     <PublishAot>true</PublishAot>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />

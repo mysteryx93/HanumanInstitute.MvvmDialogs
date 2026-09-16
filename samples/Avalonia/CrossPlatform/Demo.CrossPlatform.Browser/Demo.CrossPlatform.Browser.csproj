@@ -6,7 +6,7 @@
     <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
     <OutputType>Exe</OutputType>
     <RootNamespace>Demo.CrossPlatform.Web</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

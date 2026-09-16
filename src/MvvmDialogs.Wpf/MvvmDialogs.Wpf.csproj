@@ -21,7 +21,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0-windows'">
-		<Features>runtime-async=on</Features>
+		<Features>$(Features);runtime-async=on</Features>
 	</PropertyGroup>
 
   <ItemGroup>

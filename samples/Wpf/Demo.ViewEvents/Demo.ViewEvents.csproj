@@ -8,7 +8,7 @@
     <RootNamespace>Demo.Wpf.ViewEvents</RootNamespace>
     <AssemblyName>Demo.Wpf.ViewEvents</AssemblyName>
     <Nullable>enable</Nullable>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

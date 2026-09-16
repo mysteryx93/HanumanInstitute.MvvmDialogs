@@ -8,7 +8,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Demo.Wpf.ModalDialog.Tests</AssemblyName>
     <RootNamespace>Demo.Wpf.ModalDialog.Tests</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

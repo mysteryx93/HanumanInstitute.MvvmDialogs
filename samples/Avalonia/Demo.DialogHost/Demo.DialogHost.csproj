@@ -6,7 +6,7 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.DialogHost</AssemblyName>
     <RootNamespace>Demo.Avalonia.DialogHost</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaXaml Remove="Models\**" />

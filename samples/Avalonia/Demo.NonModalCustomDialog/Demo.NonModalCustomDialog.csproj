@@ -6,7 +6,7 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.NonModalCustomDialog</AssemblyName>
     <RootNamespace>Demo.Avalonia.NonModalCustomDialog</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />

@@ -6,7 +6,7 @@
     <IsPackable>false</IsPackable>
     <AssemblyName>Demo.Avalonia.ModalDialog.Tests</AssemblyName>
     <RootNamespace>Demo.Avalonia.ModalDialog.Tests</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>

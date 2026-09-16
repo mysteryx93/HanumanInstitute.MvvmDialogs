@@ -6,7 +6,7 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.ModalCustomDialog</AssemblyName>
     <RootNamespace>Demo.Avalonia.ModalCustomDialog</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />

@@ -6,7 +6,7 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.ViewEvents</AssemblyName>
     <RootNamespace>Demo.Avalonia.ViewEvents</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" />

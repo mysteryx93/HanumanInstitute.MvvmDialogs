@@ -6,7 +6,7 @@
     <ProvisioningType>manual</ProvisioningType>
     <Nullable>enable</Nullable>
     <RuntimeIdentifier>iossimulator-x64</RuntimeIdentifier>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
 
     <!-- These properties need to be set in order to run on a real iDevice -->
     <!--<RuntimeIdentifier>ios-arm64</RuntimeIdentifier>-->

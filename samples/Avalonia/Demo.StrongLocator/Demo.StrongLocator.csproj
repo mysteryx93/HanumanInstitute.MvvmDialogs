@@ -6,7 +6,7 @@
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.StrongLocator</AssemblyName>
     <RootNamespace>Demo.Avalonia.StrongLocator</RootNamespace>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
     <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
     <RootNamespace>Demo.Wpf.NonModalCustomDialog</RootNamespace>
     <AssemblyName>Demo.Wpf.NonModalCustomDialog</AssemblyName>
     <Nullable>enable</Nullable>
-    <Features>runtime-async=on</Features>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
 
   <ItemGroup>
