@@ -1,0 +1,9 @@
+<Solution>
+  <Project Path="Demo.CrossPlatform.Android/Demo.CrossPlatform.Android.csproj">
+    <Deploy Solution="Debug|Any CPU" />
+  </Project>
+  <Project Path="Demo.CrossPlatform.Browser/Demo.CrossPlatform.Browser.csproj" />
+  <Project Path="Demo.CrossPlatform.Desktop/Demo.CrossPlatform.Desktop.csproj" />
+  <Project Path="Demo.CrossPlatform.iOS/Demo.CrossPlatform.iOS.csproj" />
+  <Project Path="Demo.CrossPlatform/Demo.CrossPlatform.csproj" />
+</Solution>

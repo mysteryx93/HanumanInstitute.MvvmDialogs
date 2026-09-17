@@ -1,0 +1,69 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/samples/" />
+  <Folder Name="/samples/Avalonia/">
+    <Project Path="samples/Avalonia/Demo.ActivateNonModalDialog.MvvmToolkit/Demo.ActivateNonModalDialog.MvvmToolkit.csproj" />
+    <Project Path="samples/Avalonia/Demo.CloseNonModalDialog/Demo.CloseNonModalDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.CustomOpenFolderDialog/Demo.CustomOpenFolderDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.DialogHost/Demo.DialogHost.csproj" />
+    <Project Path="samples/Avalonia/Demo.FluentContentDialog/Demo.FluentContentDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.FluentMessageBoxContentDialog/Demo.FluentMessageBoxContentDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.FluentMessageBoxTaskDialog/Demo.FluentMessageBoxTaskDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.FluentTaskDialog/Demo.FluentTaskDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.MessageBox/Demo.MessageBox.csproj" />
+    <Project Path="samples/Avalonia/Demo.ModalCustomDialog/Demo.ModalCustomDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.ModalDialog.Tests/Demo.ModalDialog.Tests.csproj" />
+    <Project Path="samples/Avalonia/Demo.ModalDialog/Demo.ModalDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.NonModalCustomDialog/Demo.NonModalCustomDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.NonModalDialog/Demo.NonModalDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.OpenFileDialog/Demo.OpenFileDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.OpenFolderDialog/Demo.OpenFolderDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.SaveFileDialog/Demo.SaveFileDialog.csproj" />
+    <Project Path="samples/Avalonia/Demo.StrongLocator/Demo.StrongLocator.csproj" />
+    <Project Path="samples/Avalonia/Demo.ViewEvents/Demo.ViewEvents.csproj" />
+  </Folder>
+  <Folder Name="/samples/CrossPlatform/">
+    <Project Path="samples/Avalonia/CrossPlatform/Demo.CrossPlatform.Android/Demo.CrossPlatform.Android.csproj">
+      <Deploy Solution="Debug|Any CPU" />
+    </Project>
+    <Project Path="samples/Avalonia/CrossPlatform/Demo.CrossPlatform.Browser/Demo.CrossPlatform.Browser.csproj" />
+    <Project Path="samples/Avalonia/CrossPlatform/Demo.CrossPlatform.Desktop/Demo.CrossPlatform.Desktop.csproj" />
+    <Project Path="samples/Avalonia/CrossPlatform/Demo.CrossPlatform.iOS/Demo.CrossPlatform.iOS.csproj" />
+    <Project Path="samples/Avalonia/CrossPlatform/Demo.CrossPlatform/Demo.CrossPlatform.csproj" />
+  </Folder>
+  <Folder Name="/samples/Wpf/">
+    <Project Path="samples/Wpf/Demo.ActivateNonModalDialog/Demo.ActivateNonModalDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.CloseNonModalDialog/Demo.CloseNonModalDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.CustomOpenFolderDialog/Demo.CustomOpenFolderDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.MessageBox/Demo.MessageBox.csproj" />
+    <Project Path="samples/Wpf/Demo.ModalCustomDialog/Demo.ModalCustomDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.ModalDialog.Tests/Demo.ModalDialog.Tests.csproj" />
+    <Project Path="samples/Wpf/Demo.ModalDialog/Demo.ModalDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.NonModalCustomDialog/Demo.NonModalCustomDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.NonModalDialog/Demo.NonModalDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.OpenFileDialog/Demo.OpenFileDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.OpenFolderDialog/Demo.OpenFolderDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.SaveFileDialog/Demo.SaveFileDialog.csproj" />
+    <Project Path="samples/Wpf/Demo.StrongLocator/Demo.StrongLocator.csproj" />
+    <Project Path="samples/Wpf/Demo.ViewEvents/Demo.ViewEvents.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path="Directory.Packages.props" />
+    <File Path="src/Directory.Build.props" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/MvvmDialogs.Avalonia.DialogHost/MvvmDialogs.Avalonia.DialogHost.csproj" />
+    <Project Path="src/MvvmDialogs.Avalonia.Fluent/MvvmDialogs.Avalonia.Fluent.csproj" />
+    <Project Path="src/MvvmDialogs.Avalonia.MessageBox/MvvmDialogs.Avalonia.MessageBox.csproj" />
+    <Project Path="src/MvvmDialogs.Avalonia.Tests/MvvmDialogs.Avalonia.Tests.csproj" />
+    <Project Path="src/MvvmDialogs.Avalonia/MvvmDialogs.Avalonia.csproj" />
+    <Project Path="src/MvvmDialogs.Wpf/MvvmDialogs.Wpf.csproj" />
+    <Project Path="src/MvvmDialogs/MvvmDialogs.csproj" />
+  </Folder>
+</Solution>
