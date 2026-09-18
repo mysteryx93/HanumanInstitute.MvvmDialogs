@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Avalonia;
 
 namespace Demo.Avalonia.ActivateNonModalDialog;
@@ -16,5 +16,6 @@ public class Program
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
+            .UseWaylandWithFallback()
             .LogToTrace();
 }

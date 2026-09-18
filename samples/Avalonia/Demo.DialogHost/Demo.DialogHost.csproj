@@ -1,11 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.DialogHost</AssemblyName>
     <RootNamespace>Demo.Avalonia.DialogHost</RootNamespace>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <AvaloniaXaml Remove="Models\**" />
@@ -25,6 +26,7 @@
     <PackageReference Include="Avalonia.Desktop" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Wayland" />
     <PackageReference Include="ReactiveUI.Avalonia" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="ReactiveUI.SourceGenerators">
