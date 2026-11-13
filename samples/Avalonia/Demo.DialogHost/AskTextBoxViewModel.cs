@@ -2,6 +2,7 @@
 using System.Reactive;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
@@ -9,7 +10,8 @@ namespace Demo.Avalonia.DialogHost;
 public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {
     public event EventHandler? RequestClose;
-    public bool? DialogResult { get; set; }
+    [ReactiveUI.SourceGenerators.Reactive]
+    private bool? _dialogResult;
 
     [Reactive]
     public partial string Title { get; set; } = "Title";
@@ -17,8 +19,8 @@ public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel,
     [Reactive]
     public partial string Text { get; set; } = string.Empty;
 
-    public ReactiveCommand<Unit, Unit> Ok => _ok ??= ReactiveCommand.Create(OkImpl);
-    private ReactiveCommand<Unit, Unit>? _ok;
+    public ReactiveCommand<RxVoid, RxVoid> Ok => _ok ??= ReactiveCommand.Create(OkImpl);
+    private ReactiveCommand<RxVoid, RxVoid>? _ok;
 
     private void OkImpl()
     {
@@ -26,8 +28,8 @@ public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel,
         RequestClose?.Invoke(this, EventArgs.Empty);
     }
 
-    public ReactiveCommand<Unit, Unit> Cancel => _cancel ??= ReactiveCommand.Create(CancelImpl);
-    private ReactiveCommand<Unit, Unit>? _cancel;
+    public ReactiveCommand<RxVoid, RxVoid> Cancel => _cancel ??= ReactiveCommand.Create(CancelImpl);
+    private ReactiveCommand<RxVoid, RxVoid>? _cancel;
 
     private void CancelImpl()
     {

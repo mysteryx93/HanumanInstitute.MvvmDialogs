@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.SourceGenerators;
 
 namespace Demo.CrossPlatform.ViewModels;
@@ -22,7 +23,7 @@ public partial class ConfirmCloseViewModel : ViewModelBase, IModalDialogViewMode
     [Reactive]
     public partial string Text { get; set; } = string.Empty;
 
-    public RxCommandUnit Close { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Close { get; }
 
     public void OnLoaded()
     {

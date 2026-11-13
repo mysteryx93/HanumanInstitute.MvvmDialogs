@@ -5,6 +5,7 @@ using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentTaskDialog;
@@ -12,10 +13,10 @@ namespace Demo.Avalonia.FluentTaskDialog;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
-    public ReactiveCommand<Unit, Unit> ShowMessageBox { get; }
-    public ReactiveCommand<Unit, Unit> AskText { get; }
-    public ReactiveCommand<Unit, Unit> ShowViewModel { get; }
-    public ReactiveCommand<Unit, Unit> ShowControl { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowMessageBox { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AskText { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowViewModel { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowControl { get; }
 
     public MainViewModel(IDialogService dialogService)
     {

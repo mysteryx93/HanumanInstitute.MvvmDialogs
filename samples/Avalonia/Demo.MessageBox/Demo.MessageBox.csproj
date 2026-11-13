@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>default</LangVersion>
     <AssemblyName>Demo.Avalonia.MessageBox</AssemblyName>
     <RootNamespace>Demo.Avalonia.MessageBox</RootNamespace>
     <AssemblyVersion>1.0.0.24361</AssemblyVersion>
     <FileVersion>1.0.0.24361</FileVersion>
+    <PublishAot>true</PublishAot>
+    <Features>$(Features);runtime-async=on</Features>
   </PropertyGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
@@ -15,8 +17,11 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" />
     <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Wayland" />
     <PackageReference Include="ReactiveUI.Avalonia" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <!--Condition
+    below is needed to remove Avalonia.Diagnostics package from build output in Release
+    configuration.-->
     <PackageReference Include="Avalonia.Themes.Fluent" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="Splat.DependencyInjection.SourceGenerator">

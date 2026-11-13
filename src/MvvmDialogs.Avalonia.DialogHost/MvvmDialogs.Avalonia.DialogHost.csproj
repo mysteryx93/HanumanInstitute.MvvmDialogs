@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-      <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
+      <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
       <LangVersion>default</LangVersion>
       <Nullable>enable</Nullable>
       <OutputType>Library</OutputType>
@@ -15,6 +15,10 @@
       <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
       <PackageIcon>icon_64x64.png</PackageIcon>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
+		<Features>$(Features);runtime-async=on</Features>
+	</PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Avalonia"/>

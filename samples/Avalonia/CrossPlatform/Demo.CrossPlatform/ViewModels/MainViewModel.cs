@@ -10,6 +10,7 @@ using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 using ReactiveUI.SourceGenerators;
 
+
 namespace Demo.CrossPlatform.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
@@ -47,32 +48,26 @@ public partial class MainViewModel : ViewModelBase
         get => _dialogViewModel;
         set
         {
-            if (DialogViewModel != null)
-            {
-                DialogViewModel.Closed -= Dialog_ViewClosed;
-            }
+            DialogViewModel?.Closed -= Dialog_ViewClosed;
             this.RaiseAndSetIfChanged(ref _dialogViewModel, value);
-            if (DialogViewModel != null)
-            {
-                DialogViewModel.Closed += Dialog_ViewClosed;
-            }
+            DialogViewModel?.Closed += Dialog_ViewClosed;
         }
     }
 
     private void Dialog_ViewClosed(object? sender, EventArgs e) => DialogViewModel = null;
 
-    public RxCommandUnit Show { get; }
-    public RxCommandUnit ShowDialog { get; }
-    public RxCommandUnit Close { get; }
-    public RxCommandUnit Activate { get; }
-    public RxCommandUnit DialogConfirmClose { get; }
-    public RxCommandUnit OpenFile { get; }
-    public RxCommandUnit OpenFiles { get; }
-    public RxCommandUnit OpenFolder { get; }
-    public RxCommandUnit OpenFolders { get; }
-    public RxCommandUnit SaveFile { get; }
-    public RxCommandUnit MessageBox { get; }
-    public RxCommandUnit MessageBoxMultiple { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Show { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> ShowDialog { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Close { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Activate { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> DialogConfirmClose { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFile { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFiles { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFolder { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFolders { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> SaveFile { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> MessageBox { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> MessageBoxMultiple { get; }
 
     private void ShowImpl()
     {

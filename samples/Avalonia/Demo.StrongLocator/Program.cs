@@ -18,5 +18,6 @@ class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .LogToTrace()
+            .UseWaylandWithFallback()
             .UseReactiveUI(rxui => { });
 }

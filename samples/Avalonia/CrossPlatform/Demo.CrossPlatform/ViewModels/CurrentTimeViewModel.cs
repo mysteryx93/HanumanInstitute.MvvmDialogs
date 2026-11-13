@@ -24,7 +24,7 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
     public event EventHandler? RequestClose;
     public event EventHandler? Closed;
 
-    public RxCommandUnit Close { get; }
+    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Close { get; }
 
     private void CloseImpl()
     {

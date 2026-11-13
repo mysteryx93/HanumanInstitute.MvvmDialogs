@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net10.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
     <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
@@ -12,6 +12,10 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageIcon>icon_64x64.png</PackageIcon>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
+		<Features>$(Features);runtime-async=on</Features>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />

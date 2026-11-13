@@ -7,14 +7,15 @@ using ReactiveUI;
 
 namespace Demo.Avalonia.DialogHost;
 
-public class CurrentTimeViewModel : ViewModelBase, IViewClosing, IViewClosed
+public partial class CurrentTimeViewModel : ViewModelBase, IViewClosing, IViewClosed
 {
     public DateTime CurrentTime => DateTime.Now;
 
-    public bool ConfirmClose { get; set; }
+    [ReactiveUI.SourceGenerators.Reactive]
+    private bool _confirmClose;
 
-    public bool StayOpen { get; set; }
-
+    [ReactiveUI.SourceGenerators.Reactive]
+    private bool _stayOpen;
     private readonly IDisposable _clock;
 
     public CurrentTimeViewModel() =>

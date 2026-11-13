@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;net10.0-windows</TargetFrameworks>
+    <TargetFrameworks>net462;net10.0-windows;net11.0-windows</TargetFrameworks>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputType>Library</OutputType>
@@ -19,6 +19,10 @@
     <UseWindowsForms>true</UseWindowsForms>
     <PackageIcon>icon_64x64.png</PackageIcon>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0-windows'">
+		<Features>$(Features);runtime-async=on</Features>
+	</PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MvvmDialogs\MvvmDialogs.csproj" />

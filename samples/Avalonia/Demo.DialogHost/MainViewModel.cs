@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
@@ -22,11 +23,11 @@ public partial class MainViewModel : ViewModelBase
         ConfirmClose = ReactiveCommand.CreateFromTask(ConfirmCloseImplAsync);
     }
 
-    public ReactiveCommand<Unit, Unit> ShowViewModel { get; }
-    public ReactiveCommand<Unit, Unit> AskText { get; }
-    public ReactiveCommand<Unit, Unit> ShowMessage { get; }
-    public ReactiveCommand<Unit, Unit> ShowControl { get; }
-    public ReactiveCommand<Unit, Unit> ConfirmClose { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowViewModel { get; }
+    public ReactiveCommand<RxVoid, RxVoid> AskText { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowMessage { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowControl { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ConfirmClose { get; }
 
     [Reactive]
     public partial string? TextOutput { get; set; }
