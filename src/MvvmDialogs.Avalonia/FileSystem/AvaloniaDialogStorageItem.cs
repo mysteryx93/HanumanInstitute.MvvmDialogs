@@ -25,7 +25,19 @@ public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
     public Uri Path => _item.Path;
 
     /// <inheritdoc />
-    public string LocalPath => _item.Path.LocalPath;
+    public string LocalPath => ReadLocalPath(_item);
+
+    // Volume roots have no parent, so Avalonia returns a relative URI whose LocalPath throws.
+    private static string ReadLocalPath(IStorageItem item)
+    {
+        var path = item.Path;
+        if (path.IsAbsoluteUri)
+        {
+            return path.LocalPath;
+        }
+
+        return item.TryGetLocalPath() ?? path.OriginalString;
+    }
 
     /// <inheritdoc />
     public async Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()

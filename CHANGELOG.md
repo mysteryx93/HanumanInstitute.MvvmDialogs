@@ -2,9 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.4.1
+
+- Fixed an Avalonia crash reading LocalPath on a drive or volume root (C:\ or /), such as a folder from ShowOpenFolderDialogAsync or GetParentAsync.
+
 ## 2.4 - 2026-09-04
 
 This update fixes some memory management issues and addresses some other minor issues.
+
+### Changed
+
+- Replaced manual `CancellableActions.Add`/`Remove` registration with `RunAsync`, including safe concurrent cancellation and identity-based cleanup.
+- `IDialogManager.HandleDialogEvents` now returns an `IDisposable` registration for explicit cleanup.
 
 ### Fixed
 
@@ -16,11 +25,6 @@ This update fixes some memory management issues and addresses some other minor i
 - Prevented duplicate or stale mobile back-navigation handlers.
 - Ensured navigation views raise their `Loaded` and `Closed` events.
 - Updated the demos to stop their clocks when dialogs close.
-
-### Changed
-
-- Replaced manual `CancellableActions.Add`/`Remove` registration with `RunAsync`, including safe concurrent cancellation and identity-based cleanup.
-- `IDialogManager.HandleDialogEvents` now returns an `IDisposable` registration for explicit cleanup.
 
 ## 2.3 - 2026-04-24
 
