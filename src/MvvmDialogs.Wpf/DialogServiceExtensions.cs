@@ -133,6 +133,7 @@ public static class DialogServiceExtensions
     {
         settings ??= new OpenFileDialogSettings();
         settings.AllowMultiple ??= true;
+        settings.SelectedFileType = null;
         return service.DialogManager.AsSync().ShowFrameworkDialog(
             ownerViewModel, settings, x => string.Join(", ", x)) as IReadOnlyList<IDialogStorageFile> ?? Array.Empty<IDialogStorageFile>();
     }
@@ -148,8 +149,10 @@ public static class DialogServiceExtensions
     public static IDialogStorageFile? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
         SaveFileDialogSettings? settings = null)
     {
+        settings ??= new SaveFileDialogSettings();
+        settings.SelectedFileType = null;
         return (IDialogStorageFile?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings ?? new SaveFileDialogSettings());
+            ownerViewModel, settings);
     }
 
     /// <summary>

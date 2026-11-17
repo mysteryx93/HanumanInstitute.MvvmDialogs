@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Avalonia.Platform.Storage;
+﻿using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -25,19 +24,11 @@ public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
     public Uri Path => _item.Path;
 
     /// <inheritdoc />
-    public string LocalPath => ReadLocalPath(_item);
+    public string? TryGetLocalPath() => _item.TryGetLocalPath();
 
-    // Volume roots have no parent, so Avalonia returns a relative URI whose LocalPath throws.
-    private static string ReadLocalPath(IStorageItem item)
-    {
-        var path = item.Path;
-        if (path.IsAbsoluteUri)
-        {
-            return path.LocalPath;
-        }
-
-        return item.TryGetLocalPath() ?? path.OriginalString;
-    }
+    /// <inheritdoc />
+    public string LocalPath => _item.TryGetLocalPath() ??
+                               throw new InvalidOperationException("This storage item has no local filesystem path. Use TryGetLocalPath or open a stream.");
 
     /// <inheritdoc />
     public async Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()
@@ -53,6 +44,10 @@ public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
     public Task<string?> SaveBookmarkAsync() => _item.SaveBookmarkAsync();
 
     /// <inheritdoc />
+    public Task ReleaseBookmarkAsync() =>
+        _item is IStorageBookmarkItem bookmark ? bookmark.ReleaseBookmarkAsync() : Task.CompletedTask;
+
+    /// <inheritdoc />
     public async Task<IDialogStorageFolder?> GetParentAsync()
     {
         var result = await _item.GetParentAsync().ConfigureAwait(true);
@@ -65,17 +60,17 @@ public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
     /// <inheritdoc />
     public async Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination)
     {
-        var dest = await destination.ToAvaloniaAsync();
-        if (dest == null)
+        // Delegate only when the destination is already an Avalonia folder. The wrapper type is not a provider identity.
+        if (destination is AvaloniaDialogStorageFolder avaloniaDestination)
         {
-            throw new FileNotFoundException($"Cannot open path '${destination.Path}'");
+            return await _item.MoveAsync(avaloniaDestination.Source) switch
+            {
+                IStorageFile file => file.ToDialog(),
+                IStorageFolder folder => folder.ToDialog(),
+                _ => null
+            };
         }
-        return await _item.MoveAsync(dest) switch
-        {
-            IStorageFile file => file.ToDialog(),
-            IStorageFolder folder => folder.ToDialog(),
-            _ => null
-        };
+        return null;
     }
 
     /// <inheritdoc />

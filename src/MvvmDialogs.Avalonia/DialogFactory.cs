@@ -52,58 +52,116 @@ public class DialogFactory : DialogFactoryBase
         {
             AllowMultiple = settings.AllowMultiple ?? false
         };
-        await AddSharedSettingsAsync(apiSettings, settings);
+        await AddSharedSettingsAsync(owner, apiSettings, settings);
 
         return await _api.ShowOpenFolderDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
     }
 
     private async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(IView? owner, OpenFileDialogSettings settings)
     {
+        var filters = SyncFilters(settings.Filters);
         var apiSettings = new FilePickerOpenOptions()
         {
             AllowMultiple = settings.AllowMultiple ?? false,
-            FileTypeFilter = SyncFilters(settings.Filters)
+            FileTypeFilter = filters,
+            SuggestedFileType = FindMappedFilter(settings.Filters, filters, settings.SuggestedFileType)
             // d.ShowReadOnly = Settings.ShowReadOnly;
             // d.ReadOnlyChecked = Settings.ReadOnlyChecked;
         };
-        await AddSharedSettingsAsync(apiSettings, settings);
+        await AddSharedSettingsAsync(owner, apiSettings, settings);
 
-        return await _api.ShowOpenFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true) ?? Array.Empty<IDialogStorageFile>();
+        var result = await _api.ShowOpenFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
+        return WithSelectedFilter(settings, filters, result);
     }
 
     private async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(IView? owner, SaveFileDialogSettings settings)
     {
+        var filters = SyncFilters(settings.Filters);
         var apiSettings = new FilePickerSaveOptions()
         {
             DefaultExtension = string.IsNullOrEmpty(settings.DefaultExtension) ? null : settings.DefaultExtension,
-            FileTypeChoices = SyncFilters(settings.Filters),
-            SuggestedFileName = settings.SuggestedFileName
+            FileTypeChoices = filters,
+            SuggestedFileName = settings.SuggestedFileName,
+            SuggestedFileType = FindMappedFilter(settings.Filters, filters, settings.SuggestedFileType)
         };
+        if (settings.ShowOverwritePrompt.HasValue)
+        {
+            apiSettings.ShowOverwritePrompt = settings.ShowOverwritePrompt.Value;
+        }
 
-        await AddSharedSettingsAsync(apiSettings, settings);
+        await AddSharedSettingsAsync(owner, apiSettings, settings);
 
         var result = await _api.ShowSaveFileDialogAsync(owner.GetRef(), apiSettings).ConfigureAwait(true);
-
-        // Add DefaultExtension.
-        // if (result != null && !string.IsNullOrEmpty(settings.DefaultExtension) && !_pathInfo.GetFileInfo(result).Exists && !result.Contains('.'))
-        // {
-        //     result += "." + settings.DefaultExtension.TrimStart('.');
-        // }
-        return result;
+        return WithSelectedFilter(settings, filters, result);
     }
 
-    private async Task AddSharedSettingsAsync(PickerOptions d, PickerDialogSettings s)
+    private async Task AddSharedSettingsAsync(IView? owner, PickerOptions d, PickerDialogSettings s)
     {
         // d.DereferenceLinks = s.DereferenceLinks;
         // d.Directory = s.InitialDirectory;
         // d.InitialFileName = s.InitialFile;
         // d.Filters = SyncFilters(s.Filters);
-        if (s.SuggestedStartLocation != null)
+        var storage = StorageExtensions.GetStorageProvider(owner.GetRef());
+        // A detached owner contributes no start folder. The picker call reports the missing provider.
+        if (s.SuggestedStartLocation != null && storage != null)
         {
-            d.SuggestedStartLocation = await s.SuggestedStartLocation.ToAvaloniaAsync();
+            d.SuggestedStartLocation = await s.SuggestedStartLocation.ToAvaloniaAsync(storage);
         }
 
         d.Title = s.Title;
+    }
+
+    // Records the chosen filter when the dialog returns at least one file.
+    private static IReadOnlyList<IDialogStorageFile> WithSelectedFilter(OpenFileDialogSettings settings, IList<FilePickerFileType> mapped, OpenFilePickerResult result)
+    {
+        var files = (result.Files ?? [])
+            .Select(IDialogStorageFile (file) => new AvaloniaDialogStorageFile(file))
+            .ToList();
+        settings.SelectedFileType = files.Count == 0 ? null : FilterFor(settings.Filters, mapped, result.SelectedFileType);
+        return files;
+    }
+
+    // Records the chosen filter when the dialog returns a file.
+    private static IDialogStorageFile? WithSelectedFilter(SaveFileDialogSettings settings, IList<FilePickerFileType> mapped, SaveFilePickerResult result)
+    {
+        if (result.File == null)
+        {
+            settings.SelectedFileType = null;
+            return null;
+        }
+
+        settings.SelectedFileType = FilterFor(settings.Filters, mapped, result.SelectedFileType);
+        return new AvaloniaDialogStorageFile(result.File);
+    }
+
+    // The picker returns the file type instance this factory created.
+    private static FileFilter? FilterFor(IList<FileFilter> filters, IList<FilePickerFileType> mapped, FilePickerFileType? selected)
+    {
+        if (selected == null)
+        {
+            return null;
+        }
+
+        for (var i = 0; i < mapped.Count && i < filters.Count; i++)
+        {
+            if (ReferenceEquals(mapped[i], selected))
+            {
+                return filters[i];
+            }
+        }
+
+        return null;
+    }
+
+    private static FilePickerFileType? FindMappedFilter(IList<FileFilter> filters, IList<FilePickerFileType> mapped, FileFilter? selected)
+    {
+        if (selected == null)
+        {
+            return null;
+        }
+
+        var index = selected.IndexIn(filters);
+        return index < 0 ? null : mapped[index];
     }
 
     private static List<FilePickerFileType> SyncFilters(IList<FileFilter> filters) =>

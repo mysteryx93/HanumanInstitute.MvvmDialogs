@@ -127,7 +127,14 @@ public class DialogHostView : IView
     /// <inheritdoc />
     public void Close()
     {
-        Host?.CloseDialogCommand.Execute(null);
+        // CloseDialogCommand throws when the session has already ended.
+        var session = Host?.CurrentSession;
+        if (session == null || session.IsEnded)
+        {
+            return;
+        }
+
+        session.Close();
     }
 
     /// <inheritdoc />

@@ -31,6 +31,20 @@ public class AvaloniaDialogStorageFolder : AvaloniaDialogStorageItem, IDialogSto
     }
 
     /// <inheritdoc />
+    public async Task<IDialogStorageFile?> GetFileAsync(string name)
+    {
+        var result = await _item.GetFileAsync(name);
+        return result?.ToDialog();
+    }
+
+    /// <inheritdoc />
+    public async Task<IDialogStorageFolder?> GetFolderAsync(string name)
+    {
+        var result = await _item.GetFolderAsync(name);
+        return result?.ToDialog();
+    }
+
+    /// <inheritdoc />
     public async Task<IDialogStorageFile?> CreateFileAsync(string name)
     {
         var result = await _item.CreateFileAsync(name);

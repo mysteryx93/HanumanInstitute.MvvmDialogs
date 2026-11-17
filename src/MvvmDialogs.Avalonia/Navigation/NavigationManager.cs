@@ -3,6 +3,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
+using Avalonia.Threading;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
@@ -89,10 +90,11 @@ public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyProp
     /// </summary>
     private void TopLevel_BackRequested(object? sender, RoutedEventArgs e)
     {
-        if (CancellableActions.Any)
+        var cancel = CancellableActions.TakeLast();
+        if (cancel != null)
         {
-            // Cancel message boxes
-            CancellableActions.CancelLast();
+            // Running the close inside this event resumes the dialog and faults it.
+            Dispatcher.UIThread.Post(cancel);
             e.Handled = true;
         }
         else if (CurrentView != null && _history.Count > 1)

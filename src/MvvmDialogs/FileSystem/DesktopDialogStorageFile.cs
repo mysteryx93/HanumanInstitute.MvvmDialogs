@@ -52,7 +52,7 @@ public class DesktopDialogStorageFile : DesktopDialogStorageItem, IDialogStorage
         {
             var newPath = System.IO.Path.Combine(storageFolder.Info.FullName, _info.Name);
             _info.MoveTo(newPath);
-            return Task.FromResult<IDialogStorageItem?>(new DesktopDialogStorageFile(destination.LocalPath));
+            return Task.FromResult<IDialogStorageItem?>(new DesktopDialogStorageFile(newPath));
         }
         return Task.FromResult<IDialogStorageItem?>(null);
     }

@@ -10,4 +10,9 @@ public class SaveFileDialogSettings : FileDialogSettings
     /// if not set by the user or by a filter
     /// </summary>
     public string? DefaultExtension { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the save dialog warns before replacing an existing file. Null leaves the platform default.
+    /// </summary>
+    public bool? ShowOverwritePrompt { get; set; }
 }

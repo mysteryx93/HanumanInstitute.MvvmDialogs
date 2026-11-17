@@ -14,6 +14,7 @@ internal class FileApiSettings
     public string[] FileNames { get; set; } = Array.Empty<string>();
     public bool DereferenceLinks { get; set; } = true;
     public string Filter { get; set; } = string.Empty;
+    public int FilterIndex { get; set; }
     public string Title { get; set; } = string.Empty;
     public bool ShowHelp { get; set; } = false;
     public EventHandler? HelpRequest { get; set; }
@@ -32,6 +33,7 @@ internal class FileApiSettings
         d.FileName = FileName;
         d.DereferenceLinks = DereferenceLinks;
         d.Filter = Filter;
+        d.FilterIndex = FilterIndex;
         d.Title = Title;
         d.ShowHelp = ShowHelp;
         if (HelpRequest != null)

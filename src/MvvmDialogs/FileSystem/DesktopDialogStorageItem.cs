@@ -18,7 +18,10 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
     private Uri? _path;
 
     /// <inheritdoc />
-    public string LocalPath => Path.LocalPath;
+    public string? TryGetLocalPath() => InfoBase.FullName;
+
+    /// <inheritdoc />
+    public string LocalPath => InfoBase.FullName;
 
     /// <inheritdoc />
     public Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()
@@ -36,6 +39,9 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
 
     /// <inheritdoc />
     public Task<string?> SaveBookmarkAsync() => Task.FromResult((string?)InfoBase.FullName);
+
+    /// <inheritdoc />
+    public Task ReleaseBookmarkAsync() => Task.CompletedTask;
 
     /// <inheritdoc />
     public Task<IDialogStorageFolder?> GetParentAsync()

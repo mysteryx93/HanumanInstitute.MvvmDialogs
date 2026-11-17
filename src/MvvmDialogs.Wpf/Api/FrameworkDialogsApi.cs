@@ -28,6 +28,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         var dialog = new System.Windows.Forms.OpenFileDialog();
         settings.ApplyTo(dialog);
         var result = dialog.ShowDialog(owner);
+        settings.FilterIndex = dialog.FilterIndex;
         return result == DialogResult.OK ?
             dialog.FileNames.Select(x => new DesktopDialogStorageFile(x)).ToArray() :
             Array.Empty<IDialogStorageFile>();
@@ -38,6 +39,7 @@ internal class FrameworkDialogsApi : IFrameworkDialogsApi
         var dialog = new System.Windows.Forms.SaveFileDialog();
         settings.ApplyTo(dialog);
         var result = dialog.ShowDialog(owner);
+        settings.FilterIndex = dialog.FilterIndex;
         return result == DialogResult.OK ?
             new DesktopDialogStorageFile(dialog.FileName) :
             null;

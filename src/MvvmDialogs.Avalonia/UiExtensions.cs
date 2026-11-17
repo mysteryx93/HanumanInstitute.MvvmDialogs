@@ -62,22 +62,11 @@ public static class UiExtensions
     }
 
     /// <summary>
-    /// Returns the <see cref="IView"/> RefObj property as an Avalonia ContentControl.
+    /// Returns the view's <see cref="IView.RefObj"/> when it is an Avalonia control.
     /// </summary>
-    /// <param name="view">The IView to get the Ref property for.</param>
-    /// <returns>The ContentControl held within the IView.</returns>
-    public static ContentControl? GetRef(this IView? view)
-    {
-        if (view is ViewWrapper v)
-        {
-            return v.Ref;
-        }
-        else if (view is ViewNavigationWrapper nav)
-        {
-            return nav.Ref;
-        }
-        return null;
-    }
+    /// <param name="view">The view whose owner control is required.</param>
+    /// <returns>The control stored in RefObj, or null.</returns>
+    public static ContentControl? GetRef(this IView? view) => view?.RefObj as ContentControl;
 
     // /// <summary>
     // /// Converts an IView into a ViewWrapper.

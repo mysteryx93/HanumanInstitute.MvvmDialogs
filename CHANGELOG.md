@@ -2,9 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2.4.1
+## 2.5
 
+### Changed
+
+- ReleaseBookmarkAsync is on the storage item. Avalonia forwards it to the platform bookmark.
+- Added SaveFileDialogSettings.ShowOverwritePrompt.
+- Added FileDialogSettings.SuggestedFileType
+- Open and save file dialogs write the selected filter to FileDialogSettings.SelectedFileType when the platform reports one.
+
+### Fixed
+
+- Fixed an Android crash when the back button closes a dialog.
 - Fixed an Avalonia crash reading LocalPath on a drive or volume root (C:\ or /), such as a folder from ShowOpenFolderDialogAsync or GetParentAsync.
+- Desktop CreateFileAsync no longer leaves the new file locked. File MoveAsync returns the moved file.
+- A storage item with no filesystem path, such as a browser file or an Android content item, returns null from TryGetLocalPath. LocalPath throws. Read those through a stream.
+- MoveAsync delegates to the backing storage object. A desktop item accepts only a desktop folder. An Avalonia item accepts an Avalonia folder and forwards that folder unchanged. Any other destination returns null.
+- SuggestedStartLocation uses the dialog owner's storage provider. An Avalonia folder is reused as-is. A control that is not attached to a top level has no provider, and the picker fails instead of borrowing the main window.
+- GetFileAsync and GetFolderAsync on desktop join the name onto the folder path, the same way Avalonia file storage does.
+- Library packages target net11.0 and net10.0, with runtime async enabled on net11.0. The core and WPF packages also target net462, and WPF targets net10.0-windows and net11.0-windows.
 
 ## 2.4 - 2026-09-04
 

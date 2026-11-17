@@ -57,17 +57,40 @@ public class DesktopDialogStorageFolder : DesktopDialogStorageItem, IDialogStora
     // public IEnumerable<FileSystemInfo> EnumeratePathInfos(string searchPattern, SearchOption searchOption) => _info.EnumerateFileSystemInfos(searchPattern, searchOption);
 
     /// <inheritdoc />
+    public Task<IDialogStorageFile?> GetFileAsync(string name)
+    {
+        var path = System.IO.Path.Combine(_info.FullName, name);
+        if (!File.Exists(path))
+        {
+            return Task.FromResult<IDialogStorageFile?>(null);
+        }
+        return Task.FromResult<IDialogStorageFile?>(new DesktopDialogStorageFile(path));
+    }
+
+    /// <inheritdoc />
+    public Task<IDialogStorageFolder?> GetFolderAsync(string name)
+    {
+        var path = System.IO.Path.Combine(_info.FullName, name);
+        if (!Directory.Exists(path))
+        {
+            return Task.FromResult<IDialogStorageFolder?>(null);
+        }
+        return Task.FromResult<IDialogStorageFolder?>(new DesktopDialogStorageFolder(path));
+    }
+
+    /// <inheritdoc />
     public Task<IDialogStorageFile?> CreateFileAsync(string name)
     {
-        var path = System.IO.Path.Combine(LocalPath, name);
-        File.Create(path);
+        var path = System.IO.Path.Combine(_info.FullName, name);
+        // File.Create keeps the file open until the stream is disposed.
+        using var created = File.Create(path);
         return Task.FromResult<IDialogStorageFile?>(new DesktopDialogStorageFile(path));
     }
 
     /// <inheritdoc />
     public Task<IDialogStorageFolder?> CreateFolderAsync(string name)
     {
-        var path = System.IO.Path.Combine(LocalPath, name);
+        var path = System.IO.Path.Combine(_info.FullName, name);
         Directory.CreateDirectory(path);
         return Task.FromResult<IDialogStorageFolder?>(new DesktopDialogStorageFolder(path));
     }

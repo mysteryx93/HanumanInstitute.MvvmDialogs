@@ -97,42 +97,117 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task OpenFileImplAsync()
     {
+        if (!_storage.CanPickFiles)
+        {
+            Output = "This platform cannot open a file picker.";
+            return;
+        }
+
+        var text = new FileFilter("Text", "txt")
+        {
+            MimeTypes = new[] { "text/plain" },
+            AppleUniformTypeIdentifiers = new[] { "public.plain-text" }
+        };
+        var image = new FileFilter("Image", new[] { "png", "jpg" })
+        {
+            MimeTypes = new[] { "image/png", "image/jpeg" },
+            AppleUniformTypeIdentifiers = new[] { "public.png", "public.jpeg" }
+        };
         var settings = new OpenFileDialogSettings
         {
-            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync(),
+            SuggestedFileType = text,
+            Filters = new[] { text, image }
         };
         var file = await _dialogService.ShowOpenFileDialogAsync(this, settings);
-        Output = file?.Path + Environment.NewLine;
-        if (file?.Path != null)
+        if (file == null)
         {
+            Output = "Cancelled";
+            return;
+        }
+
+        using (file)
+        {
+            Output = file.Path + Environment.NewLine + "Filter: " + (settings.SelectedFileType?.Name ?? "not reported") + Environment.NewLine;
             await ScanFileProgressAsync(file);
+            await RestoreBookmarkAsync(file);
         }
     }
 
     private async Task ScanFileProgressAsync(IDialogStorageFile file)
     {
-        using var stream = file.OpenReadAsync();
-        Output += "File opened." + Environment.NewLine;
-        var outputHeader = string.Empty;
-        long length = 0;
+        await using var stream = await file.OpenReadAsync();
+        var header = Output + "File opened." + Environment.NewLine;
+        var canReportPercent = stream.CanSeek && stream.Length > 0;
+        var length = canReportPercent ? stream.Length : 0;
+        var lastReport = Environment.TickCount64;
+        Output = header;
 
-        IProgress<long> progress = new SynchronousProgress<long>(value =>
+        var buffer = new byte[8192];
+        var total = 0L;
+        int read;
+        while ((read = await stream.ReadAsync(buffer)) > 0)
         {
-            Output = outputHeader + ((float)value / length).ToString("P1") + Environment.NewLine;
-        });
-
-        await stream.ContinueWith(
-            async t =>
+            total += read;
+            var now = Environment.TickCount64;
+            if (now - lastReport < 100)
             {
-                using var ms = new MemoryStream();
-                var streamResult = stream.Result;
-                length = streamResult.Length;
-                Output += "Result size: " + streamResult.Length + " starting copy to memory" + Environment.NewLine;
-                outputHeader = Output;
-                await streamResult.CopyToAsync(ms, progress, default, 1024);
-                Output += "Done" + Environment.NewLine;
-                ms.Position = 0;
-            });
+                continue;
+            }
+
+            lastReport = now;
+            Output = header + FormatScanProgress(canReportPercent, total, length);
+        }
+
+        Output = header + "Done " + total + " bytes";
+    }
+
+    // One progress line under a fixed header. The bound string does not grow with the file.
+    private static string FormatScanProgress(bool canReportPercent, long total, long length) =>
+        canReportPercent ? ((float)total / length).ToString("P1") : total + " bytes";
+
+    private async Task RestoreBookmarkAsync(IDialogStorageFile file)
+    {
+        if (!file.CanBookmark)
+        {
+            return;
+        }
+
+        var bookmark = await file.SaveBookmarkAsync();
+        if (bookmark == null)
+        {
+            return;
+        }
+
+        IDialogStorageFile? restored = null;
+        try
+        {
+            restored = await _storage.OpenFileBookmarkAsync(bookmark);
+            if (restored == null)
+            {
+                Output += "Bookmark was not reopened." + Environment.NewLine;
+                return;
+            }
+
+            await using (var stream = await restored.OpenReadAsync())
+            {
+                var buffer = new byte[1];
+                var read = await stream.ReadAsync(buffer);
+                Output += "Bookmark reopened, first read " + read + " byte." + Environment.NewLine;
+            }
+        }
+        finally
+        {
+            var holder = restored ?? file;
+            try
+            {
+                await holder.ReleaseBookmarkAsync();
+            }
+            finally
+            {
+                restored?.Dispose();
+            }
+        }
     }
 
     private async Task OpenFilesImplAsync()
@@ -143,6 +218,10 @@ public partial class MainViewModel : ViewModelBase
         };
         var files = await _dialogService.ShowOpenFilesDialogAsync(this, settings);
         Output = string.Join(Environment.NewLine, files.Select(x => x?.Path?.ToString() ?? ""));
+        foreach (var file in files)
+        {
+            file.Dispose();
+        }
     }
 
     private async Task OpenFolderImplAsync()
@@ -153,6 +232,7 @@ public partial class MainViewModel : ViewModelBase
         };
         var folder = await _dialogService.ShowOpenFolderDialogAsync(this, settings);
         Output = folder?.Path?.ToString();
+        folder?.Dispose();
     }
 
     private async Task OpenFoldersImplAsync()
@@ -163,16 +243,47 @@ public partial class MainViewModel : ViewModelBase
         };
         var folders = await _dialogService.ShowOpenFoldersDialogAsync(this, settings);
         Output = string.Join(Environment.NewLine, folders.Select(x => x?.Path?.ToString() ?? ""));
+        foreach (var folder in folders)
+        {
+            folder.Dispose();
+        }
     }
 
     private async Task SaveFileImplAsync()
     {
+        if (!_storage.CanSave)
+        {
+            Output = "This platform cannot open a save picker.";
+            return;
+        }
+
+        var text = new FileFilter("Text", "txt")
+        {
+            MimeTypes = new[] { "text/plain" },
+            AppleUniformTypeIdentifiers = new[] { "public.plain-text" }
+        };
         var settings = new SaveFileDialogSettings
         {
-            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync()
+            SuggestedStartLocation = await _storage.GetDownloadsFolderAsync(),
+            SuggestedFileName = "note.txt",
+            SuggestedFileType = text,
+            Filters = new[] { text },
+            ShowOverwritePrompt = true
         };
         var file = await _dialogService.ShowSaveFileDialogAsync(this, settings);
-        Output = file?.Path?.ToString();
+        if (file == null)
+        {
+            Output = "Cancelled";
+            return;
+        }
+
+        using (file)
+        {
+            await using var stream = await file.OpenWriteAsync();
+            await using var writer = new StreamWriter(stream);
+            await writer.WriteAsync("Saved from MvvmDialogs.");
+            Output = file.Path + Environment.NewLine + "Filter: " + (settings.SelectedFileType?.Name ?? "not reported");
+        }
     }
 
     private async Task MessageBoxImplAsync()

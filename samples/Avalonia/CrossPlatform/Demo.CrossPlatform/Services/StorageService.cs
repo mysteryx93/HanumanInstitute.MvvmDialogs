@@ -9,13 +9,22 @@ namespace Demo.CrossPlatform.Services;
 
 public class StorageService : IStorageService
 {
-    protected virtual IStorageProvider Storage => _storage ??= GetTopLevel(Application.Current)?.StorageProvider ?? throw new NullReferenceException("No StorageProvider found.");
-    private IStorageProvider? _storage;
+    protected virtual IStorageProvider Storage => field ??= GetTopLevel(Application.Current)?.StorageProvider ?? throw new NullReferenceException("No StorageProvider found.");
+
+    public bool CanPickFiles => Storage.CanOpen;
+
+    public bool CanSave => Storage.CanSave;
 
     public async Task<IDialogStorageFolder?> GetDownloadsFolderAsync()
     {
         var result = await Storage.TryGetWellKnownFolderAsync(WellKnownFolder.Downloads);
         return result?.ToDialog();
+    }
+
+    public async Task<IDialogStorageFile?> OpenFileBookmarkAsync(string bookmark)
+    {
+        var file = await Storage.OpenFileBookmarkAsync(bookmark);
+        return file?.ToDialog();
     }
 
     /// <summary>

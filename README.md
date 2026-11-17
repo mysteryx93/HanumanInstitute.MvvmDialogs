@@ -401,7 +401,7 @@ public class ViewLocator : StrongViewLocator
 - `IReadOnlyList<IDialogStorageFile> ShowOpenFilesDialogAsync`
 - `IReadOnlyList<IDialogStorageFolder> ShowOpenFoldersDialogAsync`
 
-As of v2, files and folders are returned as `IDialogStorageFile` and `IDialogStorageFolder` instead of `string`. To get the path as a string like before (on desktop), simply add `.LocalPath`. Note that mobile and web have different path formats. 
+As of v2, files and folders are returned as `IDialogStorageFile` and `IDialogStorageFolder` instead of `string`. On desktop, `TryGetLocalPath()` returns the filesystem path. It returns null for browser files and most Android content items; read those through `OpenReadAsync`. `LocalPath` throws when no filesystem path exists. 
 
 For extra dialog options, see Custom Framework Dialogs section. 
 

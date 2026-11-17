@@ -15,6 +15,20 @@ public interface IDialogStorageFolder : IDialogStorageItem
     /// <returns>When this method completes successfully, it returns a list of the files and folders in the current folder. Each item in the list is represented by an <see cref="IDialogStorageItem"/> implementation object.</returns>
     IAsyncEnumerable<IDialogStorageItem> GetItemsAsync();
 
+    /// <summary>
+    /// Gets the file the platform storage folder returns for this name.
+    /// </summary>
+    /// <param name="name">The name forwarded to the platform folder.</param>
+    /// <returns>The file when the platform finds it, or null when it does not.</returns>
+    Task<IDialogStorageFile?> GetFileAsync(string name);
+
+    /// <summary>
+    /// Gets the folder the platform storage folder returns for this name.
+    /// </summary>
+    /// <param name="name">The name forwarded to the platform folder.</param>
+    /// <returns>The folder when the platform finds it, or null when it does not.</returns>
+    Task<IDialogStorageFolder?> GetFolderAsync(string name);
+
     // /// <summary>
     // /// Gets the files and subfolders in the current folder.
     // /// </summary>

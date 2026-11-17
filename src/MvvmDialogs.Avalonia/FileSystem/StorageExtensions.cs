@@ -1,5 +1,4 @@
-﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Platform.Storage;
+﻿using Avalonia.Platform.Storage;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -25,28 +24,33 @@ public static class StorageExtensions
 
     // internal static IStorageFile Convert(this IDialogStorageFile item) => new DialogStorageFileToAvalonia(item);
 
-    internal static async Task<IStorageFolder?> ToAvaloniaAsync(this IDialogStorageFolder item)
+    /// <summary>
+    /// Converts a folder for a dialog owned by the supplied provider.
+    /// </summary>
+    /// <param name="item">The folder chosen as a start location.</param>
+    /// <param name="storage">The provider for the dialog owner.</param>
+    /// <returns>The Avalonia folder, or null when the provider cannot open it.</returns>
+    internal static async Task<IStorageFolder?> ToAvaloniaAsync(this IDialogStorageFolder item, IStorageProvider storage)
     {
         if (item is AvaloniaDialogStorageFolder av)
         {
             return av.Source;
         }
-        var storage = GetStorageProvider();
-        if (storage != null)
+
+        var localPath = item.TryGetLocalPath();
+        if (localPath != null)
         {
-            return await storage.TryGetFolderFromPathAsync(item.Path);
+            return await storage.TryGetFolderFromPathAsync(localPath).ConfigureAwait(true);
         }
-        return null;
+
+        return await storage.TryGetFolderFromPathAsync(item.Path).ConfigureAwait(true);
     }
 
-    private static IStorageProvider? GetStorageProvider()
-    {
-        var result = Application.Current?.ApplicationLifetime switch
-        {
-            IClassicDesktopStyleApplicationLifetime d => d.MainWindow,
-            ISingleViewApplicationLifetime s => s.MainView as TopLevel,
-            _ => null
-        };
-        return result?.StorageProvider;
-    }
+    /// <summary>
+    /// Gets the storage provider for a dialog owner.
+    /// </summary>
+    /// <param name="owner">The control that owns the dialog.</param>
+    /// <returns>The owner's storage provider, or null when the control has no top level.</returns>
+    internal static IStorageProvider? GetStorageProvider(ContentControl? owner) =>
+        owner == null ? null : TopLevel.GetTopLevel(owner)?.StorageProvider;
 }

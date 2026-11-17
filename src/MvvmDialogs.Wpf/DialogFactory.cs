@@ -80,7 +80,7 @@ public class DialogFactory : DialogFactoryBase
         var apiSettings = new OpenFolderApiSettings()
         {
             Description = settings.Title,
-            SelectedPath = settings.SuggestedStartLocation?.LocalPath,
+            SelectedPath = settings.SuggestedStartLocation?.TryGetLocalPath(),
             HelpRequest = settings.HelpRequest
         };
 
@@ -98,7 +98,8 @@ public class DialogFactory : DialogFactoryBase
         };
         AddSharedSettings(apiSettings, settings);
 
-        return _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<IDialogStorageFile>();
+        var result = _api.ShowOpenFileDialog(owner?.Ref, apiSettings) ?? Array.Empty<IDialogStorageFile>();
+        return WithSelectedFilter(settings, result, apiSettings.FilterIndex);
     }
 
     private IDialogStorageFile? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings)
@@ -107,17 +108,23 @@ public class DialogFactory : DialogFactoryBase
         {
             DefaultExt = settings.DefaultExtension ?? string.Empty
         };
+        if (settings.ShowOverwritePrompt.HasValue)
+        {
+            apiSettings.OverwritePrompt = settings.ShowOverwritePrompt.Value;
+        }
         AddSharedSettings(apiSettings, settings);
 
-        return _api.ShowSaveFileDialog(owner?.Ref, apiSettings);
+        var result = _api.ShowSaveFileDialog(owner?.Ref, apiSettings);
+        return WithSelectedFilter(settings, result, apiSettings.FilterIndex);
     }
 
     private void AddSharedSettings(FileApiSettings d, FileDialogSettings s)
     {
-        d.InitialDirectory = s.SuggestedStartLocation?.LocalPath ?? string.Empty;
+        d.InitialDirectory = s.SuggestedStartLocation?.TryGetLocalPath() ?? string.Empty;
         d.FileName = s.SuggestedFileName;
         d.DereferenceLinks = s.DereferenceLinks;
         d.Filter = SyncFilters(s.Filters);
+        d.FilterIndex = FilterIndex(s);
         d.Title = s.Title;
         d.ShowHelp = s.HelpRequest != null;
         d.HelpRequest = s.HelpRequest;
@@ -151,6 +158,43 @@ public class DialogFactory : DialogFactoryBase
             result.Append(extDesc);
         }
         return result.ToString();
+    }
+
+    // Win32 filter indexes are 1-based. Zero leaves the dialog's own default.
+    private static int FilterIndex(FileDialogSettings settings)
+    {
+        if (settings.SuggestedFileType == null)
+        {
+            return 0;
+        }
+
+        var index = settings.SuggestedFileType.IndexIn(settings.Filters);
+        return index < 0 ? 0 : index + 1;
+    }
+
+    private static FileFilter? FilterAt(IList<FileFilter> filters, int filterIndex)
+    {
+        var index = filterIndex - 1;
+        if (index < 0 || index >= filters.Count)
+        {
+            return null;
+        }
+
+        return filters[index];
+    }
+
+    // Records the chosen filter when the dialog returns a file.
+    private static IDialogStorageFile? WithSelectedFilter(FileDialogSettings settings, IDialogStorageFile? file, int filterIndex)
+    {
+        settings.SelectedFileType = file == null ? null : FilterAt(settings.Filters, filterIndex);
+        return file;
+    }
+
+    // Records the chosen filter when the dialog returns at least one file.
+    private static IReadOnlyList<IDialogStorageFile> WithSelectedFilter(FileDialogSettings settings, IReadOnlyList<IDialogStorageFile> files, int filterIndex)
+    {
+        settings.SelectedFileType = files.Count == 0 ? null : FilterAt(settings.Filters, filterIndex);
+        return files;
     }
 
     private bool? ShowMessageBox(ViewWrapper? owner, MessageBoxSettings settings)

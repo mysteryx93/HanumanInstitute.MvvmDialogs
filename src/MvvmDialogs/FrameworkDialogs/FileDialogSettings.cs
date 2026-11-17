@@ -29,6 +29,16 @@ public abstract class FileDialogSettings : PickerDialogSettings
     public string SuggestedFileName { get; set; } = string.Empty;
 
     /// <summary>
+    /// Gets or sets the file type selected when the dialog opens. Use one of the instances in <see cref="Filters"/>.
+    /// </summary>
+    public FileFilter? SuggestedFileType { get; set; }
+
+    /// <summary>
+    /// Gets the file type the user selected. The open and save methods set this when the platform reports one, and clear it otherwise.
+    /// </summary>
+    public FileFilter? SelectedFileType { get; set; }
+
+    /// <summary>
     /// Callback to invoke when the user clicks the help button. Setting this will display a help button.
     /// </summary>
     public EventHandler? HelpRequest { get; set; }

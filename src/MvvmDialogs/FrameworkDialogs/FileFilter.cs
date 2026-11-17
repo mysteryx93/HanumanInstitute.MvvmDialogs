@@ -24,7 +24,7 @@ public class FileFilter
     public FileFilter(string name, string extension)
     {
         Name = name;
-        Extensions = new[] { extension };
+        Extensions = [extension];
     }
 
     /// <summary>
@@ -42,6 +42,40 @@ public class FileFilter
     /// Gets or sets the display name of the filter.
     /// </summary>
     public string Name { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Finds this filter in a list of choices.
+    /// </summary>
+    /// <param name="filters">The filters shown by the dialog.</param>
+    /// <returns>The index of this instance or the only same-named filter, or -1.</returns>
+    public int IndexIn(IList<FileFilter> filters)
+    {
+        for (var i = 0; i < filters.Count; i++)
+        {
+            if (ReferenceEquals(filters[i], this))
+            {
+                return i;
+            }
+        }
+
+        var nameMatch = -1;
+        for (var i = 0; i < filters.Count; i++)
+        {
+            if (filters[i].Name != Name)
+            {
+                continue;
+            }
+
+            if (nameMatch >= 0)
+            {
+                return -1;
+            }
+
+            nameMatch = i;
+        }
+
+        return nameMatch;
+    }
 
     /// <summary>
     /// Gets or sets a list of file extensions matched by the filter, excluding the trailing dots (e.g. "txt" or "*" for all files).

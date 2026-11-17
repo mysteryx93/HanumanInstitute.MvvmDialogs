@@ -23,9 +23,16 @@ public interface IDialogStorageItem : IDisposable
     Uri Path { get; }
 
     /// <summary>
-    /// Gets a local operating-system representation of a file name.
+    /// Gets a local filesystem path for the item. Prefer <see cref="TryGetLocalPath"/> when the item may have none.
     /// </summary>
+    /// <exception cref="InvalidOperationException">This storage item has no local filesystem path.</exception>
     string LocalPath { get; }
+
+    /// <summary>
+    /// Gets a local filesystem path for the item when the platform exposes one.
+    /// </summary>
+    /// <returns>The full path, or null when no filesystem path is available.</returns>
+    string? TryGetLocalPath();
 
     /// <summary>
     /// Gets the basic properties of the current item.
@@ -40,10 +47,13 @@ public interface IDialogStorageItem : IDisposable
     /// <summary>
     /// Saves items to a bookmark.
     /// </summary>
-    /// <returns>
-    /// Returns identifier of a bookmark. Can be null if OS denied request.
-    /// </returns>
+    /// <returns>The bookmark identifier, or null if the platform denied the request.</returns>
     Task<string?> SaveBookmarkAsync();
+
+    /// <summary>
+    /// Releases the bookmark permission held by this item.
+    /// </summary>
+    Task ReleaseBookmarkAsync();
 
     /// <summary>
     /// Gets the parent folder of the current storage item.
@@ -56,9 +66,10 @@ public interface IDialogStorageItem : IDisposable
     Task DeleteAsync();
 
     /// <summary>
-    /// Moves the current storage item and it's contents to a <see cref="IDialogStorageFolder"/>
+    /// Moves the item by delegating to the storage object that backs it.
     /// </summary>
-    /// <param name="destination">The <see cref="IDialogStorageFolder"/> to move the item into</param>
+    /// <param name="destination">The folder that should contain the item.</param>
+    /// <returns>The item at its new location, or null when the move cannot be delegated.</returns>
     Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination);
 }
 

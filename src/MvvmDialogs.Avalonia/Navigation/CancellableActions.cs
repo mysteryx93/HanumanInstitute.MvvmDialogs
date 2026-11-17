@@ -77,17 +77,28 @@ public static class CancellableActions
     /// <returns>True if a dialog operation was canceled; otherwise false.</returns>
     public static bool CancelLast()
     {
-        Action? action = null;
-        lock (s_list)
-        {
-            if (s_list.Count > 0)
-            {
-                var last = s_list.Count - 1;
-                action = s_list[last].Cancel;
-                s_list.RemoveAt(last);
-            }
-        }
+        var action = TakeLast();
         action?.Invoke();
         return action != null;
+    }
+
+    /// <summary>
+    /// Removes the last cancel action without running it.
+    /// </summary>
+    /// <returns>The removed action, or null when no dialog is active.</returns>
+    public static Action? TakeLast()
+    {
+        lock (s_list)
+        {
+            if (s_list.Count == 0)
+            {
+                return null;
+            }
+
+            var last = s_list.Count - 1;
+            var action = s_list[last].Cancel;
+            s_list.RemoveAt(last);
+            return action;
+        }
     }
 }
