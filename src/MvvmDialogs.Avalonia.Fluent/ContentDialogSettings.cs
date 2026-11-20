@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
 /// <summary>
 /// Represents the content dialog settings.

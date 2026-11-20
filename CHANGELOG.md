@@ -2,25 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
-## 2.5
+## 3.0-beta1
+
+### Breaking Changes
+
+- Avalonia packages are now strong-name signed, which adds a public key token to their assembly identities.
+- Core and Avalonia replace `net8.0` support with `net11.0` and continue to target `net10.0`. WPF targets `net10.0-windows` and `net11.0-windows`. Core and WPF also support `net462`.
+- Bookmark operations moved out of `IDialogStorageItem`. In Avalonia, use `CanBookmark`, `SaveBookmarkAsync()`, and `ReleaseBookmarkAsync()` on `AvaloniaDialogStorageItem`.
+- `LocalPath` throws when an item has no local filesystem path. Use `TryGetLocalPath()` to check for a path or use streams to access the file.
+- In Avalonia navigation mode, awaiting `ShowDialogAsync()` throws `OperationCanceledException` if the dialog's owner or navigation host closes first.
 
 ### Changed
 
-- ReleaseBookmarkAsync is on the storage item. Avalonia forwards it to the platform bookmark.
-- Added SaveFileDialogSettings.ShowOverwritePrompt.
-- Added FileDialogSettings.SuggestedFileType
-- Open and save file dialogs write the selected filter to FileDialogSettings.SelectedFileType when the platform reports one.
+- Rewrote Avalonia navigation and `CancellableActions` to address limitations in single-page navigation, including Android Back, modal dialogs, and close confirmation. Use `CanGoBack` and `GoBackAsync()` for custom Back buttons.
+- Custom Avalonia dialogs can use `RunOverlayAsync()` with their own host or `WithOverlaySurfaceAsync()` to create a temporary overlay.
+- Open and save dialogs accept an initial filter via `SuggestedFileType` and report the user's choice in `SelectedFileType` when the platform provides it. Use `FileFilter.IndexIn()` to find a filter by instance or unique name.
+- `SaveFileDialogSettings.ShowOverwritePrompt` controls the overwrite prompt. Leaving it unset preserves the platform default.
+- Storage folders support looking up files and subfolders by name.
+- Updated to Avalonia 12.1.6 and enabled runtime async on .NET 11. The Avalonia desktop demos support Wayland with fallback.
 
 ### Fixed
 
-- Fixed an Android crash when the back button closes a dialog.
-- Fixed an Avalonia crash reading LocalPath on a drive or volume root (C:\ or /), such as a folder from ShowOpenFolderDialogAsync or GetParentAsync.
-- Desktop CreateFileAsync no longer leaves the new file locked. File MoveAsync returns the moved file.
-- A storage item with no filesystem path, such as a browser file or an Android content item, returns null from TryGetLocalPath. LocalPath throws. Read those through a stream.
-- MoveAsync delegates to the backing storage object. A desktop item accepts only a desktop folder. An Avalonia item accepts an Avalonia folder and forwards that folder unchanged. Any other destination returns null.
-- SuggestedStartLocation uses the dialog owner's storage provider. An Avalonia folder is reused as-is. A control that is not attached to a top level has no provider, and the picker fails instead of borrowing the main window.
-- GetFileAsync and GetFolderAsync on desktop join the name onto the folder path, the same way Avalonia file storage does.
-- Library packages target net11.0 and net10.0, with runtime async enabled on net11.0. The core and WPF packages also target net462, and WPF targets net10.0-windows and net11.0-windows.
+- Avalonia pop-up message boxes can use a navigation page as their owner. DialogHost overlays preserve page content bindings and local data templates.
+- Dialog event handlers are detached on close or failed show. Avalonia overlays dismiss when their owner leaves, and failed Fluent dialog loads report the error and let queued dialogs proceed.
+- Close confirmation is tracked per dialog, so other windows can close while a confirmation is pending. Avalonia and WPF reset close approval after each window close attempt.
+- Changing `AllowConcurrentDialogs` while a framework dialog is open keeps the dialog queue working.
+- Asynchronous custom framework dialogs in WPF return their result.
+- Avalonia pickers resolve `SuggestedStartLocation` through the dialog owner's storage provider. `LocalPath` works on drive and volume roots.
+- Desktop storage closes the file handle after `CreateFileAsync()`, returns the moved file from `MoveAsync()`, and refreshes metadata in `GetBasicPropertiesAsync()`.
 
 ## 2.4 - 2026-09-04
 

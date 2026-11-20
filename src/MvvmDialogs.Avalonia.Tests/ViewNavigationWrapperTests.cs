@@ -1,7 +1,5 @@
 ﻿// ReSharper disable MemberCanBePrivate.Global
 
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
-
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 /// <summary>
@@ -9,7 +7,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 /// </summary>
 public class ViewNavigationWrapperTests
 {
-    public FirstViewModel ViewModel => _viewModel ??= new FirstViewModel();
+    public FirstViewModel ViewModel => _viewModel ??= new();
     private FirstViewModel _viewModel;
 
     public ViewNavigationWrapper CreateView(bool existing)
@@ -21,7 +19,7 @@ public class ViewNavigationWrapperTests
         }
         else
         {
-            result.Initialize(ViewModel, new ViewDefinition(typeof(FirstView), () => new FirstView()));
+            result.Initialize(ViewModel, new(typeof(FirstView), () => new FirstView()));
         }
         return result;
     }
@@ -29,10 +27,63 @@ public class ViewNavigationWrapperTests
     public IDialogService DialogService => _dialogService ??= new DialogService(DialogManager);
     private IDialogService _dialogService;
 
-    public DialogManager DialogManager => _dialogManager ??= new DialogManager(new ViewLocatorBase() { ForceSinglePageNavigation = true });
+    public DialogManager DialogManager => _dialogManager ??= new(
+        new ViewLocatorBase
+        {
+            ForceSinglePageNavigation = true
+        });
     private DialogManager _dialogManager;
 
     public INavigationManager NavigationManager => DialogManager.NavigationManager!;
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("display text")]
+    public void AsWrapper_UnsupportedDataContext_ReturnsNull(object dataContext)
+    {
+        var view = new FirstView
+        {
+            DataContext = dataContext
+        };
+
+        var wrapper = view.AsWrapper(NavigationManager, DialogManager.View_Closing);
+
+        Assert.Null(wrapper);
+    }
+
+    [Fact]
+    public void Show_CustomNavigationManager_UsesInterface()
+    {
+        var view = new FirstView();
+        var navigation = new Mock<INavigationManager>();
+        navigation.SetupGet(x => x.CurrentView).Returns(view);
+        var definition = new ViewDefinition(typeof(FirstView), () => view);
+        var wrapper = new ViewNavigationWrapper(navigation.Object, null);
+        wrapper.Initialize(ViewModel, definition);
+
+        wrapper.Show(null);
+
+        navigation.Verify(x => x.Show(ViewModel, definition), Times.Once);
+        Assert.Same(view, wrapper.RefObj);
+    }
+
+    [Fact]
+    public async Task ShowDialogAsync_CustomNavigationManager_UsesInterface()
+    {
+        var view = new FirstView();
+        var owner = CreateView(existing: true);
+        var navigation = new Mock<INavigationManager>();
+        navigation.SetupGet(x => x.CurrentView).Returns(view);
+        var definition = new ViewDefinition(typeof(FirstView), () => view);
+        var wrapper = new ViewNavigationWrapper(navigation.Object, null);
+        wrapper.Initialize(ViewModel, definition);
+        navigation.Setup(x => x.ShowDialogAsync(ViewModel, definition, owner.ViewModel)).Returns(Task.CompletedTask);
+
+        await wrapper.ShowDialogAsync(owner);
+
+        navigation.Verify(x => x.ShowDialogAsync(ViewModel, definition, owner.ViewModel), Times.Once);
+        Assert.Same(view, wrapper.RefObj);
+    }
 
     [Theory]
     [InlineData(false)]
@@ -98,7 +149,8 @@ public class ViewNavigationWrapperTests
     [InlineData(true)]
     public void ShowDialog_WithOwner_RefSetAndEnabledVisible(bool existing)
     {
-        var owner = CreateView(existing);
+        var owner = new ViewNavigationWrapper(NavigationManager, DialogManager.View_Closing);
+        owner.Initialize(new FirstViewModel(), new(typeof(FirstView), () => new FirstView()));
         var view = CreateView(existing);
 
         owner.Show(null);

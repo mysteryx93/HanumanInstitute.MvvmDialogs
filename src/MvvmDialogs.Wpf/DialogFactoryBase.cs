@@ -1,5 +1,4 @@
-﻿
-// ReSharper disable MemberCanBePrivate.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -58,8 +57,7 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     /// <param name="settings">The settings for the framework dialog.</param>
     /// <returns>Return data specific to the dialog.</returns>
     public virtual Task<object?> ShowDialogAsync<TSettings>(ViewWrapper? owner, TSettings settings) =>
-        Chain != null ? Chain.ShowDialogAsync(owner, settings) :
-            throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
+        Chain != null ? Chain.ShowDialogAsync(owner, settings) : throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
 
     /// <summary>
     /// Opens a framework dialog with specified owner.
@@ -68,6 +66,7 @@ public abstract class DialogFactoryBase : IDialogFactory, IDialogFactorySync
     /// <param name="settings">The settings for the framework dialog.</param>
     /// <returns>Return data specific to the dialog.</returns>
     public virtual object? ShowDialog<TSettings>(ViewWrapper? owner, TSettings settings) =>
-        Chain != null ? Chain.AsSync().ShowDialog(owner, settings) :
-            throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
+        Chain != null
+            ? Chain.AsSync().ShowDialog(owner, settings)
+            : throw new NotSupportedException($"There is no registered dialog for settings of type {typeof(TSettings).Name}.");
 }

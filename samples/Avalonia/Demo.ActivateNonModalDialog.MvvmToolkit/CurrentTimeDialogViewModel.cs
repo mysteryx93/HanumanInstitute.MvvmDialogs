@@ -14,7 +14,7 @@ public class CurrentTimeDialogViewModel : ViewModelBase, IViewLoaded, IViewClose
     public void OnLoaded()
     {
         _timer?.Dispose();
-        _timer = new Timer(_ => OnPropertyChanged(nameof(CurrentTime)), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+        _timer = new(_ => OnPropertyChanged(nameof(CurrentTime)), null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
     }
 
     public void OnClosed()

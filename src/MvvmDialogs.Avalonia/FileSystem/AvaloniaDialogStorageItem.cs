@@ -1,7 +1,4 @@
-﻿using Avalonia.Platform.Storage;
-using HanumanInstitute.MvvmDialogs.FileSystem;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <inheritdoc />
 public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
@@ -34,16 +31,23 @@ public abstract class AvaloniaDialogStorageItem : IDialogStorageItem
     public async Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()
     {
         var result = await _item.GetBasicPropertiesAsync().ConfigureAwait(true);
-        return new DesktopDialogStorageItemProperties(result.Size, result.DateCreated, result.DateModified);
+        return new(result.Size, result.DateCreated, result.DateModified);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets whether the underlying Avalonia item can be bookmarked for later access.
+    /// </summary>
     public bool CanBookmark => _item.CanBookmark;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Saves a bookmark for the underlying Avalonia item.
+    /// </summary>
+    /// <returns>The bookmark identifier, or null if the platform did not create one.</returns>
     public Task<string?> SaveBookmarkAsync() => _item.SaveBookmarkAsync();
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Releases the permission held by the underlying Avalonia bookmark, when present.
+    /// </summary>
     public Task ReleaseBookmarkAsync() =>
         _item is IStorageBookmarkItem bookmark ? bookmark.ReleaseBookmarkAsync() : Task.CompletedTask;
 

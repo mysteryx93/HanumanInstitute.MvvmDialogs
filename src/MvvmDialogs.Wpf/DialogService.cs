@@ -27,7 +27,8 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
     public DialogService(
         IDialogManager? dialogManager = null,
         Func<Type, object?>? viewModelFactory = null)
-        : base(dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
+        : base(
+            dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
             viewModelFactory)
     {
     }
@@ -49,8 +50,8 @@ public class DialogService : DialogServiceBase, IDialogServiceSync
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     protected bool? ShowDialogInternal(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-        if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+        ownerViewModel.CheckNotNull();
+        viewModel.CheckNotNull();
 
         DialogManager.AsSync().ShowDialog(ownerViewModel, viewModel);
         return viewModel.DialogResult;

@@ -3,13 +3,12 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Demo.CrossPlatform.Services;
-using Demo.CrossPlatform.Business;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 using ReactiveUI.SourceGenerators;
-
 
 namespace Demo.CrossPlatform.ViewModels;
 
@@ -23,9 +22,9 @@ public partial class MainViewModel : ViewModelBase
         this._dialogService = dialogService;
         this._storage = storage;
 
-        var canShow = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x == null);
+        var canShow = Observable.Select(this.WhenAnyValue(x => x.DialogViewModel), x => x == null);
         Show = ReactiveCommand.Create(ShowImpl, canShow);
-        var canActivate = this.WhenAnyValue(x => x.DialogViewModel).Select(x => x != null);
+        var canActivate = Observable.Select(this.WhenAnyValue(x => x.DialogViewModel), x => x != null);
         Activate = ReactiveCommand.Create(ActivateImpl, canActivate);
         Close = ReactiveCommand.Create(CloseImpl, canActivate);
         ShowDialog = ReactiveCommand.CreateFromTask(ShowDialogImplAsync);
@@ -56,18 +55,18 @@ public partial class MainViewModel : ViewModelBase
 
     private void Dialog_ViewClosed(object? sender, EventArgs e) => DialogViewModel = null;
 
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Show { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> ShowDialog { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Close { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Activate { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> DialogConfirmClose { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFile { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFiles { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFolder { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> OpenFolders { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> SaveFile { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> MessageBox { get; }
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> MessageBoxMultiple { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Show { get; }
+    public ReactiveCommand<RxVoid, RxVoid> ShowDialog { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Close { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Activate { get; }
+    public ReactiveCommand<RxVoid, RxVoid> DialogConfirmClose { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OpenFile { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OpenFiles { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OpenFolder { get; }
+    public ReactiveCommand<RxVoid, RxVoid> OpenFolders { get; }
+    public ReactiveCommand<RxVoid, RxVoid> SaveFile { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MessageBox { get; }
+    public ReactiveCommand<RxVoid, RxVoid> MessageBoxMultiple { get; }
 
     private void ShowImpl()
     {
@@ -168,12 +167,7 @@ public partial class MainViewModel : ViewModelBase
 
     private async Task RestoreBookmarkAsync(IDialogStorageFile file)
     {
-        if (!file.CanBookmark)
-        {
-            return;
-        }
-
-        var bookmark = await file.SaveBookmarkAsync();
+        var bookmark = await _storage.SaveBookmarkAsync(file);
         if (bookmark == null)
         {
             return;
@@ -198,10 +192,9 @@ public partial class MainViewModel : ViewModelBase
         }
         finally
         {
-            var holder = restored ?? file;
             try
             {
-                await holder.ReleaseBookmarkAsync();
+                await _storage.ReleaseBookmarkAsync(restored ?? file);
             }
             finally
             {

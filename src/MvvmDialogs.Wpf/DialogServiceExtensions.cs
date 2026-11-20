@@ -1,10 +1,6 @@
-﻿using System.Windows.Forms;
-using HanumanInstitute.MvvmDialogs.Wpf;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿using HanumanInstitute.MvvmDialogs.Wpf;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
-using HanumanInstitute.MvvmDialogs.FileSystem;
-using System.Linq;
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -13,7 +9,6 @@ namespace HanumanInstitute.MvvmDialogs;
 /// </summary>
 public static class DialogServiceExtensions
 {
-
     /// <summary>
     /// Displays a modal dialog of a type that is determined by the dialog type locator.
     /// </summary>
@@ -85,7 +80,7 @@ public static class DialogServiceExtensions
             DefaultValue = defaultResult
         };
 
-        return ShowMessageBox(service, ownerViewModel, settings);
+        return service.ShowMessageBox(ownerViewModel, settings);
     }
 
     /// <summary>
@@ -97,11 +92,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the message box dialog.</param>
     /// <returns>A value that specifies which message box button is clicked by the user. True=OK/Yes, False=No, Null=Cancel</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static bool? ShowMessageBox(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static bool? ShowMessageBox(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         MessageBoxSettings? settings = null)
     {
         return (bool?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings ?? new MessageBoxSettings());
+            ownerViewModel,
+            settings ?? new MessageBoxSettings());
     }
 
     /// <summary>
@@ -112,12 +110,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the open file dialog.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static IDialogStorageFile? ShowOpenFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFile? ShowOpenFileDialog(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null)
     {
-        settings ??= new OpenFileDialogSettings();
+        settings ??= new();
         settings.AllowMultiple ??= false;
-        return ShowOpenFilesDialog(service, ownerViewModel, settings).FirstOrDefault();
+        return service.ShowOpenFilesDialog(ownerViewModel, settings).FirstOrDefault();
     }
 
     /// <summary>
@@ -128,14 +128,18 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the open file dialog.</param>
     /// <returns>The list of files selected by the user, or empty if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static IReadOnlyList<IDialogStorageFile> ShowOpenFilesDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IReadOnlyList<IDialogStorageFile> ShowOpenFilesDialog(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null)
     {
-        settings ??= new OpenFileDialogSettings();
+        settings ??= new();
         settings.AllowMultiple ??= true;
         settings.SelectedFileType = null;
         return service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings, x => string.Join(", ", x)) as IReadOnlyList<IDialogStorageFile> ?? Array.Empty<IDialogStorageFile>();
+            ownerViewModel,
+            settings,
+            x => string.Join(", ", x)) as IReadOnlyList<IDialogStorageFile> ?? Array.Empty<IDialogStorageFile>();
     }
 
     /// <summary>
@@ -146,13 +150,16 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the save file dialog.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static IDialogStorageFile? ShowSaveFileDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFile? ShowSaveFileDialog(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         SaveFileDialogSettings? settings = null)
     {
-        settings ??= new SaveFileDialogSettings();
+        settings ??= new();
         settings.SelectedFileType = null;
         return (IDialogStorageFile?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings);
+            ownerViewModel,
+            settings);
     }
 
     /// <summary>
@@ -163,10 +170,13 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <returns>The folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static IDialogStorageFolder? ShowOpenFolderDialog(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static IDialogStorageFolder? ShowOpenFolderDialog(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null)
     {
         return ((IReadOnlyList<IDialogStorageFolder>?)service.DialogManager.AsSync().ShowFrameworkDialog(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings()))?.FirstOrDefault();
+            ownerViewModel,
+            settings ?? new OpenFolderDialogSettings()))?.FirstOrDefault();
     }
 }

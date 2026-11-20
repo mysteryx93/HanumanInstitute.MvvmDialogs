@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.ApplicationLifetimes;
 using HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
+
 // ReSharper disable CheckNamespace
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -19,7 +20,8 @@ public static class DialogFactoryExtensions
     {
         if (Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime && mode == MessageBoxMode.Window)
         {
-            throw new NotSupportedException("Avalonia.MessageBox with mode=Window is only supported in Desktop applications. Consider using mode=Popup or a different MessageBox implementation.");
+            throw new NotSupportedException(
+                "Avalonia.MessageBox with mode=Window is only supported in Desktop applications. Consider using mode=Popup or a different MessageBox implementation.");
         }
         return new MessageBoxDialogFactory(factory)
         {

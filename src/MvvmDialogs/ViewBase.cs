@@ -15,9 +15,9 @@ public abstract class ViewBase
     /// <param name="view">The object to hold a weak reference for.</param>
     protected ViewBase(object view)
     {
-        if (view == null) throw new ArgumentNullException(nameof(view));
+        view.CheckNotNull();
 
-        _viewReference = new WeakReference(view);
+        _viewReference = new(view);
     }
 
     /// <summary>

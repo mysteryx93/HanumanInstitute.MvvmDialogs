@@ -2,5 +2,6 @@
 
 internal interface IMessageBoxApi
 {
-    Task<ButtonResult> ShowMessageBoxAsync(Window? owner, MessageBoxApiSettings settings, MessageBoxMode mode);
+    // Creates a message box that the caller can show and close.
+    IMsBox<ButtonResult> CreateMessageBox(MessageBoxApiSettings settings);
 }

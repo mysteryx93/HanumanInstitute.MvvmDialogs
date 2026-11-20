@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// Cache of View instances with weak references.
@@ -25,17 +22,13 @@ public class ViewCache
                 result.DataContext = viewModel;
                 return result;
             }
-            else
-            {
-                var newView = (UserControl)item.ViewDef.Create();
-                item.View = new WeakReference<UserControl>(newView);
-                newView.DataContext = viewModel;
-                return newView;
-            }
+            var newView = (UserControl)item.ViewDef.Create();
+            item.View = new(newView);
+            newView.DataContext = viewModel;
+            return newView;
         }
         return null;
     }
-
 
     /// <summary>
     /// Returns an instance of specified viewType. A single instance will be returned per type, and it will be cached with a weak reference. 
@@ -48,7 +41,7 @@ public class ViewCache
         var item = _cache.FirstOrDefault(x => x.ViewModelType == viewModel.GetType());
         if (item is null)
         {
-            item = new ViewCacheItem(viewModel.GetType(), viewDef, (UserControl)viewDef.Create());
+            item = new(viewModel.GetType(), viewDef, (UserControl)viewDef.Create());
             _cache.Add(item);
         }
         item.ViewDef = viewDef;
@@ -59,7 +52,7 @@ public class ViewCache
             return result;
         }
         var newView = (UserControl)viewDef.Create();
-        item.View = new WeakReference<UserControl>(newView);
+        item.View = new(newView);
         newView.DataContext = viewModel;
         return newView;
     }

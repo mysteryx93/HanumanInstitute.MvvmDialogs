@@ -30,7 +30,7 @@ public class MainWindowViewModel : ViewModelBase
     public string Confirmation
     {
         get => _confirmation;
-        private set => this.RaiseAndSetIfChanged(ref _confirmation, value, nameof(Confirmation));
+        private set => this.RaiseAndSetIfChanged(ref _confirmation, value);
     }
 
     private async Task ShowMessageBoxWithMessage()

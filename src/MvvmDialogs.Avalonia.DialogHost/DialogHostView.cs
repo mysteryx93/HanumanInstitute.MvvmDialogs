@@ -1,6 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System.Linq;
+using Avalonia.Controls.Templates;
+using Avalonia.LogicalTree;
 using Avalonia.VisualTree;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+using DialogHostAvalonia;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 
@@ -9,7 +11,7 @@ namespace HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 /// </summary>
 public class DialogHostView : IView
 {
-    private static readonly object s_lockCreateHost = new();
+    private DialogSession? _session;
 
     /// <summary>
     /// Initializes a new instance of the DialogHostView.
@@ -32,11 +34,13 @@ public class DialogHostView : IView
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public INotifyPropertyChanged? ViewModel => Settings.Content as INotifyPropertyChanged;
@@ -52,38 +56,45 @@ public class DialogHostView : IView
     /// <inheritdoc />
     public void Show(IView? owner) => throw new NotImplementedException();
 
-    /// <summary>
-    /// Returns a DialogHost instance to manage the dialog.  
-    /// </summary>
-    private DialogHostAvalonia.DialogHost InitHost(ContentControl owner)
-    {
-        DialogHostAvalonia.DialogHost? host;
-        lock (s_lockCreateHost) // lock to avoid creating host twice
-        {
-            host = owner.FindDescendantOfType<DialogHostAvalonia.DialogHost>();
-            if (host == null)
-            {
-                host = new DialogHostAvalonia.DialogHost();
-                var temp = owner.Content;
-                owner.Content = null;
-                host.Content = temp;
-                owner.Content = host;
-            }
-        }
-        Host = host;
-        return host;
-    }
-
-    /// <summary>
-    /// Returns the DialogHost that was last initiated.
-    /// </summary>
-    private DialogHostAvalonia.DialogHost? Host { get; set; }
-
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
-        var host = InitHost(owner.GetRef()!);
+        var control = owner.GetOverlayOwner();
+        var root = control is Window window ? window.Presenter : control;
+        var host = (control as ContentControl)?.Content as DialogHostAvalonia.DialogHost ??
+                   root?.FindDescendantOfType<DialogHostAvalonia.DialogHost>() ??
+                   control?.GetLogicalDescendants().OfType<DialogHostAvalonia.DialogHost>().FirstOrDefault();
+        try
+        {
+            if (host != null)
+            {
+                await owner.RunOverlayAsync(_ => ShowSessionAsync(host), Close, CloseHost);
+                return;
+            }
 
+            await owner.WithOverlaySurfaceAsync(
+                surface =>
+                {
+                    host = new();
+                    if (Settings.Content != null && Settings.Content is not Control)
+                    {
+                        host.DialogContentTemplate = control?.FindDataTemplate(Settings.Content);
+                    }
+                    surface.Content = host;
+                    return ShowSessionAsync(host);
+                },
+                Close,
+                ownerClosed: CloseHost);
+        }
+        finally { _session = null; }
+
+        // The native host closes every session without a veto when its owner disappears.
+        void CloseHost() => host?.SetCurrentValue(DialogHostAvalonia.DialogHost.IsOpenProperty, false);
+    }
+
+    // Show one native session and forward the view-model events for that session.
+    private async Task<object?> ShowSessionAsync(DialogHostAvalonia.DialogHost host)
+    {
         host.CloseOnClickAway = Settings.CloseOnClickAway;
         host.CloseOnClickAwayParameter = Settings.CloseOnClickAwayParameter;
         host.PopupPositioner = Settings.PopupPositioner;
@@ -91,44 +102,60 @@ public class DialogHostView : IView
         host.DialogMargin = Settings.DialogMargin ?? host.DialogMargin;
         host.DisableOpeningAnimation = Settings.DisableOpeningAnimation;
 
-        var closingHandler = Settings.ClosingHandler ?? ((_, e) =>
+        var loadFailed = false;
+        var closingHandler = Settings.ClosingHandler;
+        var pending = DialogHostAvalonia.DialogHost.Show(Settings.Content!, host, (_, e) => _session = e.Session, OnClosing);
+        if (!pending.IsCompleted)
         {
-            var param = new CancelEventArgs();
-            Closing?.Invoke(this, param);
-            if (param.Cancel)
+            // Opening an additional session may leave IsOpen unchanged and skip the opened event.
+            _session ??= host.CurrentSession;
+            try { Loaded?.Invoke(this, EventArgs.Empty); }
+            catch (Exception loadError)
             {
-                e.Cancel();
+                loadFailed = true;
+                try { Close(); }
+                catch (Exception closeError) { throw new AggregateException(loadError, closeError); }
+                finally
+                {
+                    // Force-closing the host retires every session if a native handler stranded this one.
+                    if (_session != null && host.CurrentSessions.Contains(_session))
+                    {
+                        host.SetCurrentValue(DialogHostAvalonia.DialogHost.IsOpenProperty, false);
+                    }
+                }
+                throw;
             }
-        });
-
-        try
-        {
-            host.DialogOpened += Host_DialogOpened;
-            DialogResult = await CancellableActions.RunAsync(
-                () => DialogHostAvalonia.DialogHost.Show(Settings.Content!, host, closingHandler),
-                Close).ConfigureAwait(true);
-            Closed?.Invoke(this, EventArgs.Empty);
         }
-        finally
-        {
-            host.DialogOpened -= Host_DialogOpened;
-        }
-    }
+        DialogResult = await pending;
+        Closed?.Invoke(this, EventArgs.Empty);
+        return DialogResult;
 
-    private void Host_DialogOpened(object sender, EventArgs e)
-    {
-        Loaded?.Invoke(this, EventArgs.Empty);
+        void OnClosing(object? sender, DialogClosingEventArgs e)
+        {
+            if (loadFailed || !e.CanBeCancelled) { return; }
+            if (closingHandler != null)
+            {
+                closingHandler(sender!, e);
+                return;
+            }
+
+            var args = new CancelEventArgs();
+            try { Closing?.Invoke(this, args); }
+            finally { ClosingConfirmed = false; }
+            if (args.Cancel) { e.Cancel(); }
+        }
     }
 
     /// <inheritdoc />
     public void Activate()
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void Close()
     {
         // CloseDialogCommand throws when the session has already ended.
-        var session = Host?.CurrentSession;
+        var session = _session;
         if (session == null || session.IsEnded)
         {
             return;

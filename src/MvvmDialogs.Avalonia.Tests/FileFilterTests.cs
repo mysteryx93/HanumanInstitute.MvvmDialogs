@@ -1,5 +1,3 @@
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 public class FileFilterTests

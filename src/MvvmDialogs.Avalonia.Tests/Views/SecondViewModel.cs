@@ -1,6 +1,4 @@
-﻿using ReactiveUI;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
 
 public class SecondViewModel : ReactiveObject, ICloseable, IActivable, IModalDialogViewModel, IViewClosing, IViewClosed
 {

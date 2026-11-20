@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
+using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using ReactiveUI;
 
 namespace Demo.Avalonia.ViewEvents;
@@ -21,7 +22,7 @@ public class MainWindowViewModel(IDialogService dialogService) : ViewModelBase, 
 
     public async Task OnClosingAsync(CancelEventArgs e)
     {
-        var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton.YesNo);
+        var quit = await _dialogService.ShowMessageBoxAsync(this, "Do you really want to quit? ", "Confirmation", MessageBoxButton.YesNo);
         e.Cancel = quit != true;
     }
 

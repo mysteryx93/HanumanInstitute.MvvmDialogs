@@ -1,6 +1,4 @@
-﻿using Moq;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 /// <summary>
 /// Base class for test classes.

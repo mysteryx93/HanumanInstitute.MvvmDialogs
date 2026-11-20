@@ -11,7 +11,7 @@ public class ViewLocator : StrongViewLocator
 {
     public ViewLocator()
     {
-        ForceSinglePageNavigation = false;
+        ForceSinglePageNavigation = true;
         Register<MainViewModel, MainView, MainWindow>();
         Register<CurrentTimeViewModel, CurrentTimeView, CurrentTimeWindow>();
         Register<ConfirmCloseViewModel, ConfirmCloseView, ConfirmCloseWindow>();

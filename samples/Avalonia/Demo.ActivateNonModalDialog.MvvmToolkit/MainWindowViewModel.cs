@@ -43,8 +43,8 @@ public class MainWindowViewModel : ViewModelBase
     {
         this._dialogService = dialogService;
 
-        ShowCommand = new RelayCommand(Show, () => DialogViewModel == null);
-        ActivateCommand = new RelayCommand(Activate, () => DialogViewModel != null);
+        ShowCommand = new(Show, () => DialogViewModel == null);
+        ActivateCommand = new(Activate, () => DialogViewModel != null);
     }
 
     public void Show()

@@ -2,9 +2,9 @@
 using System.ComponentModel;
 using System.Linq;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Wpf;
 using Moq;
 using Xunit;
+using HanumanInstitute.MvvmDialogs.Wpf;
 
 namespace Demo.Wpf.ModalDialog.Tests;
 

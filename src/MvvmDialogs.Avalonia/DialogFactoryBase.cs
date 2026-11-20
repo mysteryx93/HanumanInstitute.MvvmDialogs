@@ -1,5 +1,4 @@
-﻿
-// ReSharper disable MemberCanBePrivate.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -38,8 +37,9 @@ public abstract class DialogFactoryBase : IDialogFactory
     /// <inheritdoc />
     public virtual async Task<object?> ShowDialogAsync<TSettings>(IView? owner, TSettings settings)
     {
-        return Chain != null ? await Chain.ShowDialogAsync(owner, settings).ConfigureAwait(true) :
-            throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
+        return Chain != null
+            ? await Chain.ShowDialogAsync(owner, settings).ConfigureAwait(true)
+            : throw new NotSupportedException($"There is no registered dialog in IDialogFactory for settings of type {typeof(TSettings).Name}.");
     }
 
     /// <summary>

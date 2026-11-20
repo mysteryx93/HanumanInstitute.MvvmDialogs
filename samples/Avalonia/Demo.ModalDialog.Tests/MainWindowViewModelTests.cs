@@ -3,20 +3,20 @@ using System.ComponentModel;
 using System.Linq;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia;
-using Xunit;
 using Moq;
+using Xunit;
 
 namespace Demo.Avalonia.ModalDialog.Tests;
 
 public class MainWindowViewModelTests
 {
-    public MainWindowViewModel Model => _model ??= new MainWindowViewModel(DialogService);
+    public MainWindowViewModel Model => _model ??= new(DialogService);
     private MainWindowViewModel? _model;
 
-    public DialogService DialogService => _dialogService ??= new DialogService(MockDialogManager.Object, viewModelFactory: ViewModelFactory);
+    public DialogService DialogService => _dialogService ??= new(MockDialogManager.Object, viewModelFactory: ViewModelFactory);
     private DialogService? _dialogService;
 
-    public Mock<IDialogManager> MockDialogManager => _mockDialogManager ??= new Mock<IDialogManager>();
+    public Mock<IDialogManager> MockDialogManager => _mockDialogManager ??= new();
     private Mock<IDialogManager>? _mockDialogManager;
 
     private object? ViewModelFactory(Type type) => (type) switch

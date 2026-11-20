@@ -1,6 +1,4 @@
-﻿using HanumanInstitute.MvvmDialogs.FileSystem;
-
-namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 /// <summary>
 /// Settings for file/folder picker dialogs.

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
 /// <summary>
 /// An <see cref="IView"/> implementation for FluentContentDialog.
@@ -29,11 +26,13 @@ public class FluentContentView : IView
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public INotifyPropertyChanged? ViewModel => Settings.Content as INotifyPropertyChanged;
@@ -54,9 +53,10 @@ public class FluentContentView : IView
     public void Show(IView? owner) => throw new NotImplementedException();
 
     /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">The owner is detached from its top level.</exception>
     public async Task ShowDialogAsync(IView owner)
     {
-        var dialog = new FAContentDialog()
+        var dialog = new FAContentDialog
         {
             Title = Settings.Title,
             Content = Settings.Content,
@@ -70,32 +70,65 @@ public class FluentContentView : IView
         };
         Ref = dialog;
 
-        dialog.Loaded += (s, e) => Loaded?.Invoke(s, e);
+        var retiring = false;
+        ExceptionDispatchInfo? loadFailure = null;
+        ExceptionDispatchInfo? closeFailure = null;
+        dialog.Loaded += (s, e) =>
+        {
+            try { Loaded?.Invoke(s, e); }
+            catch (Exception error)
+            {
+                loadFailure = ExceptionDispatchInfo.Capture(error);
+                Retire();
+            }
+        };
         dialog.Closing += (s, e) =>
         {
+            if (retiring) { return; }
+
             var args = new CancelEventArgs();
-            Closing?.Invoke(s, args);
+            try { Closing?.Invoke(s, args); }
+            finally { ClosingConfirmed = false; }
             if (args.Cancel)
             {
                 e.Cancel = true;
             }
         };
-        dialog.Closed += (s, e) => Closed?.Invoke(s, e);
+        dialog.Closed += (s, e) =>
+        {
+            try { Closed?.Invoke(s, e); }
+            catch (Exception error) { closeFailure = ExceptionDispatchInfo.Capture(error); }
+        };
 
-        // Allow the dialog to be closed by mobile back navigation.
         try
         {
-            DialogResult = await CancellableActions.RunAsync(() => dialog.ShowAsync(), dialog.Hide).ConfigureAwait(true);
+            DialogResult = await owner.RunOverlayAsync(host => dialog.ShowAsync(host), dialog.Hide, Retire);
         }
         finally
         {
             Ref = null;
         }
+        if (loadFailure != null && closeFailure != null)
+        {
+            throw new AggregateException(loadFailure.SourceException, closeFailure.SourceException);
+        }
+        (loadFailure ?? closeFailure)?.Throw();
+
+        void Retire()
+        {
+            if (retiring) { return; }
+            retiring = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (ReferenceEquals(Ref, dialog)) { dialog.Hide(); }
+            });
+        }
     }
 
     /// <inheritdoc />
     public void Activate()
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void Close()

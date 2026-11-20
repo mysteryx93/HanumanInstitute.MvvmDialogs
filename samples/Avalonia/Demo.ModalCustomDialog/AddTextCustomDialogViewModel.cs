@@ -20,13 +20,13 @@ public class AddTextCustomDialogViewModel : ViewModelBase, IModalDialogViewModel
     public string Text
     {
         get => _text;
-        set => this.RaiseAndSetIfChanged(ref _text, value, nameof(Text));
+        set => this.RaiseAndSetIfChanged(ref _text, value);
     }
 
     public bool? DialogResult
     {
         get => _dialogResult;
-        private set => this.RaiseAndSetIfChanged(ref _dialogResult, value, nameof(DialogResult));
+        private set => this.RaiseAndSetIfChanged(ref _dialogResult, value);
     }
 
     private void Ok()

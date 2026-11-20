@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using HanumanInstitute.MvvmDialogs;
-using HanumanInstitute.MvvmDialogs.Avalonia;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 using Ookii.Dialogs.WinForms;
+using HanumanInstitute.MvvmDialogs.Avalonia;
 
 namespace Demo.Avalonia.CustomOpenFolderDialog;
 

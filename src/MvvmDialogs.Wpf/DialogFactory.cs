@@ -1,13 +1,10 @@
 ﻿using HanumanInstitute.MvvmDialogs.Wpf.Api;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using System.Text;
 using Win32Button = System.Windows.MessageBoxButton;
 using Win32Image = System.Windows.MessageBoxImage;
 using Win32Result = System.Windows.MessageBoxResult;
 using Win32Options = System.Windows.MessageBoxOptions;
 using MessageBoxButton = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxButton;
 using MessageBoxImage = HanumanInstitute.MvvmDialogs.FrameworkDialogs.MessageBoxImage;
-using HanumanInstitute.MvvmDialogs.FileSystem;
 
 namespace HanumanInstitute.MvvmDialogs.Wpf;
 
@@ -61,7 +58,7 @@ public class DialogFactory : DialogFactoryBase
             OpenFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowOpenFileDialog(owner, s)).ConfigureAwait(true),
             SaveFileDialogSettings s => await UiExtensions.RunUiAsync(() => ShowSaveFileDialog(owner, s)).ConfigureAwait(true),
             MessageBoxSettings s => await UiExtensions.RunUiAsync(() => ShowMessageBox(owner, s)).ConfigureAwait(true),
-            _ => base.ShowDialogAsync(owner, settings)
+            _ => await base.ShowDialogAsync(owner, settings).ConfigureAwait(true)
         };
 
     /// <inheritdoc />
@@ -77,7 +74,7 @@ public class DialogFactory : DialogFactoryBase
 
     private IReadOnlyList<IDialogStorageFolder> ShowOpenFolderDialog(ViewWrapper? owner, OpenFolderDialogSettings settings)
     {
-        var apiSettings = new OpenFolderApiSettings()
+        var apiSettings = new OpenFolderApiSettings
         {
             Description = settings.Title,
             SelectedPath = settings.SuggestedStartLocation?.TryGetLocalPath(),
@@ -89,7 +86,7 @@ public class DialogFactory : DialogFactoryBase
 
     private IReadOnlyList<IDialogStorageFile> ShowOpenFileDialog(ViewWrapper? owner, OpenFileDialogSettings settings)
     {
-        var apiSettings = new OpenFileApiSettings()
+        var apiSettings = new OpenFileApiSettings
         {
             CheckFileExists = true,
             Multiselect = settings.AllowMultiple ?? false,
@@ -104,7 +101,7 @@ public class DialogFactory : DialogFactoryBase
 
     private IDialogStorageFile? ShowSaveFileDialog(ViewWrapper? owner, SaveFileDialogSettings settings)
     {
-        var apiSettings = new SaveFileApiSettings()
+        var apiSettings = new SaveFileApiSettings
         {
             DefaultExt = settings.DefaultExtension ?? string.Empty
         };
@@ -199,7 +196,7 @@ public class DialogFactory : DialogFactoryBase
 
     private bool? ShowMessageBox(ViewWrapper? owner, MessageBoxSettings settings)
     {
-        var apiSettings = new MessageBoxApiSettings()
+        var apiSettings = new MessageBoxApiSettings
         {
             MessageBoxText = settings.Content,
             Caption = settings.Title,
@@ -218,7 +215,6 @@ public class DialogFactory : DialogFactoryBase
             Win32Result.Cancel => null,
             _ => null
         };
-
     }
 
     private static Win32Button SyncButton(MessageBoxButton value) =>

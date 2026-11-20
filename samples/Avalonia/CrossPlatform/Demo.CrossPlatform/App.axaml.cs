@@ -8,7 +8,7 @@ using Splat;
 
 namespace Demo.CrossPlatform;
 
-public partial class App : Application
+public class App : Application
 {
     public override void Initialize()
     {

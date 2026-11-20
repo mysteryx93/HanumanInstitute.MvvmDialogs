@@ -1,5 +1,5 @@
-﻿using System.Reactive.Linq;
-using System;
+﻿using System;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
@@ -17,7 +17,7 @@ public class MainWindowViewModel : ViewModelBase
         {
             if (ReferenceEquals(_dialogViewModel, value)) return;
             if (_dialogViewModel != null) _dialogViewModel.Closed -= DialogViewModel_Closed;
-            this.RaiseAndSetIfChanged(ref _dialogViewModel, value, nameof(DialogViewModel));
+            this.RaiseAndSetIfChanged(ref _dialogViewModel, value);
             if (_dialogViewModel != null) _dialogViewModel.Closed += DialogViewModel_Closed;
         }
     }

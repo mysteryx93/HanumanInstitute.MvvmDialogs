@@ -30,7 +30,7 @@ public class MainWindowViewModel : ViewModelBase
     public string Confirmation
     {
         get => _confirmation;
-        private set => this.RaiseAndSetIfChanged(ref _confirmation, value, nameof(Confirmation));
+        private set => this.RaiseAndSetIfChanged(ref _confirmation, value);
     }
 
     private async Task ShowMessageBoxWithMessage()
@@ -82,8 +82,7 @@ public class MainWindowViewModel : ViewModelBase
             "This is the text.",
             "This Is The Caption",
             MessageBoxButton.OkCancel,
-            MessageBoxImage.Information,
-            true);
+            MessageBoxImage.Information);
 
         UpdateResult(result);
     }

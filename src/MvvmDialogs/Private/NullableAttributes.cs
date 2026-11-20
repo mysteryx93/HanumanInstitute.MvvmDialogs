@@ -10,49 +10,53 @@
 // ReSharper disable once CheckNamespace
 namespace System.Diagnostics.CodeAnalysis;
 
-#if NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP2_2 || NET45 || NET451 || NET452 || NET6 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+#if !NETCOREAPP3_0_OR_GREATER && !NETSTANDARD2_1_OR_GREATER
 /// <summary>Specifies that null is allowed as an input even if the corresponding type disallows it.</summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
     public
 #endif
     sealed class AllowNullAttribute : Attribute
-{ }
+{
+}
 
 /// <summary>Specifies that null is disallowed as an input even if the corresponding type allows it.</summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property, Inherited = false)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
     public
 #endif
     sealed class DisallowNullAttribute : Attribute
-{ }
+{
+}
 
 /// <summary>Specifies that an output may be null even if the corresponding type disallows it.</summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
     public
 #endif
     sealed class MaybeNullAttribute : Attribute
-{ }
+{
+}
 
 /// <summary>Specifies that an output will not be null even if the corresponding type allows it.</summary>
-[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, Inherited = false)]
+[AttributeUsage(AttributeTargets.Field | AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
     public
 #endif
     sealed class NotNullAttribute : Attribute
-{ }
+{
+}
 
 /// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter may be null even if the corresponding type disallows it.</summary>
-[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
+[AttributeUsage(AttributeTargets.Parameter)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
@@ -71,7 +75,7 @@ internal
 }
 
 /// <summary>Specifies that when a method returns <see cref="ReturnValue"/>, the parameter will not be null even if the corresponding type allows it.</summary>
-[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
+[AttributeUsage(AttributeTargets.Parameter)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
@@ -90,7 +94,7 @@ internal
 }
 
 /// <summary>Specifies that the output will be non-null if the named parameter is non-null.</summary>
-[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, AllowMultiple = true, Inherited = false)]
+[AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue, AllowMultiple = true)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
@@ -116,10 +120,11 @@ internal
     public
 #endif
     sealed class DoesNotReturnAttribute : Attribute
-{ }
+{
+}
 
 /// <summary>Specifies that the method will not return if the associated Boolean parameter is passed the specified value.</summary>
-[AttributeUsage(AttributeTargets.Parameter, Inherited = false)]
+[AttributeUsage(AttributeTargets.Parameter)]
 #if INTERNAL_NULLABLE_ATTRIBUTES
 internal
 #else
@@ -139,7 +144,7 @@ internal
 }
 #endif // NETSTANDARD2_0 attributes
 
-#if NETSTANDARD2_1 || NETSTANDARD2_0 || NETCOREAPP2_0 || NETCOREAPP2_1 || NETCOREAPP2_2 || NETCOREAPP3_1 || NET45 || NET451 || NET452 || NET6 || NET461 || NET462 || NET47 || NET471 || NET472 || NET48
+#if !NET5_0_OR_GREATER
 /// <summary>
 /// Specifies that the method or property will ensure that the listed field and property members have
 /// not-<see langword="null"/> values.
@@ -150,7 +155,7 @@ internal
 #else
     public
 #endif
-sealed class MemberNotNullAttribute : Attribute
+    sealed class MemberNotNullAttribute : Attribute
 {
     /// <summary>Gets field or property member names.</summary>
     public string[] Members { get; }
@@ -159,7 +164,10 @@ sealed class MemberNotNullAttribute : Attribute
     /// <param name="member">The field or property member that is promised to be not-null.</param>
     public MemberNotNullAttribute(string member)
     {
-        Members = new[] { member };
+        Members = new[]
+        {
+            member
+        };
     }
 
     /// <summary>Initializes the attribute with the list of field and property members.</summary>
@@ -180,7 +188,7 @@ internal
 #else
     public
 #endif
-sealed class MemberNotNullWhenAttribute : Attribute
+    sealed class MemberNotNullWhenAttribute : Attribute
 {
     /// <summary>Gets the return value condition.</summary>
     public bool ReturnValue { get; }
@@ -197,7 +205,10 @@ sealed class MemberNotNullWhenAttribute : Attribute
     public MemberNotNullWhenAttribute(bool returnValue, string member)
     {
         ReturnValue = returnValue;
-        Members = new[] { member };
+        Members = new[]
+        {
+            member
+        };
     }
 
     /// <summary>Initializes the attribute with the specified return value condition and list of field and property members.

@@ -54,7 +54,7 @@ public class MainWindowViewModel : ViewModelBase
     {
         Title = multiple ? "Open multiple files" : "Open single file",
         SuggestedStartLocation = new DesktopDialogStorageFolder(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
-        Filters = new List<FileFilter>()
+        Filters = new List<FileFilter>
         {
             new(
                 "Text Documents",

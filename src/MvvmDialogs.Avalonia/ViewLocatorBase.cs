@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Templates;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -58,7 +56,7 @@ public class ViewLocatorBase : IDataTemplate, IViewLocator, IViewLocatorNavigati
                                      "You can customize it to map your view models to your views.";
             throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
-        return new ViewDefinition(viewType, () => CreateViewInstance(viewType));
+        return new(viewType, () => CreateViewInstance(viewType));
     }
 
     /// <summary>

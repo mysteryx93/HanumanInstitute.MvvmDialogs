@@ -9,7 +9,7 @@ internal class ViewCacheItem
     {
         ViewModelType = viewModelType;
         ViewDef = viewDef;
-        View = new WeakReference<UserControl>(view);
+        View = new(view);
     }
 
     /// <summary>

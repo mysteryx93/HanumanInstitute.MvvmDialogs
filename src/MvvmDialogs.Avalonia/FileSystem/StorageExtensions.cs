@@ -1,7 +1,4 @@
-﻿using Avalonia.Platform.Storage;
-using HanumanInstitute.MvvmDialogs.FileSystem;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Provides extension methods to convert between Avalonia and MvvmDialog storage file/folder types.

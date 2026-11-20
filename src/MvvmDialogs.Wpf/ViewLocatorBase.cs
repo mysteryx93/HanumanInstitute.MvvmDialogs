@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Base implementation of WPF ViewLocator. Override GetViewName to customize paths.
@@ -32,7 +30,7 @@ public class ViewLocatorBase : IViewLocator
                                      "view models to your views. See online documentation for more info.";
             throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
         }
-        return new ViewDefinition(viewType, () => CreateViewInstance(viewType));
+        return new(viewType, () => CreateViewInstance(viewType));
     }
 
     /// <summary>

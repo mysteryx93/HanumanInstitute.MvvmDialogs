@@ -1,4 +1,5 @@
 ﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable CheckNamespace
 
@@ -36,51 +37,25 @@ public class FluentDialogFactory : DialogFactoryBase
 
     private async Task<FAContentDialogResult> ShowContentDialogAsync(IView? owner, ContentDialogSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(owner);
+        owner.CheckNotNull();
         var view = new FluentContentView(settings);
-        IDisposable? events = null;
-        if (view.ViewModel != null)
-        {
-            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
-        }
-
-        try
-        {
-            await view.ShowDialogAsync(owner).ConfigureAwait(true);
-        }
-        catch
-        {
-            events?.Dispose();
-            throw;
-        }
+        using var events = view.ViewModel != null ? GetDialogManager().HandleDialogEvents(view.ViewModel, view) : null;
+        await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
 
     private async Task<object?> ShowTaskDialogAsync(IView? owner, TaskDialogSettings settings)
     {
-        ArgumentNullException.ThrowIfNull(owner);
+        owner.CheckNotNull();
         var view = new FluentTaskView(settings);
-        IDisposable? events = null;
-        if (view.ViewModel != null)
-        {
-            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
-        }
-
-        try
-        {
-            await view.ShowDialogAsync(owner).ConfigureAwait(true);
-        }
-        catch
-        {
-            events?.Dispose();
-            throw;
-        }
+        using var events = view.ViewModel != null ? GetDialogManager().HandleDialogEvents(view.ViewModel, view) : null;
+        await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
 
     private async Task<bool?> ShowMessageBoxContentDialogAsync(IView? owner, MessageBoxSettings settings)
     {
-        var apiSettings = new ContentDialogSettings()
+        var apiSettings = new ContentDialogSettings
         {
             Title = settings.Title,
             Content = settings.Content,
@@ -117,7 +92,7 @@ public class FluentDialogFactory : DialogFactoryBase
 
     private async Task<bool?> ShowMessageBoxTaskDialogAsync(IView? owner, MessageBoxSettings settings)
     {
-        var apiSettings = new TaskDialogSettings()
+        var apiSettings = new TaskDialogSettings
         {
             Title = settings.Title,
             Content = settings.Content,

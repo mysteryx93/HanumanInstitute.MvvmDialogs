@@ -2,8 +2,6 @@
 // using Avalonia.LogicalTree;
 
 using System.Diagnostics.CodeAnalysis;
-using Avalonia.Threading;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -47,18 +45,23 @@ public static class UiExtensions
     /// </summary>
     /// <param name="view">The UserControl to get a wrapper for.</param>
     /// <param name="navigationManager">The <see cref="INavigationManager"/> to set.</param>
-    /// <param name="closingHandler">A handler for the Closing event. Not that the Closing event is unsupported in this class and we thus support a single listener.</param>
-    /// <returns>A ViewNavigationWrapper referencing the user control.</returns>
-    [return: NotNullIfNotNull("view")]
+    /// <param name="closingHandler">An optional handler for close requests made through the wrapper.</param>
+    /// <returns>A wrapper for a user control with an <see cref="INotifyPropertyChanged"/> data context, or null.</returns>
     public static ViewNavigationWrapper? AsWrapper(this UserControl? view, INavigationManager navigationManager, ViewClosingHandler? closingHandler)
     {
-        if (view != null)
+        if (view?.DataContext is not INotifyPropertyChanged viewModel) { return null; }
+        if (navigationManager is NavigationManager manager)
         {
-            var result = new ViewNavigationWrapper(navigationManager, closingHandler);
-            result.InitializeExisting((INotifyPropertyChanged)view.DataContext!, view);
-            return result;
+            var existing = manager.FindOpenView(viewModel);
+            if (existing != null && ReferenceEquals(existing.Ref, view) &&
+                (closingHandler == null || Equals(closingHandler, existing.ClosingHandler)))
+            {
+                return existing;
+            }
         }
-        return null;
+        var wrapper = new ViewNavigationWrapper(navigationManager, closingHandler);
+        wrapper.InitializeExisting(viewModel, view);
+        return wrapper;
     }
 
     /// <summary>

@@ -39,7 +39,7 @@ public class MainWindowViewModel : ObservableObject
         {
             Title = "This is the title",
             SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
-            Filters = new List<FileFilter>()
+            Filters = new List<FileFilter>
             {
                 new("Text Documents", "txt"),
                 new("All Files", "*")
@@ -56,7 +56,7 @@ public class MainWindowViewModel : ObservableObject
         {
             Title = "This is the title",
             SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
-            Filters = new List<FileFilter>()
+            Filters = new List<FileFilter>
             {
                 new("Text Documents", "txt"),
                 new("All Files", "*")

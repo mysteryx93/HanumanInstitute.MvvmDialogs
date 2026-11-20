@@ -12,7 +12,7 @@ public class MainWindowViewModel : ViewModelBase
     private readonly IDialogService _dialogService;
     public ICommand ImplicitShowDialogCommand { get; }
     public ICommand ExplicitShowDialogCommand { get; }
-    public ObservableCollection<string> Texts { get; } = new ObservableCollection<string>();
+    public ObservableCollection<string> Texts { get; } = new();
 
     public MainWindowViewModel(IDialogService dialogService)
     {

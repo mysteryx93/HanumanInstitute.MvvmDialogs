@@ -1,6 +1,4 @@
-﻿using ReactiveUI;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
 
 public class ThirdViewModel : ReactiveObject, ICloseable, IActivable, IModalDialogViewModel
 {

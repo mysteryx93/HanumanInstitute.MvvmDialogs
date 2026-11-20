@@ -1,6 +1,4 @@
-﻿using Avalonia.Markup.Xaml;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// The default application main view for single-view applications. 

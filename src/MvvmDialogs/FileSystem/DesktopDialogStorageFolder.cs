@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-
-namespace HanumanInstitute.MvvmDialogs.FileSystem;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc cref="IDialogStorageFolder"/>
 public class DesktopDialogStorageFolder : DesktopDialogStorageItem, IDialogStorageFolder
@@ -28,7 +24,7 @@ public class DesktopDialogStorageFolder : DesktopDialogStorageItem, IDialogStora
     /// <param name="path">The path of the folder to get information for.</param>
     public DesktopDialogStorageFolder(string path)
     {
-        _info = new DirectoryInfo(path);
+        _info = new(path);
     }
 
     /// <inheritdoc />

@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Provides a sync ShowDialog compatibility method to IWindow in WPF.

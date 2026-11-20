@@ -81,8 +81,8 @@ public class MainWindowViewModel : ObservableObject
         Title = multiple ? "Open multiple files" : "Open single file",
         SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
         SuggestedFileName = "InitialName",
-        Filters = new List<FileFilter>()
-            {
+        Filters = new List<FileFilter>
+        {
                 new("Text Documents", "txt"),
                 new("All Files", "*")
             }

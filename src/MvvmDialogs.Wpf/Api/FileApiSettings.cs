@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 internal class FileApiSettings
 {
@@ -8,7 +6,7 @@ internal class FileApiSettings
     public bool AddExtension { get; set; } = true;
     public bool CheckFileExists { get; set; } = false;
     public bool CheckPathExists { get; set; } = true;
-    public FileDialogCustomPlacesCollection CustomPlaces { get; } = new FileDialogCustomPlacesCollection();
+    public FileDialogCustomPlacesCollection CustomPlaces { get; } = new();
     public string InitialDirectory { get; set; } = string.Empty;
     public string FileName { get; set; } = string.Empty;
     public string[] FileNames { get; set; } = Array.Empty<string>();

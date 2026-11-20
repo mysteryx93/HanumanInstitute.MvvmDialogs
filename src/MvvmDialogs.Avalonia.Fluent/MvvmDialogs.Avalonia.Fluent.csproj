@@ -7,7 +7,8 @@
       <OutputType>Library</OutputType>
       <AssemblyTitle>MvvmDialogs with FluentAvalonia</AssemblyTitle>
       <Title>MvvmDialogs with FluentAvalonia</Title>
-      <AssemblyOriginatorKeyFile>..\StrongName.snk</AssemblyOriginatorKeyFile>
+      <SignAssembly>true</SignAssembly>
+      <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
       <PackageId>HanumanInstitute.MvvmDialogs.Avalonia.Fluent</PackageId>
       <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia.Fluent</AssemblyName>
       <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia.Fluent</RootNamespace>
@@ -16,7 +17,7 @@
       <PackageIcon>icon_64x64.png</PackageIcon>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net11.0'">
 		<Features>$(Features);runtime-async=on</Features>
 	</PropertyGroup>
 

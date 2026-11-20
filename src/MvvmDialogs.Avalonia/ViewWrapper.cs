@@ -1,7 +1,4 @@
-// ReSharper disable VirtualMemberCallInConstructor
-
-using System.Collections.Generic;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿// ReSharper disable VirtualMemberCallInConstructor
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -55,31 +52,56 @@ public class ViewWrapper : IView
     {
         add
         {
-            if (value != null)
-            {
-                var handler = new EventHandler<WindowClosingEventArgs>(value.Invoke);
-                _closingHandlers.Add(value, handler);
-                Ref.Closing += handler;
-            }
+            if (value == null) { return; }
+            if (_closing == null) { Ref.Closing += WindowClosing; }
+            _closing += value;
         }
         remove
         {
-            if (value != null && _closingHandlers.TryGetValue(value, out var handler))
-            {
-                Ref.Closing -= handler;
-                _closingHandlers.Remove(value);
-            }
+            _closing -= value;
+            if (_closing == null) { Ref.Closing -= WindowClosing; }
         }
     }
-    private readonly Dictionary<EventHandler<CancelEventArgs>, EventHandler<WindowClosingEventArgs>> _closingHandlers = new();
+
+    private EventHandler<CancelEventArgs>? _closing;
+
+    // Keep a retry approved until every wrapper subscriber has seen the native close attempt.
+    private void WindowClosing(object? sender, WindowClosingEventArgs e)
+    {
+        try { _closing?.Invoke(sender, e); }
+        finally { ClosingConfirmed = false; }
+    }
 
     /// <summary>
     /// Fired when the window is closed.
     /// </summary>
     public event EventHandler? Closed
     {
-        add => Ref.Closed += value;
-        remove => Ref.Closed -= value;
+        add
+        {
+            if (value == null) { return; }
+            if (_closed == null) { Ref.Closed += WindowClosed; }
+            _closed += value;
+        }
+        remove
+        {
+            _closed -= value;
+            if (_closed == null) { Ref.Closed -= WindowClosed; }
+        }
+    }
+
+    private EventHandler? _closed;
+
+    // A callback failure must leave Avalonia free to finish closing and release the window.
+    private void WindowClosed(object? sender, EventArgs e)
+    {
+        if (_closed == null) { return; }
+
+        foreach (EventHandler handler in _closed.GetInvocationList())
+        {
+            try { handler(sender, e); }
+            catch (Exception error) { Dispatcher.UIThread.Post(ExceptionDispatchInfo.Capture(error).Throw); }
+        }
     }
 
     /// <inheritdoc />
@@ -133,7 +155,7 @@ public class ViewWrapper : IView
 
     private void SetMainWindowIfEmpty(Window? window)
     {
-        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime { MainWindow: null } desktop)
+        if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow == null)
         {
             desktop.MainWindow = window;
         }

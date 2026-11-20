@@ -25,7 +25,7 @@ public class App : Application
                 logger: loggerFactory.CreateLogger<DialogManager>()),
             viewModelFactory: sp.GetService));
 
-        services.AddSingleton<MainWindowViewModel>(sp => new MainWindowViewModel(sp.GetService<IDialogService>()!));
+        services.AddSingleton<MainWindowViewModel>(sp => new(sp.GetService<IDialogService>()!));
         services.AddSingleton<CurrentTimeDialogViewModel>();
 
         ServiceProvider = services.BuildServiceProvider();

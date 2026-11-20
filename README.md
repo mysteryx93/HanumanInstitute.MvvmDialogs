@@ -55,7 +55,7 @@ The library has built in support for the following dialogs:
 - Save file dialog
 - Open folder dialog
 
-v2 adds supports for 'magic' mobile navigation with the same API.
+Avalonia apps can use the same dialog API for desktop windows and [single-page navigation](#mobileweb-applications).
 
 [Here's a tutorial for building modern cross-platform applications.](https://github.com/mysteryx93/Modern.Net-Tutorial)
 
@@ -222,9 +222,7 @@ If false (default), it will wait for the previous dialog to close before showing
 
 Add a reference to `HanumanInstitute.MvvmDialogs.Avalonia`
 
-DialogService must be registered in the DependencyInjection container of your choice. Note that IDialogService is defined in `HanumanInstitute.MvvmDialogs` and DialogService is defined in `HanumanInstitute.MvvmDialogs.Wpf`.
-
-In the constructor, you must pass the ViewLocator from the Avalonia project template.
+Register `HanumanInstitute.MvvmDialogs.Avalonia.DialogService` as `IDialogService` in your dependency injection container. Pass a view locator to `DialogManager` to customize how it maps view models to views.
 
 ```c#
 public class App : Application
@@ -274,13 +272,13 @@ If false (default), it will wait for the previous dialog to close before showing
 
 ### Mobile/Web Applications
 
-Avalonia11 supports Android, iOS and Web Assembly. To support it, MvvmDialogs v2 went through considerable structural changes that resulted in very minor API changes.
+MvvmDialogs uses single-page navigation with Avalonia's `ISingleViewApplicationLifetime`, as in mobile and browser apps. `Show` and `ShowDialogAsync` present pages within the same navigation host.
 
-For mobile devices and web browsers, the application is composed of a single root view, and you navigate between views. You can also force this mode on desktop by setting `viewLocator: new ViewLocatorBase() { ForceSinglePageNavigation = true }` in the `DialogManager` constructor.
+To use this mode on desktop, set `ForceSinglePageNavigation = true` on the view locator passed to `DialogManager`. With `StrongViewLocator`, set it before registering views. See the [CrossPlatform demo's view locator](samples/Avalonia/CrossPlatform/Demo.CrossPlatform/ViewLocator.cs).
 
-The philosophy is this. We maintain a navigation history of view models only, and a weak cache of views. Views can be garbage collected and recreated when needed from the view models. You get the same navigation functionalities as a desktop app, but in a navigation mode. All the magic is done automatically, which means that your view model doesn't need to know whether it runs on mobile or desktop, and can support both modes.
+System Back first requests dismissal of an active popup in the current host. With no popup, it goes back in the page history, subject to close confirmation. At the root page with no popup, system Back is left to the platform. For a custom Back button, use `CanGoBack` and `GoBackAsync()` on the manager exposed by `DialogManager.NavigationManager`.
 
-Mobile back button is also supported automatically.
+If a modal dialog's owner or navigation host closes first, awaiting `ShowDialogAsync()` throws `OperationCanceledException`.
 
 ### Avalonia.MessageBox
 
@@ -407,11 +405,13 @@ For extra dialog options, see Custom Framework Dialogs section.
 
 ## Cross-Platform File Access
 
-To access files and folders across desktop, mobile and web, `IDialogStorageFile` and `IDialogStorageFolder` provide various standard methods. Instead of having direct access to files, you'll often use URIs, relative paths and bookmarks.
+To access files and folders across desktop, mobile and web, `IDialogStorageFile` and `IDialogStorageFolder` provide shared methods for working with picked items. Use streams to read and write file contents when a local filesystem path is unavailable.
 
 They copy Avalonia's `IStorageFile` and `IStorageFolder` [documented here](https://docs.avaloniaui.net/docs/concepts/services/storage-provider/storage-item). The reasons to copy those interfaces are to allow you to write platform-agnostic code, and to have consistency between WPF and Avalonia. 
 
 Avalonia provides various methods in `IStorageProvider` to get `IStorageFile` and `IStorageFolder` instances, as [documented here](https://docs.avaloniaui.net/docs/concepts/services/storage-provider/). You can convert them to the `MvvmDialogs` interface using the `ToDialog()` extension method.
+
+For persistent access in Avalonia, check whether the picked item is an `AvaloniaDialogStorageItem`. It exposes `CanBookmark`, `SaveBookmarkAsync()`, and `ReleaseBookmarkAsync()`. Reopen saved bookmarks through Avalonia's `IStorageProvider`.
 
 Here's a example of a service that returns the Documents folder.
 
@@ -533,84 +533,18 @@ The usage will be the same as a standard `Window`.
 
 ## Custom Framework Dialogs
 
-This part is the most different from the FantasticFiasco version and will require some work to port. The implementation further changed as of v1.3 to be simpler and more modular.
+To replace a built-in framework dialog, subclass your platform's `DialogFactoryBase` and override `ShowDialogAsync`. For synchronous WPF calls, also override `ShowDialog`. Handle the relevant settings type, return the result expected by `IDialogService`, and pass other requests along the chain by calling the base implementation.
 
-First, create a custom DialogFactory like this. Note that you can create entirely new methods by adding new settings types.
+Register the factory with `DialogManager` through its `dialogFactory` argument. The custom folder picker demos show the factory and its registration for [Avalonia](samples/Avalonia/Demo.CustomOpenFolderDialog/) and [WPF](samples/Wpf/Demo.CustomOpenFolderDialog/).
 
-For new methods, you can customize the return type, but to override standard methods, you must specify the expected return type.
+To add a new dialog, define a settings type derived from `DialogSettingsBase`. You can expose a typed `IDialogService` extension that calls `service.DialogManager.ShowFrameworkDialogAsync(...)`. See the [Fluent dialog extensions](src/MvvmDialogs.Avalonia.Fluent/DialogServiceExtensions.cs).
 
-```c#
-public class CustomDialogFactory : DialogFactoryBase
-{
-    public CustomDialogFactory(IDialogFactory? chain = null)
-        : base(chain)
-    {
-    }
+### Avalonia overlays
 
-    public override async Task<object?> ShowDialogAsync<TSettings>(WindowWrapper owner, TSettings settings, AppDialogSettings appSettings) =>
-        settings switch
-        {
-            OpenFolderDialogSettings s => await ShowOpenFolderDialogAsync(owner, s, appSettings),
-            _ => base.ShowDialogAsync(owner, settings, appSettings)
-        };
+For inline dialogs, [OverlayExtensions](src/MvvmDialogs.Avalonia/OverlayExtensions.cs) provides two helpers on the dialog owner. Both register a dismissal action for Back and request dismissal when the owner leaves.
 
-    private async Task<string?> ShowOpenFolderDialogAsync(WindowWrapper owner, OpenFolderDialogSettings settings, AppDialogSettings appSettings) =>
-        "Action here";
-}
-```
-
-Second, create an extension method to facilitate registration of the new Dialog Factory.
-
-```c#
-public static class DialogFactoryExtensions
-{
-    public static IDialogFactory AddCustomOpenFolder(this IDialogFactory factory) => new CustomDialogFactory(factory);
-}
-```
-
-Third, you must register DialogFactory when creating the DialogService. You can form a chain of DialogFactory 
-where each instance handles some types and passes unhandled requests to the next DialogFactory in the chain. 
-The extension method facilitates the creation of such chain. In this example, our new class handles OpenFolder, 
-and all other requests fallback to the default implementation.
-
-```c#
-new DialogService(dialogManager: new DialogManager(
-    dialogFactory: new DialogFactory().AddCustomOpenFolder()))
-```
-
-Finally, if you're creating a new method, you must create a new extension method on `IDialogService`
-
-```c#
-namespace HanumanInstitute.MvvmDialogs;
-
-public static class Extensions
-{
-    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(
-        this IDialogService service, INotifyPropertyChanged ownerViewModel,
-        string text, string title = "")
-    {
-        var settings = new TaskMessageBoxSettings(text, title);
-        return ShowTaskMessageBoxAsync(service, ownerViewModel, settings);
-    }
-
-    public static Task<TaskDialogButton> ShowTaskMessageBoxAsync(this IDialogService service,
-        INotifyPropertyChanged ownerViewModel, TaskMessageBoxSettings? settings = null)
-    {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-
-        DialogLogger.Write($"TASK Caption: {settings?.Title}; Message: {settings?.Text}");
-
-        return service.DialogManager.ShowFrameworkDialogAsync<MessageBoxSettings, TaskDialogButton>(
-            ownerViewModel, settings ?? new MessageBoxSettings());
-    }
-}
-```
-
-[Sample demo here](samples/Wpf/Demo.CustomMessageBox/)
-
-[MvvmDialogs.Avalonia.MessageBox is an example of custom implementation](src/MvvmDialogs.Avalonia.MessageBox)
-
-You could create a class library providing a new set of `IDialogService` methods.
+- Use `RunOverlayAsync()` when the dialog provides its own overlay and needs the owner's `TopLevel`. See [FluentContentView](src/MvvmDialogs.Avalonia.Fluent/FluentContentView.cs).
+- Use `WithOverlaySurfaceAsync()` when the dialog needs a temporary `ContentControl` over the owner. See [MessageBoxDialogFactory](src/MvvmDialogs.Avalonia.MessageBox/MessageBoxDialogFactory.cs).
 
 ### RunUiAsync
 

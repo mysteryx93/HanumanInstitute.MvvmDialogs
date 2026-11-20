@@ -40,22 +40,6 @@ public interface IDialogStorageItem : IDisposable
     Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync();
 
     /// <summary>
-    /// Returns true is item can be bookmarked and reused later.
-    /// </summary>
-    bool CanBookmark { get; }
-
-    /// <summary>
-    /// Saves items to a bookmark.
-    /// </summary>
-    /// <returns>The bookmark identifier, or null if the platform denied the request.</returns>
-    Task<string?> SaveBookmarkAsync();
-
-    /// <summary>
-    /// Releases the bookmark permission held by this item.
-    /// </summary>
-    Task ReleaseBookmarkAsync();
-
-    /// <summary>
     /// Gets the parent folder of the current storage item.
     /// </summary>
     Task<IDialogStorageFolder?> GetParentAsync();
@@ -72,4 +56,3 @@ public interface IDialogStorageItem : IDisposable
     /// <returns>The item at its new location, or null when the move cannot be delegated.</returns>
     Task<IDialogStorageItem?> MoveAsync(IDialogStorageFolder destination);
 }
-

@@ -1,5 +1,4 @@
-﻿
-// ReSharper disable CheckNamespace
+﻿// ReSharper disable CheckNamespace
 
 using HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 

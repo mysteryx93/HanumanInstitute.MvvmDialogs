@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace HanumanInstitute.MvvmDialogs.FileSystem;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <summary>
 /// Manipulates folders and their contents, and provides information about them.

@@ -6,6 +6,7 @@
     <AssemblyTitle>MVVM Dialogs</AssemblyTitle>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
+    <FriendAssemblyPublicKey>0024000004800000140100000602000000240000525341310008000001000100eb57a243483622c40e5772de635c156ebe0e2b53394ef815d35e640df2efd45799b50c9cac0b5ea4aec9b043365c68ccf7ceefe043e4a06911737c5d06e1e8a9bb790679800c10c474866899753f9034159583283aabcb8eadf327e5b38a955989d969057c6a385fff8b59c66cd0a643690cb54fa3f2c36a596b2ab08ac268956b8fb03282cf21f0270432a28d4719ba898130d59c48b3931521295815de987babcf78736c220a1a610a00d3072532a9f881cab17f1430ac806e7e08d0386a1795e858760cd7f68b1da4812cd0cdc1a5e032735b32bd309a5d2296c354b4d8f0b7844327b369e55f7638575ee924937f00452855abc0d30e11d9fa90c94c8ab4</FriendAssemblyPublicKey>
     <PackageId>HanumanInstitute.MvvmDialogs</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs</AssemblyName>
     <RootNamespace>HanumanInstitute.MvvmDialogs</RootNamespace>
@@ -19,6 +20,11 @@
 	</PropertyGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="HanumanInstitute.MvvmDialogs.Wpf"
+                        Key="$(FriendAssemblyPublicKey)" />
+    <InternalsVisibleTo Include="HanumanInstitute.MvvmDialogs.Avalonia" Key="$(FriendAssemblyPublicKey)" />
+    <InternalsVisibleTo Include="HanumanInstitute.MvvmDialogs.Avalonia.DialogHost" Key="$(FriendAssemblyPublicKey)" />
+    <InternalsVisibleTo Include="HanumanInstitute.MvvmDialogs.Avalonia.Fluent" Key="$(FriendAssemblyPublicKey)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
   </ItemGroup>

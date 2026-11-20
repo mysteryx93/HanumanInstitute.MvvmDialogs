@@ -2,10 +2,10 @@
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ReactiveUI;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.FileSystem;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+using ReactiveUI;
 
 namespace Demo.Avalonia.SaveFileDialog;
 
@@ -37,7 +37,7 @@ public class MainWindowViewModel : ViewModelBase
             Title = "This is the title",
             SuggestedStartLocation = new DesktopDialogStorageFolder(System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!),
             SuggestedFileName = "DefaultName",
-            Filters = new List<FileFilter>()
+            Filters = new List<FileFilter>
             {
                 new("Text Documents", new[] { "txt", "md" }),
                 new("MP3", new[] { "mp3" }),

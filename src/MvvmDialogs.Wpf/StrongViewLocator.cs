@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf
 {
     /// <summary>
     /// Strongly-typed View Locator that does not rely on reflection.
@@ -15,6 +14,6 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
             where TViewModel : INotifyPropertyChanged
             where TView : Control, new() =>
             Register<TViewModel>(
-                new ViewDefinition(typeof(TView), () => new TView()));
+                new(typeof(TView), () => new TView()));
     }
 }

@@ -4,7 +4,8 @@
     <TargetFrameworks>net11.0;net10.0</TargetFrameworks>
     <OutputType>Library</OutputType>
     <AssemblyTitle>MVVM Dialogs for Avalonia</AssemblyTitle>
-    <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
     <PackageId>HanumanInstitute.MvvmDialogs.Avalonia</PackageId>
     <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia</AssemblyName>
     <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia</RootNamespace>

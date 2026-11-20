@@ -1,5 +1,4 @@
 using Avalonia.Platform.Storage;
-using Moq;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
@@ -64,7 +63,7 @@ public class AvaloniaDialogStorageFolderTests
     // The folder picker item is internal. This builds the same type the dialog returns.
     private static IStorageFolder CreateFolder(string path)
     {
-        var assembly = typeof(global::Avalonia.AvaloniaObject).Assembly;
+        var assembly = typeof(AvaloniaObject).Assembly;
         var type = assembly.GetType("Avalonia.Platform.Storage.FileIO.BclStorageFolder")!;
         var constructor = type.GetConstructor([typeof(DirectoryInfo)])!;
         return (IStorageFolder)constructor.Invoke([new DirectoryInfo(path)]);

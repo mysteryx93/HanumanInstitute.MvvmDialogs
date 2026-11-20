@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace HanumanInstitute.MvvmDialogs.FileSystem;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc cref="IDialogStorageFile"/>
 public class DesktopDialogStorageFile : DesktopDialogStorageItem, IDialogStorageFile
@@ -26,7 +24,7 @@ public class DesktopDialogStorageFile : DesktopDialogStorageItem, IDialogStorage
     /// <param name="path">The path of the file to get information for.</param>
     public DesktopDialogStorageFile(string path)
     {
-        _info = new FileInfo(path);
+        _info = new(path);
         if (_info == null)
         {
             throw new FileNotFoundException($"File '{path}' not found.");

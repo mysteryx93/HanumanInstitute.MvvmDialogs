@@ -46,7 +46,7 @@ public class MessageBoxDialogFactory : DialogFactoryBase
 
     private async Task<bool?> ShowMessageBoxDialogAsync(IView? owner, MessageBoxSettings settings)
     {
-        var apiSettings = new MessageBoxApiSettings()
+        var apiSettings = new MessageBoxApiSettings
         {
             Title = settings.Title,
             Text = settings.Content,
@@ -56,23 +56,23 @@ public class MessageBoxDialogFactory : DialogFactoryBase
             EscDefaultButton = SyncDefaultEsc(settings.Button)
         };
 
-        var ownerRef = owner.GetRef();
-        if (ownerRef is Window ownerWin)
+        if (Mode == MessageBoxMode.Popup && owner.GetOverlayOwner() == null)
         {
-            var result = await _api.ShowMessageBoxAsync(ownerWin, apiSettings, Mode);
-            return result switch
-            {
-                ButtonResult.Yes => true,
-                ButtonResult.Ok => true,
-                ButtonResult.No => false,
-                ButtonResult.Cancel => null,
-                _ => null
-            };
+            throw new InvalidOperationException("A message box requires a dialog owner.");
         }
-        else
-        {
+        var dialog = _api.CreateMessageBox(apiSettings);
+        var result = Mode == MessageBoxMode.Popup ? await owner.WithOverlaySurfaceAsync(dialog.ShowAsPopupAsync, dialog.Close, ButtonResult.Cancel) :
+            owner.GetRef() is Window window ? await dialog.ShowWindowDialogAsync(window) :
             throw new InvalidCastException("Owner must be of type Window.");
-        }
+
+        return result switch
+        {
+            ButtonResult.Yes => true,
+            ButtonResult.Ok => true,
+            ButtonResult.No => false,
+            ButtonResult.Cancel => null,
+            _ => null
+        };
     }
 
     // Convert platform-agnostic types into Win32 types.

@@ -1,13 +1,11 @@
-﻿using MsBox.Avalonia.Dto;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.MessageBox;
 
 internal class MessageBoxApi : IMessageBoxApi
 {
-    public Task<ButtonResult> ShowMessageBoxAsync(Window? owner, MessageBoxApiSettings settings, MessageBoxMode mode)
-    {
-        var msgBox = MessageBoxManager.GetMessageBoxStandard(
-            new MessageBoxStandardParams()
+    // Creates a message box that the caller can show and close.
+    public IMsBox<ButtonResult> CreateMessageBox(MessageBoxApiSettings settings) =>
+        MessageBoxManager.GetMessageBoxStandard(
+            new()
             {
                 ContentTitle = settings.Title,
                 ContentMessage = settings.Text,
@@ -17,6 +15,4 @@ internal class MessageBoxApi : IMessageBoxApi
                 EnterDefaultButton = settings.EnterDefaultButton,
                 EscDefaultButton = settings.EscDefaultButton
             });
-        return mode == MessageBoxMode.Popup ? msgBox.ShowAsPopupAsync(owner) : msgBox.ShowWindowDialogAsync(owner);
-    }
 }

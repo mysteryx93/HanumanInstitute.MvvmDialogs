@@ -1,5 +1,3 @@
-using Moq;
-
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 /// <summary>
@@ -43,7 +41,7 @@ internal sealed class FakeDialogManager : DialogManagerBase<object>
         var locator = new Mock<IViewLocator>();
         locator
             .Setup(x => x.Locate(It.IsAny<INotifyPropertyChanged>()))
-            .Returns(new ViewDefinition(typeof(object), () => new object()));
+            .Returns(new ViewDefinition(typeof(object), () => new()));
         return locator.Object;
     }
 

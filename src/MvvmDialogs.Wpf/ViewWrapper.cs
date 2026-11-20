@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Class wrapping an instance of WPF <see cref="Window"/> within <see cref="IView"/>.
@@ -75,23 +73,25 @@ public class ViewWrapper : IView, IViewSync
     {
         add
         {
-            if (value != null)
-            {
-                var handler = new CancelEventHandler(value.Invoke);
-                _closingHandlers.Add(value, handler);
-                Ref.Closing += handler;
-            }
+            if (value == null) { return; }
+            if (_closing == null) { Ref.Closing += WindowClosing; }
+            _closing += value;
         }
         remove
         {
-            if (value != null && _closingHandlers.TryGetValue(value, out var handler))
-            {
-                Ref.Closing -= handler;
-                _closingHandlers.Remove(value);
-            }
+            _closing -= value;
+            if (_closing == null) { Ref.Closing -= WindowClosing; }
         }
     }
-    private readonly Dictionary<EventHandler<CancelEventArgs>, CancelEventHandler> _closingHandlers = new();
+
+    private EventHandler<CancelEventArgs>? _closing;
+
+    // Keep a retry approved until every wrapper subscriber has seen the native close attempt.
+    private void WindowClosing(object? sender, CancelEventArgs e)
+    {
+        try { _closing?.Invoke(sender, e); }
+        finally { ClosingConfirmed = false; }
+    }
 
     /// <summary>
     /// Occurs when the window is about to close.

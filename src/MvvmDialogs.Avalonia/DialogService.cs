@@ -26,8 +26,13 @@ public class DialogService : DialogServiceBase
     public DialogService(
         IDialogManager? dialogManager = null,
         Func<Type, object?>? viewModelFactory = null)
-        : base(dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
+        : base(
+            dialogManager ?? new DialogManager(dialogFactory: new DialogFactory()),
             viewModelFactory)
     {
     }
+
+    /// <inheritdoc />
+    protected override Type? GetViewType(IView? view) =>
+        view is ViewNavigationWrapper page ? page.ViewType : base.GetViewType(view);
 }

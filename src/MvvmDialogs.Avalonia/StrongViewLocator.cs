@@ -1,7 +1,4 @@
-﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Templates;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
 /// <summary>
 /// Strongly-typed View Locator that does not rely on reflection.
@@ -16,7 +13,7 @@ public abstract class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, 
     public void Register<TViewModel, TView>()
         where TViewModel : INotifyPropertyChanged
         where TView : Control, new() =>
-        Register<TViewModel>(new ViewDefinition(typeof(TView), () => new TView()));
+        Register<TViewModel>(new(typeof(TView), () => new TView()));
 
     /// <summary>
     /// Registers specified views as being associated with specified view model type.
@@ -29,9 +26,7 @@ public abstract class StrongViewLocator : StrongViewLocatorBase, IDataTemplate, 
         where TViewModel : INotifyPropertyChanged
         where TNavView : UserControl, new()
         where TDeskView : Window, new() =>
-        Register<TViewModel>(UseSinglePageNavigation ?
-            new ViewDefinition(typeof(TNavView), () => new TNavView()) :
-            new ViewDefinition(typeof(TDeskView), () => new TDeskView()));
+        Register<TViewModel>(UseSinglePageNavigation ? new(typeof(TNavView), () => new TNavView()) : new ViewDefinition(typeof(TDeskView), () => new TDeskView()));
 
     /// <summary>
     /// Gets or sets whether to force single-page navigation. Setting this to true can allow running in single-page mode on desktop.

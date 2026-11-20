@@ -3,13 +3,13 @@
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
-/// Class wrapping an instance of Avalonia <see cref="Window"/> within <see cref="IView"/>.
+/// Class wrapping an instance of Avalonia <see cref="UserControl"/> within <see cref="IView"/>.
 /// </summary>
 /// <seealso cref="IView" />
 public class ViewNavigationWrapper : IView
 {
     private readonly INavigationManager _navigation;
-    private readonly ViewClosingHandler? _closingHandler;
+    internal ViewClosingHandler? ClosingHandler { get; }
 
     /// <summary>
     /// Initializes a new instance of the ViewNavigationWrapper class. 
@@ -19,12 +19,13 @@ public class ViewNavigationWrapper : IView
     public ViewNavigationWrapper(INavigationManager navigationManager, ViewClosingHandler? closingHandler)
     {
         _navigation = navigationManager;
-        _closingHandler = closingHandler;
+        ClosingHandler = closingHandler;
     }
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
+        Ref = null;
         ViewModel = viewModel;
         ViewDef = viewDef;
     }
@@ -35,10 +36,32 @@ public class ViewNavigationWrapper : IView
         ViewModel = viewModel;
         Ref = (UserControl)view;
         var viewType = view.GetType();
-        ViewDef = new ViewDefinition(viewType, () => Ref ?? Activator.CreateInstance(viewType)!);
+        var supplied = _ref!;
+        ViewDef = new(viewType, () => supplied.TryGetTarget(out var target) ? target : Activator.CreateInstance(viewType)!);
     }
 
     private ViewDefinition ViewDef { get; set; }
+
+    // Gets the type of the live control or the type recorded in its view definition.
+    internal Type ViewType => Ref?.GetType() ?? ViewDef.ViewType;
+
+    internal TaskCompletionSource<bool>? Completion { get; set; }
+    internal Task<bool>? PendingClose { get; set; }
+    internal bool IsConfirming { get; private set; }
+
+    internal UserControl Realize(UserControl? reusable = null)
+    {
+        var view = Ref;
+        if (view == null)
+        {
+            view = reusable != null && reusable.GetType() == ViewDef.ViewType ? reusable : (UserControl)ViewDef.Create();
+            Ref = view;
+        }
+        view.DataContext = ViewModel;
+        return view;
+    }
+
+    internal Control? GetOverlayOwner() => IsConfirming ? _navigation.CurrentView : Ref;
 
     public IView? Owner { get; set; }
 
@@ -48,12 +71,13 @@ public class ViewNavigationWrapper : IView
     public UserControl? Ref
     {
         get => _ref != null && _ref.TryGetTarget(out var view) ? view : null;
-        private set => _ref = value is null ? null : new WeakReference<UserControl>(value);
+        internal set => _ref = value is null ? null : new WeakReference<UserControl>(value);
     }
     private WeakReference<UserControl>? _ref;
 
     /// <inheritdoc />
-    public object RefObj => Ref!;
+    public object RefObj => Ref ??
+                            (_navigation is NavigationManager manager && manager.IsOpen(this) ? Realize() : null)!;
 
     /// <inheritdoc />
     public event EventHandler? Loaded;
@@ -61,7 +85,7 @@ public class ViewNavigationWrapper : IView
     /// <summary>
     /// Unused. Closing is dispatched through the constructor <see cref="ViewClosingHandler"/> so this wrapper supports a single listener.
     /// </summary>
-    public event EventHandler<CancelEventArgs>? Closing;
+    public event EventHandler<CancelEventArgs>? Closing { add { } remove { } }
 
     /// <inheritdoc />
     public event EventHandler? Closed;
@@ -69,7 +93,7 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public INotifyPropertyChanged ViewModel { get; private set; }
 
-    private void RaiseLoaded()
+    internal void NotifyLoaded()
     {
         Loaded?.Invoke(this, EventArgs.Empty);
         if (ViewModel is IViewLoaded vm)
@@ -78,10 +102,10 @@ public class ViewNavigationWrapper : IView
         }
     }
 
-    private void RaiseClosed()
+    internal void NotifyClosed(bool notifyModel = true)
     {
         Closed?.Invoke(this, EventArgs.Empty);
-        if (ViewModel is IViewClosed vm)
+        if (notifyModel && ViewModel is IViewClosed vm)
         {
             vm.OnClosed();
         }
@@ -90,18 +114,28 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public async Task ShowDialogAsync(IView owner)
     {
-        var task = _navigation.ShowDialogAsync(ViewModel, ViewDef, owner.ViewModel);
+        if (_navigation is NavigationManager manager)
+        {
+            await manager.Present(this, owner).ConfigureAwait(true);
+            return;
+        }
+        var task = _navigation.ShowDialogAsync(ViewModel, ViewDef, owner.ViewModel!);
         Ref = _navigation.CurrentView!;
-        RaiseLoaded();
+        NotifyLoaded();
         await task.ConfigureAwait(true);
     }
 
     /// <inheritdoc />
     public void Show(IView? owner)
     {
+        if (_navigation is NavigationManager manager)
+        {
+            manager.Present(this, null);
+            return;
+        }
         _navigation.Show(ViewModel, ViewDef);
         Ref = _navigation.CurrentView!;
-        RaiseLoaded();
+        NotifyLoaded();
     }
 
     /// <inheritdoc />
@@ -109,10 +143,10 @@ public class ViewNavigationWrapper : IView
     {
         if (!ReferenceEquals(_navigation.CurrentView?.DataContext, ViewModel))
         {
-            if (_navigation.Activate(ViewModel))
+            if (_navigation.Activate(ViewModel) && _navigation is not NavigationManager)
             {
                 Ref = _navigation.CurrentView!;
-                RaiseLoaded();
+                NotifyLoaded();
             }
         }
     }
@@ -120,16 +154,44 @@ public class ViewNavigationWrapper : IView
     /// <inheritdoc />
     public void Close()
     {
-        var args = new CancelEventArgs();
-        if (!ClosingConfirmed)
+        var close = CloseAsync();
+        if (close.IsCompleted) { close.GetAwaiter().GetResult(); }
+        else { AwaitClose(close); }
+
+        static async void AwaitClose(Task pending) => await pending.ConfigureAwait(true);
+    }
+
+    private async Task CloseAsync()
+    {
+        if (_navigation is NavigationManager manager)
         {
-            _closingHandler?.Invoke(this, args);
+            await manager.RequestCloseAsync(this).ConfigureAwait(true);
         }
-        if (!args.Cancel && ClosingConfirmed)
+        else if (await ConfirmAsync().ConfigureAwait(true))
         {
-            _isClosed = true;
             _navigation.Close(ViewModel);
-            RaiseClosed();
+            NotifyClosed();
+        }
+    }
+
+    internal async Task<bool> ConfirmAsync()
+    {
+        var args = new CancelEventArgs();
+        IsConfirming = true;
+        try
+        {
+            if (ClosingHandler?.Target is DialogManager manager && ClosingHandler == manager.View_Closing)
+            {
+                await manager.ConfirmNavigationCloseAsync(this, args).ConfigureAwait(true);
+            }
+            else if (ClosingHandler != null && !ClosingConfirmed) { ClosingHandler(this, args); }
+            else { ClosingConfirmed = true; }
+            return !args.Cancel && ClosingConfirmed;
+        }
+        finally
+        {
+            IsConfirming = false;
+            ClosingConfirmed = false;
         }
     }
 
@@ -151,6 +213,4 @@ public class ViewNavigationWrapper : IView
 
     /// <inheritdoc />    
     public bool ClosingConfirmed { get; set; }
-
-    private bool _isClosed;
 }

@@ -2,12 +2,12 @@
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
-using ReactiveUI.Avalonia;
 using Demo.CrossPlatform;
+using ReactiveUI.Avalonia;
 
 [assembly: SupportedOSPlatform("browser")]
 
-internal partial class Program
+internal class Program
 {
     private static async Task Main(string[] args) => await BuildAvaloniaApp()
         .UseReactiveUI(rxui => { })

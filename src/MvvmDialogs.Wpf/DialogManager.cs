@@ -1,9 +1,4 @@
-﻿using System.Linq;
-using System.Windows.Media;
-using System.Windows.Threading;
-using Microsoft.Extensions.Logging;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf
 {
     /// <summary>
     /// DialogManager that supports extra sync methods to show dialogs.
@@ -13,16 +8,22 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         private readonly Dispatcher _dispatcher;
 
         /// <inheritdoc />
-        public DialogManager(IViewLocator? viewLocator = null, IDialogFactory? dialogFactory = null,
-            ILogger<DialogManager>? logger = null, Dispatcher? dispatcher = null) :
-            base(viewLocator ?? new ViewLocatorBase(),
-                dialogFactory ?? new DialogFactory(), logger)
+        public DialogManager(
+            IViewLocator? viewLocator = null,
+            IDialogFactory? dialogFactory = null,
+            ILogger<DialogManager>? logger = null,
+            Dispatcher? dispatcher = null)
+            :
+            base(
+                viewLocator ?? new ViewLocatorBase(),
+                dialogFactory ?? new DialogFactory(),
+                logger)
         {
             _dispatcher = dispatcher ?? Application.Current.Dispatcher;
         }
 
         /// <inheritdoc />
-        protected override bool IsDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
+        protected override bool IsDesignMode => DesignerProperties.GetIsInDesignMode(new());
 
         /// <inheritdoc />
         public virtual void ShowDialog(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
@@ -87,7 +88,7 @@ namespace HanumanInstitute.MvvmDialogs.Wpf
         /// <inheritdoc />
         public override IView? GetDummyWindow()
         {
-            var parent = new Window()
+            var parent = new Window
             {
                 Height = 1,
                 Width = 1,

@@ -1,223 +1,371 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+using System.Collections;
 using System.Runtime.CompilerServices;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Interactivity;
-using Avalonia.Threading;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <inheritdoc cref="INavigationManager"/>
-/// <summary>
-/// Initializes a new instance of the NavigationManager class.
-/// </summary>
-/// <param name="closingHandler">A handler for the Closing event. Note that the Closing event is unsupported by the <see cref="ViewNavigationWrapper"/> and we thus support a single listener.</param>
-public class NavigationManager(ViewClosingHandler? closingHandler) : INotifyPropertyChanged, INavigationManager
+public class NavigationManager : INotifyPropertyChanged, INavigationManager, IWeakEventSubscriber<EventArgs>
 {
-    /// <summary>
-    /// Navigation history contains only ViewModels to avoid keeping all constructed user controls in memory. The Views can be reconstructed from the ViewModels.
-    /// </summary>
-    private readonly List<INotifyPropertyChanged> _history = [];
-    private readonly ViewCache _viewCache = new();
-    private readonly List<DialogTask> _dialogs = [];
-    private Control? _mainView;
-    private TopLevel? _backRequestedSource;
+    // Keep observing closure after detachment without letting the host retain an abandoned navigation root.
+    private static readonly WeakEvent<TopLevel, EventArgs> HostClosed = WeakEvent.Register<TopLevel>(
+        static (top, handler) => top.Closed += handler,
+        static (top, handler) => top.Closed -= handler);
+
+    private readonly List<ViewNavigationWrapper> _stack = [];
+    private readonly ViewClosingHandler? _closingHandler;
+    private Control? _root;
+    private TopLevel? _top;
 
     /// <summary>
-    /// Returns the navigation history.
+    /// Creates a navigation manager with an optional close handler.
     /// </summary>
-    public IReadOnlyList<INotifyPropertyChanged> History => _history;
+    /// <param name="closingHandler">The handler that confirms page close requests.</param>
+    public NavigationManager(ViewClosingHandler? closingHandler)
+    {
+        _closingHandler = closingHandler;
+        History = new ViewModelHistory(_stack);
+        CancellableActions.RegistrationsChanged.Subscribe(CancellableActions.RegistrationSource, this);
+    }
 
-    /// <summary>
-    /// Initializes a new instance of the NavigationManager class.
-    /// </summary>
-    /// <param name="customNavigationRoot">If specified, a custom user control will be set as the main view instead of the default NavigationRoot.</param>
+    /// <inheritdoc />
+    public IReadOnlyList<INotifyPropertyChanged> History { get; }
+
+    private sealed class ViewModelHistory(List<ViewNavigationWrapper> stack) : IReadOnlyList<INotifyPropertyChanged>
+    {
+        public int Count => stack.Count;
+        public INotifyPropertyChanged this[int index] => stack[index].ViewModel;
+        public IEnumerator<INotifyPropertyChanged> GetEnumerator() => stack.Select(x => x.ViewModel).GetEnumerator();
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+    }
+
+    /// <inheritdoc />
     public void Launch(Control? customNavigationRoot = null)
     {
-        // Initialize the NavigationRoot as the main application view.
-        var app = Application.Current?.ApplicationLifetime;
-        if (app is ISingleViewApplicationLifetime appSingle)
+        var lifetime = Application.Current?.ApplicationLifetime;
+        var root = lifetime switch
         {
-            appSingle.MainView = customNavigationRoot ?? new NavigationRoot();
-            appSingle.MainView.DataContext = this;
-            AttachBackRequested(appSingle.MainView);
+            IClassicDesktopStyleApplicationLifetime => customNavigationRoot as Window ?? new NavigationRootWindow(),
+            ISingleViewApplicationLifetime => customNavigationRoot ?? new NavigationRoot(),
+            _ => customNavigationRoot
+        };
+        if (ReferenceEquals(root, _root)) { return; }
+        DetachHost();
+        if (root == null) { return; }
+
+        _root = root;
+        root.DataContext = this;
+        root.AttachedToVisualTree += RootAttached;
+        root.DetachedFromVisualTree += RootDetached;
+        SetTopLevel(TopLevel.GetTopLevel(root));
+        if (lifetime is ISingleViewApplicationLifetime single) { single.MainView = root; }
+        if (lifetime is IClassicDesktopStyleApplicationLifetime desktop) { desktop.MainWindow = (Window)root; }
+    }
+
+    private void RootAttached(object? sender, VisualTreeAttachmentEventArgs e) => SetTopLevel(TopLevel.GetTopLevel(_root));
+    private void RootDetached(object? sender, VisualTreeAttachmentEventArgs e)
+    {
+        if (_top != null) { _top.BackRequested -= BackRequested; }
+    }
+
+    private void SetTopLevel(TopLevel? top)
+    {
+        if (_top != null)
+        {
+            _top.BackRequested -= BackRequested;
+            HostClosed.Unsubscribe(_top, this);
         }
-        else if (app is IClassicDesktopStyleApplicationLifetime appDesktop)
+        _top = top;
+        if (_top != null)
         {
-            appDesktop.MainWindow = customNavigationRoot as Window ?? new NavigationRootWindow();
-            appDesktop.MainWindow.DataContext = this;
+            HostClosed.Subscribe(_top, this);
+            _top.BackRequested += BackRequested;
         }
     }
 
-    private void AttachBackRequested(Control mainView)
+    private void DetachHost()
     {
-        if (_mainView != null)
-        {
-            _mainView.Loaded -= MainView_Loaded;
-        }
-        DetachBackRequested();
-        _mainView = mainView;
-        _mainView.Loaded += MainView_Loaded;
-        if (_mainView.IsLoaded)
-        {
-            MainView_Loaded(_mainView, new RoutedEventArgs());
-        }
+        if (_root == null) { return; }
+        SetTopLevel(null);
+        _root.AttachedToVisualTree -= RootAttached;
+        _root.DetachedFromVisualTree -= RootDetached;
+        if (ReferenceEquals(_root.DataContext, this)) { _root.DataContext = null; }
+        _root = null;
+        if (_stack.Count == 0) { CurrentView = null; }
+        else { RemovePages(_stack.ToArray(), completed: null); }
     }
 
-    private void MainView_Loaded(object? sender, RoutedEventArgs e)
+    private object BackScope => (object?)TopLevel.GetTopLevel(_root) ?? _root ?? (object?)CurrentView ?? this;
+
+    private bool CanPop => _stack.Count > 1 && ReferenceEquals(CurrentView, _stack[^1].Ref);
+
+    /// <inheritdoc />
+    public bool CanGoBack => CanPop || CancellableActions.CanCancel(BackScope);
+
+    void IWeakEventSubscriber<EventArgs>.OnEvent(object? sender, WeakEvent ev, EventArgs e)
     {
-        var topLevel = TopLevel.GetTopLevel(sender as Visual);
-        if (topLevel == null || topLevel == _backRequestedSource)
+        if (ev == HostClosed)
         {
-            return;
+            try { DetachHost(); }
+            catch (Exception error) { Dispatcher.UIThread.Post(ExceptionDispatchInfo.Capture(error).Throw); }
         }
-        DetachBackRequested();
-        _backRequestedSource = topLevel;
-        _backRequestedSource.BackRequested += TopLevel_BackRequested;
+        else { OnPropertyChanged(nameof(CanGoBack)); }
     }
 
-    private void DetachBackRequested()
+    private async void BackRequested(object? sender, RoutedEventArgs e)
     {
-        if (_backRequestedSource != null)
+        // Claim Back before the platform event returns. Dismiss popups after dispatch.
+        if (!e.Handled && CanGoBack)
         {
-            _backRequestedSource.BackRequested -= TopLevel_BackRequested;
-            _backRequestedSource = null;
-        }
-    }
-
-    /// <summary>
-    /// Handle the mobile back button.
-    /// </summary>
-    private void TopLevel_BackRequested(object? sender, RoutedEventArgs e)
-    {
-        var cancel = CancellableActions.TakeLast();
-        if (cancel != null)
-        {
-            // Running the close inside this event resumes the dialog and faults it.
-            Dispatcher.UIThread.Post(cancel);
             e.Handled = true;
-        }
-        else if (CurrentView != null && _history.Count > 1)
-        {
-            // Cancel normal views
-            var current = CurrentViewModel!;
-            var view = CurrentView.AsWrapper(this, closingHandler);
-            view.Close();
-            e.Handled = !ReferenceEquals(CurrentViewModel, current) || !view.ClosingConfirmed;
+            if (!CancellableActions.CancelLast(BackScope, post: true)) { await GoBackPageAsync(); }
         }
     }
+
+    /// <inheritdoc />
+    public Task<bool> GoBackAsync() =>
+        CancellableActions.CancelLast(BackScope) ? Task.FromResult(true) : GoBackPageAsync();
+
+    private Task<bool> GoBackPageAsync() => CanPop ? RequestCloseAsync(_stack[^1], back: true) : Task.FromResult(false);
 
     /// <inheritdoc />
     public UserControl? CurrentView
     {
         get => _currentView;
-        set => SetField(ref _currentView, value);
+        set
+        {
+            if (value?.DataContext is INotifyPropertyChanged model)
+            {
+                var page = FindOpenView(model);
+                if (page != null && page.Ref != value) { page.Ref = value; }
+            }
+            if (SetField(ref _currentView, value))
+            {
+                OnPropertyChanged(nameof(CurrentViewModel));
+            }
+            OnPropertyChanged(nameof(CanGoBack));
+        }
     }
     private UserControl? _currentView;
 
     /// <inheritdoc />
-    public INotifyPropertyChanged? CurrentViewModel => (INotifyPropertyChanged?)CurrentView?.DataContext;
+    public INotifyPropertyChanged? CurrentViewModel => CurrentView?.DataContext as INotifyPropertyChanged;
+
+    internal ViewNavigationWrapper? FindOpenView(INotifyPropertyChanged model) =>
+        _stack.FindLast(x => ReferenceEquals(x.ViewModel, model));
+
+    internal bool IsOpen(ViewNavigationWrapper page) => _stack.Contains(page);
+
+    private bool OwnsModal(ViewNavigationWrapper page) => _stack.Any(x => ReferenceEquals(x.Owner, page));
 
     /// <inheritdoc />
     public UserControl? GetViewForViewModel(INotifyPropertyChanged viewModel) =>
-        _viewCache.GetViewForViewModel(viewModel);
+        ReferenceEquals(CurrentViewModel, viewModel) ? CurrentView : FindOpenView(viewModel)?.Realize();
 
-    /// <inheritdoc />
-    public void Show(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
+    private ViewNavigationWrapper CreatePage(INotifyPropertyChanged model, ViewDefinition definition)
     {
-        CurrentView = _viewCache.GetView(viewModel, viewDef);
-        _history.Remove(viewModel);
-        if (_dialogs.Any())
-        {
-            // Keep only 1 non-dialog history within a dialog.
-            var last = _history.Last();
-            if (!_dialogs.Any(x => object.ReferenceEquals(x.ViewModel, last)))
-            {
-                _history.Remove(last);
-            }
-        }
-        _history.Add(viewModel);
+        var page = new ViewNavigationWrapper(this, _closingHandler);
+        page.Initialize(model, definition);
+        return page;
     }
 
     /// <inheritdoc />
-    public Task ShowDialogAsync(INotifyPropertyChanged viewModel, ViewDefinition viewDef, INotifyPropertyChanged ownerViewModel)
-    {
-        var view = _viewCache.GetView(viewModel, viewDef);
-        CurrentView = view;
+    public void Show(INotifyPropertyChanged viewModel, ViewDefinition viewDef) =>
+        Present(CreatePage(viewModel, viewDef), null);
 
-        if (_dialogs.Any(x => object.ReferenceEquals(x.ViewModel, viewModel)))
+    /// <inheritdoc />
+    public Task ShowDialogAsync(INotifyPropertyChanged viewModel, ViewDefinition viewDef, INotifyPropertyChanged ownerViewModel) =>
+        Present(
+            CreatePage(viewModel, viewDef),
+            FindOpenView(ownerViewModel) ??
+            throw new InvalidOperationException("The dialog owner is not open."));
+
+    internal Task Present(ViewNavigationWrapper page, IView? owner)
+    {
+        if (owner?.ViewModel != null && !(owner is ViewNavigationWrapper wrapper && IsOpen(wrapper)))
+        {
+            owner = FindOpenView(owner.ViewModel) ?? owner;
+        }
+        var previous = FindOpenView(page.ViewModel);
+        if ((previous != null && (owner != null || previous.Completion != null)) || ReferenceEquals(page, owner))
         {
             throw new InvalidOperationException("Dialog is already shown.");
         }
-        var dialog = new DialogTask(viewModel, ownerViewModel);
-        _dialogs.Add(dialog);
-        _history.Add(viewModel);
-        return dialog.Completion.Task;
-    }
-
-    /// <inheritdoc />
-    public void Close(INotifyPropertyChanged viewModel)
-    {
-        // Remove from history, whether or not it is currently visible.
-        _history.Remove(viewModel);
-        // If waiting for dialog result, stop waiting.
-        var dialog = _dialogs.FirstOrDefault(x => object.ReferenceEquals(x.ViewModel, viewModel));
-        if (dialog != null)
+        var view = page.Realize(previous?.Ref);
+        if (previous != null)
         {
-            dialog.Completion.SetResult(true);
-            _dialogs.Remove(dialog);
+            var staysCovered = OwnsModal(previous);
+            if (staysCovered) { _stack[_stack.IndexOf(previous)] = page; }
+            else { _stack.Remove(previous); }
+            foreach (var child in _stack.Where(x => ReferenceEquals(x.Owner, previous))) { child.Owner = page; }
+            if (!ReferenceEquals(page, previous)) { previous.NotifyClosed(notifyModel: false); }
+            if (staysCovered) { return Task.CompletedTask; }
         }
-        // If visible, show previous one, or dialog owner. Ignore owner for non-dialogs.
-        if (object.ReferenceEquals(CurrentView?.DataContext, viewModel))
+        page.Owner = owner;
+        var completion = owner == null ? null : new TaskCompletionSource<bool>();
+        page.Completion = completion;
+        _stack.Add(page);
+        try
         {
-            var prev = dialog?.OwnerViewModel ?? _history.LastOrDefault();
-            if (prev != null)
-            {
-                var prevView = _viewCache.GetViewForViewModel(prev);
-                // Remove all history after owner.
-                if (dialog?.OwnerViewModel != null)
-                {
-                    var pos = _history.IndexOf(dialog.OwnerViewModel);
-                    if (pos > -1 && _history.Count > pos + 1)
-                    {
-                        _history.RemoveRange(pos + 1, _history.Count - pos - 1);
-                    }
-                }
-                CurrentView = prevView;
-            }
+            CurrentView = view;
+            if (IsOpen(page)) { page.NotifyLoaded(); }
         }
+        catch
+        {
+            if (IsOpen(page)) { RemovePages([page], completed: null); }
+            throw;
+        }
+        return completion?.Task ?? Task.CompletedTask;
     }
 
     /// <inheritdoc />
     public bool Activate(INotifyPropertyChanged viewModel)
     {
-        if (_history.Contains(viewModel))
+        var page = FindOpenView(viewModel);
+        if (page == null || OwnsModal(page)) { return false; }
+        var alreadyLast = ReferenceEquals(page, _stack[^1]);
+        if (alreadyLast && page.IsVisible) { return true; }
+
+        var view = page.Realize();
+        if (!alreadyLast)
         {
-            _history.Remove(viewModel);
-            _history.Add(viewModel);
-            var view = _viewCache.GetViewForViewModel(viewModel);
-            CurrentView = view;
+            _stack.Remove(page);
+            _stack.Add(page);
+        }
+        CurrentView = view;
+        if (IsOpen(page)) { page.NotifyLoaded(); }
+        return true;
+    }
+
+    /// <inheritdoc />
+    public void Close(INotifyPropertyChanged viewModel)
+    {
+        FindOpenView(viewModel)?.Close();
+    }
+
+    // Closing a foreground modal returns to its owner. Removing an owner also retires its modal children.
+    private ViewNavigationWrapper[] PagesToClose(ViewNavigationWrapper page)
+    {
+        if (page.Completion == null && !OwnsModal(page)) { return [page]; }
+
+        var removed = new HashSet<ViewNavigationWrapper>
+        {
+            page
+        };
+        // A close confirmation only removes the prompt and its own children.
+        if (ReferenceEquals(page, _stack[^1]) && page.Owner is ViewNavigationWrapper owner &&
+            !owner.IsConfirming && _stack.Contains(owner))
+        {
+            removed.UnionWith(_stack.Skip(_stack.IndexOf(owner) + 1));
+        }
+        foreach (var entry in _stack)
+        {
+            for (var parent = entry.Owner; parent is ViewNavigationWrapper ancestor; parent = ancestor.Owner)
+            {
+                if (removed.Contains(ancestor))
+                {
+                    removed.Add(entry);
+                    break;
+                }
+            }
+        }
+        return _stack.Where(removed.Contains).Reverse().ToArray();
+    }
+
+    internal Task<bool> RequestCloseAsync(ViewNavigationWrapper request, bool back = false)
+    {
+        var page = IsOpen(request) ? request : FindOpenView(request.ViewModel);
+        var view = request.Ref;
+        if (page == null || (request != page && (view == null || !ReferenceEquals(view, page.Ref))))
+        {
+            return Task.FromResult(false);
+        }
+        var pending = page.PendingClose;
+        if (pending != null && !pending.IsCompleted) { return pending; }
+        return page.PendingClose = CloseConfirmedAsync();
+
+        async Task<bool> CloseConfirmedAsync()
+        {
+            var removed = PagesToClose(page);
+            try
+            {
+                if (request != page && request.ClosingHandler != null && !Equals(request.ClosingHandler, page.ClosingHandler) &&
+                    !await request.ConfirmAsync())
+                {
+                    return false;
+                }
+                foreach (var entry in removed)
+                {
+                    if (!await entry.ConfirmAsync())
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (OperationCanceledException) when (!IsOpen(page))
+            {
+                // Retiring the page can cancel the modal dialog used to confirm its close.
+                return false;
+            }
+            if (!IsOpen(page) || (back && (_stack.Count <= removed.Length || _stack[^1] != page)) ||
+                !removed.SequenceEqual(PagesToClose(page))) { return false; }
+
+            RemovePages(removed, page);
+            if (request != page) { request.NotifyClosed(notifyModel: false); }
             return true;
         }
-        return false;
     }
 
-    //
-    // public Control? GetMainView() =>
-    //     (Application.Current?.ApplicationLifetime as ISingleViewApplicationLifetime)?.MainView;
-    //
+    private void RemovePages(ViewNavigationWrapper[] removed, ViewNavigationWrapper? completed)
+    {
+        var next = removed.Length == _stack.Count || removed.Any(page => page.IsVisible)
+            ? _stack.LastOrDefault(x => !removed.Contains(x))?.Realize()
+            : CurrentView;
+        foreach (var entry in removed) { _stack.Remove(entry); }
+        Exception? failure = null;
+        try { CurrentView = next; }
+        catch (Exception error) { failure = error; }
+        foreach (var entry in removed)
+        {
+            var completion = entry.Completion;
+            entry.Completion = null;
+            entry.Owner = null;
+            try { entry.NotifyClosed(); }
+            catch (Exception error)
+            {
+                completion?.TrySetException(error);
+                failure ??= error;
+            }
+            finally
+            {
+                if (entry == completed) { completion?.TrySetResult(true); }
+                else { completion?.TrySetCanceled(); }
+            }
+        }
+        if (failure != null) { ExceptionDispatchInfo.Throw(failure); }
+    }
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    /// <summary>
+    /// Notifies observers of a property change.
+    /// </summary>
+    /// <param name="propertyName">The name of the changed property.</param>
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+        PropertyChanged?.Invoke(this, new(propertyName));
 
+    /// <summary>
+    /// Updates a bound property when its value changes.
+    /// </summary>
+    /// <param name="field">The field holding the current value.</param>
+    /// <param name="value">The new value.</param>
+    /// <param name="propertyName">The name of the changed property.</param>
+    /// <typeparam name="T">The type of the property.</typeparam>
+    /// <returns>True if the value changed.</returns>
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-            return false;
+        if (EqualityComparer<T>.Default.Equals(field, value)) { return false; }
         field = value;
         OnPropertyChanged(propertyName);
         return true;

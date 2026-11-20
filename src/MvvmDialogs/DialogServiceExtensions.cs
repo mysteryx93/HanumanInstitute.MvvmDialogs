@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using HanumanInstitute.MvvmDialogs.FileSystem;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 // ReSharper disable once CheckNamespace
 namespace HanumanInstitute.MvvmDialogs;
@@ -44,7 +41,7 @@ public static class DialogServiceExtensions
             DefaultValue = defaultResult
         };
 
-        return ShowMessageBoxAsync(service, ownerViewModel, settings);
+        return service.ShowMessageBoxAsync(ownerViewModel, settings);
     }
 
     /// <summary>
@@ -56,11 +53,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the message box dialog.</param>
     /// <returns>A value that specifies which message box button is clicked by the user. True=OK/Yes, False=No, Null=Cancel</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<bool?> ShowMessageBoxAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<bool?> ShowMessageBoxAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         MessageBoxSettings? settings = null)
     {
         return (bool?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new MessageBoxSettings()).ConfigureAwait(true);
+            ownerViewModel,
+            settings ?? new MessageBoxSettings()).ConfigureAwait(true);
     }
 
     /// <summary>
@@ -71,12 +71,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the open file dialog.</param>
     /// <returns>The file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<IDialogStorageFile?> ShowOpenFileDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<IDialogStorageFile?> ShowOpenFileDialogAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null)
     {
-        settings ??= new OpenFileDialogSettings();
+        settings ??= new();
         settings.AllowMultiple ??= false;
-        var result = await ShowOpenFilesDialogAsync(service, ownerViewModel, settings).ConfigureAwait(true);
+        var result = await service.ShowOpenFilesDialogAsync(ownerViewModel, settings).ConfigureAwait(true);
         return result.Count > 0 ? result[0] : null;
     }
 
@@ -88,14 +90,18 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the open file dialog.</param>
     /// <returns>The list of files selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFilesDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFilesDialogAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFileDialogSettings? settings = null)
     {
-        settings ??= new OpenFileDialogSettings();
+        settings ??= new();
         settings.AllowMultiple ??= true;
         settings.SelectedFileType = null;
         return (IReadOnlyList<IDialogStorageFile>)(await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings, x => string.Join(", ", x)).ConfigureAwait(true))!;
+            ownerViewModel,
+            settings,
+            x => string.Join(", ", x)).ConfigureAwait(true))!;
     }
 
     /// <summary>
@@ -106,13 +112,16 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the save file dialog.</param>
     /// <returns>The path to the file selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         SaveFileDialogSettings? settings = null)
     {
-        settings ??= new SaveFileDialogSettings();
+        settings ??= new();
         settings.SelectedFileType = null;
         return (IDialogStorageFile?)await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings).ConfigureAwait(true);
+            ownerViewModel,
+            settings).ConfigureAwait(true);
     }
 
     /// <summary>
@@ -123,11 +132,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFoldersDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFoldersDialogAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null)
     {
         return (IReadOnlyList<IDialogStorageFolder>)(await service.DialogManager.ShowFrameworkDialogAsync(
-            ownerViewModel, settings ?? new OpenFolderDialogSettings()).ConfigureAwait(true))!;
+            ownerViewModel,
+            settings ?? new OpenFolderDialogSettings()).ConfigureAwait(true))!;
     }
 
     /// <summary>
@@ -138,12 +150,14 @@ public static class DialogServiceExtensions
     /// <param name="settings">The settings for the folder browser dialog.</param>
     /// <returns>The path of the folder selected by the user, or null if the user cancelled.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
-    public static async Task<IDialogStorageFolder?> ShowOpenFolderDialogAsync(this IDialogService service, INotifyPropertyChanged? ownerViewModel,
+    public static async Task<IDialogStorageFolder?> ShowOpenFolderDialogAsync(
+        this IDialogService service,
+        INotifyPropertyChanged? ownerViewModel,
         OpenFolderDialogSettings? settings = null)
     {
-        settings ??= new OpenFolderDialogSettings();
+        settings ??= new();
         settings.AllowMultiple ??= false;
-        var result = await ShowOpenFoldersDialogAsync(service, ownerViewModel, settings).ConfigureAwait(true);
+        var result = await service.ShowOpenFoldersDialogAsync(ownerViewModel, settings).ConfigureAwait(true);
         return result?.FirstOrDefault();
     }
 }

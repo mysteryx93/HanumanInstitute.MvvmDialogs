@@ -1,7 +1,4 @@
-﻿
-using HanumanInstitute.MvvmDialogs.FileSystem;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 /// <summary>
 /// Wrapper around Win32 dialogs API that can be replaced by a mock for testing.

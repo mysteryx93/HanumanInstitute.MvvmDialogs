@@ -11,5 +11,9 @@ public interface IStorageService
 
     Task<IDialogStorageFolder?> GetDownloadsFolderAsync();
 
+    Task<string?> SaveBookmarkAsync(IDialogStorageFile file);
+
     Task<IDialogStorageFile?> OpenFileBookmarkAsync(string bookmark);
+
+    Task ReleaseBookmarkAsync(IDialogStorageFile file);
 }

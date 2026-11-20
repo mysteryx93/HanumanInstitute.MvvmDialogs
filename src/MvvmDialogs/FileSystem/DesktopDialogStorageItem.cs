@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace HanumanInstitute.MvvmDialogs.FileSystem;
+﻿namespace HanumanInstitute.MvvmDialogs.FileSystem;
 
 /// <inheritdoc />
 public abstract class DesktopDialogStorageItem : IDialogStorageItem
@@ -14,7 +12,7 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
     public string Name => InfoBase.Name;
 
     /// <inheritdoc />
-    public Uri Path => _path ??= new Uri(InfoBase.FullName);
+    public Uri Path => _path ??= new(InfoBase.FullName);
     private Uri? _path;
 
     /// <inheritdoc />
@@ -26,22 +24,15 @@ public abstract class DesktopDialogStorageItem : IDialogStorageItem
     /// <inheritdoc />
     public Task<DesktopDialogStorageItemProperties> GetBasicPropertiesAsync()
     {
-        if (InfoBase.Exists)
+        var info = InfoBase;
+        info.Refresh();
+        if (info.Exists)
         {
-            var length = InfoBase is FileInfo f ? (ulong?)f.Length : null;
-            return Task.FromResult(new DesktopDialogStorageItemProperties(length, InfoBase.CreationTimeUtc, InfoBase.LastWriteTimeUtc));
+            var length = info is FileInfo f ? (ulong?)f.Length : null;
+            return Task.FromResult(new DesktopDialogStorageItemProperties(length, info.CreationTimeUtc, info.LastWriteTimeUtc));
         }
         return Task.FromResult(new DesktopDialogStorageItemProperties());
     }
-
-    /// <inheritdoc />
-    public bool CanBookmark => true;
-
-    /// <inheritdoc />
-    public Task<string?> SaveBookmarkAsync() => Task.FromResult((string?)InfoBase.FullName);
-
-    /// <inheritdoc />
-    public Task ReleaseBookmarkAsync() => Task.CompletedTask;
 
     /// <inheritdoc />
     public Task<IDialogStorageFolder?> GetParentAsync()

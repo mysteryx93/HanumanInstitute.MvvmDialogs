@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 internal class OpenFolderApiSettings
 {
@@ -7,7 +6,7 @@ internal class OpenFolderApiSettings
     public string? SelectedPath { get; set; } = string.Empty;
     public EventHandler? HelpRequest { get; set; }
 
-    internal void ApplyTo(System.Windows.Forms.FolderBrowserDialog d)
+    internal void ApplyTo(FolderBrowserDialog d)
     {
         d.Description = Description;
         d.SelectedPath = SelectedPath;

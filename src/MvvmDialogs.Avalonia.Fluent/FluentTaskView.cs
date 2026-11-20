@@ -1,7 +1,4 @@
-﻿using System.ComponentModel;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 
 /// <summary>
 /// An <see cref="IView"/> implementation for FluentContentDialog.
@@ -21,11 +18,13 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
 
     /// <inheritdoc />
     public void Initialize(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void InitializeExisting(INotifyPropertyChanged viewModel, object view)
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public INotifyPropertyChanged? ViewModel => Settings.Content as INotifyPropertyChanged;
@@ -46,9 +45,10 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
     public void Show(IView? owner) => throw new NotImplementedException();
 
     /// <inheritdoc />
+    /// <exception cref="InvalidOperationException">The owner is detached from its top level.</exception>
     public async Task ShowDialogAsync(IView owner)
     {
-        var dialog = new FATaskDialog()
+        var dialog = new FATaskDialog
         {
             Title = Settings.Title,
             Header = Settings.Header,
@@ -65,16 +65,25 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
         {
             dialog.Buttons.Add(button);
         }
-        if (owner.GetRef() != null)
-        {
-            dialog.XamlRoot = TopLevel.GetTopLevel(owner.GetRef());
-        }
 
-        dialog.Loaded += (s, e) => Loaded?.Invoke(s, e);
+        var retiring = false;
+        ExceptionDispatchInfo? loadFailure = null;
+        dialog.Loaded += (s, e) =>
+        {
+            try { Loaded?.Invoke(s, e); }
+            catch (Exception error)
+            {
+                loadFailure = ExceptionDispatchInfo.Capture(error);
+                Retire();
+            }
+        };
         dialog.Closing += (s, e) =>
         {
+            if (retiring) { return; }
+
             var args = new CancelEventArgs();
-            Closing?.Invoke(s, args);
+            try { Closing?.Invoke(s, args); }
+            finally { ClosingConfirmed = false; }
             if (args.Cancel)
             {
                 e.Cancel = true;
@@ -82,20 +91,42 @@ public class FluentTaskView(TaskDialogSettings settings) : IView
         };
         dialog.Closed += (s, e) => Closed?.Invoke(s, e);
 
-        // Allow the dialog to be closed by mobile back navigation.
         try
         {
-            DialogResult = await CancellableActions.RunAsync(() => dialog.ShowAsync(), dialog.Hide).ConfigureAwait(true);
+            DialogResult = await owner.RunOverlayAsync(
+                host =>
+                {
+                    dialog.XamlRoot = host;
+                    return dialog.ShowAsync();
+                },
+                dialog.Hide,
+                Retire);
+        }
+        catch (Exception error) when (loadFailure != null)
+        {
+            throw new AggregateException(loadFailure.SourceException, error);
         }
         finally
         {
             Ref = null;
         }
+        loadFailure?.Throw();
+
+        void Retire()
+        {
+            if (retiring) { return; }
+            retiring = true;
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (ReferenceEquals(Ref, dialog)) { dialog.Hide(); }
+            });
+        }
     }
 
     /// <inheritdoc />
     public void Activate()
-    { }
+    {
+    }
 
     /// <inheritdoc />
     public void Close()

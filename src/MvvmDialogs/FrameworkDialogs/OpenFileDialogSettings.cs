@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 /// <summary>
 /// Settings for OpenFileDialog.

@@ -7,7 +7,8 @@
       <OutputType>Library</OutputType>
       <AssemblyTitle>MvvmDialogs with DialogHost.Avalonia</AssemblyTitle>
       <Title>MvvmDialogs with DialogHost.Avalonia</Title>
-      <AssemblyOriginatorKeyFile>..\..\StrongName.snk</AssemblyOriginatorKeyFile>
+      <SignAssembly>true</SignAssembly>
+      <AssemblyOriginatorKeyFile>../StrongName.snk</AssemblyOriginatorKeyFile>
       <PackageId>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</PackageId>
       <AssemblyName>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</AssemblyName>
       <RootNamespace>HanumanInstitute.MvvmDialogs.Avalonia.DialogHost</RootNamespace>

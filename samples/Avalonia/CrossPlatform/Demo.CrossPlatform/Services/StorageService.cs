@@ -21,11 +21,19 @@ public class StorageService : IStorageService
         return result?.ToDialog();
     }
 
+    public Task<string?> SaveBookmarkAsync(IDialogStorageFile file) =>
+        file is AvaloniaDialogStorageItem item && item.CanBookmark
+            ? item.SaveBookmarkAsync()
+            : Task.FromResult<string?>(null);
+
     public async Task<IDialogStorageFile?> OpenFileBookmarkAsync(string bookmark)
     {
         var file = await Storage.OpenFileBookmarkAsync(bookmark);
         return file?.ToDialog();
     }
+
+    public Task ReleaseBookmarkAsync(IDialogStorageFile file) =>
+        file is AvaloniaDialogStorageItem item ? item.ReleaseBookmarkAsync() : Task.CompletedTask;
 
     /// <summary>
     /// Returns the TopLevel from the main window or view. 

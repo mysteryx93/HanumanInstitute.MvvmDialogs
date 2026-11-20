@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Reactive;
 using System.Threading.Tasks;
 using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
@@ -37,7 +36,7 @@ public partial class MainViewModel : ViewModelBase
         {
             Content = "This is the text.",
             Title = "This Is The Caption",
-            Buttons = new List<FATaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>
             {
                 FATaskDialogButton.OKButton,
                 FATaskDialogButton.CancelButton
@@ -59,7 +58,7 @@ public partial class MainViewModel : ViewModelBase
         {
             Content = vm,
             Title = "Please enter some text",
-            Buttons = new List<FATaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>
             {
                 FATaskDialogButton.OKButton,
                 FATaskDialogButton.CancelButton
@@ -76,9 +75,9 @@ public partial class MainViewModel : ViewModelBase
     {
         var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
         dialogViewModel.ConfirmClose = true;
-        await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(dialogViewModel)
+        await _dialogService.ShowTaskDialogAsync(this, new(dialogViewModel)
         {
-            Buttons = new List<FATaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>
             {
                 FATaskDialogButton.OKButton
             }
@@ -89,9 +88,9 @@ public partial class MainViewModel : ViewModelBase
     private async Task ShowControlImplAsync()
     {
         var content = new MessageView();
-        var result = await _dialogService.ShowTaskDialogAsync(this, new TaskDialogSettings(content)
+        var result = await _dialogService.ShowTaskDialogAsync(this, new(content)
         {
-            Buttons = new List<FATaskDialogButton>()
+            Buttons = new List<FATaskDialogButton>
             {
                 FATaskDialogButton.OKButton
             }

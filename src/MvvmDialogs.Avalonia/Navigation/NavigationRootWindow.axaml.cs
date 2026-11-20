@@ -1,6 +1,4 @@
-﻿using Avalonia.Markup.Xaml;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 /// <summary>
 /// The default application main window for single-view applications on desktop. 
@@ -20,4 +18,3 @@ public partial class NavigationRootWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
 }
-

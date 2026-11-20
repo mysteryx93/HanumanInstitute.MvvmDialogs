@@ -1,7 +1,4 @@
-﻿using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-
-namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
+﻿namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests.Views;
 
 public partial class ThirdWindow : Window
 {
@@ -15,4 +12,3 @@ public partial class ThirdWindow : Window
         AvaloniaXamlLoader.Load(this);
     }
 }
-

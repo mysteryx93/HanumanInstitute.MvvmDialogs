@@ -14,6 +14,7 @@
 	</PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Avalonia.Headless" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="ReactiveUI" />
     <PackageReference Include="Moq" />
@@ -30,6 +31,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MvvmDialogs.Avalonia\MvvmDialogs.Avalonia.csproj" />
+    <ProjectReference Include="..\MvvmDialogs.Avalonia.DialogHost\MvvmDialogs.Avalonia.DialogHost.csproj" />
+    <ProjectReference Include="..\MvvmDialogs.Avalonia.Fluent\MvvmDialogs.Avalonia.Fluent.csproj" />
+    <ProjectReference Include="..\MvvmDialogs.Avalonia.MessageBox\MvvmDialogs.Avalonia.MessageBox.csproj" />
   </ItemGroup>
 
   <ItemGroup>

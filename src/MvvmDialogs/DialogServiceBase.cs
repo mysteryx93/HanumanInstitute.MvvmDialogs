@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HanumanInstitute.MvvmDialogs.Private;
 
 namespace HanumanInstitute.MvvmDialogs;
 
@@ -13,8 +13,7 @@ public abstract class DialogServiceBase : IDialogService
     /// </summary>
     /// <param name="dialogManager">Class responsible to manage UI interactions.</param>
     /// <param name="viewModelFactory">Function used to create view model instances. This function is used only by <see cref="IDialogService.CreateViewModel"/> and is not used internally.</param>
-    protected DialogServiceBase(IDialogManager dialogManager,
-        Func<Type, object?>? viewModelFactory)
+    protected DialogServiceBase(IDialogManager dialogManager, Func<Type, object?>? viewModelFactory)
     {
         DialogManager = dialogManager;
         ViewModelFactory = viewModelFactory;
@@ -51,13 +50,15 @@ public abstract class DialogServiceBase : IDialogService
     /// This method is not thread-safe and must be run on the UI thread.
     /// </summary>
     /// <param name="viewModel">The view model of the window.</param>
-    /// <returns>true if the Window was successfully activated; otherwise, false.</returns>
+    /// <returns>true if a view was found and its activation method was called; otherwise, false.</returns>
     public bool Activate(INotifyPropertyChanged viewModel)
     {
-        if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+        viewModel.CheckNotNull();
 
         var window = DialogManager.FindViewByViewModel(viewModel);
-        DialogManager.Logger?.LogInformation("Activate View: {View}; ViewModel: {ViewModel}", window?.RefObj?.GetType(),
+        DialogManager.Logger?.LogInformation(
+            "Activate View: {View}; ViewModel: {ViewModel}",
+            GetViewType(window),
             viewModel.GetType());
         window?.Activate();
         return window != null;
@@ -71,10 +72,13 @@ public abstract class DialogServiceBase : IDialogService
     /// <returns>true if the Window was successfully closed; otherwise, false.</returns>
     public bool Close(INotifyPropertyChanged viewModel)
     {
-        if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+        viewModel.CheckNotNull();
 
         var window = DialogManager.FindViewByViewModel(viewModel);
-        DialogManager.Logger?.LogInformation("Close View: {View}; ViewModel: {ViewModel}", window?.RefObj.GetType(), viewModel.GetType());
+        DialogManager.Logger?.LogInformation(
+            "Close View: {View}; ViewModel: {ViewModel}",
+            GetViewType(window),
+            viewModel.GetType());
         if (window != null)
         {
             try
@@ -91,6 +95,11 @@ public abstract class DialogServiceBase : IDialogService
     }
 
     /// <summary>
+    /// Gets the view type for logging. A wrapper with a lazily created view can use its stored type.
+    /// </summary>
+    protected virtual Type? GetViewType(IView? view) => view?.RefObj?.GetType();
+
+    /// <summary>
     /// Displays a non-modal dialog of specified type.
     /// </summary>
     /// <param name="ownerViewModel">A view model that represents the owner window of the dialog.</param>
@@ -98,7 +107,7 @@ public abstract class DialogServiceBase : IDialogService
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     protected void ShowInternal(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
-        if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+        viewModel.CheckNotNull();
 
         DialogManager.Show(ownerViewModel, viewModel);
     }
@@ -112,8 +121,8 @@ public abstract class DialogServiceBase : IDialogService
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
     protected async Task<bool?> ShowDialogInternalAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
-        if (ownerViewModel == null) throw new ArgumentNullException(nameof(ownerViewModel));
-        if (viewModel == null) throw new ArgumentNullException(nameof(viewModel));
+        ownerViewModel.CheckNotNull();
+        viewModel.CheckNotNull();
 
         await DialogManager.ShowDialogAsync(ownerViewModel, viewModel);
         return viewModel.DialogResult;

@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-
-namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Interface responsible for UI interactions.

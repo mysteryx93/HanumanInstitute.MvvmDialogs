@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using Microsoft.Extensions.Logging;
-
-// ReSharper disable MemberCanBePrivate.Global
+﻿// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable SuspiciousTypeConversion.Global
 
 namespace HanumanInstitute.MvvmDialogs;
@@ -57,50 +54,48 @@ public abstract class DialogManagerBase<T> : IDialogManager
     public virtual void Show(INotifyPropertyChanged? ownerViewModel, INotifyPropertyChanged viewModel)
     {
         if (IsDesignMode) { return; }
-        Dispatch(
-            () =>
-            {
-                var viewDef = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel?.GetType());
+        Dispatch(() =>
+        {
+            var viewDef = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel?.GetType());
 
-                var dialog = CreateDialog(viewModel, viewDef);
-                var events = HandleDialogEvents(viewModel, dialog);
-                try
-                {
-                    dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
-                }
-                catch
-                {
-                    events.Dispose();
-                    throw;
-                }
-            });
+            var dialog = CreateDialog(viewModel, viewDef);
+            var events = HandleDialogEvents(viewModel, dialog);
+            try
+            {
+                dialog.Show(FindViewByViewModelOrThrow(ownerViewModel));
+            }
+            catch
+            {
+                events.Dispose();
+                throw;
+            }
+        });
     }
 
     /// <inheritdoc />
     public virtual async Task ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel)
     {
         if (IsDesignMode) { return; }
-        await await DispatchAsync(
-            async () =>
+        await await DispatchAsync(async () =>
+        {
+            var viewDef = ViewLocator.Locate(viewModel);
+            Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
+
+            var dialog = CreateDialog(viewModel, viewDef);
+            var events = HandleDialogEvents(viewModel, dialog);
+            try
             {
-                var viewDef = ViewLocator.Locate(viewModel);
-                Logger?.LogInformation("View: {View}; ViewModel: {ViewModel}; Owner: {OwnerViewModel}", viewDef.ViewType, viewModel.GetType(), ownerViewModel.GetType());
+                await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
+            }
+            catch
+            {
+                events.Dispose();
+                throw;
+            }
 
-                var dialog = CreateDialog(viewModel, viewDef);
-                var events = HandleDialogEvents(viewModel, dialog);
-                try
-                {
-                    await dialog.ShowDialogAsync(FindViewByViewModelOrThrow(ownerViewModel)!);
-                }
-                catch
-                {
-                    events.Dispose();
-                    throw;
-                }
-
-                Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType, viewModel.DialogResult);
-            });
+            Logger?.LogInformation("View: {View}; Result: {Result}", viewDef.ViewType, viewModel.DialogResult);
+        });
     }
 
     /// <summary>
@@ -183,7 +178,13 @@ public abstract class DialogManagerBase<T> : IDialogManager
     /// A handle that detaches view-model event handlers. Dispose it if showing the dialog fails
     /// before <see cref="IView.Closed"/> is raised.
     /// </returns>
-    public virtual IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog)
+    public virtual IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog) =>
+        HandleDialogEvents(viewModel, dialog, forwardLoadedAndClosed: ForwardViewEvents);
+
+    /// <summary>
+    /// Registers dialog events and lets wrappers that notify their own view model skip Loaded and Closed forwarding.
+    /// </summary>
+    protected IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog, bool forwardLoadedAndClosed)
     {
         var cleanup = new EventCleanup();
         if (viewModel is ICloseable closable)
@@ -200,23 +201,26 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
         if (viewModel is IViewClosing)
         {
-            dialog.Closing += (_, e) => View_Closing(dialog, e);
+            void ClosingHandler(object? sender, CancelEventArgs e) => View_Closing(dialog, e);
+            dialog.Closing += ClosingHandler;
+            cleanup.Add(() => dialog.Closing -= ClosingHandler);
         }
-        if (ForwardViewEvents)
+        if (forwardLoadedAndClosed && viewModel is IViewLoaded loaded)
         {
-            if (viewModel is IViewLoaded loaded)
-            {
-                dialog.Loaded += (_, _) => loaded.OnLoaded();
-            }
-            if (viewModel is IViewClosed closed)
-            {
-                dialog.Closed += (_, _) => closed.OnClosed();
-            }
+            void LoadedHandler(object? sender, EventArgs e) => loaded.OnLoaded();
+            dialog.Loaded += LoadedHandler;
+            cleanup.Add(() => dialog.Loaded -= LoadedHandler);
         }
 
-        if (!cleanup.IsEmpty)
+        var closed = forwardLoadedAndClosed ? viewModel as IViewClosed : null;
+        if (!cleanup.IsEmpty || closed != null)
         {
-            void ClosedHandler(object? sender, EventArgs e) => cleanup.Dispose();
+            void ClosedHandler(object? sender, EventArgs e)
+            {
+                cleanup.Dispose();
+                closed?.OnClosed();
+            }
+
             dialog.Closed += ClosedHandler;
             cleanup.Add(() => dialog.Closed -= ClosedHandler);
         }
@@ -235,26 +239,41 @@ public abstract class DialogManagerBase<T> : IDialogManager
         public void Dispose() => Interlocked.Exchange(ref _detach, null)?.Invoke();
     }
 
-    private bool _isViewClosing;
+    private readonly HashSet<IView> _closingViews = new();
 
     /// <summary>
-    /// Called when the view is closing.
+    /// Forwards the close request to the view model and retries the close
+    /// if asynchronous confirmation approves it.
     /// </summary>
-    public async void View_Closing(IView dialog, CancelEventArgs e)
+    public async void View_Closing(IView dialog, CancelEventArgs e) =>
+        await EvaluateClosingAsync(dialog, e, retryClose: true).ConfigureAwait(true);
+
+    /// <summary>
+    /// Awaits the view model's close decision.
+    /// Navigation can await the decision before removing a page.
+    /// </summary>
+    protected Task ConfirmViewClosingAsync(IView dialog, CancelEventArgs e) =>
+        EvaluateClosingAsync(dialog, e, retryClose: false);
+
+    // Serializes a view's close decision and retries when the caller's event has already returned.
+    private async Task EvaluateClosingAsync(IView dialog, CancelEventArgs e, bool retryClose)
     {
         if (dialog.ViewModel is not IViewClosing closing || dialog.ClosingConfirmed)
         {
             dialog.ClosingConfirmed = true;
             return;
         }
-        // Prevent re-closing while prompting. 
-        if (_isViewClosing)
+
+        // Suppress repeat requests for the same view while its confirmation is active.
+        lock (_closingViews)
         {
-            e.Cancel = true;
-            return;
+            if (!_closingViews.Add(dialog))
+            {
+                e.Cancel = true;
+                return;
+            }
         }
 
-        _isViewClosing = true;
         try
         {
             // ReSharper disable once MethodHasAsyncOverload
@@ -268,7 +287,7 @@ public abstract class DialogManagerBase<T> : IDialogManager
                 if (!e.Cancel)
                 {
                     dialog.ClosingConfirmed = true;
-                    dialog.Close();
+                    if (retryClose) { dialog.Close(); }
                 }
             }
             else
@@ -278,7 +297,10 @@ public abstract class DialogManagerBase<T> : IDialogManager
         }
         finally
         {
-            _isViewClosing = false;
+            lock (_closingViews)
+            {
+                _closingViews.Remove(dialog);
+            }
         }
     }
 
@@ -293,7 +315,9 @@ public abstract class DialogManagerBase<T> : IDialogManager
     {
         if (IsDesignMode) { return null; }
 
-        if (!AllowConcurrentDialogs)
+        // Pair acquisition and release even when the setting changes while a dialog is open.
+        var serialize = !AllowConcurrentDialogs;
+        if (serialize)
         {
             await _semaphoreShow.WaitAsync();
         }
@@ -302,46 +326,45 @@ public abstract class DialogManagerBase<T> : IDialogManager
         {
             Logger?.LogInformation("Dialog: {Dialog}; Title: {Title}", settings.GetType().Name, settings.Title);
 
-            var result = await await DispatchAsync(
-                async () =>
+            var result = await await DispatchAsync(async () =>
+            {
+                IView? owner = null;
+                var isDummyOwner = false;
+                try
                 {
-                    IView? owner = null;
-                    var isDummyOwner = false;
-                    try
+                    if (ownerViewModel != null)
                     {
-                        if (ownerViewModel != null)
+                        owner = FindViewByViewModel(ownerViewModel) ??
+                                throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                    }
+                    else
+                    {
+                        // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
+                        owner = GetMainWindow();
+                        if (owner == null || !owner.IsVisible)
                         {
-                            owner = FindViewByViewModel(ownerViewModel) ??
-                                    throw new ArgumentException($"No view found with specified ownerViewModel of type {ownerViewModel.GetType()}.");
+                            owner = GetDummyWindow();
+                            isDummyOwner = true;
                         }
-                        else
-                        {
-                            // If no owner is specified, get MainWindow if available, otherwise create a dummy parent window.
-                            owner = GetMainWindow();
-                            if (owner == null || !owner.IsVisible)
-                            {
-                                owner = GetDummyWindow();
-                                isDummyOwner = true;
-                            }
-                        }
+                    }
 
-                        return await DialogFactory.ShowDialogAsync(owner, settings).ConfigureAwait(true);
-                    }
-                    finally
+                    return await DialogFactory.ShowDialogAsync(owner, settings).ConfigureAwait(true);
+                }
+                finally
+                {
+                    if (isDummyOwner)
                     {
-                        if (isDummyOwner)
-                        {
-                            owner?.Close();
-                        }
+                        owner?.Close();
                     }
-                }).ConfigureAwait(true);
+                }
+            }).ConfigureAwait(true);
 
             Logger?.LogInformation("Dialog: {Dialog}; Result: {Result}", settings.GetType().Name, resultToString != null ? resultToString(result) : result?.ToString());
             return result;
         }
         finally
         {
-            if (!AllowConcurrentDialogs)
+            if (serialize)
             {
                 _semaphoreShow.Release();
             }

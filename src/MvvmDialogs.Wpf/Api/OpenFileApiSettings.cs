@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf.Api;
 
 internal class OpenFileApiSettings : FileApiSettings
 {
@@ -7,7 +6,7 @@ internal class OpenFileApiSettings : FileApiSettings
     public bool ReadOnlyChecked { get; set; }
     public bool ShowReadOnly { get; set; }
 
-    internal void ApplyTo(System.Windows.Forms.OpenFileDialog d)
+    internal void ApplyTo(OpenFileDialog d)
     {
         base.ApplyTo(d);
         d.Multiselect = Multiselect;

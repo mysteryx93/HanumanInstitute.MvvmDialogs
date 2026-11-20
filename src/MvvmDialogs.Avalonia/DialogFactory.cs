@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Avalonia.Platform.Storage;
-using HanumanInstitute.MvvmDialogs.Avalonia.Api;
-using HanumanInstitute.MvvmDialogs.FileSystem;
+﻿using HanumanInstitute.MvvmDialogs.Avalonia.Api;
 using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
@@ -48,7 +44,7 @@ public class DialogFactory : DialogFactoryBase
 
     private async Task<IReadOnlyList<IDialogStorageFolder>> ShowOpenFolderDialogAsync(IView? owner, OpenFolderDialogSettings settings)
     {
-        var apiSettings = new FolderPickerOpenOptions()
+        var apiSettings = new FolderPickerOpenOptions
         {
             AllowMultiple = settings.AllowMultiple ?? false
         };
@@ -60,7 +56,7 @@ public class DialogFactory : DialogFactoryBase
     private async Task<IReadOnlyList<IDialogStorageFile>> ShowOpenFileDialogAsync(IView? owner, OpenFileDialogSettings settings)
     {
         var filters = SyncFilters(settings.Filters);
-        var apiSettings = new FilePickerOpenOptions()
+        var apiSettings = new FilePickerOpenOptions
         {
             AllowMultiple = settings.AllowMultiple ?? false,
             FileTypeFilter = filters,
@@ -77,7 +73,7 @@ public class DialogFactory : DialogFactoryBase
     private async Task<IDialogStorageFile?> ShowSaveFileDialogAsync(IView? owner, SaveFileDialogSettings settings)
     {
         var filters = SyncFilters(settings.Filters);
-        var apiSettings = new FilePickerSaveOptions()
+        var apiSettings = new FilePickerSaveOptions
         {
             DefaultExtension = string.IsNullOrEmpty(settings.DefaultExtension) ? null : settings.DefaultExtension,
             FileTypeChoices = filters,
@@ -165,11 +161,10 @@ public class DialogFactory : DialogFactoryBase
     }
 
     private static List<FilePickerFileType> SyncFilters(IList<FileFilter> filters) =>
-        filters.Select(
-            x => new FilePickerFileType(x.NameToString(x.ExtensionsToString()))
-            {
-                Patterns = x.Extensions?.Select(y => "*." + y.TrimStart('.')).ToList(),
-                MimeTypes = x.MimeTypes,
-                AppleUniformTypeIdentifiers = x.AppleUniformTypeIdentifiers
-            }).ToList();
+        filters.Select(x => new FilePickerFileType(x.NameToString(x.ExtensionsToString()))
+        {
+            Patterns = x.Extensions?.Select(y => "*." + y.TrimStart('.')).ToList(),
+            MimeTypes = x.MimeTypes,
+            AppleUniformTypeIdentifiers = x.AppleUniformTypeIdentifiers
+        }).ToList();
 }

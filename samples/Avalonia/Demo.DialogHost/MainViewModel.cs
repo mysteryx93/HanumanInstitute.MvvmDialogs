@@ -1,5 +1,4 @@
-﻿using System.Reactive;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.DialogHost;
 using ReactiveUI;
@@ -37,7 +36,7 @@ public partial class MainViewModel : ViewModelBase
         var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
         await _dialogService.ShowDialogHostAsync(
             this,
-            new DialogHostSettings(dialogViewModel)
+            new(dialogViewModel)
             {
                 CloseOnClickAway = true,
                 ClosingHandler = (_, e) =>
@@ -59,7 +58,7 @@ public partial class MainViewModel : ViewModelBase
     {
         var result = await _dialogService.ShowDialogHostAsync(
             this,
-            new DialogHostSettings("Hello world!")
+            new("Hello world!")
             {
                 CloseOnClickAway = true
             }).ConfigureAwait(true);
@@ -69,7 +68,7 @@ public partial class MainViewModel : ViewModelBase
     private async Task ShowControlImplAsync()
     {
         var content = new MessageView();
-        var result = await _dialogService.ShowDialogHostAsync(this, new DialogHostSettings(content)).ConfigureAwait(true);
+        var result = await _dialogService.ShowDialogHostAsync(this, new(content)).ConfigureAwait(true);
         TextOutput = result?.ToString() ?? "(null)";
     }
 
@@ -80,7 +79,7 @@ public partial class MainViewModel : ViewModelBase
         // dialogViewModel.Owner = this;
         await _dialogService.ShowDialogHostAsync(
             this,
-            new DialogHostSettings(dialogViewModel)
+            new(dialogViewModel)
             {
                 CloseOnClickAway = true
             });

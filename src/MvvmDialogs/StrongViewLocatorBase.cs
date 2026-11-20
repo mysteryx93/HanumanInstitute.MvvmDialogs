@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Strongly-typed View Locator that does not rely on reflection.
@@ -31,12 +29,9 @@ public abstract class StrongViewLocatorBase : IViewLocator
         {
             return view;
         }
-        else
-        {
-            var message = $"No view was registered for view model {viewModel.GetType().FullName}.";
-            const string ErrorInfo = "This project uses a StrongViewLocator, which requires manually registering all ViewModel-View combinations.";
-            throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
-        }
+        var message = $"No view was registered for view model {viewModel.GetType().FullName}.";
+        const string ErrorInfo = "This project uses a StrongViewLocator, which requires manually registering all ViewModel-View combinations.";
+        throw new TypeLoadException(message + Environment.NewLine + ErrorInfo);
     }
 
     /// <inheritdoc />

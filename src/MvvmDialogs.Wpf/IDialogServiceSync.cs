@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Provides sync ShowDialog methods for IDialogService.

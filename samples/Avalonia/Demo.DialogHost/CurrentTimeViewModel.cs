@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.DialogHost;
 
@@ -11,10 +12,10 @@ public partial class CurrentTimeViewModel : ViewModelBase, IViewClosing, IViewCl
 {
     public DateTime CurrentTime => DateTime.Now;
 
-    [ReactiveUI.SourceGenerators.Reactive]
+    [Reactive]
     private bool _confirmClose;
 
-    [ReactiveUI.SourceGenerators.Reactive]
+    [Reactive]
     private bool _stayOpen;
     private readonly IDisposable _clock;
 

@@ -3,8 +3,8 @@ using FluentAvalonia.UI.Controls;
 using HanumanInstitute.MvvmDialogs;
 using HanumanInstitute.MvvmDialogs.Avalonia.Fluent;
 using ReactiveUI;
-using ReactiveUI.SourceGenerators;
 using ReactiveUI.Primitives;
+using ReactiveUI.SourceGenerators;
 
 namespace Demo.Avalonia.FluentContentDialog;
 
@@ -70,7 +70,7 @@ public partial class MainViewModel : ViewModelBase
     {
         var dialogViewModel = _dialogService.CreateViewModel<CurrentTimeViewModel>();
         dialogViewModel.ConfirmClose = true;
-        await _dialogService.ShowContentDialogAsync(this, new ContentDialogSettings(dialogViewModel)
+        await _dialogService.ShowContentDialogAsync(this, new(dialogViewModel)
         {
             PrimaryButtonText = "OK"
         }).ConfigureAwait(true);
@@ -79,7 +79,7 @@ public partial class MainViewModel : ViewModelBase
     private async Task ShowControlImplAsync()
     {
         var content = new MessageView();
-        var result = await _dialogService.ShowContentDialogAsync(this, new ContentDialogSettings(content)
+        var result = await _dialogService.ShowContentDialogAsync(this, new(content)
         {
             PrimaryButtonText = "OK"
         }).ConfigureAwait(true);

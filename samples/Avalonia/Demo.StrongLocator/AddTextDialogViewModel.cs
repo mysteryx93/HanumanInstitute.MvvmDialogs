@@ -20,13 +20,13 @@ public class AddTextDialogViewModel : ViewModelBase, IModalDialogViewModel, IClo
     public string Text
     {
         get => _text;
-        set => this.RaiseAndSetIfChanged(ref _text, value, nameof(Text));
+        set => this.RaiseAndSetIfChanged(ref _text, value);
     }
 
     public bool? DialogResult
     {
         get => _dialogResult;
-        set => this.RaiseAndSetIfChanged(ref _dialogResult, value, nameof(DialogResult));
+        set => this.RaiseAndSetIfChanged(ref _dialogResult, value);
     }
 
     private void Ok()

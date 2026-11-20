@@ -1,5 +1,17 @@
 global using System;
+global using System.Collections.Generic;
 global using System.ComponentModel;
+global using System.Linq;
+global using System.Runtime.ExceptionServices;
 global using System.Threading.Tasks;
 global using Avalonia;
 global using Avalonia.Controls;
+global using Avalonia.Controls.ApplicationLifetimes;
+global using Avalonia.Controls.Templates;
+global using Avalonia.Markup.Xaml;
+global using Avalonia.Platform.Storage;
+global using Avalonia.Threading;
+global using Avalonia.Utilities;
+global using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
+global using HanumanInstitute.MvvmDialogs.FileSystem;
+global using HanumanInstitute.MvvmDialogs.Private;

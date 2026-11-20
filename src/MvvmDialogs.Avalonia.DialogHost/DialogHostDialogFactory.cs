@@ -25,23 +25,10 @@ public class DialogHostDialogFactory : DialogFactoryBase
 
     private async Task<object?> ShowDialogHostAsync(IView? owner, DialogHostSettings settings)
     {
-        if (owner == null) { throw new ArgumentNullException(nameof(owner)); }
+        owner.CheckNotNull();
         var view = new DialogHostView(settings);
-        IDisposable? events = null;
-        if (view.ViewModel != null)
-        {
-            events = GetDialogManager().HandleDialogEvents(view.ViewModel, view);
-        }
-
-        try
-        {
-            await view.ShowDialogAsync(owner).ConfigureAwait(true);
-        }
-        catch
-        {
-            events?.Dispose();
-            throw;
-        }
+        using var events = view.ViewModel != null ? GetDialogManager().HandleDialogEvents(view.ViewModel, view) : null;
+        await view.ShowDialogAsync(owner).ConfigureAwait(true);
         return view.DialogResult;
     }
 

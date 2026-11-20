@@ -1,6 +1,7 @@
 ﻿using System.Reactive.Linq;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
+using ReactiveUI.Primitives;
 
 namespace Demo.CrossPlatform.ViewModels;
 
@@ -10,7 +11,8 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
 
     public CurrentTimeViewModel()
     {
-        _clock = Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)).Subscribe(
+        _clock = ObservableExtensions.Subscribe(
+            Observable.Timer(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1)),
             _ =>
             {
                 this.RaisePropertyChanged(nameof(CurrentTime));
@@ -24,7 +26,7 @@ public class CurrentTimeViewModel : ViewModelBase, IModalDialogViewModel, IClose
     public event EventHandler? RequestClose;
     public event EventHandler? Closed;
 
-    public ReactiveCommand<ReactiveUI.Primitives.RxVoid, ReactiveUI.Primitives.RxVoid> Close { get; }
+    public ReactiveCommand<RxVoid, RxVoid> Close { get; }
 
     private void CloseImpl()
     {

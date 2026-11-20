@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace HanumanInstitute.MvvmDialogs.Private;
+﻿namespace HanumanInstitute.MvvmDialogs.Private;
 
 internal static class ViewIdGenerator
 {

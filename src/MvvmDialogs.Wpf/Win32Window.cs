@@ -1,7 +1,4 @@
-﻿using System.Windows.Interop;
-using IWin32Window = System.Windows.Forms.IWin32Window;
-
-namespace HanumanInstitute.MvvmDialogs.Wpf;
+﻿namespace HanumanInstitute.MvvmDialogs.Wpf;
 
 /// <summary>
 /// Class describing a <see cref="IWin32Window"/> wrapper around a WPF window.

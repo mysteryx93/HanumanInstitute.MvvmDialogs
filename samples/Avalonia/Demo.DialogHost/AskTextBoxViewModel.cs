@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive;
 using HanumanInstitute.MvvmDialogs;
 using ReactiveUI;
 using ReactiveUI.Primitives;
@@ -10,7 +9,7 @@ namespace Demo.Avalonia.DialogHost;
 public partial class AskTextBoxViewModel : ViewModelBase, IModalDialogViewModel, ICloseable
 {
     public event EventHandler? RequestClose;
-    [ReactiveUI.SourceGenerators.Reactive]
+    [Reactive]
     private bool? _dialogResult;
 
     [Reactive]

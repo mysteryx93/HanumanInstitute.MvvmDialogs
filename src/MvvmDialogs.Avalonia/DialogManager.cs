@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia.Media;
 using Microsoft.Extensions.Logging;
-using Avalonia.Threading;
-using Avalonia.Media;
-using HanumanInstitute.MvvmDialogs.Avalonia.Navigation;
 
 namespace HanumanInstitute.MvvmDialogs.Avalonia;
 
@@ -25,17 +20,14 @@ public class DialogManager : DialogManagerBase<ContentControl>
         IDispatcher? dispatcher = null,
         Control? customNavigationRoot = null)
         :
-        base(
-            viewLocator ?? new ViewLocatorBase(),
-            dialogFactory ?? new DialogFactory(),
-            logger)
+        base(viewLocator ?? new ViewLocatorBase(), dialogFactory ?? new DialogFactory(), logger)
     {
         _dispatcher = dispatcher ?? Dispatcher.UIThread;
-        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime || viewLocator is IViewLocatorNavigation { ForceSinglePageNavigation: true };
+        _useNavigation = Application.Current?.ApplicationLifetime is ISingleViewApplicationLifetime ||
+                         (viewLocator is IViewLocatorNavigation navigation && navigation.ForceSinglePageNavigation);
         if (_useNavigation)
         {
-            ForwardViewEvents = false;
-            _navigationManager = new NavigationManager(View_Closing);
+            _navigationManager = new(View_Closing);
             _navigationManager.Launch(customNavigationRoot);
         }
     }
@@ -45,22 +37,32 @@ public class DialogManager : DialogManagerBase<ContentControl>
     /// </summary>
     public INavigationManager? NavigationManager => _navigationManager;
 
+    // Awaits the close decision so navigation can recheck history before removing a page.
+    internal Task ConfirmNavigationCloseAsync(IView dialog, CancelEventArgs e) =>
+        ConfirmViewClosingAsync(dialog, e);
+
     /// <inheritdoc />
     protected override bool IsDesignMode => Design.IsDesignMode;
 
     /// <inheritdoc />
+    public override IDisposable HandleDialogEvents(INotifyPropertyChanged viewModel, IView dialog) =>
+        dialog is ViewNavigationWrapper ? HandleDialogEvents(viewModel, dialog, forwardLoadedAndClosed: false) : base.HandleDialogEvents(viewModel, dialog);
+
+    /// <inheritdoc />
     protected override IView CreateWrapper(INotifyPropertyChanged viewModel, ViewDefinition viewDef)
     {
-        var wrapper = _useNavigation ?
-            (IView)new ViewNavigationWrapper(_navigationManager!, View_Closing) :
-            new ViewWrapper();
+        var wrapper = _useNavigation ? (IView)new ViewNavigationWrapper(_navigationManager!, View_Closing) : new ViewWrapper();
         wrapper.Initialize(viewModel, viewDef);
         return wrapper;
     }
 
     /// <inheritdoc />
+    /// <exception cref="ArgumentException">The navigation view has no <see cref="INotifyPropertyChanged"/> data context.</exception>
     protected override IView AsWrapper(ContentControl view) =>
-        view is Window w ? w.AsWrapper() : ((UserControl)view).AsWrapper(_navigationManager!, View_Closing);
+        view is Window w
+            ? w.AsWrapper()
+            : ((UserControl)view).AsWrapper(_navigationManager!, View_Closing) ??
+              throw new ArgumentException("The navigation view requires an INotifyPropertyChanged data context.", nameof(view));
 
     private static IEnumerable<Window> Windows =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)?.Windows ?? Array.Empty<Window>();
@@ -70,12 +72,9 @@ public class DialogManager : DialogManagerBase<ContentControl>
     {
         if (_useNavigation)
         {
-            return _navigationManager!.GetViewForViewModel(viewModel).AsWrapper(_navigationManager, View_Closing);
+            return _navigationManager!.FindOpenView(viewModel);
         }
-        else
-        {
-            return Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
-        }
+        return Windows.FirstOrDefault(x => ReferenceEquals(viewModel, x.DataContext)).AsWrapper();
     }
 
     /// <inheritdoc />
@@ -97,7 +96,7 @@ public class DialogManager : DialogManagerBase<ContentControl>
             return null;
         }
 
-        var parent = new Window()
+        var parent = new Window
         {
             Height = 1,
             Width = 1,

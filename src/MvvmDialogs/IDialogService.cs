@@ -1,5 +1,4 @@
-﻿
-namespace HanumanInstitute.MvvmDialogs;
+﻿namespace HanumanInstitute.MvvmDialogs;
 
 /// <summary>
 /// Interface abstracting the interaction between view models and views when it comes to
@@ -36,6 +35,7 @@ public interface IDialogService
     /// <param name="viewModel">The view model of the new dialog.</param>
     /// <returns>A nullable value of type <see cref="bool"/> that signifies how a window was closed by the user.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
+    /// <exception cref="OperationCanceledException">In Avalonia navigation mode, the dialog owner or navigation host closed before the dialog.</exception>
     Task<bool?> ShowDialogAsync(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel);
 
     /// <summary>
@@ -46,13 +46,14 @@ public interface IDialogService
     /// <typeparam name="T">The type of the dialog to show.</typeparam>
     /// <returns>A nullable value of type <see cref="bool"/> that signifies how a window was closed by the user.</returns>
     /// <exception cref="ViewNotRegisteredException">No view is registered with specified owner view model as data context.</exception>
+    /// <exception cref="OperationCanceledException">In Avalonia navigation mode, the dialog owner or navigation host closed before the dialog.</exception>
     Task<bool?> ShowDialogAsync<T>(INotifyPropertyChanged ownerViewModel, IModalDialogViewModel viewModel); // where T : TWindow;
 
     /// <summary>
     /// Attempts to bring the window to the foreground and activates it.
     /// </summary>
     /// <param name="viewModel">The view model of the window.</param>
-    /// <returns>true if the window was successfully activated; otherwise, false.</returns>
+    /// <returns>true if a view was found and its activation method was called; otherwise, false.</returns>
     bool Activate(INotifyPropertyChanged viewModel);
 
     /// <summary>

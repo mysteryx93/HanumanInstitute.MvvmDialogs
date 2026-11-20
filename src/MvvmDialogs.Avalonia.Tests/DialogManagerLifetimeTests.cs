@@ -1,7 +1,3 @@
-using System.Runtime.CompilerServices;
-using HanumanInstitute.MvvmDialogs.FrameworkDialogs;
-using Moq;
-
 namespace HanumanInstitute.MvvmDialogs.Avalonia.Tests;
 
 public class DialogManagerLifetimeTests
@@ -45,6 +41,63 @@ public class DialogManagerLifetimeTests
         viewModel.OnRequestActivate();
 
         Assert.Equal(0, dialog.ActivateCount);
+    }
+
+    [Fact]
+    public void HandleDialogEvents_ClosedCallbackThrows_DetachesViewModelRequests()
+    {
+        var manager = CreateManager();
+        var viewModel = new ThrowingCloseViewModel();
+        var dialog = new FakeView();
+        manager.HandleDialogEvents(viewModel, dialog);
+
+        var close = dialog.RaiseClosed;
+
+        Assert.Throws<InvalidOperationException>(close);
+        viewModel.OnRequestClose();
+        viewModel.OnRequestActivate();
+        Assert.Equal(0, dialog.CloseCount);
+        Assert.Equal(0, dialog.ActivateCount);
+    }
+
+    [Fact]
+    public async Task Close_NativeWindowSubscriberThrows_StillNotifiesViewModel()
+    {
+        await using var ui = new HeadlessSession();
+        await ui.Run(() =>
+        {
+            var manager = new DialogManager();
+            var model = new FirstViewModel();
+            var view = new ViewWrapper();
+            view.InitializeExisting(model, new Window());
+            var failure = new InvalidOperationException("Close subscriber failed.");
+            Exception reported = null;
+            view.Closed += (_, _) => throw failure;
+            using var events = manager.HandleDialogEvents(model, view);
+            Dispatcher.UIThread.UnhandledException += OnUnhandled;
+            try
+            {
+                view.Show(null);
+
+                view.Close();
+                Dispatcher.UIThread.RunJobs();
+
+                Assert.Same(failure, reported);
+                Assert.Equal(1, model.ClosedCount);
+            }
+            finally { Dispatcher.UIThread.UnhandledException -= OnUnhandled; }
+
+            void OnUnhandled(object sender, DispatcherUnhandledExceptionEventArgs e)
+            {
+                reported = e.Exception;
+                e.Handled = true;
+            }
+        });
+    }
+
+    private class ThrowingCloseViewModel : FirstViewModel
+    {
+        public override void OnClosed() => throw new InvalidOperationException("Close callback failed.");
     }
 
     [Fact]
@@ -97,7 +150,10 @@ public class DialogManagerLifetimeTests
     [Fact]
     public void Show_WhenShowThrows_RequestCloseDoesNotCloseDialog()
     {
-        var dialog = new FakeView { ShowException = new InvalidOperationException("show failed") };
+        var dialog = new FakeView
+        {
+            ShowException = new InvalidOperationException("show failed")
+        };
         var manager = CreateManager();
         manager.CreatedDialog = dialog;
         var viewModel = new FirstViewModel();
@@ -128,14 +184,16 @@ public class DialogManagerLifetimeTests
     [Fact]
     public async Task ShowDialogAsync_WhenShowThrows_RequestCloseDoesNotCloseDialog()
     {
-        var dialog = new FakeView { ShowException = new InvalidOperationException("show failed") };
+        var dialog = new FakeView
+        {
+            ShowException = new InvalidOperationException("show failed")
+        };
         var manager = CreateManager();
         manager.CreatedDialog = dialog;
         manager.OwnerView = new FakeView();
         var viewModel = new SecondViewModel();
 
-        var ex = await Assert.ThrowsAsync<InvalidOperationException>(
-            () => manager.ShowDialogAsync(new FirstViewModel(), viewModel));
+        var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => manager.ShowDialogAsync(new FirstViewModel(), viewModel));
 
         Assert.Equal("show failed", ex.Message);
         viewModel.OnRequestClose();
@@ -167,10 +225,12 @@ public class DialogManagerLifetimeTests
             .Setup(x => x.ShowDialogAsync(It.IsAny<IView>(), It.IsAny<MessageBoxSettings>()))
             .ThrowsAsync(new InvalidOperationException("dialog failed"));
         var dummy = new FakeView();
-        var manager = new FakeDialogManager(factory.Object) { DummyWindow = dummy };
+        var manager = new FakeDialogManager(factory.Object)
+        {
+            DummyWindow = dummy
+        };
 
-        await Assert.ThrowsAsync<InvalidOperationException>(
-            () => manager.ShowFrameworkDialogAsync(null, new MessageBoxSettings()));
+        await Assert.ThrowsAsync<InvalidOperationException>(() => manager.ShowFrameworkDialogAsync(null, new MessageBoxSettings()));
 
         Assert.Equal(1, dummy.CloseCount);
     }
@@ -183,7 +243,10 @@ public class DialogManagerLifetimeTests
             .Setup(x => x.ShowDialogAsync(It.IsAny<IView>(), It.IsAny<MessageBoxSettings>()))
             .ReturnsAsync("ok");
         var dummy = new FakeView();
-        var manager = new FakeDialogManager(factory.Object) { DummyWindow = dummy };
+        var manager = new FakeDialogManager(factory.Object)
+        {
+            DummyWindow = dummy
+        };
 
         var result = await manager.ShowFrameworkDialogAsync(null, new MessageBoxSettings());
 
@@ -191,8 +254,72 @@ public class DialogManagerLifetimeTests
         Assert.Equal(1, dummy.CloseCount);
     }
 
+    [Fact]
+    public void HandleDialogEvents_NestedClose_AllowsOtherView()
+    {
+        var manager = CreateManager();
+        var parentVm = new ClosingProbe();
+        var childVm = new ClosingProbe();
+        var parent = new FakeView
+        {
+            ViewModel = parentVm
+        };
+        var child = new FakeView
+        {
+            ViewModel = childVm
+        };
+        var parentArgs = new CancelEventArgs();
+        var childArgs = new CancelEventArgs();
+        parentVm.OnClosingAction = _ => child.RaiseClosing(childArgs);
+        using var parentEvents = manager.HandleDialogEvents(parentVm, parent);
+        using var childEvents = manager.HandleDialogEvents(childVm, child);
+
+        parent.RaiseClosing(parentArgs);
+
+        Assert.False(parentArgs.Cancel);
+        Assert.False(childArgs.Cancel);
+        Assert.True(child.ClosingConfirmed);
+    }
+
+    [Fact]
+    public async Task ShowFrameworkDialogAsync_AllowConcurrentChanges_NextDialogCompletes()
+    {
+        var factory = new Mock<IDialogFactory>();
+        var dummy = new FakeView();
+        var manager = new FakeDialogManager(factory.Object)
+        {
+            DummyWindow = dummy
+        };
+        factory
+            .Setup(x => x.ShowDialogAsync(It.IsAny<IView>(), It.IsAny<MessageBoxSettings>()))
+            .Returns(() =>
+            {
+                manager.AllowConcurrentDialogs = true;
+                return Task.FromResult<object>("ok");
+            });
+
+        await manager.ShowFrameworkDialogAsync(null, new MessageBoxSettings());
+        manager.AllowConcurrentDialogs = false;
+        var second = manager.ShowFrameworkDialogAsync(null, new MessageBoxSettings());
+        var done = await Task.WhenAny(second, Task.Delay(1000, TestContext.Current.CancellationToken));
+
+        Assert.Same(second, done);
+        Assert.Equal("ok", await second);
+    }
+
     private static FakeDialogManager CreateManager() =>
         new(new Mock<IDialogFactory>().Object);
+
+    private sealed class ClosingProbe : INotifyPropertyChanged, IViewClosing
+    {
+        public event PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+
+        public Action<CancelEventArgs> OnClosingAction { get; set; }
+
+        public void OnClosing(CancelEventArgs e) => OnClosingAction?.Invoke(e);
+
+        public Task OnClosingAsync(CancelEventArgs e) => Task.CompletedTask;
+    }
 
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static WeakReference SubscribeAndClose(FakeDialogManager manager, FirstViewModel viewModel)
@@ -216,7 +343,10 @@ public class DialogManagerLifetimeTests
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static WeakReference ShowThrowingDialog(FakeDialogManager manager, FirstViewModel viewModel)
     {
-        var dialog = new FakeView { ShowException = new InvalidOperationException("show failed") };
+        var dialog = new FakeView
+        {
+            ShowException = new InvalidOperationException("show failed")
+        };
         var dialogRef = new WeakReference(dialog);
         manager.CreatedDialog = dialog;
         try
